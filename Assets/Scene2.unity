@@ -559,12 +559,16 @@ RectTransform:
   - {fileID: 2036347508}
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
   - {fileID: 1203858487}
 =======
   - {fileID: 1838996700}
   - {fileID: 1804627739}
 >>>>>>> 62838928369e51cd7532794ffc48d4e2e388eab7
+=======
+  - {fileID: 1813339083}
+>>>>>>> Stashed changes
 =======
   - {fileID: 1813339083}
 >>>>>>> Stashed changes
@@ -580,7 +584,11 @@ RectTransform:
   m_Pivot: {x: 0, y: 0}
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 --- !u!1 &1804627738
+=======
+--- !u!1 &1813339082
+>>>>>>> Stashed changes
 =======
 --- !u!1 &1813339082
 >>>>>>> Stashed changes
@@ -596,6 +604,7 @@ GameObject:
   m_Component:
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   - component: {fileID: 1804627739}
   - component: {fileID: 1804627741}
   - component: {fileID: 1804627740}
@@ -604,12 +613,17 @@ GameObject:
 =======
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
   - component: {fileID: 1813339083}
   - component: {fileID: 1813339085}
   - component: {fileID: 1813339084}
   m_Layer: 5
   m_Name: Text (TMP)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -620,7 +634,11 @@ GameObject:
   m_IsActive: 1
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 --- !u!224 &1804627739
+=======
+--- !u!224 &1813339083
+>>>>>>> Stashed changes
 =======
 --- !u!224 &1813339083
 >>>>>>> Stashed changes
@@ -634,7 +652,11 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   m_GameObject: {fileID: 1804627738}
+=======
+  m_GameObject: {fileID: 1813339082}
+>>>>>>> Stashed changes
 =======
   m_GameObject: {fileID: 1813339082}
 >>>>>>> Stashed changes
@@ -652,6 +674,7 @@ RectTransform:
   m_AnchorMax: {x: 0.5, y: 0.5}
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   m_AnchoredPosition: {x: -100, y: 81.985}
   m_SizeDelta: {x: 363.9249, y: 113.9707}
   m_Pivot: {x: 0.49999997, y: 0.5}
@@ -659,11 +682,16 @@ RectTransform:
 =======
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
   m_AnchoredPosition: {x: -99, y: 37.9}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1813339084
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -674,7 +702,11 @@ MonoBehaviour:
   m_PrefabAsset: {fileID: 0}
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   m_GameObject: {fileID: 1804627738}
+=======
+  m_GameObject: {fileID: 1813339082}
+>>>>>>> Stashed changes
 =======
   m_GameObject: {fileID: 1813339082}
 >>>>>>> Stashed changes
@@ -696,7 +728,11 @@ MonoBehaviour:
       m_Calls: []
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   m_text: commit 2
+=======
+  m_text: 151515151
+>>>>>>> Stashed changes
 =======
   m_text: 151515151
 >>>>>>> Stashed changes
@@ -773,7 +809,11 @@ MonoBehaviour:
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 --- !u!222 &1804627741
+=======
+--- !u!222 &1813339085
+>>>>>>> Stashed changes
 =======
 --- !u!222 &1813339085
 >>>>>>> Stashed changes
@@ -785,6 +825,7 @@ CanvasRenderer:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
   m_GameObject: {fileID: 1804627738}
@@ -922,6 +963,9 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1838996699}
+=======
+  m_GameObject: {fileID: 1813339082}
+>>>>>>> Stashed changes
 =======
   m_GameObject: {fileID: 1813339082}
 >>>>>>> Stashed changes
