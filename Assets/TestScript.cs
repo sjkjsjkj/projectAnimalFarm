@@ -8,11 +8,7 @@ using UnityEngine;
 public class TestScript : MonoBehaviour
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
-    [Header("필수 요소 등록")]
-    [SerializeField] private TextMeshProUGUI
-
-    [Header("사용자 정의 설정")]
-    [SerializeField] private Vector3 _offset = new Vector3(0f, 0f, 0f);
+    
     #endregion
 
     #region ─────────────────────────▶ 접근자 ◀─────────────────────────
@@ -39,3 +35,4 @@ public class TestScript : MonoBehaviour
 
     #endregion
 }
+
