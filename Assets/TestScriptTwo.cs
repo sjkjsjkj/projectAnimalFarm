@@ -4,15 +4,5 @@ using UnityEngine;
 
 public class TestScriptTwo : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    //감격의 첫 수정입니다.
 }
