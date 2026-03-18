@@ -1,10 +1,9 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
-/// 싱글톤 클래스의 설계 의도입니다.
+/// 클래스의 설계 의도입니다.
 /// </summary>
-    #ROOTNAMESPACEBEGIN#
-public class #SCRIPTNAME# : Singleton<#SCRIPTNAME#>
+public class TestKey : BaseMono
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     //[Header("주제")]
@@ -12,7 +11,7 @@ public class #SCRIPTNAME# : Singleton<#SCRIPTNAME#>
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
-    private bool _isInitialized = false;
+
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -20,15 +19,24 @@ public class #SCRIPTNAME# : Singleton<#SCRIPTNAME#>
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-    public override void Initialize() {
-        if (_isInitialized)
-        {
-            return;
-        }
-
-        // ↑ 필요한 초기화 로직 / 부모 클래스에서 자동 실행
-        _isInitialized = true;
+    private void Handle(OnPlayerJump ctx)
+    {
+        UDebug.Print("테스트");
     }
     #endregion
+
+    #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
+    private void OnEnable()
+    {
+        EventBus<OnPlayerJump>.Subscribe(Handle);
+    }
+    private void OnDisable()
+    {
+        EventBus<OnPlayerJump>.Unsubscribe(Handle);
+    }
+    #endregion
+
+    #region ─────────────────────────▶ 중첩 타입 ◀─────────────────────────
+
+    #endregion
 }
-#ROOTNAMESPACEEND#

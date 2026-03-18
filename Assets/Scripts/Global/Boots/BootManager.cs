@@ -22,6 +22,8 @@ public class BootManager : MonoBehaviour
         UDebug.Print("BootSequence : 초기화 중 ....");
         var frameManager = root.AddComponent<FrameManager>();
         frameManager.Initialize();
+        var inputManager = root.AddComponent<InputManager>();
+        inputManager.Initialize();
         yield return null;
         UDebug.Print("BootSequence : 초기화 완료");
         _co = null;
