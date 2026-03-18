@@ -2,7 +2,7 @@
 
 /// <summary>
 /// 플레이어가 WASD를 입력했을 때
-/// 누르는 동안 이벤트를 계속 발행
+/// 키를 누를 때마다 이벤트 발행 (캐싱 필요)
 /// </summary>
 public readonly struct OnPlayerMove
 {

@@ -19,20 +19,26 @@ public class TestKey : BaseMono
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-    private void Handle(OnPlayerJump ctx)
+    private void JumpHandle(OnPlayerJump ctx)
     {
-        UDebug.Print("테스트");
+        UDebug.Print($"{ctx} 테스트");
+    }
+    private void MoveHandle(OnPlayerMove ctx)
+    {
+        UDebug.Print($"{ctx.moved} 테스트");
     }
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
     private void OnEnable()
     {
-        EventBus<OnPlayerJump>.Subscribe(Handle);
+        EventBus<OnPlayerJump>.Subscribe(JumpHandle);
+        EventBus<OnPlayerMove>.Subscribe(MoveHandle);
     }
     private void OnDisable()
     {
-        EventBus<OnPlayerJump>.Unsubscribe(Handle);
+        EventBus<OnPlayerJump>.Unsubscribe(JumpHandle);
+        EventBus<OnPlayerMove>.Unsubscribe(MoveHandle);
     }
     #endregion
 
