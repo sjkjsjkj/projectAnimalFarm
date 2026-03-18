@@ -15,36 +15,50 @@ insert_final_newline = true
 # 0. IDE 경고
 # ────────────────────────────────
 
+# 불필요한 형변환
+dotnet_diagnostic.IDE0004.severity = suggestion
+
+# 사용하지 않는 using 지시문
+dotnet_diagnostic.IDE0005.severity = warning
+
+# 접근 제한자 명시 강제
+dotnet_diagnostic.IDE0040.severity = warning
+
 # 사용하지 않는 private 메서드
 dotnet_diagnostic.IDE0051.severity = warning
 
 # 값을 읽지 않는 private 멤버
 dotnet_diagnostic.IDE0052.severity = warning
 
-# 사용하지 않는 지역 변수 (현재 CS0219)
-dotnet_diagnostic.CS0219.severity = warning
-
-# 도달할 수 없는 코드
-dotnet_diagnostic.CS0162.severity = warning
-
 # 사용하지 않는 파라미터
 dotnet_diagnostic.IDE0060.severity = warning
 
-# await 빠뜨림
-dotnet_diagnostic.CS4014.severity = warning
-
-# 선언만 하고 미사용 
-dotnet_diagnostic.CS0168.severity = warning
+# 단순화된 new 식 사용 권장
+dotnet_diagnostic.IDE0090.severity = suggestion
 
 # 실수로 new로 숨김
 dotnet_diagnostic.CS0108.severity = warning
 
-# 불필요한 형변환
-dotnet_diagnostic.IDE0004.severity = suggestion
+# 부모 숨김 시 override/new 누락
+dotnet_diagnostic.CS0114.severity = warning
+
+# 도달할 수 없는 코드
+dotnet_diagnostic.CS0162.severity = warning
+
+# 선언만 하고 미사용 
+dotnet_diagnostic.CS0168.severity = warning
+
+# 사용하지 않는 지역 변수 (현재 CS0219)
+dotnet_diagnostic.CS0219.severity = warning
+
+# await 빠뜨림
+dotnet_diagnostic.CS4014.severity = warning
 
 # null 체크 없이 사용 (NullReferenceException 방지)
-dotnet_diagnostic.CS8600.severity = warning  # null을 non-null에 대입
-dotnet_diagnostic.CS8602.severity = warning  # null 가능 참조 역참조
+dotnet_diagnostic.CS8600.severity = suggestion # 잠재적 null을 대입
+dotnet_diagnostic.CS8602.severity = suggestion # null 방어 코드 없는 접근
+dotnet_diagnostic.CS8618.severity = suggestion # 초기화 누락
+dotnet_diagnostic.CS8625.severity = suggestion # 명시적 null 대입
 
 # ────────────────────────────────
 # 1. 인터페이스

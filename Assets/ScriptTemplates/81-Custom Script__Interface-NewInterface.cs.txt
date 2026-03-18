@@ -1,0 +1,11 @@
+using UnityEngine;
+
+/// <summary>
+/// 
+/// </summary>
+    #ROOTNAMESPACEBEGIN#
+public interface I#SCRIPTNAME#
+{
+    
+}
+#ROOTNAMESPACEEND#
