@@ -233,7 +233,7 @@ public partial class @InputDispatcher : IInputActionCollection2, IDisposable
 
     ~@InputDispatcher()
     {
-        UnityEngine.Debug.Assert(!m_MainActionMap.enabled, "This will cause a leak and performance issues, InputManager.MainActionMap.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_MainActionMap.enabled, "This will cause a leak and performance issues, InputDispatcher.MainActionMap.Disable() has not been called.");
     }
 
     /// <summary>
