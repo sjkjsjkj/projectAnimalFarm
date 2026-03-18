@@ -24,6 +24,8 @@ public class BootManager : MonoBehaviour
         frameManager.Initialize();
         var inputManager = root.AddComponent<InputManager>();
         inputManager.Initialize();
+        var tileDatabase = root.AddComponent<TileDatabase>();
+        tileDatabase.Initialize();
         yield return null;
         UDebug.Print("BootSequence : 초기화 완료");
         _co = null;
