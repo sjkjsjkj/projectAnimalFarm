@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: AnimalSO_Chicken
   m_EditorClassIdentifier: 
   _id: Chicken
-  _image: {fileID: -149653767721288143, guid: 688e0ebc913f2e243b9e297e5fea39f6, type: 3}
+  _image: {fileID: -5312622947098842741, guid: 7531ebd30f4812f41a9aa3850515d394, type: 3}
   _name: "\uB2ED"
   _description: "\uB2ED \uC785\uB2C8\uB2E4."
   _needFood: 1
   _foodConsumeAmount: 1
+  _animatorController: {fileID: 9100000, guid: 64aebb88fc4e75b46b8e80fe8055c26d, type: 2}

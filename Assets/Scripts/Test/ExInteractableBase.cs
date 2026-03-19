@@ -3,7 +3,7 @@
 /// <summary>
 /// 모든 상호작용 대상의 공통 규칙을 가지는 클래스
 /// </summary>
-public abstract class ExInteractableBase : MonoBehaviour
+public abstract class ExInteractableBase : BaseMono
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("텍스트")]

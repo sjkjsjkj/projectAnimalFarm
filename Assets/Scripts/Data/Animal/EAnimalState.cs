@@ -1,5 +1,5 @@
 ﻿/// <summary>
-/// 
+/// 동물의 상태를 나타내는 Enum 입니다.
 /// </summary>
 public enum EAnimalState
 {
