@@ -4,5 +4,4 @@
 public enum EItem : byte
 {
     None = 0,
-
 }
