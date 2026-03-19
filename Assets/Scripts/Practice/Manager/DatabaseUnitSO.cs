@@ -18,7 +18,6 @@ public class DatabaseUnitSO : ScriptableObject
     public Sprite Image => _image;
     public string Name => _name;
     public string Description => _description;
-
     // 값 유효성 검사
     public virtual bool IsVaild()
     {
