@@ -75,13 +75,13 @@ public class TileDatabase : GlobalSingleton<TileDatabase>
     // 열 데이터를 읽어서 타일 속성 빌드
     private ETileState BuildTileState(string[] cols)
     {
-        ETileState state = ETileState.None;
+        int state = 0;
         int length = cols.Length;
         for (int i = 2; i < length; i++)
         {
             if (int.TryParse(cols[i], out int result))
             {
-                state = (ETileState)((int)state | result);
+                state |= result;
                 UDebug.Print($"속성 발견 : {i}");
             }
             else
@@ -89,7 +89,7 @@ public class TileDatabase : GlobalSingleton<TileDatabase>
                 UDebug.Print($"타일 속성 값을 읽는 도중 변환할 수 없는 값을 받았습니다.", LogType.Assert);
             }
         }
-        return state;
+        return (ETileState)state;
     }
     #endregion
 }
