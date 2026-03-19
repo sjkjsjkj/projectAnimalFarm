@@ -1,0 +1,66 @@
+﻿using System;
+
+/// <summary>
+/// 클래스의 설계 의도입니다.
+/// </summary>
+public class AnimalData
+{
+    #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
+    private string _animalName;
+    private int _age;
+
+    private bool _needFood;           // 음식을 먹어야 하는 동물인지
+    private float _hunger;            // 현재 허기짐 정도
+    private float _foodConsumeAmount; // 음식을 얼마나 섭취하는지 (1틱당 소모되는 허기짐)
+    #endregion
+
+    #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
+    public string Name => _animalName;
+    public int Age => _age;
+    public bool IsHungry => _hunger < K.ANIMAL_HUNGER_CONDITION;
+    #endregion
+
+    #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
+    public void EatFood(float hunger)
+    {
+        UDebug.IsTrue(hunger == 0);
+
+        _hunger += hunger;
+    }
+    // 틱당 처리되는 데이터
+    // 오브젝트에서 특정 프레임마다 불러옴.
+    public void Tick()
+    {
+        if(_needFood)
+        {
+            UDebug.Print($"before hunger = {_hunger}");
+            _hunger = MathF.Max(0, _hunger - _foodConsumeAmount);
+            UDebug.Print($"after hunger = {_hunger}");
+            if (_hunger <= 0)
+            {
+                Dead();
+                return;
+            }
+            if(IsHungry)
+            {
+                UDebug.Print($"{Name} is so Hungry");
+            }
+        }
+    }
+    // 여러가지의 이유로 동물이 죽었을 때 호출되는 메서드
+    public void Dead()
+    {
+        //To Do :자원 반납 및 연결 해제.
+    }
+    #endregion
+    #region ─────────────────────────▶ 생성자 ◀─────────────────────────
+    public AnimalData(AnimalSO dataSO)
+    {
+        _animalName = dataSO.Name;
+        _age = 0;
+        _needFood = true;
+        _foodConsumeAmount = dataSO.FoodConsumeAmount;
+        _hunger = 100.0f;
+    }
+    #endregion
+}
