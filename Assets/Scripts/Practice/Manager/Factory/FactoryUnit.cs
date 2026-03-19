@@ -22,7 +22,6 @@ public abstract class FactoryUnit : BaseMono
     #endregion
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
     public abstract GameObject Spawn(string id);
-    
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────

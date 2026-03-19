@@ -28,6 +28,8 @@ public class Factory : Singleton<Factory>
             return;
         }
 
+
+
         // ↑ 필요한 초기화 로직 / 부모 클래스에서 자동 실행
         _isInitialized = true;
     }

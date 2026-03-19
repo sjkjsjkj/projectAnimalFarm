@@ -23,7 +23,7 @@ public class AnimalFactory : FactoryUnit
 
         UDebug.IsNull(tempGo.GetComponent<AnimalObject>());
 
-        tempGo.GetComponent<AnimalObject>().SetInfo(Database.Ins.Animal.FindData(id));
+        //tempGo.GetComponent<AnimalObject>().SetInfo(Database.Ins.Animal.FindData(id));
 
         return tempGo;
     }

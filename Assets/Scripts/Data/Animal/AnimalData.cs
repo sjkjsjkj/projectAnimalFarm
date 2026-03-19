@@ -60,7 +60,7 @@ public class AnimalData
         _age = 0;
         _needFood = true;
         _foodConsumeAmount = dataSO.FoodConsumeAmount;
-        _hunger = 100.0f;
+        _hunger = 40.0f;
     }
     #endregion
 }
