@@ -9,13 +9,10 @@ using UnityEngine;
 public class TileCSVExporter : EditorWindow
 {
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
-    private const string TILE_PATH = "Assets/Farm RPG - Tiny Asset Pack - (All in One)/Farm/Tileset/Modular";
-    private const string EXPORT_PATH = "Assets/Export";
-    private const string EXPORT_NAME = "TileData.csv";
     private const int TILE_STATE_COUNT = 11;
-    private string _targetPath = TILE_PATH;
-    private string _exportPath = EXPORT_PATH;
-    private string _exportName = EXPORT_NAME;
+    private string _targetPath;
+    private string _exportPath;
+    private string _exportName;
     private StringBuilder _buffer = new();
     #endregion
 
@@ -110,9 +107,9 @@ public class TileCSVExporter : EditorWindow
     private void OnGUI()
     {
         GUILayout.Label("타일 CSV 출력 장치", EditorStyles.boldLabel); // 제목
-        _targetPath = EditorGUILayout.TextField(TILE_PATH); // 텍스트 필드
-        _exportPath = EditorGUILayout.TextField(EXPORT_PATH);
-        _exportName = EditorGUILayout.TextField(EXPORT_NAME);
+        _targetPath = EditorGUILayout.TextField(K.TILE_SPRITE_PATH); // 텍스트 필드
+        _exportPath = EditorGUILayout.TextField(K.TILE_EXPORT_PATH);
+        _exportName = EditorGUILayout.TextField(K.TILE_CSV_EXPORT_NAME);
         if (GUILayout.Button("타일 CSV 생성")) // 버튼이 클릭된 순간 true
         {
             ExportCSV(_targetPath, _exportPath, _exportName);
