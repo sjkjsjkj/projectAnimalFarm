@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-
+using UnityEngine.Animations;
 /// <summary>
 /// 동물의 MonoBehaivour를 관리하는 객체입니다.
 /// 데이터는 .Data로 접근할 수 있습니다.
@@ -16,7 +16,7 @@ public class AnimalObject : BaseMono
     private AnimalData _data;
     private EAnimalState _state;
     private float _timer = 0;
-    //private Transform _moveTarget=null;
+    private Animator _animator;
     private bool IsHungry => Data.IsHungry;
     #endregion
 
@@ -34,6 +34,7 @@ public class AnimalObject : BaseMono
     {
         _spRenderer.sprite = dataSO.Image;
         _data = new AnimalData(dataSO);
+        _animator.runtimeAnimatorController = dataSO.Anim;
     }
     /// <summary>
     /// 동물의 피곤함 / 배고픔 등의 수치를 체크하는 메서드 이것으로 동물의 다음 state를 관리합니다.
@@ -48,6 +49,19 @@ public class AnimalObject : BaseMono
             SetState(EAnimalState.MoveToEat);
         }
     }
+    /*
+    public enum EAnimalState
+    {
+        Idle = 0,
+        Move = 1,
+        Sleep = 2,
+        Eat = 3,
+        MoveToEat = 4,
+        MoveToBed= 5,
+        Dead = 6,
+    }
+
+     */
     private void UpdateMoveToEat()
     {
 
@@ -64,26 +78,25 @@ public class AnimalObject : BaseMono
     {
 
     }
-
-
-    private void TestFunction()
-    {
-        SetInfo(_testData);
-    }
-    #endregion
+#endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
     private void Awake()
     {
+        _spRenderer = GetComponent<SpriteRenderer>();
+        _animator = GetComponent<Animator>();
+
         UDebug.IsNull(_spRenderer, LogType.Warning);
-        TestFunction();
+        UDebug.IsNull(_animator, LogType.Warning);
     }
+
     private void Update()
     {
         _timer += Time.deltaTime;
 
         if(_timer >= 5)
         {
+            _timer = 0;
             _data.Tick();
         }
 

@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// 클래스의 설계 의도입니다.
+/// 각각의 팩토리들을 구현할 클래스입니다.
 /// </summary>
-public class NewMono : BaseMono
+public abstract class FactoryUnit : BaseMono
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
-    //[Header("주제")]
-    //[SerializeField] private Class _class;
+    [SerializeField] protected GameObject _prefab;
+
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
@@ -17,16 +17,16 @@ public class NewMono : BaseMono
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
 
     #endregion
+    #region ─────────────────────────▶  생성자  ◀─────────────────────────
 
+    #endregion
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-
+    public abstract GameObject Spawn(string id);
+    
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
-    private void Start()
-    {
-        //Database.Ins.Consume.FindData("CONSUME_0");
-    }
+
     #endregion
 
     #region ─────────────────────────▶ 중첩 타입 ◀─────────────────────────

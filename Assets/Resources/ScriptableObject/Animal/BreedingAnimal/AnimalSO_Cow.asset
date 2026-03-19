@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: AnimalSO_Cow
   m_EditorClassIdentifier: 
   _id: Cow
-  _image: {fileID: 0}
+  _image: {fileID: -1604644640301926670, guid: b35488fecb3abbb43b482d1fcc46ae59, type: 3}
   _name: "\uC18C"
   _description: "\uC18C \uC785\uB2C8\uB2E4."
   _needFood: 1
   _foodConsumeAmount: 3
+  _animatorController: {fileID: 9100000, guid: 166dd3b64bf11f34a93abccac5e61d1b, type: 2}
