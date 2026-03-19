@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 /// <summary>
-/// 클래스의 설계 의도입니다.
+/// 소모품 아이템의 DB 입니다.
 /// </summary>
 public class ConsumableItemDB : BaseMono
 {
@@ -36,8 +36,8 @@ public class ConsumableItemDB : BaseMono
             {
                 //여기서 itemSo 구축
             }
-            Debug.Log($"rows i : {rows[i]}");
-            Debug.Log($"cols : {cols}");
+            //Debug.Log($"rows i : {rows[i]}");
+            //Debug.Log($"cols : {cols}");
             _dataList.Add(rows[i], cols); // 여기에 만든 itemSo 넘김
         }
     }
