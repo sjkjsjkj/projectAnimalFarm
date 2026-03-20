@@ -7,7 +7,6 @@
 public class AnimalSO : DatabaseUnitSO
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
-
     [Header("세부 정보")]
     [SerializeField] private bool _needFood;                    // 음식 섭취를 필요로 하는 동물인지.
     [SerializeField] private float _foodConsumeAmount;          // 음식을 얼마나 섭취하는지 (1틱당 소모되는 허기짐)

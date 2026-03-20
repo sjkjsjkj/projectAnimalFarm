@@ -7,9 +7,9 @@ public struct TileSingle
     public int size;
     public ETileState state;
 
-    public TileSingle(string id, int size, ETileState state)
+    public TileSingle(int id, int size, ETileState state)
     {
-        this.id = id.GetHashCode();
+        this.id = id;
         this.size = size;
         this.state = state;
     }
