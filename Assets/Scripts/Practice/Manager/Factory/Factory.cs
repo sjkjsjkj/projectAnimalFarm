@@ -8,17 +8,18 @@
 public class Factory : Singleton<Factory>
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
-    [Header("팩토리 리스트")]
-    //[SerializeField] private Class _class;
+    [SerializeField] private GameObject _animalPrefab;
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private bool _isInitialized = false;
-    //private 
+    private BasicFactory<AnimalObject> _animalFactory;
+    private PoolFactory _vfxFactory;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
-
+    public BasicFactory<AnimalObject> Animal => _animalFactory;
+    public PoolFactory VFX => _vfxFactory;
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
@@ -28,8 +29,8 @@ public class Factory : Singleton<Factory>
             return;
         }
 
-
-
+        _animalFactory = new BasicFactory<AnimalObject>(_animalPrefab, Database.Ins.Animal);
+        _vfxFactory = new PoolFactory(PoolManager.Ins.VFX);
         // ↑ 필요한 초기화 로직 / 부모 클래스에서 자동 실행
         _isInitialized = true;
     }

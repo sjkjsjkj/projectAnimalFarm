@@ -17,7 +17,8 @@ public class AnimalData
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     public string Name => _animalName;
     public int Age => _age;
-    public bool IsHungry => _hunger < K.ANIMAL_HUNGER_CONDITION;
+
+    public event Action OnHungry;
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
@@ -41,9 +42,11 @@ public class AnimalData
                 Dead();
                 return;
             }
-            if(IsHungry)
+            //if(IsHungry)
+            if(_hunger <= K.ANIMAL_HUNGER_CONDITION)
             {
                 UDebug.Print($"{Name} is so Hungry");
+                OnHungry?.Invoke();
             }
         }
     }
@@ -52,6 +55,7 @@ public class AnimalData
     {
         //To Do :자원 반납 및 연결 해제.
     }
+   
     #endregion
     #region ─────────────────────────▶ 생성자 ◀─────────────────────────
     public AnimalData(AnimalSO dataSO)

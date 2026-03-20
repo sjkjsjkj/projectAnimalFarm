@@ -3,7 +3,7 @@
 /// 동물의 MonoBehaivour를 관리하는 객체입니다.
 /// 데이터는 .Data로 접근할 수 있습니다.
 /// </summary>
-public class AnimalObject : BaseMono 
+public class AnimalObject : InfoObject 
 {
     #region ─────────────────────────▶ 인스 펙터 ◀─────────────────────────
     [Header("MonoBehaviour")]
@@ -21,9 +21,7 @@ public class AnimalObject : BaseMono
     private Animator _animator;
 
     private Transform _foodBoxTr;
-
     private Vector3 _moveDir;
-    private bool IsHungry => Data.IsHungry;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -31,23 +29,11 @@ public class AnimalObject : BaseMono
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
+    //
     private void SetState(EAnimalState nextState)
     {
         EAnimalState prevState = _state;
         _state = nextState;
-        /*
-         public enum EAnimalState
-        {
-            Idle = 0,
-            Move = 1,
-            Sleep = 2,
-            Eat = 3,
-            MoveToEat = 4,
-            MoveToBed= 5,
-            Dead = 6,
-        }
-
-         */
         switch (_state)
         {
             case EAnimalState.Idle:
@@ -72,13 +58,27 @@ public class AnimalObject : BaseMono
     }
 
     //껍데기 밖에 없던 animalObject에 스프라이트와 데이터, 애니메이터 컨트롤러를 넣어주는 작업.
-    public void SetInfo(AnimalSO dataSO)
+    public override void SetInfo(DatabaseUnitSO dataSO)
     {
         _spRenderer.sprite = dataSO.Image;
-        _data = new AnimalData(dataSO);
-        _animator.runtimeAnimatorController = dataSO.Anim;
-    }
+        if(!(dataSO as AnimalSO))
+        {
+            UDebug.Print("잘못된 데이터가 들어오고 있음. 이 부분에서는 AnimalSO가 들어와야함.", LogType.Warning);
+            return;
+        }
+        AnimalSO tempSO = (AnimalSO)dataSO;
 
+        _data = new AnimalData(tempSO);
+
+        _data.OnHungry -= SetHungry;
+        _data.OnHungry += SetHungry;
+
+        _animator.runtimeAnimatorController = tempSO.Anim;
+    }
+    private void SetHungry()
+    {
+        SetState(EAnimalState.MoveToEat);
+    }
     //먹이통의 위치를 알려주는 인터페이스를 건내받고 먹이통의 위치를 기억해주는 메서드.
     //BreedingArea에서 List에 AnimalObject를 추가하며 자동으로 먹이통의 위치를 알려준다고 생각하면 됩니다.
     public void SetFoodProvider(IFoodProvider foodProvider)
@@ -87,16 +87,7 @@ public class AnimalObject : BaseMono
     }
  
     //동물의 피곤함 / 배고픔 등의 수치를 체크하는 메서드 이것으로 동물의 다음 state를 관리합니다.
-    private void CheckHealth()
-    {
-        //if(피곤하다면)
-        // SetState(EAnimalState.GoToBed);
-
-        if (IsHungry)
-        {
-            SetState(EAnimalState.MoveToEat);
-        }
-    }
+ 
     private void UpdateMoveToEat()
     {
         Move(_moveDir);   
@@ -120,7 +111,7 @@ public class AnimalObject : BaseMono
     private Vector3 RandomDirSetting()
     {
         float dirX, dirY;
-        int resultDir; // 0 : 동 / 1 : 서 / 2 : 남 / 3 : 북
+        int resultDir;  // 1 : (동)서 / 2 : 남 / 3 : 북
         dirX = Random.Range(-1.0f, 1.0f);
         dirY = Random.Range(-1.0f, 1.0f);
 
@@ -147,10 +138,14 @@ public class AnimalObject : BaseMono
     //Idle <> Move 상태를 자연스럽게 변경해주기 위해 다음 액션을 랜덤하게 선택
     private void RandomAction()
     {
-        if(!(_state ==  EAnimalState.Idle  || _state == EAnimalState.Move))
+       
+        if (!(_state ==  EAnimalState.Idle  || _state == EAnimalState.Move))
         {
             return;
         }
+
+        _actionInterval = Random.Range(2.0f, 4.0f);
+        _actionTimer = 0;
 
         //랜덤 행동
         //현재 Idle 애니메이션이 없는 동물이 많아서 이동의 비중을 높힘.
@@ -165,7 +160,17 @@ public class AnimalObject : BaseMono
             SetState(EAnimalState.Idle);
         }
     }
-#endregion
+    //내가 바라보는 방향이 움직일 수 있는 곳인지 체크
+    private void MoveDirTileCheck()
+    {
+        //내 타일 위치 체크
+        //이동방향 (_moveDir) 에 있는 타일의 State 체크
+        //_moveDir  ETileState.Moveable 과 비트비교. 
+        //1이라면? true라면 냅둠.
+        //거짓이라면 즉시 RandomAction();
+        //예외처리 해야함. 먹이를 먹으러 가는데 가는 곳이 이동불가다? > RandomAction()으로 초기화도 안됨.
+    }
+    #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
     private void Awake()
@@ -193,12 +198,9 @@ public class AnimalObject : BaseMono
         if(_actionTimer >= _actionInterval)
         {
             UDebug.Print($"랜덤 액션 발동!");
-            _actionInterval = Random.Range(2.0f, 4.0f);
-            _actionTimer = 0;
+            
             RandomAction();
         }
-
-        CheckHealth();
 
         switch(_state)
         {

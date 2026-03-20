@@ -11,6 +11,7 @@ public class DatabaseUnitSO : ScriptableObject
     [SerializeField] private Sprite _image;
     [SerializeField] private string _name = "이름";
     [SerializeField] private string _description = "설명";
+    [SerializeField] private GameObject _prefab;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -18,6 +19,7 @@ public class DatabaseUnitSO : ScriptableObject
     public Sprite Image => _image;
     public string Name => _name;
     public string Description => _description;
+    public GameObject Prefab => _prefab;
     // 값 유효성 검사
     public virtual bool IsVaild()
     {
