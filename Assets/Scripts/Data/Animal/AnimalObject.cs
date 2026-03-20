@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-
 /// <summary>
 /// 동물의 MonoBehaivour를 관리하는 객체입니다.
 /// 데이터는 .Data로 접근할 수 있습니다.
@@ -9,14 +8,21 @@ public class AnimalObject : BaseMono
     #region ─────────────────────────▶ 인스 펙터 ◀─────────────────────────
     [Header("MonoBehaviour")]
     [SerializeField] private SpriteRenderer _spRenderer;
-    [SerializeField] private AnimalSO _testData;
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private AnimalData _data;
     private EAnimalState _state;
-    private float _timer = 0;
-    //private Transform _moveTarget=null;
+    private float _tickTimer = 0;        // Data는 일반 클래스이기 때문에 Update를 사용할 수 없음. 
+    private float _tickInterval = 10.0f; // 그렇기 때문에 여기서 Update를 대신 돌아 줌. 
+
+    private float _actionTimer = 0;       // Idle <> Move 상태를 자연스럽게 변경해줄 때 사용할 타이머
+    private float _actionInterval = 3.0f; // 3초마다 한번씩 Move/Idle일 경우 랜덤하게 Move/Idle로 행동을 변경할 예정.
+    private Animator _animator;
+
+    private Transform _foodBoxTr;
+
+    private Vector3 _moveDir;
     private bool IsHungry => Data.IsHungry;
     #endregion
 
@@ -29,15 +35,58 @@ public class AnimalObject : BaseMono
     {
         EAnimalState prevState = _state;
         _state = nextState;
+        /*
+         public enum EAnimalState
+        {
+            Idle = 0,
+            Move = 1,
+            Sleep = 2,
+            Eat = 3,
+            MoveToEat = 4,
+            MoveToBed= 5,
+            Dead = 6,
+        }
+
+         */
+        switch (_state)
+        {
+            case EAnimalState.Idle:
+                _animator.SetBool("Move", false);
+                break;
+            case EAnimalState.Move:
+                _moveDir = RandomDirSetting();
+                _animator.SetBool("Move", true);
+                break;
+            case EAnimalState.Sleep:
+                break;
+            case EAnimalState.Eat:
+                break;
+            case EAnimalState.MoveToEat:
+                _moveDir = (_foodBoxTr.transform.localPosition - transform.localPosition).normalized;
+                break;
+            case EAnimalState.MoveToBed:
+                break;
+            case EAnimalState.Dead:
+                break;
+        }
     }
+
+    //껍데기 밖에 없던 animalObject에 스프라이트와 데이터, 애니메이터 컨트롤러를 넣어주는 작업.
     public void SetInfo(AnimalSO dataSO)
     {
         _spRenderer.sprite = dataSO.Image;
         _data = new AnimalData(dataSO);
+        _animator.runtimeAnimatorController = dataSO.Anim;
     }
-    /// <summary>
-    /// 동물의 피곤함 / 배고픔 등의 수치를 체크하는 메서드 이것으로 동물의 다음 state를 관리합니다.
-    /// </summary>
+
+    //먹이통의 위치를 알려주는 인터페이스를 건내받고 먹이통의 위치를 기억해주는 메서드.
+    //BreedingArea에서 List에 AnimalObject를 추가하며 자동으로 먹이통의 위치를 알려준다고 생각하면 됩니다.
+    public void SetFoodProvider(IFoodProvider foodProvider)
+    {
+        _foodBoxTr = foodProvider.GetFoodBoxPosition();
+    }
+ 
+    //동물의 피곤함 / 배고픔 등의 수치를 체크하는 메서드 이것으로 동물의 다음 state를 관리합니다.
     private void CheckHealth()
     {
         //if(피곤하다면)
@@ -50,11 +99,11 @@ public class AnimalObject : BaseMono
     }
     private void UpdateMoveToEat()
     {
-
+        Move(_moveDir);   
     }
     private void UpdateMove()
     {
-
+        Move(_moveDir);
     }
     private void UpdateSleep()
     {
@@ -64,27 +113,89 @@ public class AnimalObject : BaseMono
     {
 
     }
-
-
-    private void TestFunction()
+    private void Move(Vector3 dir)
     {
-        SetInfo(_testData);
+        transform.Translate(dir * Time.deltaTime);
     }
-    #endregion
+    private Vector3 RandomDirSetting()
+    {
+        float dirX, dirY;
+        int resultDir; // 0 : 동 / 1 : 서 / 2 : 남 / 3 : 북
+        dirX = Random.Range(-1.0f, 1.0f);
+        dirY = Random.Range(-1.0f, 1.0f);
+
+        if (Mathf.Abs(dirX) >= Mathf.Abs(dirY))
+        {
+            resultDir = 1;
+            if (dirX >= 0.0f)
+            {
+                _spRenderer.flipX = true;
+            }
+            else
+            {
+                _spRenderer.flipX = false;
+            }
+        }
+        else
+        {
+            resultDir = dirY >= 0.0f ? 3 : 2;
+        }
+        _animator.SetInteger("FaceDir", resultDir);
+
+        return new Vector3(dirX, dirY).normalized;
+    }
+    //Idle <> Move 상태를 자연스럽게 변경해주기 위해 다음 액션을 랜덤하게 선택
+    private void RandomAction()
+    {
+        if(!(_state ==  EAnimalState.Idle  || _state == EAnimalState.Move))
+        {
+            return;
+        }
+
+        //랜덤 행동
+        //현재 Idle 애니메이션이 없는 동물이 많아서 이동의 비중을 높힘.
+        float randomValue = Random.Range(0.0f, 1.0f);
+        UDebug.Print($"RandomAction : {randomValue}");
+        if(randomValue >= 0.3f)
+        {
+            SetState(EAnimalState.Move);
+        }
+        else
+        {
+            SetState(EAnimalState.Idle);
+        }
+    }
+#endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
     private void Awake()
     {
+        _spRenderer = GetComponent<SpriteRenderer>();
+        _animator = GetComponent<Animator>();
+
         UDebug.IsNull(_spRenderer, LogType.Warning);
-        TestFunction();
+        UDebug.IsNull(_animator, LogType.Warning);
     }
+
     private void Update()
     {
-        _timer += Time.deltaTime;
+        _tickTimer += Time.deltaTime;
+        _actionTimer += Time.deltaTime;
+        
+        
 
-        if(_timer >= 5)
+        if (_tickTimer >= _tickInterval)
         {
+            _tickTimer = 0;
             _data.Tick();
+        }
+
+        if(_actionTimer >= _actionInterval)
+        {
+            UDebug.Print($"랜덤 액션 발동!");
+            _actionInterval = Random.Range(2.0f, 4.0f);
+            _actionTimer = 0;
+            RandomAction();
         }
 
         CheckHealth();

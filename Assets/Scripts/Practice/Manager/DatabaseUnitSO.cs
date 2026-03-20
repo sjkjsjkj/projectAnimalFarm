@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// SO 클래스의 설계 의도입니다.
+/// SO데이터베이스를 구축하기 위해 사용되는 SO의 베이스 형태입니다.
 /// </summary>
-[CreateAssetMenu(fileName = "DatabaseUnitSO_", menuName = "DatabaseUnitSO", order = 1)]
 public class DatabaseUnitSO : ScriptableObject
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
@@ -19,7 +18,6 @@ public class DatabaseUnitSO : ScriptableObject
     public Sprite Image => _image;
     public string Name => _name;
     public string Description => _description;
-
     // 값 유효성 검사
     public virtual bool IsVaild()
     {

@@ -18,3 +18,4 @@ MonoBehaviour:
   _description: "\uC624\uB9AC \uC785\uB2C8\uB2E4."
   _needFood: 1
   _foodConsumeAmount: 1
+  _animatorController: {fileID: 9100000, guid: 9a1d938c82d2cae41b15e64833bf611c, type: 2}
