@@ -52,5 +52,12 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
         tempGo.transform.SetParent(this.transform);
         tempGo.transform.localPosition = Vector3.zero;
     }
+
+    public void TestFunction3()
+    {
+        PoolItem tempGo = Factory.Ins.VFX.Spawn();
+        tempGo.transform.SetParent(this.transform);
+        tempGo.transform.localPosition = Vector3.zero;
+    }
     #endregion
 }
