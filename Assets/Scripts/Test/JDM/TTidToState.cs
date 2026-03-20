@@ -3,7 +3,7 @@
 /// <summary>
 /// 클래스의 설계 의도입니다.
 /// </summary>
-public class TestKey : BaseMono
+public class TTidToState : BaseMono
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     //[Header("주제")]
@@ -21,15 +21,24 @@ public class TestKey : BaseMono
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
     private void MoveHandle(OnPlayerMove ctx)
     {
-
+        for (int i = -5; i < 10; ++i)
+        {
+            UDebug.Print($"타일 {i}번 : {TileIdToState.Ins[i]}");
+        }
     }
     private void JumpHandle(OnPlayerJump ctx)
     {
-        
+        for (int i = 10; i < 20; ++i)
+        {
+            UDebug.Print($"타일 {i}번 : {TileIdToState.Ins[i]}");
+        }
     }
     private void InteractHandle(OnPlayerInteract ctx)
     {
-
+        for (int i = 9999999; i < 10000004; ++i)
+        {
+            UDebug.Print($"타일 {i}번 : {TileIdToState.Ins[i]}");
+        }
     }
     #endregion
 

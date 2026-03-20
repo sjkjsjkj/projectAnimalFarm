@@ -87,7 +87,7 @@ public static class UDebug
         // 로그
         if (isNull && ENABLE_LOG)
         {
-            string msg = $"<color=red>[Null]</color> 오브젝트({objName})가 Null입니다.";
+            string msg = $"<color=red>[{file}:Null]</color> 오브젝트({objName})가 Null입니다.";
             LogInternal(msg, file, line, logType);
         }
         return isNull;
@@ -108,7 +108,7 @@ public static class UDebug
         {
             if (ENABLE_LOG)
             {
-                LogInternal($"<color=red>[True]</color> 조건식({message})이 True입니다.", file, line, logType);
+                LogInternal($"<color=red>[{file}:True]</color> 조건식({message})이 True입니다.", file, line, logType);
             }
             return true;
         }
@@ -130,7 +130,7 @@ public static class UDebug
         {
             if (ENABLE_LOG)
             {
-                LogInternal($"<color=red>[False]</color> 조건식({message})이 False입니다.", file, line, logType);
+                LogInternal($"<color=red>[{file}:False]</color> 조건식({message})이 False입니다.", file, line, logType);
             }
             return true;
         }
@@ -147,7 +147,7 @@ public static class UDebug
         [CallerFilePath] string file = "",
         [CallerLineNumber] int line = 0)
     {
-        LogInternal($"<color=cyan>[Log]</color> {message}", file, line, logType);
+        LogInternal($"<color=cyan>[{file}:Log]</color> {message}", file, line, logType);
     }
 
     /// <summary>
@@ -163,7 +163,7 @@ public static class UDebug
     {
         if (printLog)
         {
-            LogInternal($"<color=cyan>[Log]</color> {message}", file, line, logType);
+            LogInternal($"<color=cyan>[{file}:Log]</color> {message}", file, line, logType);
         }
     }
 
@@ -177,7 +177,7 @@ public static class UDebug
         [CallerFilePath] string file = "",
         [CallerLineNumber] int line = 0)
     {
-        LogInternal($"<color=cyan>[Log]</color> {message}", file, line, logType, true);
+        LogInternal($"<color=cyan>[{file}:Log]</color> {message}", file, line, logType, true);
     }
     #endregion
 

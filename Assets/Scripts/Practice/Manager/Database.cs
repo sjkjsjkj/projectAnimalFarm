@@ -8,6 +8,7 @@
 public class Database : GlobalSingleton<Database>
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
+    [Header("Databases")]
 
     #endregion
 
@@ -29,6 +30,8 @@ public class Database : GlobalSingleton<Database>
         _animalDB = new DatabaseSO<AnimalSO>();
 
         _animalDB.MakeDB("ScriptableObject/Animal/");
+       
+
         // ↑ 필요한 초기화 로직 / 부모 클래스에서 자동 실행
         _isInitialized = true;
     }

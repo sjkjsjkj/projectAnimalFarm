@@ -117,96 +117,17 @@ public class TileMap
         }
         return false;
     }
-
-    /// <summary>
-    /// 바닥 타일
-    /// </summary>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsFloor(int index)
-    {
-        if (UGrid.InMap(index, _width, _height))
-        {
-            return (_tiles[index].state & ETileState.Floor) != 0;
-        }
-        return false;
-    }
-
-    /// <summary>
-    /// 벽 타일
-    /// </summary>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsWall(int index)
-    {
-        if (UGrid.InMap(index, _width, _height))
-        {
-            return (_tiles[index].state & ETileState.Wall) != 0;
-        }
-        return false;
-    }
-
-    /// <summary>
-    /// 물 타일
-    /// </summary>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsWater(int index)
-    {
-        if (UGrid.InMap(index, _width, _height))
-        {
-            return (_tiles[index].state & ETileState.Water) != 0;
-        }
-        return false;
-    }
-
-    /// <summary>
-    /// 깊은 물 타일
-    /// </summary>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsDeepWater(int index)
-    {
-        if (UGrid.InMap(index, _width, _height))
-        {
-            return (_tiles[index].state & ETileState.DeepWater) != 0;
-        }
-        return false;
-    }
-
-    /// <summary>
-    /// 공기 타일
-    /// </summary>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsAir(int index)
-    {
-        if (UGrid.InMap(index, _width, _height))
-        {
-            return (_tiles[index].state & ETileState.Air) != 0;
-        }
-        return false;
-    }
     #endregion
 
     #region ─────────────────────────▶ 공개 메서드 ◀─────────────────────────
     /// <summary>
-    /// 생성자
+    /// 생성자 → 외부에서 TileSingle[]을 주입해주는 구조
     /// </summary>
-    public TileMap(int width, int height)
+    public TileMap(int width, int height, TileSingle[] tiles)
     {
         _width = width;
         _height = height;
-        // 배열 초기화
-        _tiles = new TileSingle[width * height];
-        for (int i = 0; i < _tiles.Length; ++i)
-        {
-            _tiles[i] = new TileSingle();
-        }
-    }
-
-    /// <summary>
-    /// 특정 좌표의 타일을 설정합니다.
-    /// </summary>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void SetTile(int index, TileSingle tile)
-    {
-        _tiles[index] = tile;
+        _tiles = tiles;
     }
     #endregion
 }

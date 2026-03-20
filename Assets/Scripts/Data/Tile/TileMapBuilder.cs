@@ -1,31 +1,24 @@
 ﻿/// <summary>
-/// 구조체의 설계 의도입니다.
+/// 타일 맵을 빌드합니다.
 /// </summary>
-public class TileData
+public class TileMapBuilder
 {
+    // json 파일 읽어오고
+    // 그걸로 TileMap 클래스를 담는 필드가 여러개
+    // Tilemap 컴포넌트도 넣기
+
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
-    private int _id;
-    private string _name;
-    private int _size;
-    private uint _state;
+
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
-    public int Id => _id;
-    public string Name => _name;
-    public int Size => _size;
-    public uint State => _state;
 
-    #endregion
-
-    #region ─────────────────────────▶   생성자  ◀─────────────────────────
-    public TileData(int id, string name, int size, uint state)
-    {
-        _id = id; _name = name; _size = size; _state = state;
-    }
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
+    private void EEE()
+    {
 
+    }
     #endregion
 }

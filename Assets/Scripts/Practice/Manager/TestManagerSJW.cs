@@ -37,6 +37,9 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
     public void TestFunction()
     {
         _tempDataUnitSO = Database.Ins.Animal.FindData(_testID);
+        //TileData tempTileData = Database.Ins.Tile.FindData(_testTileID);
+        
+        //UDebug.Print($"{_testID} : {_tempDataUnitSO.Name}\ntempTileData's State : {tempTileData.State}");
     }
     public void TestFunction2()
     {
