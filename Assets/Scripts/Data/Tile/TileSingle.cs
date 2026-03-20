@@ -4,13 +4,11 @@
 public struct TileSingle
 {
     public int id;
-    public int size;
     public ETileState state;
 
     public TileSingle(int id, int size, ETileState state)
     {
         this.id = id;
-        this.size = size;
         this.state = state;
     }
 }

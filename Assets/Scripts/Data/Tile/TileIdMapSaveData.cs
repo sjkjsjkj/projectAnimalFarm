@@ -8,14 +8,14 @@ public class TileIdMapSaveData
     public int height;
     public int startX;
     public int startY;
-    public int[] tiles;
+    public int[] tileIds;
 
-    public TileIdMapSaveData(int width, int height, int startX, int startY, int[] tiles)
+    public TileIdMapSaveData(int width, int height, int startX, int startY, int[] tileIds)
     {
         this.width = width;
         this.height = height;
         this.startX = startX;
         this.startY = startY;
-        this.tiles = tiles;
+        this.tileIds = tileIds;
     }
 }
