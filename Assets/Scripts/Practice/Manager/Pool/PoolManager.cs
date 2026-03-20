@@ -1,34 +1,34 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// 각각의 팩토리들을 구현할 클래스입니다.
+/// 싱글톤 클래스의 설계 의도입니다.
 /// </summary>
-public abstract class FactoryUnit : BaseMono
+public class PoolManager : Singleton<PoolManager>
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
-    [SerializeField] protected GameObject _prefab;
-
+    [Header("프리팹")]
+    [SerializeField] private TestVFX _vfxPrefab;
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
+    private bool _isInitialized = false;
+    private ObjectPool _vfxPool;
 
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
-
+    public ObjectPool VFX => _vfxPool;
     #endregion
-    #region ─────────────────────────▶  생성자  ◀─────────────────────────
 
-    #endregion
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-    public abstract GameObject Spawn(string id);
-    #endregion
-
-    #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
-
-    #endregion
-
-    #region ─────────────────────────▶ 중첩 타입 ◀─────────────────────────
-
+    public override void Initialize() {
+        if (_isInitialized)
+        {
+            return;
+        }
+        _vfxPool = new ObjectPool(50, _vfxPrefab);
+        // ↑ 필요한 초기화 로직 / 부모 클래스에서 자동 실행
+        _isInitialized = true;
+    }
     #endregion
 }

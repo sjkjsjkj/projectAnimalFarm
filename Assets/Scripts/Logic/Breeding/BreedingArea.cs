@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -28,17 +29,20 @@ public class BreedingArea : BaseMono , IFoodProvider
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
+    // IFoodProvider 로 약속한 함수.
+    // 동물에게 먹이통의 위치를 알려주는 함수이다.
     public Transform GetFoodBoxPosition()
     {
         return _foodBoxTr;
     }
+    //사육장을 만드는 기능.
     public void MakeBreedingArea()
     {
-        for (int i = 0; i < _witdh; i++)
+        for (int i = -_witdh/2; i < _witdh/2; i++)
         {
-            for (int j = 0; j < _height; j++)
+            for (int j = -_height/2; j < _height/2; j++)
             {
-                if(i==0 || i==_witdh-1 || j==0 || j==_height-1)
+                if (i == -_witdh / 2 || i == _witdh / 2 - 1 || j == -_height / 2 || j == _height / 2 - 1)
                 {
                     GameObject tempGo = Instantiate(_cagePrefab);
                     tempGo.transform.SetParent(transform);
@@ -49,31 +53,35 @@ public class BreedingArea : BaseMono , IFoodProvider
         GameObject tempGoFB = Instantiate(_foodBoxPrefab);
         _foodBoxTr = tempGoFB.transform;
         tempGoFB.transform.SetParent(transform);
-        tempGoFB.transform.localPosition = new Vector3(Random.Range(2,_witdh-2),Random.Range(2, _height-2));
+        tempGoFB.transform.localPosition = GetRandomPos();
     }
-    public void SpawnAnimal()
-    {
 
-    }
+    //동물의 ID를 입력하여 객체를 소환하는 기능
     public void SpawnAnimal(string id)
     {
-        AnimalSO tempDataUnitSO = Database.Ins.Animal.FindData(id);
-
-        AnimalObject tempGo = Instantiate(_animalPrefab);
-        if (!(tempDataUnitSO as AnimalSO))
+        GameObject tempGo = Factory.Ins.Animal.Spawn(id);
+        if(!tempGo.GetComponent<AnimalObject>())
         {
-            UDebug.Print($"읽어온 데이터에 AnimalSO가 없음.", LogType.Warning);
+            UDebug.Print("잘못된 객체가 생성되고 있습니다. 여기에는 AnimalObject가 반환되어야 합니다. 팩토리확인");
+            return;
         }
-        tempGo.GetComponent<AnimalObject>().SetInfo(tempDataUnitSO as AnimalSO);
+
+        _animals.Add(tempGo.GetComponent<AnimalObject>());
         tempGo.GetComponent<AnimalObject>().SetFoodProvider(this);
-
-        _animals.Add(tempGo);
-
+        
         tempGo.transform.SetParent(this.transform);
-        tempGo.transform.localPosition = Vector3.zero;
+        tempGo.transform.localPosition = GetRandomPos();
     }
-    #endregion
+    //소환되는 동물의 위치를 사육장 내 랜덤한 위치로 조정하기 위함.
+    private Vector3 GetRandomPos()
+    {
+        float posX = Random.Range(-_witdh / 2 + 1, _witdh / 2 - 1);
+        float posY = Random.Range(-_height / 2 + 1, _height / 2 - 1);
 
+        return new Vector3(posX, posY);
+        #endregion
+
+    }
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
     private void Awake()
     {

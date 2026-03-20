@@ -37,9 +37,6 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
     public void TestFunction()
     {
         _tempDataUnitSO = Database.Ins.Animal.FindData(_testID);
-        TileData tempTileData = Database.Ins.Tile.FindData(_testTileID);
-        
-        UDebug.Print($"{_testID} : {_tempDataUnitSO.Name}\ntempTileData's State : {tempTileData.State}");
     }
     public void TestFunction2()
     {
@@ -49,6 +46,13 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
             UDebug.Print($"읽어온 데이터에 AnimalSO가 없음.", LogType.Warning);
         }
         tempGo.GetComponent<AnimalObject>().SetInfo(_tempDataUnitSO as AnimalSO);
+        tempGo.transform.SetParent(this.transform);
+        tempGo.transform.localPosition = Vector3.zero;
+    }
+
+    public void TestFunction3()
+    {
+        PoolItem tempGo = Factory.Ins.VFX.Spawn();
         tempGo.transform.SetParent(this.transform);
         tempGo.transform.localPosition = Vector3.zero;
     }
