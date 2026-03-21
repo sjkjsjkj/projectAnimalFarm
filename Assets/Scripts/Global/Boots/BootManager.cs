@@ -29,6 +29,8 @@ public class BootManager : MonoBehaviour
         tileIdToState.Initialize();
         var tileManager = root.AddComponent<TileManager>();
         tileManager.Initialize();
+
+
         // 
         yield return null;
         UDebug.Print("BootSequence : 초기화 완료");

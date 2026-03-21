@@ -5,9 +5,9 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 /// <summary>
-/// 프로젝트 내의 타일 스프라이트를 읽어서 CSV 파일을 생성
+/// 특정 경로의 타일 베이스를 모두 읽어서 CSV 파일을 생성
 /// </summary>
-public class TileCSVExporter : EditorWindow
+public class TiledataExporter : EditorWindow
 {
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private string _targetPath;
@@ -18,11 +18,11 @@ public class TileCSVExporter : EditorWindow
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     // 유니티 상단 메뉴바에 버튼 만들기
-    [MenuItem("Tools/타일 CSV 추출")]
+    [MenuItem("Tools/Build TileData.csv")]
     public static void ShowWindow()
     {
         // 해당 클래스 타입을 찾아서 탭 생성
-        GetWindow<TileCSVExporter>("CSV 추출기");
+        GetWindow<TiledataExporter>("특정 경로의 모든 TileBase → TileData.csv");
     }
     #endregion
 
@@ -107,7 +107,7 @@ public class TileCSVExporter : EditorWindow
     private void OnGUI()
     {
         GUILayout.Label("타일 CSV 출력 장치", EditorStyles.boldLabel); // 제목
-        _targetPath = EditorGUILayout.TextField(K.TILE_SPRITE_PATH); // 텍스트 필드
+        _targetPath = EditorGUILayout.TextField(K.TILE_BASE_PATH); // 텍스트 필드
         _exportPath = EditorGUILayout.TextField(K.TILE_EXPORT_PATH);
         _exportName = EditorGUILayout.TextField(K.TILE_CSV_EXPORT_NAME);
         if (GUILayout.Button("타일 CSV 생성")) // 버튼이 클릭된 순간 true

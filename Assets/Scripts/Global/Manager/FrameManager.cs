@@ -25,8 +25,7 @@ public class FrameManager : GlobalSingleton<FrameManager>
     {
         var list = _frames[(int)frame.Priority];
         int index = list.IndexOf(frame); // 삭제해야 할 번호
-        // 스왑 앤 팝
-        UArray.SwapLastAndRemove(list, index);
+        UArray.SwapLastAndRemove(list, index); // 스왑 앤 팝
     }
     #endregion
 

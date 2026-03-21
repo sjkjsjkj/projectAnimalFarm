@@ -44,7 +44,6 @@ public class TileManager : GlobalSingleton<TileManager>
         {
             // 준비해둔 리소스 모두 로드
             tileBaseMap = Resources.Load<Tilemap>(tileBasePath);
-            UDebug.Print($"");
             tileJson = Resources.Load<TextAsset>(tileJsonPath);
             UDebug.Print($"모든 타일맵, Json을 리소스 폴더에서 로드했습니다.");
             // 유효성 검증

@@ -1,0 +1,9 @@
+﻿_id,_image,_name,_description,_prefab
+Chicken,Chicken White_4 (UnityEngine.Sprite),닭,닭 입니다.,null
+Cow,Female Cow Black_0 (UnityEngine.Sprite),소,소 입니다.,null
+Duck,Duck White 2_1 (UnityEngine.Sprite),오리,오리 입니다.,null
+Goat,Goat Male Black_20 (UnityEngine.Sprite),염소,염소 입니다.,null
+Horse,idle_4 (UnityEngine.Sprite),말,말 입니다.,null
+Ostrich,Ostrich Black_0 (UnityEngine.Sprite),타조,타조 입니다.,null
+Pig,Pig Pink_0 (UnityEngine.Sprite),돼지,돼지 입니다.,null
+Sheep,Sheep Male 2_0 (UnityEngine.Sprite),양,양 입니다.,null
