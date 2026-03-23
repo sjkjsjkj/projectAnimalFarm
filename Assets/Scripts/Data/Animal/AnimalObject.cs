@@ -3,7 +3,7 @@
 /// 동물의 MonoBehaivour를 관리하는 객체입니다.
 /// 데이터는 .Data로 접근할 수 있습니다.
 /// </summary>
-public class AnimalObject : InfoObject 
+public class AnimalObject : InfoObject
 {
     #region ─────────────────────────▶ 인스 펙터 ◀─────────────────────────
     [Header("MonoBehaviour")]
@@ -70,12 +70,12 @@ public class AnimalObject : InfoObject
 
         _data = new AnimalData(tempSO);
 
-        _data.OnHungry -= SetHungry;
-        _data.OnHungry += SetHungry;
+        EventBus<OnHungry>.Unsubscribe(SetHungry);
+        EventBus<OnHungry>.Subscribe(SetHungry);
 
         _animator.runtimeAnimatorController = tempSO.Anim;
     }
-    private void SetHungry()
+    private void SetHungry(OnHungry context)
     {
         SetState(EAnimalState.MoveToEat);
     }

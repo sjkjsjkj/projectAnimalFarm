@@ -3,25 +3,25 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
-/// 클래스의 설계 의도입니다.
+/// 사육장 클래스 입니다.
 /// </summary>
 public class BreedingArea : BaseMono , IFoodProvider
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("프리팹")]
-    [SerializeField] private GameObject _cagePrefab;
-    [SerializeField] private GameObject _foodBoxPrefab;
+    [SerializeField] private GameObject _cagePrefab;    //울타리로 사용될 프리팹
+    [SerializeField] private GameObject _foodBoxPrefab; //먹이통으로 사용될 프리팹
 
-    [SerializeField] private AnimalObject _animalPrefab;
+    //[SerializeField] private AnimalObject _animalPrefab; // 동물 프리팹 (테스트용 실제로는 사용하지 않을 녀석)
 
     [Header("사이즈")]
-    [SerializeField] private int _witdh;
-    [SerializeField] private int _height;
+    [SerializeField] private int _witdh;  
+    [SerializeField] private int _height; 
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
-    private Transform _foodBoxTr;
-    private List<AnimalObject> _animals;
+    private Transform _foodBoxTr;        // 먹이통의 위치
+    private List<AnimalObject> _animals; // 관리하는 동물들의 리스트
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -42,6 +42,7 @@ public class BreedingArea : BaseMono , IFoodProvider
         {
             for (int j = -_height/2; j < _height/2; j++)
             {
+                //울타리 세팅
                 if (i == -_witdh / 2 || i == _witdh / 2 - 1 || j == -_height / 2 || j == _height / 2 - 1)
                 {
                     GameObject tempGo = Instantiate(_cagePrefab);
@@ -50,6 +51,7 @@ public class BreedingArea : BaseMono , IFoodProvider
                 }
             }
         }
+        //먹이통 세팅
         GameObject tempGoFB = Instantiate(_foodBoxPrefab);
         _foodBoxTr = tempGoFB.transform;
         tempGoFB.transform.SetParent(transform);
@@ -86,6 +88,7 @@ public class BreedingArea : BaseMono , IFoodProvider
     private void Awake()
     {
         UDebug.IsNull(_cagePrefab);
+        UDebug.IsNull(_foodBoxPrefab);
 
         _animals = new List<AnimalObject>();
 

@@ -1,7 +1,9 @@
 ﻿using System;
 
 /// <summary>
-/// 클래스의 설계 의도입니다.
+/// 동물의 데이터들을 담고있는 클래스입니다.
+/// Monobehaviour 가 필요하지 않는 내부 데이터들 계산과 처리들을 담당합니다.
+/// 이 클래스에서 계산된 결과로 Object에게 상태변화를 요청합니다.
 /// </summary>
 public class AnimalData
 {
@@ -17,8 +19,17 @@ public class AnimalData
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     public string Name => _animalName;
     public int Age => _age;
+    #endregion
 
-    public event Action OnHungry;
+    #region ─────────────────────────▶ 생성자 ◀─────────────────────────
+    public AnimalData(AnimalSO dataSO)
+    {
+        _animalName = dataSO.Name;
+        _age = 0;
+        _needFood = true;
+        _foodConsumeAmount = dataSO.FoodConsumeAmount;
+        _hunger = 40.0f;
+    }
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
@@ -37,16 +48,18 @@ public class AnimalData
             UDebug.Print($"before hunger = {_hunger}");
             _hunger = MathF.Max(0, _hunger - _foodConsumeAmount);
             UDebug.Print($"after hunger = {_hunger}");
+
+            
             if (_hunger <= 0)
             {
                 Dead();
                 return;
             }
-            //if(IsHungry)
+            
             if(_hunger <= K.ANIMAL_HUNGER_CONDITION)
             {
                 UDebug.Print($"{Name} is so Hungry");
-                OnHungry?.Invoke();
+                OnHungry.Publish();
             }
         }
     }
@@ -57,14 +70,5 @@ public class AnimalData
     }
    
     #endregion
-    #region ─────────────────────────▶ 생성자 ◀─────────────────────────
-    public AnimalData(AnimalSO dataSO)
-    {
-        _animalName = dataSO.Name;
-        _age = 0;
-        _needFood = true;
-        _foodConsumeAmount = dataSO.FoodConsumeAmount;
-        _hunger = 40.0f;
-    }
-    #endregion
+    
 }
