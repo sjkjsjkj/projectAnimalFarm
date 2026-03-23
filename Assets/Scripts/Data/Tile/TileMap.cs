@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 /// <summary>
@@ -98,19 +99,6 @@ public class TileMap
     }
 
     /// <summary>
-    /// 파괴가 가능한 타일
-    /// </summary>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsBreakable(int index)
-    {
-        if (IsValid(index))
-        {
-            return (_tiles[index].state & ETileState.Breakable) != 0;
-        }
-        return false;
-    }
-
-    /// <summary>
     /// 상호작용이 가능한 타일
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -119,6 +107,19 @@ public class TileMap
         if (IsValid(index))
         {
             return (_tiles[index].state & ETileState.Interactable) != 0;
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// 바다 낚시가 가능한 타일
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsSeaFishingable(int index)
+    {
+        if (IsValid(index))
+        {
+            return (_tiles[index].state & ETileState.SeaFishingable) != 0;
         }
         return false;
     }
@@ -400,6 +401,11 @@ public class TileMap
         (endX, endY) = ClampMap(endX, endY);
         // 완료
         return (startX, endX, startY, endY);
+    }
+
+    internal void IsFarmable(object 월드, object 좌표1, object 격자, object 좌표2)
+    {
+        throw new NotImplementedException();
     }
     #endregion
 

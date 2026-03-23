@@ -1,4 +1,4 @@
-﻿ID,이름,태그,이동 가능,경작 가능,낚시 가능,건설 가능,파괴 가능,상호작용 가능,바닥,벽,물,깊은 물,공기
+﻿ID,이름,태그,이동 가능,경작 가능,낚시 가능,건설 가능,상호작용 가능,바다 낚시 가능
 0,Beach animations tiles_0,Ground,0,0,0,0,0,0
 1,Beach animations tiles_1,Ground,0,0,0,0,0,0
 2,Beach animations tiles_10,Ground,0,0,0,0,0,0
