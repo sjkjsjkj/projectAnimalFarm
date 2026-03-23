@@ -22,7 +22,7 @@ public class #SCRIPTNAME# : ScriptableObject
     public string Description => _description;
 
     // 값 유효성 검사
-    public virtual bool IsVaild()
+    public virtual bool IsValid()
     {
         if (_id == EItem.None)
         {
@@ -42,7 +42,7 @@ public class #SCRIPTNAME# : ScriptableObject
 
     private void OnValidate()
     {
-        if (!IsVaild())
+        if (!IsValid())
         {
             UDebug.PrintOnce($"#SCRIPTNAME# SO({_id})의 값이 올바르지 않습니다.", LogType.Assert);
         }

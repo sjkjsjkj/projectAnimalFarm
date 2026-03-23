@@ -1,0 +1,11 @@
+﻿/// <summary>
+/// 코드에서 씬 ID를 나타내는 열거형
+/// </summary>
+public enum EScene : byte
+{
+    None = 0,
+    Title = 1,
+    Main = 2,
+    Farm = 3,
+    Cave = 4,
+}

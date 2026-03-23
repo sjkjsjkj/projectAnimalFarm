@@ -7,7 +7,7 @@ public static partial class K
     public static readonly float GRID_SIZE_HALF = 0.5f;
     public static readonly int GRID_Z_DEPTH = 0;
     // 파일 경로
-    public static readonly string TILE_SPRITE_PATH = "Assets/Farm RPG - Tiny Asset Pack - (All in One)/Farm/Tileset/Modular";
+    public static readonly string TILE_BASE_PATH = "Assets/Farm RPG - Tiny Asset Pack - (All in One)/Farm/Tileset/Modular";
     public static readonly string TILE_EXPORT_PATH = "Assets/Export";
     public static readonly string TILE_RESOURCE_SHEET_PATH = "Tile/TileSheet - TileData";
     public static readonly string TILE_RESOURCE_MAIN_BASE_PATH = "Tile/MainGraphicMap";
