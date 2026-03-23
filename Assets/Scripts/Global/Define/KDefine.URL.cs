@@ -6,5 +6,5 @@ public static partial class K
     public static readonly string ITEM_URL
         = "https://docs.google.com/spreadsheets/d/12dSRC2d-tfEtGsveerWi7wymgL4xyFlt1byC9EE0-to/export?format=tsv&range=A2:B";
     public static readonly string TILE_URL
-        = "https://docs.google.com/spreadsheets/d/1t4Leqf4bjgJ0Ns-KeAVAwRAj32KlSwsxATc-4puzgYY/export?format=tsv&range=A2:N";
+        = "https://docs.google.com/spreadsheets/d/1t4Leqf4bjgJ0Ns-KeAVAwRAj32KlSwsxATc-4puzgYY/export?format=tsv&range=A2:I";
 }

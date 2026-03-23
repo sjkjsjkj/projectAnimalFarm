@@ -9,6 +9,6 @@ public enum ETileState : int
     Farmable = 1 << 1, // 경작 가능
     Fishingable = 1 << 2, // 낚시 가능
     Buildable = 1 << 3, // 타일 위에 건설 가능
-    Breakable = 1 << 4, // 타일 파괴 가능
-    Interactable = 1 << 5, // 상호작용 가능
+    Interactable = 1 << 4, // 상호작용 가능
+    SeaFishingable = 1 << 5, // 바다 낚시 가능
 }

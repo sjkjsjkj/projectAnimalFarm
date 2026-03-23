@@ -29,6 +29,7 @@ public class TileManager : GlobalSingleton<TileManager>
         BuildLogicMap(ref _farmLogicMap, K.TILE_RESOURCE_FARM_JSON_PATH);
         BuildLogicMap(ref _caveLogicMap, K.TILE_RESOURCE_CAVE_JSON_PATH);
         EventBus<OnSceneChanged>.Subscribe(MapChangeHandle); // OnEnable이 아닌 이곳에서 구독
+        _curLogicMap = _mainLogicMap;
         // ↑ 필요한 초기화 로직 / 부모 클래스에서 자동 실행
         _isInitialized = true;
     }

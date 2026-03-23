@@ -88,7 +88,7 @@ public class TileIdToState : GlobalSingleton<TileIdToState>
     private void SheetToArray(string sheetData)
     {
         //행과 열
-        string[] rows = sheetData.Split('\n');
+        string[] rows = sheetData.Replace("\r", "").Split('\n');
         int rowsLength = rows.Length;
         // 배열 초기화
         _idToState = new ETileState[rowsLength];
@@ -106,7 +106,7 @@ public class TileIdToState : GlobalSingleton<TileIdToState>
                 continue;
             }
             // ID 잘못해서 크게 입력했는지 확인해주기
-            if (id >= rowsLength)
+            if (id > rowsLength)
             {
                 UDebug.Print($"[TileIdToState] ID가 행 길이보다 큽니다.", LogType.Assert);
                 _idToState = null;
@@ -115,8 +115,7 @@ public class TileIdToState : GlobalSingleton<TileIdToState>
             // 타일 상태 빌드
             ETileState state = BuildTileState(cols);
             _idToState[id] = state;
-            // 혹시나 추가한 조건식
-            if(id > lastId)
+            if(id > lastId) // 혹시나 추가한 조건식
             {
                 lastId = id;
             }
@@ -139,9 +138,9 @@ public class TileIdToState : GlobalSingleton<TileIdToState>
     private ETileState BuildTileState(string[] cols)
     {
         ETileState state = ETileState.None;
-        for (int i = K.TILE_CSV_STATE_START; i < K.TILE_CSV_STATE_END; ++i)
+        for (int i = K.TILE_CSV_STATE_START; i <= K.TILE_CSV_STATE_END; ++i)
         {
-            if (cols[i] == "1")
+            if (cols[i].Trim() == "1")
             {
                 state |= (ETileState)(1 << (i - K.TILE_CSV_STATE_START));
             }
