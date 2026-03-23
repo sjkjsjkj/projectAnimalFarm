@@ -34,6 +34,19 @@ public class TileMap
 
     #region ─────────────────────────▶ 상태 접근 ◀─────────────────────────
     /// <summary>
+    /// 디버깅 용도 : 타일 원본 ID 반환
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int GetTileID(int index)
+    {
+        if (IsValid(index))
+        {
+            return _tiles[index].id;
+        }
+        return -1;
+    }
+
+    /// <summary>
     /// 상태가 존재하지 않는 타일
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
