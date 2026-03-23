@@ -19,7 +19,7 @@ public class ItemSO : ScriptableObject
     public string Description => _description;
     public int MaxStack => _maxStack;
 
-    public virtual bool IsVaild()
+    public virtual bool IsValid()
     {
         if (_id == EItem.None) return false;
         if (string.IsNullOrEmpty(_name)) return false;
@@ -31,7 +31,7 @@ public class ItemSO : ScriptableObject
 
     private void OnValidate()
     {
-        if (!IsVaild())
+        if (!IsValid())
         {
             UDebug.PrintOnce($"아이템 SO({_id})의 값이 올바르지 않습니다.", LogType.Assert);
         }

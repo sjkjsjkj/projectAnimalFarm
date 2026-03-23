@@ -7,7 +7,7 @@ using System.Collections.Generic;
 /// <summary>
 /// 씬에서 작업한 타일맵을 Json 파일로 추출
 /// </summary>
-public class TileMapExporter : EditorWindow
+public class TilemapExporter : EditorWindow
 {
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private Tilemap _targetTileMap; // 읽어올 타일맵
@@ -16,11 +16,11 @@ public class TileMapExporter : EditorWindow
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     // 유니티 상단 메뉴바에 버튼 만들기
-    [MenuItem("Tools/씬 타일맵 Json 추출")]
+    [MenuItem("Tools/Build TileIdMap.json")]
     public static void ShowWindow()
     {
         // 해당 클래스 타입을 찾아서 탭 생성
-        GetWindow<TileMapExporter>("Json 추출기");
+        GetWindow<TilemapExporter>("TileData.csv + Tilemap → TileIdMap.json");
     }
     #endregion
 
@@ -95,7 +95,7 @@ public class TileMapExporter : EditorWindow
                 // 로컬 좌표의 타일 정보 가져오기
                 Vector3Int pos = new Vector3Int(bounds.xMin + x, bounds.yMin + y, K.GRID_Z_DEPTH);
                 TileBase tile = _targetTileMap.GetTile(pos);
-                int index = UGrid.GridToIndex(x, y, width);
+                int index = (y * width) + x;
                 // 아무것도 없는 타일
                 if (tile == null)
                 {
