@@ -95,7 +95,7 @@ public class TilemapExporter : EditorWindow
                 // 로컬 좌표의 타일 정보 가져오기
                 Vector3Int pos = new Vector3Int(bounds.xMin + x, bounds.yMin + y, K.GRID_Z_DEPTH);
                 TileBase tile = _targetTileMap.GetTile(pos);
-                int index = UGrid.GridToIndex(x, y, width);
+                int index = (y * width) + x;
                 // 아무것도 없는 타일
                 if (tile == null)
                 {
