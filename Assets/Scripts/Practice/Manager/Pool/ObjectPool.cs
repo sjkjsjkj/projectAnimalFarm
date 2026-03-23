@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 /// <summary>
-/// 클래스의 설계 의도입니다.
+/// 오브젝트 풀입니다.
 /// </summary>
 public class ObjectPool
 {
