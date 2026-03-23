@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// 싱글톤 클래스의 설계 의도입니다.
+/// 오브젝트 풀들을 관리하는 매니저입니다.
+/// 다른 오브젝트들에 접근하는 허브의 역할을 하고 있습니다.
 /// </summary>
 public class PoolManager : Singleton<PoolManager>
 {

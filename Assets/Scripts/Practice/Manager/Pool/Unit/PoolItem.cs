@@ -1,13 +1,14 @@
 ﻿using System;
+using UnityEngine;
 
 /// <summary>
-/// 클래스의 설계 의도입니다.
+/// 풀을 사용하는 객체가 상속받아야 하는 base 스크립트 입니다.
 /// </summary>
 public abstract class PoolItem : BaseMono
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
-    //[Header("주제")]
-    //[SerializeField] private Class _class;
+    [Header("주제")]
+    [SerializeField] private GameObject _prefab;
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────

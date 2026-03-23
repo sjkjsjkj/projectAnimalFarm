@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// 클래스의 설계 의도입니다.
+/// 풀을 사용하지 않는 일반 팩토리 입니다.
 /// </summary>
-public class BasicFactory<TComponent> where TComponent : InfoObject
+public class BasicFactory<T> where T : InfoObject
 {
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private GameObject _prefab;
@@ -27,7 +27,7 @@ public class BasicFactory<TComponent> where TComponent : InfoObject
     private GameObject MakeGo(DatabaseUnitSO data)
     {
         GameObject tempGo = Object.Instantiate(_prefab);
-        tempGo.GetComponent<TComponent>().SetInfo(data);
+        tempGo.GetComponent<T>().SetInfo(data);
 
         return tempGo;
     }
