@@ -1,6 +1,4 @@
-﻿using System.Net;
-using UnityEngine;
-using static UnityEditor.PlayerSettings;
+﻿using UnityEngine;
 
 /// <summary>
 /// 경작지들 전체를 관리하는 클래스
@@ -59,32 +57,35 @@ public class FarmArea : BaseMono
     //경작지의 상태가 변화할 때 실행되는 이벤트 액션.
     private void SetFarmLandState(OnFarmStateChange context)
     {
+        //변경된 경작지의 상태 불러옴.
         EFarmlandState state = context.state;
 
+        //경작지의 상태마다 분기
         switch (state)
         {
+            //현재 행동으로 씨를 뿌렸다면
+            //타일 비교는 하지 않고 씨앗만 뿌리고 끝
             case EFarmlandState.SeededLand:
                 _farmlandsSprites[context.pos].GetComponent<FarmlandSpriteObject>().SetSeedSprite(context.seedId);
                 return;
+            //현재 행동으로 땅을 일구었거나, 물을 주었다면 주변 타일과 비교하여 스프라이트 연결.
             case EFarmlandState.SoiledLand:
             case EFarmlandState.MoistLand:
 
                 int pos = context.pos;
 
-                string seedId = context.seedId;
-
-                UDebug.Print($"pos : {pos} | State : {state}");
-
+                //가장 먼저 아무것도 연결되지 않은 상태의 스프라이트를 넣고
                 _farmlands[pos].SetConnect((uint)EConnectionDir.None);
 
-                CheckConnectionDirNearFarmland(pos, state);
+                //그 후 주변 경작지 상태를 비교하며 스프라이트 변경
+                CheckConnectionDirNearFarmland(pos);
                 break;
             default:
                 return;
         }    
     }
     //주변 경작지의 상태를 불러와 같은 상태인 스프라이트들을 연결시켜주는 로직
-    private void CheckConnectionDirNearFarmland(int pos, EFarmlandState state)
+    private void CheckConnectionDirNearFarmland(int pos)
     {
         //Down Connection Check
         if (pos % _height != 0)
@@ -107,21 +108,11 @@ public class FarmArea : BaseMono
             CheckConnectDir(pos, pos + _height, EConnectionDir.Right);
         }
 
-        //uint sameState = _farmlands[pos].StateTest;  //_farmlands[pos].StateTest & _farmlands[pos - 1].StateTest;
- 
-
-        //if ((sameState & ((uint)EFarmlandStateTest.MoistLand)) != 0)
-        //{
-        //    //UDebug.Print($"farmlandState Code : {sameState} | StateEnum : {_farmlands[pos].State.ToString()}");
-        //    //UDebug.Print("상태확인 moist");
-        //}
-        //if ((sameState & ((uint)EFarmlandStateTest.SoiledLand)) != 0)
-        //{
-        //    //UDebug.Print($"farmlandState Code : {sameState} | StateEnum : {_farmlands[pos].State.ToString()}");
-        //    //UDebug.Print("상태확인 Soiled");
-        //}
+        //추가기능
+        //현재는 모든 면을 비교ㅕ할 때 마다 스프라이트를 넣어주는데,
+        //시간이 생긴다면 모든 면을 비교한 후에 한번에 스프라이트를 넣어 주는 식으로 변경 예정.
     }
-    //각각 
+    //각 방향마다 체크.
     private void CheckConnectDir(int pos1, int pos2, EConnectionDir dir)
     {
         uint sameState = _farmlands[pos1].StateFlag & _farmlands[pos2].StateFlag;
@@ -192,10 +183,10 @@ public class FarmArea : BaseMono
         _timer = 0;
     }
 
-
+    //테스트용.
     public void TestFunction(int pos, string seedId)
     {
-        _farmlands[pos].Interact(seedId);
+        _farmlands[pos].Interact(seedId); // 인벤토리가 생기면 전달인수는 모두 제거 예정.
     }
     #endregion
 
