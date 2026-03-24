@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 685875927565814188}
   - component: {fileID: -4781075338778700419}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: AnimalObjectPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

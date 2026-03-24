@@ -16,6 +16,7 @@ MonoBehaviour:
   _image: {fileID: -5312622947098842741, guid: 7531ebd30f4812f41a9aa3850515d394, type: 3}
   _name: "\uB2ED"
   _description: "\uB2ED \uC785\uB2C8\uB2E4."
+  _prefab: {fileID: 7868252610874373284, guid: 1c6426cb86c37b74b8efdf2dbc9409a0, type: 3}
   _needFood: 1
   _foodConsumeAmount: 1
   _animatorController: {fileID: 9100000, guid: 64aebb88fc4e75b46b8e80fe8055c26d, type: 2}

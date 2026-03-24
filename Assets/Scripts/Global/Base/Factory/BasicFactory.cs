@@ -6,14 +6,12 @@
 public class BasicFactory<T> where T : InfoObject
 {
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
-    private GameObject _prefab;
     private DatabaseSO<AnimalSO> _database;
     #endregion
 
     #region ─────────────────────────▶  생성자  ◀─────────────────────────
-    public BasicFactory(GameObject prefab, DatabaseSO<AnimalSO> db)
+    public BasicFactory(DatabaseSO<AnimalSO> db)
     {
-        _prefab = prefab;
         _database = db;
     }
     #endregion
@@ -26,7 +24,7 @@ public class BasicFactory<T> where T : InfoObject
     }
     private GameObject MakeGo(DatabaseUnitSO data)
     {
-        GameObject tempGo = Object.Instantiate(_prefab);
+        GameObject tempGo = Object.Instantiate(data.Prefab);
         tempGo.GetComponent<T>().SetInfo(data);
 
         return tempGo;

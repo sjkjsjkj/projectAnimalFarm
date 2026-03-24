@@ -5,10 +5,9 @@
 /// Factory.Ins.DB이름 으로 다른 DB에 접근할 수 있으며,
 /// Factory.Ins.DB.Spawn(id)으로 객체를 불러올 수 있습니다.
 /// </summary>
-public class Factory : Singleton<Factory>
+public class FactoryManager : Singleton<FactoryManager>
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
-    [SerializeField] private GameObject _animalPrefab;
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
@@ -29,7 +28,7 @@ public class Factory : Singleton<Factory>
             return;
         }
 
-        _animalFactory = new BasicFactory<AnimalObject>(_animalPrefab, Database.Ins.Animal);
+        _animalFactory = new BasicFactory<AnimalObject>(DatabaseManager.Ins.Animal);
         _vfxFactory = new PoolFactory(PoolManager.Ins.VFX);
         // ↑ 필요한 초기화 로직 / 부모 클래스에서 자동 실행
         _isInitialized = true;

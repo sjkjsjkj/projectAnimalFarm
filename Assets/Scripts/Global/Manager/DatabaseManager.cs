@@ -5,7 +5,7 @@
 /// Database.Ins.DB이름 으로 다른 DB에 접근할 수 있으며,
 /// Database.Ins.DB.FindData(id)로 데이터를 불러올 수 있습니다.
 /// </summary>
-public class Database : GlobalSingleton<Database>
+public class DatabaseManager : GlobalSingleton<DatabaseManager>
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("Databases")]
