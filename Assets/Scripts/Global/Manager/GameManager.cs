@@ -1,0 +1,171 @@
+﻿using System;
+using System.Collections;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+/// <summary>
+/// 핵심 오브젝트에 대한 접근과 씬 로드를 지원합니다.
+/// </summary>
+public class GameManager : GlobalSingleton<GameManager>
+{
+    #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
+    private static GameObject _uiRoot;
+    private static GameObject _objectRoot;
+    private bool _isInitialized = false;
+    #endregion
+
+    #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
+    public static GameObject UIRoot
+    {
+        get
+        {
+            if (_uiRoot == null)
+            {
+                _uiRoot = UObject.Find(K.NAME_UI_ROOT);
+                if (_uiRoot == null)
+                {
+                    UDebug.Print($"UI 루트 오브젝트를 찾지 못했습니다.", LogType.Assert);
+                }
+            }
+            return _uiRoot;
+        }
+    }
+
+    public static GameObject ObjectRoot
+    {
+        get
+        {
+            if (_objectRoot == null)
+            {
+                _objectRoot = GameObject.Find(K.NAME_OBJECT_ROOT);
+                if (_objectRoot == null)
+                {
+                    UDebug.Print($"오브젝트 루트를 찾지 못했습니다.", LogType.Assert);
+                }
+            }
+            return _objectRoot;
+        }
+    }
+
+    public override void Initialize()
+    {
+        if (_isInitialized)
+        {
+            return;
+        }
+        // 생성 및 초기화
+
+        _isInitialized = true;
+    }
+
+    /// <summary>
+    /// 해당 씬을 동기 로드합니다.
+    /// 동일한 이름을 가지는 씬도 있을 수 있기 때문에 표준적으로는 인덱스 사용이 권장됩니다.
+    /// </summary>
+    /// <param name="index">씬 인덱스</param>
+    public void LoadScene(int index)
+    {
+        if (!IsValidScene(index))
+        {
+            return;
+        }
+        string scenePath = SceneUtility.GetScenePathByBuildIndex(index);
+        LoadScene(scenePath); // 경로를 넣어도 씬 매니저에서 알아서 해준다.
+    }
+
+    /// <summary>
+    /// 해당 씬을 동기 로드합니다.
+    /// </summary>
+    /// <param name="name">씬 이름</param>
+    public void LoadScene(string name)
+    {
+        if (!IsValidScene(name))
+        {
+            return;
+        }
+        SceneManager.LoadScene(name, LoadSceneMode.Single);
+    }
+
+    /// <summary>
+    /// 해당 씬을 비동기 로드합니다.
+    /// 동일한 이름을 가지는 씬도 있을 수 있기 때문에 표준적으로는 인덱스 사용이 권장됩니다.
+    /// </summary>
+    /// <param name="index">씬 인덱스</param>
+    /// <param name="callback">씬 로드 완료 시 호출할 메서드</param>
+    /// <param name="onProgress">씬 로드 진행율을 받을 메서드</param>
+    /// <param name="delay">씬 로드 시작 전에 대기할 시간(초)</param>
+    /// <param name="loadSceneMode">씬 로드 모드</param>
+    public void LoadSceneAsync(
+        int index, Action callback, Action<float> onProgress, float delay = 0f,
+        LoadSceneMode loadSceneMode = LoadSceneMode.Single)
+    {
+        if (!IsValidScene(index))
+        {
+            return;
+        }
+        string scenePath = SceneUtility.GetScenePathByBuildIndex(index); // 경로를 넣어도 씬 매니저에서 알아서 해준다.
+        LoadSceneAsync(scenePath, callback, onProgress, delay, loadSceneMode);
+    }
+
+    /// <summary>
+    /// 해당 씬을 비동기 로드합니다.
+    /// </summary>
+    /// <param name="name">씬 이름</param>
+    /// <param name="callback">씬 로드 완료 시 호출할 메서드</param>
+    /// <param name="onProgress">씬 로드 진행율을 받을 메서드</param>
+    /// <param name="delay">씬 로드 시작 전에 대기할 시간(초)</param>
+    /// <param name="loadSceneMode">씬 로드 모드</param>
+    public void LoadSceneAsync(
+        string name, Action callback, Action<float> onProgress, float delay = 0f,
+        LoadSceneMode loadSceneMode = LoadSceneMode.Single)
+    {
+        if (!IsValidScene(name))
+        {
+            return;
+        }
+        StartCoroutine(DoLoadSceneAsync(name, callback, onProgress, delay, loadSceneMode));
+    }
+    #endregion
+
+    #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
+    // 씬 유효성 검증
+    private bool IsValidScene(int index)
+    {
+        // 존재할 수 없는 인덱스인지 검사
+        if (index < 0 || index >= SceneManager.sceneCountInBuildSettings)
+        {
+            UDebug.Print($"존재하지 않는 씬 인덱스({index})를 호출했습니다.");
+            return false;
+        }
+        return true;
+    }
+    private bool IsValidScene(string name)
+    {
+        // 존재할 수 없는 인덱스인지 검사
+        if (string.IsNullOrEmpty(name)
+            || string.IsNullOrWhiteSpace(name)
+            || !Application.CanStreamedLevelBeLoaded(name))
+        {
+            UDebug.Print($"존재하지 않는 씬 이름({name})을 호출했습니다.");
+            return false;
+        }
+        return true;
+    }
+
+    // 비동기 코루틴
+    private IEnumerator DoLoadSceneAsync(
+        string name, Action callback, Action<float> onProgress, float delay, LoadSceneMode loadSceneMode)
+    {
+        if(delay > 0f)
+        {
+            yield return UCoroutine.GetWait(delay);
+        }
+        // 유니티 기본 로드 함수 (비동기 대기)
+        var asyncOperation = SceneManager.LoadSceneAsync(name, loadSceneMode);
+        // 유니티 비동기 씬 로드 유틸리티
+        yield return UCoroutine.WaitAsyncOperation(asyncOperation, onProgress);
+        // 씬 로드 완료 → 콜백 호출
+        callback?.Invoke();
+    }
+    #endregion
+}
