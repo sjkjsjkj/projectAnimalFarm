@@ -11,16 +11,18 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
     [SerializeField] private int _testTileID;
 
     [Header("동물 테스트")]
-    [SerializeField] private GameObject _prefab;
+    [SerializeField] private GameObject _animalObjectPrefab;
 
     [Header("농장 테스트")]
-    [SerializeField] private FarmArea _farmArea;
+    [SerializeField] private GameObject _farmAreaPrefab;
     [SerializeField] private int _pos;
+    [SerializeField] private EHarvest _seedId;
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private bool _isInitialized = false;
     private AnimalSO _tempDataUnitSO;
+    private FarmArea _testFarmArea;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -34,10 +36,21 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
             return;
         }
 
+        InitSetting();
+
         // ↑ 필요한 초기화 로직 / 부모 클래스에서 자동 실행
         _isInitialized = true;
     }
-
+    private void InitSetting()
+    {
+        TestSetting();
+    }
+    private void TestSetting()
+    {
+        GameObject testFarmAreaPrefabGo = Instantiate(_farmAreaPrefab);
+        _testFarmArea = testFarmAreaPrefabGo.GetComponent<FarmArea>();
+        _testFarmArea.transform.position = Vector3.zero;
+    }
     public void TestFunction()
     {
         _tempDataUnitSO = DatabaseManager.Ins.Animal.FindData(_testID);
@@ -47,7 +60,7 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
     }
     public void TestFunction2()
     {
-        GameObject tempGo = Instantiate(_prefab);
+        GameObject tempGo = Instantiate(_animalObjectPrefab);
         if(!(_tempDataUnitSO as AnimalSO))
         {
             UDebug.Print($"읽어온 데이터에 AnimalSO가 없음.", LogType.Warning);
@@ -66,7 +79,9 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
 
     public void TestFunction4()
     {
-        _farmArea.TestFunction(_pos);
+        _testFarmArea.TestFunction(_pos, _seedId.ToString());
+
+        
     }
     #endregion
 }

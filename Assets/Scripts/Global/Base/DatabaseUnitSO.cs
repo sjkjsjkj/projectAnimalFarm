@@ -21,7 +21,7 @@ public class DatabaseUnitSO : ScriptableObject
     public string Description => _description;
     public GameObject Prefab => _prefab;
     // 값 유효성 검사
-    public virtual bool IsVaild()
+    public virtual bool IsValid()
     {
         if (string.IsNullOrEmpty(_id))
         {
@@ -41,7 +41,7 @@ public class DatabaseUnitSO : ScriptableObject
 
     private void OnValidate()
     {
-        if (!IsVaild())
+        if (!IsValid())
         {
             UDebug.PrintOnce($"DatabaseUnitSO SO({_id})의 값이 올바르지 않습니다.", LogType.Assert);
         }

@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 /// <summary>
 /// 경작지들 전체를 관리하는 클래스
@@ -58,58 +59,124 @@ public class FarmArea : BaseMono
     //경작지의 상태가 변화할 때 실행되는 이벤트 액션.
     private void SetFarmLandState(OnFarmStateChange context)
     {
-        int pos = context.pos;
         EFarmlandState state = context.state;
-        string seedId = context.seedId;
 
-        UDebug.Print($"pos : {pos} | State : {state}");
-
-        _farmlands[pos].SetConnect(EConnectionDir.None);
-
-        //Down Connection Check
-        if(pos%_height != 0)
+        switch (state)
         {
-            if (_farmlands[pos-1].State==state)
-            {
-                _farmlands[pos - 1].SetConnect(EConnectionDir.Up);
-                _farmlands[pos].SetConnect(EConnectionDir.Down);
-            }
+            case EFarmlandState.SeededLand:
+                _farmlandsSprites[context.pos].GetComponent<FarmlandSpriteObject>().SetSeedSprite(context.seedId);
+                return;
+            case EFarmlandState.SoiledLand:
+            case EFarmlandState.MoistLand:
+
+                int pos = context.pos;
+
+                string seedId = context.seedId;
+
+                UDebug.Print($"pos : {pos} | State : {state}");
+
+                _farmlands[pos].SetConnect((uint)EConnectionDir.None);
+
+                CheckConnectionDirNearFarmland(pos, state);
+                break;
+            default:
+                return;
+        }    
+    }
+    //주변 경작지의 상태를 불러와 같은 상태인 스프라이트들을 연결시켜주는 로직
+    private void CheckConnectionDirNearFarmland(int pos, EFarmlandState state)
+    {
+        //Down Connection Check
+        if (pos % _height != 0)
+        {
+            CheckConnectDir(pos, pos - 1, EConnectionDir.Down);
         }
         //Up Connection Check
-        if(pos% _height != _height - 1)
+        if (pos % _height != _height - 1)
         {
-            if (_farmlands[pos + 1].State == state)
-            {
-                _farmlands[pos + 1].SetConnect(EConnectionDir.Down);
-                _farmlands[pos].SetConnect(EConnectionDir.Up);
-            }
+            CheckConnectDir(pos, pos + 1, EConnectionDir.Up);
         }
         //LEft Connection Check
-        if(pos/ _height != 0)
+        if (pos / _height != 0)
         {
-            if (_farmlands[pos - _height].State == state)
-            {
-                _farmlands[pos - _height].SetConnect(EConnectionDir.Right);
-                _farmlands[pos].SetConnect(EConnectionDir.Left);
-            }
+            CheckConnectDir(pos, pos - _height, EConnectionDir.Left);
         }
         //Right Connection Check
-        if(pos/ _height != _width - 1)
+        if (pos / _height != _width - 1)
         {
-            if (_farmlands[pos + _height].State == state)
-            {
-                _farmlands[pos + _height].SetConnect(EConnectionDir.Left);
-                _farmlands[pos].SetConnect(EConnectionDir.Right);
-            }
+            CheckConnectDir(pos, pos + _height, EConnectionDir.Right);
         }
 
+        //uint sameState = _farmlands[pos].StateTest;  //_farmlands[pos].StateTest & _farmlands[pos - 1].StateTest;
+ 
+
+        //if ((sameState & ((uint)EFarmlandStateTest.MoistLand)) != 0)
+        //{
+        //    //UDebug.Print($"farmlandState Code : {sameState} | StateEnum : {_farmlands[pos].State.ToString()}");
+        //    //UDebug.Print("상태확인 moist");
+        //}
+        //if ((sameState & ((uint)EFarmlandStateTest.SoiledLand)) != 0)
+        //{
+        //    //UDebug.Print($"farmlandState Code : {sameState} | StateEnum : {_farmlands[pos].State.ToString()}");
+        //    //UDebug.Print("상태확인 Soiled");
+        //}
+    }
+    //각각 
+    private void CheckConnectDir(int pos1, int pos2, EConnectionDir dir)
+    {
+        uint sameState = _farmlands[pos1].StateFlag & _farmlands[pos2].StateFlag;
+        uint revDir = GetReverseDir((uint)dir);
+        if ((sameState & (uint)EFarmlandState.SoiledLand) != 0)
+        {
+            _farmlands[pos2].SetConnect(revDir, EFarmlandState.SoiledLand);
+            _farmlands[pos1].SetConnect((uint)dir, EFarmlandState.SoiledLand);
+        }
+
+        if ((sameState & (uint)EFarmlandState.MoistLand) != 0)
+        {
+            _farmlands[pos2].SetConnect(revDir, EFarmlandState.MoistLand);
+            _farmlands[pos1].SetConnect((uint)dir, EFarmlandState.MoistLand);
+        }
     }
 
+    //방향의 반전 (좌<>우 // 상<>하) 
+    private uint GetReverseDir(uint dir)
+    {
+        uint revDir;
+
+        uint mask1, mask2;
+        mask1 = 0x5;        //0101
+        mask2 = 0xA;       //1010
+
+        mask1 = mask1 & dir; //0101
+        mask2 = mask2 & dir; //0010 ?? 왜 0임=?
+
+        //1010      //0001    > 1011
+        revDir = mask1 << 1 | mask2 >> 1;
+
+        return revDir;
+    }
     //주변 경작지의 상태의 의해 스프라이트가 변경될 때 실행되는 이벤트 액션
     private void SetFarmLandSprite(OnFarmlandConnetionChange context)
     {
+        switch(context.state)
+        {
+            case EFarmlandState.IdleLand:
+                break;
+            case EFarmlandState.SoiledLand:
+                _farmlandsSprites[context.pos].GetComponent<FarmlandSpriteObject>().SetSoilSprite(context.pos, context.connectionDir);
+                break;
+            case EFarmlandState.SeededLand:
+  
+                break;
+            case EFarmlandState.MoistLand:
+                _farmlandsSprites[context.pos].GetComponent<FarmlandSpriteObject>().SetMoistSprite(context.pos, context.connectionDir);
+                break;
+            case EFarmlandState.GrownUp:
+                break;
+        }
         UDebug.Print($"Result State : {_farmlands[context.pos].State}");
-        _farmlandsSprites[context.pos].GetComponent<FarmlandSpriteObject>().SetSoilSprite(context.pos, context.connectionDir);
+       
     }
     //경작지는 일반 클래스이기 때문에 Update가 불가능함.
     //그래서 경작지를 관리하는 이 클래스에서 모든 경작지의 성장? 타이머를 체크해준다고 생각하면 된다.
@@ -126,9 +193,9 @@ public class FarmArea : BaseMono
     }
 
 
-    public void TestFunction(int pos)
+    public void TestFunction(int pos, string seedId)
     {
-        _farmlands[pos].Interact();
+        _farmlands[pos].Interact(seedId);
     }
     #endregion
 
