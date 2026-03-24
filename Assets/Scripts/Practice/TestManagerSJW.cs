@@ -12,6 +12,10 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
 
     [Header("동물 테스트")]
     [SerializeField] private GameObject _prefab;
+
+    [Header("농장 테스트")]
+    [SerializeField] private FarmArea _farmArea;
+    [SerializeField] private int _pos;
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
@@ -36,7 +40,7 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
 
     public void TestFunction()
     {
-        _tempDataUnitSO = Database.Ins.Animal.FindData(_testID);
+        _tempDataUnitSO = DatabaseManager.Ins.Animal.FindData(_testID);
         //TileData tempTileData = Database.Ins.Tile.FindData(_testTileID);
         
         //UDebug.Print($"{_testID} : {_tempDataUnitSO.Name}\ntempTileData's State : {tempTileData.State}");
@@ -55,9 +59,14 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
 
     public void TestFunction3()
     {
-        PoolItem tempGo = Factory.Ins.VFX.Spawn();
+        PoolItem tempGo = FactoryManager.Ins.VFX.Spawn();
         tempGo.transform.SetParent(this.transform);
         tempGo.transform.localPosition = Vector3.zero;
+    }
+
+    public void TestFunction4()
+    {
+        _farmArea.TestFunction(_pos);
     }
     #endregion
 }
