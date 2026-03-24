@@ -7,13 +7,19 @@ public class Farmland
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private EFarmlandState _state;       // 땅의 단계  0:기본 흙 | 1: 일궈진 흙 | 2:
     private string _seededId;           //심어진 씨앗의 id
-    private (int, int) _pos;            //경작지의 배열좌표
+    private int _pos;            //경작지의 배열좌표
     private float _grownUpTick;
     private float _currentTick;
+    private uint _connectDir;
+    #endregion
+
+    #region ─────────────────────────▶  외부 공개 변수  ◀─────────────────────────
+    public uint ConnectDir => _connectDir;
+    public EFarmlandState State => _state;
     #endregion
 
     #region ─────────────────────────▶  생성자  ◀─────────────────────────
-    public Farmland((int,int) pos)
+    public Farmland(int pos)
     {
         _state = EFarmlandState.IdleLand;
         //경작지의 배열좌표
@@ -21,6 +27,7 @@ public class Farmland
         _seededId = "";
         _grownUpTick = 0;
         _currentTick = 0;
+        _connectDir = 0;
     }
     #endregion
 
@@ -38,12 +45,16 @@ public class Farmland
     //외부에서 인터랙트를 시도했을 때 불러와질 메서드
     public void Interact()
     {
+        UDebug.Print("Interact");
+        
         switch (_state)
         {
             case EFarmlandState.IdleLand:
+                UDebug.Print("check1");
                 SetState(EFarmlandState.SoiledLand);
                 break;
             case EFarmlandState.SoiledLand:
+                UDebug.Print("check2");
                 //인벤토리 확인
                 //씨앗이 있다면 플레이어의 농사 레벨에 맞는 씨앗인지 확인
                 //레벨에 맞다면 씨앗의 개수 1감소
@@ -82,6 +93,12 @@ public class Farmland
             SetState(EFarmlandState.GrownUp);
         }
         
+    }
+    public void SetConnect(EConnectionDir connection)
+    {
+        _connectDir |= (uint)connection;
+
+        OnFarmlandConnetionChange.Publish(_connectDir, _state, _pos);
     }
     #endregion
 }
