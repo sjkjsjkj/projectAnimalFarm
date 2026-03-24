@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -7,7 +8,6 @@ using UnityEngine;
 /// </summary>
 public static class UCoroutine
 {
-    /*
     private static readonly Dictionary<float, WaitForSeconds> _intervals = new();
 
     /// <summary>
@@ -21,25 +21,6 @@ public static class UCoroutine
             _intervals.Add(seconds, wfs);
         }
         return wfs;
-    }
-    */
-
-    /// <summary>
-    /// 비동기 작업의 진행 상황을 콜백으로 받으며 대기합니다.
-    /// </summary>
-    public static IEnumerator WaitAsyncOperation(AsyncOperation asyncOp, Action<float> onProgress)
-    {
-        if (asyncOp == null)
-        {
-            yield break;
-        }
-        // 비동기 완료까지 반복
-        while (!asyncOp.isDone)
-        {
-            onProgress?.Invoke(asyncOp.progress);
-            yield return null;
-        }
-        onProgress?.Invoke(1f); // 완료 보장
     }
 
     /// <summary>
@@ -63,5 +44,23 @@ public static class UCoroutine
     {
         yield return null;
         callback?.Invoke();
+    }
+
+    /// <summary>
+    /// 비동기 작업의 진행 상황을 콜백으로 받으며 대기합니다.
+    /// </summary>
+    public static IEnumerator WaitAsyncOperation(AsyncOperation asyncOp, Action<float> onProgress)
+    {
+        if (asyncOp == null)
+        {
+            yield break;
+        }
+        // 비동기 완료까지 반복
+        while (!asyncOp.isDone)
+        {
+            yield return null;
+            onProgress?.Invoke(asyncOp.progress);
+        }
+        onProgress?.Invoke(1f);
     }
 }

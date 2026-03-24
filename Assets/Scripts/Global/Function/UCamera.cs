@@ -18,11 +18,13 @@ public static class UCamera
             if (_mainCamera == null)
             {
                 _mainCamera = UObject.FindComponent<Camera>(K.NAME_MAIN_CAMERA);
-                if(_mainCamera == null)
+                if (_mainCamera == null)
                 {
                     UDebug.PrintOnce($"메인 카메라를 찾을 수 없습니다.", LogType.Assert);
                     return null;
                 }
+                UObject.AddComponent<CameraAspectUpdater>(_mainCamera.gameObject);
+                _mainCamera.orthographic = true; // 직교 카메라
                 SetCameraAspect(_mainCamera); // 카메라를 새로 찾을 때마다 조절
             }
             return _mainCamera;
@@ -54,14 +56,13 @@ public static class UCamera
     /// 기기 비율에 맞춰 카메라의 Orthographic Size를 늘립니다.
     /// </summary>
     /// <param name="cam">카메라 오브젝트</param>
-    private static void SetCameraAspect(Camera cam)
+    public static void SetCameraAspect(Camera cam)
     {
         if (cam == null)
         {
             return;
         }
-        cam.orthographic = true; // 직교 카메라
-        cam.orthographicSize = K.CAMERA_MIN_HEIGHT / 2f; // 최소 크기
+        cam.orthographicSize = K.CAMERA_MIN_HEIGHT / 2f; // 최소 높이
         // 현재 기기의 화면 비율
         float curAspect = (float)Screen.width / (float)Screen.height; // 값이 클수록 가로가 길다
         if (curAspect < K.CAMERA_ASPECT) // 가로가 좁아서 양쪽에 있는 오브젝트들이 보이지 않을 경우

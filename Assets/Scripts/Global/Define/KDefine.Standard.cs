@@ -7,7 +7,8 @@ public static partial class K
     public static readonly int SCREEN_HEIGHT = 1080;
     public static readonly float CAMERA_ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT;
     // 카메라 / 이동 속도 / 충돌 크기 등의 기준점
-    public static readonly float UNIT_SCALE = 0.01f;
+    // public static readonly float UNIT_SCALE = 0.01f;
+    // 현재 CAMERA_MIN_HEIGHT에 의존중이므로 우선 주석 처리
     public static readonly float SMALL_DISTANCE = 0.0001f;
     // 바닥 거리 통일 → 모든 UI가 카메라와 두는 거리 통일
     public static readonly float DEFAULT_PLANE_DISTANCE = 5f;
