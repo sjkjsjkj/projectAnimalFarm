@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 /// <summary>
-/// SO 데이터베이스를 구축하기 위해 사용되는 SO의 기본 형태입니다.
+/// SO 클래스의 설계 의도입니다.
 /// </summary>
-public abstract class DatabaseUnitSO : ScriptableObject
+    #ROOTNAMESPACEBEGIN#
+[CreateAssetMenu(fileName = "#SCRIPTNAME#_", menuName = "ScriptableObjects/Item/#SCRIPTNAME#", order = 2)]
+public class #SCRIPTNAME# : ItemSO
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("기본 정보")]
@@ -21,7 +23,7 @@ public abstract class DatabaseUnitSO : ScriptableObject
     public string Description => _description;
     public GameObject Prefab => _prefab;
 
-    // 정상 값을 가지는지 검사
+    // 값 유효성 검사
     public virtual bool IsVaild()
     {
         if (string.IsNullOrEmpty(_id)) return false;
@@ -37,7 +39,6 @@ public abstract class DatabaseUnitSO : ScriptableObject
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
-    // 인스펙터 변수 유효성 검사
     protected virtual void OnValidate()
     {
         if (!IsVaild())
@@ -47,3 +48,4 @@ public abstract class DatabaseUnitSO : ScriptableObject
     }
     #endregion
 }
+#ROOTNAMESPACEEND#

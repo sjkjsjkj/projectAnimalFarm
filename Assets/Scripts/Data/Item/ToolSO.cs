@@ -1,35 +1,41 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// 인벤토리에 존재할 수 있는 아이템이 기본으로 가지는 형태입니다.
+/// SO 클래스의 설계 의도입니다.
 /// </summary>
-public class ItemSO : DatabaseUnitSO
+[CreateAssetMenu(fileName = "ToolSO_", menuName = "ScriptableObjects/ToolSO", order = 1)]
+public class ToolSO : DatabaseUnitSO
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("기본 정보")]
-    [SerializeField] private int _maxStack = 64; // 최대 중첩 수
+    [SerializeField] private EToolType _type;
+    [SerializeField] private int _maxDurability = 100; // 최대 내구도
+    [SerializeField] private float _strength = 1f; // 강도 (작업 효율, 캐는 속도 등)
+    [SerializeField] private int _price = 100; // 가격
+    [SerializeField] private int _maxStack = 1; // 동일 슬롯 최대 스택 수
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
+    public EToolType ToolType => _type;
+    public float MaxDurability => _maxDurability;
+    public float Strength => _strength;
+    public int Price => _price;
     public int MaxStack => _maxStack;
 
-    // 정상 값을 가지는지 검사
+    // 값 유효성 검사
     public virtual bool IsValid()
     {
         if (!base.IsVaild()) return false;
-        if (_maxStack <= 0) return false;
         return true;
     }
     #endregion
 
-    #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
-    // 인스펙터 변수 유효성 검사
     protected override void OnValidate()
     {
+        base.OnValidate();
         if (!IsValid())
         {
             UDebug.PrintOnce($"SO({_id})의 값이 올바르지 않습니다.", LogType.Assert);
         }
     }
-    #endregion
 }

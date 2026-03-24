@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// 인벤토리에 존재할 수 있는 아이템이 기본으로 가지는 형태입니다.
+/// SO 클래스의 설계 의도입니다.
 /// </summary>
-public class ItemSO : DatabaseUnitSO
+public class WorldSO : DatabaseUnitSO
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("기본 정보")]
