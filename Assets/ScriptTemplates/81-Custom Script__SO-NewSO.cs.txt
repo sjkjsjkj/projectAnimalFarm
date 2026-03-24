@@ -4,7 +4,7 @@ using UnityEngine;
 /// SO 클래스의 설계 의도입니다.
 /// </summary>
     #ROOTNAMESPACEBEGIN#
-[CreateAssetMenu(fileName = "#SCRIPTNAME#_", menuName = "#SCRIPTNAME#", order = 1)]
+[CreateAssetMenu(fileName = "#SCRIPTNAME#_", menuName = "ScriptableObjects/#SCRIPTNAME#", order = 1)]
 public class #SCRIPTNAME# : ScriptableObject
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
