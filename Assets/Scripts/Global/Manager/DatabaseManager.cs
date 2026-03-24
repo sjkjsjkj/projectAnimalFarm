@@ -1,25 +1,24 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// 모든 팩토리 총괄하는 브릿지 역할의 싱글턴 클래스 입니다.
-/// Factory.Ins.DB이름 으로 다른 DB에 접근할 수 있으며,
-/// Factory.Ins.DB.Spawn(id)으로 객체를 불러올 수 있습니다.
+/// 모든 데이터베이스를 총괄하는 브릿지 역할의 싱글턴 클래스 입니다.
+/// Database.Ins.DB이름 으로 다른 DB에 접근할 수 있으며,
+/// Database.Ins.DB.FindData(id)로 데이터를 불러올 수 있습니다.
 /// </summary>
-public class Factory : Singleton<Factory>
+public class DatabaseManager : GlobalSingleton<DatabaseManager>
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
-    [SerializeField] private GameObject _animalPrefab;
+    [Header("Databases")]
+
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private bool _isInitialized = false;
-    private BasicFactory<AnimalObject> _animalFactory;
-    private PoolFactory _vfxFactory;
+    private DatabaseSO<AnimalSO> _animalDB;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
-    public BasicFactory<AnimalObject> Animal => _animalFactory;
-    public PoolFactory VFX => _vfxFactory;
+    public DatabaseSO<AnimalSO> Animal => _animalDB;
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
@@ -28,9 +27,11 @@ public class Factory : Singleton<Factory>
         {
             return;
         }
+        _animalDB = new DatabaseSO<AnimalSO>();
 
-        _animalFactory = new BasicFactory<AnimalObject>(_animalPrefab, Database.Ins.Animal);
-        _vfxFactory = new PoolFactory(PoolManager.Ins.VFX);
+        _animalDB.MakeDB("ScriptableObject/Animal/");
+       
+
         // ↑ 필요한 초기화 로직 / 부모 클래스에서 자동 실행
         _isInitialized = true;
     }
