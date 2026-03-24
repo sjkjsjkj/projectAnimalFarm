@@ -11,10 +11,18 @@ public class InputManager : GlobalSingleton<InputManager>, InputDispatcher.IMain
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     // 외부 호출 용도가 아닙니다.
+
     public void OnMove(InputAction.CallbackContext context)
     {
-        OnPlayerMove.Publish(context.ReadValue<Vector2>());
+        if (context.performed || context.canceled)
+        {
+            OnPlayerMove.Publish(context.ReadValue<Vector2>());
+        }
     }
+    //public void OnMove(InputAction.CallbackContext context)
+    //{
+    //    OnPlayerMove.Publish(context.ReadValue<Vector2>());
+    //}
     public void OnJump(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -36,6 +44,19 @@ public class InputManager : GlobalSingleton<InputManager>, InputDispatcher.IMain
             OnPlayerInventory.Publish();
         }
     }
+
+    // 추가
+    public void OnRun(InputAction.CallbackContext context)
+    {
+        if (context.started || context.performed)
+        {
+            OnPlayerRun.Publish(true);
+        }
+        else if (context.canceled)
+        {
+            OnPlayerRun.Publish(false);
+        }
+    }
     // Awake 대용
     public override void Initialize()
     {
@@ -54,11 +75,21 @@ public class InputManager : GlobalSingleton<InputManager>, InputDispatcher.IMain
     // 외부에서 호출해도 OK
     public void OnEnable()
     {
+        if (_input == null)
+        {
+            return;
+        }
+
         _input.Enable();
     }
     public void OnDisable()
     {
-        _input.Enable();
+        if (_input == null)
+        {
+            return;
+        }
+
+        _input.Disable();
     }
     #endregion
 }
