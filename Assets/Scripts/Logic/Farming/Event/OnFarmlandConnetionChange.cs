@@ -15,7 +15,7 @@ public readonly struct OnFarmlandConnetionChange
     }
 
     /// <param name="connectionDir">변경된 연결 방향</param>
-    public static void Publish(uint connectionDir, EFarmlandState state, int pos)
+    public static void Publish(uint connectionDir, EFarmlandState state, int pos)                   
     {
         EventBus<OnFarmlandConnetionChange>.Publish(new OnFarmlandConnetionChange(connectionDir, state, pos));
     }
