@@ -5,7 +5,7 @@ public class ItemSO : ScriptableObject
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("기본 정보")]
-    [SerializeField] private EItem _id = EItem.None;
+    [SerializeField] private string _id;
     [SerializeField] private Sprite _icon;
     [SerializeField] private string _name = "이름";
     [SerializeField] private string _description = "설명";
@@ -13,7 +13,7 @@ public class ItemSO : ScriptableObject
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
-    public EItem Id => _id;
+    //public string Id => _id;
     public Sprite Icon => _icon;
     public string Name => _name;
     public string Description => _description;
@@ -21,7 +21,7 @@ public class ItemSO : ScriptableObject
 
     public virtual bool IsValid()
     {
-        if (_id == EItem.None) return false;
+        if (string.IsNullOrEmpty(_id)) return false;
         if (string.IsNullOrEmpty(_name)) return false;
         if (string.IsNullOrEmpty(_description)) return false;
         if (_maxStack <= 0) return false;

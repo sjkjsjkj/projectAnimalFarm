@@ -739,84 +739,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e812fdff334c8f4a9739d8c3439d95a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &211572883
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 211572885}
-  - component: {fileID: 211572886}
-  m_Layer: 0
-  m_Name: FarmlandSpriteProvider
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &211572885
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 211572883}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.1659255, y: 0.7747766, z: 200.63893}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &211572886
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 211572883}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2753733f459b7884491e76a724326f4a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _soilSprites:
-  - {fileID: -1028571424, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
-  - {fileID: 812602053, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
-  - {fileID: 2574884002043272322, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
-  - {fileID: 1630809944, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
-  - {fileID: 905253284, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
-  - {fileID: 1445869566, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
-  - {fileID: -2815178587732736158, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
-  - {fileID: 1444516583, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
-  - {fileID: -700114834, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
-  - {fileID: -46978941, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
-  - {fileID: 2656985817402111944, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
-  - {fileID: -1050807823, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
-  - {fileID: 769715236, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
-  - {fileID: 542892476, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
-  - {fileID: -1927231296936835361, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
-  - {fileID: 386163821, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
-  _moistSprites:
-  - {fileID: 17301312, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
-  - {fileID: -1218794161, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
-  - {fileID: -1026969265, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
-  - {fileID: 1485351849, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
-  - {fileID: -452409868, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
-  - {fileID: 1570802245, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
-  - {fileID: 301649477, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
-  - {fileID: -1063548290, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
-  - {fileID: -1756954421, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
-  - {fileID: 1886468482, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
-  - {fileID: -1858958027, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
-  - {fileID: 361349490, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
-  - {fileID: -2095099645, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
-  - {fileID: 2029340288, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
-  - {fileID: 1566749383, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
-  - {fileID: 1924902061, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
 --- !u!1 &214751914
 GameObject:
   m_ObjectHideFlags: 0
@@ -1277,54 +1199,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 302909099}
   m_CullTransparentMesh: 1
---- !u!1 &311091948
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 311091950}
-  - component: {fileID: 311091949}
-  m_Layer: 0
-  m_Name: BreedingArea
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &311091949
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 311091948}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6be32df04954079429af89c179fd22a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _cagePrefab: {fileID: 6151157869910277712, guid: 986eaaf5e36440a48b6b968fb9962bb2, type: 3}
-  _foodBoxPrefab: {fileID: 5243685284054541183, guid: e547249c1c474c643a154a1da0d57a02, type: 3}
-  _witdh: 20
-  _height: 10
---- !u!4 &311091950
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 311091948}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &344125903
 GameObject:
   m_ObjectHideFlags: 0
@@ -1933,6 +1807,67 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1001 &575010122
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 937513175643945821, guid: 87c7ec707b7aa2642ba841f8c4001884, type: 3}
+      propertyPath: m_Name
+      value: FarmlandSpriteProvider
+      objectReference: {fileID: 0}
+    - target: {fileID: 1914269728707056049, guid: 87c7ec707b7aa2642ba841f8c4001884, type: 3}
+      propertyPath: _strawBerrySprites.Array.data[0]
+      value: 
+      objectReference: {fileID: 612252541, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+    - target: {fileID: 6431975052806251944, guid: 87c7ec707b7aa2642ba841f8c4001884, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.1659255
+      objectReference: {fileID: 0}
+    - target: {fileID: 6431975052806251944, guid: 87c7ec707b7aa2642ba841f8c4001884, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.7747766
+      objectReference: {fileID: 0}
+    - target: {fileID: 6431975052806251944, guid: 87c7ec707b7aa2642ba841f8c4001884, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 200.63893
+      objectReference: {fileID: 0}
+    - target: {fileID: 6431975052806251944, guid: 87c7ec707b7aa2642ba841f8c4001884, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6431975052806251944, guid: 87c7ec707b7aa2642ba841f8c4001884, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6431975052806251944, guid: 87c7ec707b7aa2642ba841f8c4001884, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6431975052806251944, guid: 87c7ec707b7aa2642ba841f8c4001884, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6431975052806251944, guid: 87c7ec707b7aa2642ba841f8c4001884, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6431975052806251944, guid: 87c7ec707b7aa2642ba841f8c4001884, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6431975052806251944, guid: 87c7ec707b7aa2642ba841f8c4001884, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 87c7ec707b7aa2642ba841f8c4001884, type: 3}
 --- !u!1 &591212157
 GameObject:
   m_ObjectHideFlags: 0
@@ -2773,9 +2708,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _testID: Chicken
   _testTileID: 10000
-  _prefab: {fileID: 7868252610874373284, guid: 1c6426cb86c37b74b8efdf2dbc9409a0, type: 3}
-  _farmArea: {fileID: 877346835}
+  _animalObjectPrefab: {fileID: 7868252610874373284, guid: 1c6426cb86c37b74b8efdf2dbc9409a0, type: 3}
+  _farmAreaPrefab: {fileID: 5517185732154558686, guid: 81d1604daf0cbe94bb919bc8d39e7479, type: 3}
   _pos: 0
+  _seedId: 0
 --- !u!4 &737027766
 Transform:
   m_ObjectHideFlags: 0
@@ -3380,54 +3316,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &877346834
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 877346836}
-  - component: {fileID: 877346835}
-  m_Layer: 0
-  m_Name: FarmArea
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &877346835
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 877346834}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9e3d7a55885a8f4fa9173473e2c5d5a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _farmSpritePrefab: {fileID: 8224682955965169805, guid: bc28788ccf6dbe64bb7f4430e95dd9b0, type: 3}
-  _width: 10
-  _height: 5
-  _tickTime: 10
---- !u!4 &877346836
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 877346834}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &932040977
 GameObject:
   m_ObjectHideFlags: 0
@@ -7022,7 +6910,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 311091949}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: BreedingArea, Assembly-CSharp
         m_MethodName: SpawnAnimal
         m_Mode: 5
@@ -8156,10 +8044,8 @@ SceneRoots:
   - {fileID: 1008652056}
   - {fileID: 166649780}
   - {fileID: 962011139}
+  - {fileID: 575010122}
   - {fileID: 737027766}
   - {fileID: 470660504}
-  - {fileID: 877346836}
-  - {fileID: 311091950}
   - {fileID: 678458651}
   - {fileID: 1216015329}
-  - {fileID: 211572885}
