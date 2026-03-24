@@ -1,32 +1,27 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// 인벤토리에 존재할 수 있는 아이템이 가지는 정적 데이터입니다.
+/// 사용 시 고유 효과가 나타나는 아이템이 가지는 정적 데이터입니다.
 /// </summary>
-public abstract class ItemSO : DatabaseUnitSO
+[CreateAssetMenu(fileName = "SeedItemSO_", menuName = "ScriptableObjects/Item/Seed", order = 1)]
+public class SeedItemSO : ItemSO
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
-    [Header("아이템 기본 정보")]
-    [SerializeField] protected ERarity _rarity = ERarity.Basic; // 아이템 희귀도
-    [SerializeField] protected int _sellPrice = 100; // 판매 가격
-    [SerializeField] protected int _buyPrice = 200; // 구매 가격
-    [SerializeField] protected int _maxStack = 64; // 최대 중첩 수
+    [Header("씨앗 아이템 정보")]
+    [SerializeField] protected string _placeCropID; // 심을 작물 ID
+    [SerializeField] protected int _needFarmingLevel = 1; // 심기 위해 필요한 농사 레벨
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
-    public ERarity Rarity => _rarity;
-    public int SellPrice => _sellPrice;
-    public int BuyPrice => _buyPrice;
-    public int MaxStack => _maxStack;
+    public string PlaceCropID => _placeCropID;
+    public int NeedFarmingLevel => _needFarmingLevel;
 
     // 정상 값을 가지는지 검사
     public override bool IsValid()
     {
         if (!base.IsValid()) return false;
-        if (_rarity == ERarity.None) return false;
-        if (_sellPrice < 0) return false;
-        if (_buyPrice < 0) return false;
-        if (_maxStack <= 0) return false;
+        if (string.IsNullOrEmpty(_placeCropID) || string.IsNullOrWhiteSpace(_placeCropID) ) return false;
+        if (_needFarmingLevel < 1) return false;
         return true;
     }
     #endregion

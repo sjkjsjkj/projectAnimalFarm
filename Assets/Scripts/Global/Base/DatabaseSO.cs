@@ -41,11 +41,4 @@ public class DatabaseSO<T> where T : DatabaseUnitSO
         return _dataList[id];
     }
     #endregion
-    #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
-
-    #endregion
-
-    #region ─────────────────────────▶ 중첩 타입 ◀─────────────────────────
-
-    #endregion
 }

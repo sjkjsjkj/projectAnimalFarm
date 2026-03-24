@@ -24,7 +24,7 @@ public class #SCRIPTNAME# : ScriptableObject
     public GameObject Prefab => _prefab;
 
     // 값 유효성 검사
-    public virtual bool IsVaild()
+    public virtual bool IsValid()
     {
         if (string.IsNullOrEmpty(_id)) return false;
         if (string.IsNullOrWhiteSpace(_id)) return false;
@@ -41,7 +41,7 @@ public class #SCRIPTNAME# : ScriptableObject
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
     protected virtual void OnValidate()
     {
-        if (!IsVaild())
+        if (!IsValid())
         {
             UDebug.PrintOnce($"SO({_id})의 값이 올바르지 않습니다.", LogType.Assert);
         }
