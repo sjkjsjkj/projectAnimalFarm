@@ -1,0 +1,67 @@
+﻿using System;
+using System.Collections;
+using UnityEngine;
+
+/// <summary>
+/// 코루틴 기능을 제공하는 유틸리티입니다.
+/// </summary>
+public static class UCoroutine
+{
+    /*
+    private static readonly Dictionary<float, WaitForSeconds> _intervals = new();
+
+    /// <summary>
+    /// 캐싱된 WaitForSeconds를 반환합니다.
+    /// </summary>
+    public static WaitForSeconds GetWait(float seconds)
+    {
+        if (!_intervals.TryGetValue(seconds, out WaitForSeconds wfs))
+        {
+            wfs = new WaitForSeconds(seconds);
+            _intervals.Add(seconds, wfs);
+        }
+        return wfs;
+    }
+    */
+
+    /// <summary>
+    /// 비동기 작업의 진행 상황을 콜백으로 받으며 대기합니다.
+    /// </summary>
+    public static IEnumerator WaitAsyncOperation(AsyncOperation asyncOp, Action<float> onProgress)
+    {
+        if (asyncOp == null)
+        {
+            yield break;
+        }
+        // 비동기 완료까지 반복
+        while (!asyncOp.isDone)
+        {
+            onProgress?.Invoke(asyncOp.progress);
+            yield return null;
+        }
+        onProgress?.Invoke(1f); // 완료 보장
+    }
+
+    /// <summary>
+    /// 동기 작업으로 특정 시간이 지난 후 액션을 실행합니다.
+    /// </summary>
+    public static IEnumerator DelayAction(float delay, Action callback)
+    {
+        float remain = delay;
+        while(remain > 0f)
+        {
+            yield return null;
+            remain -= Time.deltaTime;
+        }
+        callback?.Invoke();
+    }
+
+    /// <summary>
+    /// 1 프레임 대기합니다.
+    /// </summary>
+    public static IEnumerator NextFrame(Action callback)
+    {
+        yield return null;
+        callback?.Invoke();
+    }
+}
