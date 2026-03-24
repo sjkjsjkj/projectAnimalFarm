@@ -22,9 +22,9 @@ public abstract class FieldWorldSO : WorldSO
     public override bool IsValid()
     {
         if (!base.IsValid()) return false;
-        if (UArray.IsInitedArray(_acquiredId)) return false;
-        if (UArray.IsInitedArray(_getCountMin)) return false;
-        if (UArray.IsInitedArray(_getCountMax)) return false;
+        if (!UArray.IsInitedArray(_acquiredId)) return false;
+        if (!UArray.IsInitedArray(_getCountMin)) return false;
+        if (!UArray.IsInitedArray(_getCountMax)) return false;
         int length = _acquiredId.Length;
         for (int i = 0; i < length; ++i)
         {

@@ -57,8 +57,8 @@ public class BaitItemSO : ItemSO
     public override bool IsValid()
     {
         if (!base.IsValid()) return false;
-        if (UArray.IsInitedArray(_catchFishRarity)) return false;
-        if (UArray.IsInitedArray(_catchFishWeight)) return false;
+        if (!UArray.IsInitedArray(_catchFishRarity)) return false;
+        if (!UArray.IsInitedArray(_catchFishWeight)) return false;
         int length = _catchFishRarity.Length;
         if (length != _catchFishWeight.Length) return false;
         for (int i = 0; i < length; ++i)

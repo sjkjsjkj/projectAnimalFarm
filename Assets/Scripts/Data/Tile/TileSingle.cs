@@ -6,7 +6,7 @@ public struct TileSingle
     public int id;
     public ETileState state;
 
-    public TileSingle(int id, int size, ETileState state)
+    public TileSingle(int id, ETileState state)
     {
         this.id = id;
         this.state = state;

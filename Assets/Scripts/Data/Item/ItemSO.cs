@@ -26,6 +26,7 @@ public abstract class ItemSO : DatabaseUnitSO
         if (_rarity == ERarity.None) return false;
         if (_sellPrice < 0) return false;
         if (_buyPrice < 0) return false;
+        if (_sellPrice > _buyPrice) return false;
         if (_maxStack <= 0) return false;
         return true;
     }

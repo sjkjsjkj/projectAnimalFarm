@@ -30,8 +30,8 @@ public abstract class DatabaseUnitSO : ScriptableObject
         if (string.IsNullOrWhiteSpace(_id)) return false;
         if (string.IsNullOrEmpty(_name)) return false;
         if (string.IsNullOrWhiteSpace(_name)) return false;
-        if (string.IsNullOrEmpty(_name)) return false;
-        if (string.IsNullOrWhiteSpace(_name)) return false;
+        if (string.IsNullOrEmpty(_description)) return false;
+        if (string.IsNullOrWhiteSpace(_description)) return false;
         if (_image == null) return false;
         if (_prefab == null) return false;
         return true;
