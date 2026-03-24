@@ -69,7 +69,6 @@ public abstract class Singleton<T> : BaseMono where T : BaseMono
         if (_instance == this)
         {
             _instance = null;
-            _isQuitting = true;
             UDebug.Print($"싱글톤 인스턴스({typeof(T).ToString()})를 청소했습니다.");
         }
     }

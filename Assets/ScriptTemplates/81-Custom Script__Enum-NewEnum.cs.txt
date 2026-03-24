@@ -2,8 +2,8 @@
 /// 
 /// </summary>
     #ROOTNAMESPACEBEGIN#
-public enum E#SCRIPTNAME#
+public enum #SCRIPTNAME#
 {
-    
+    None = 0,
 }
 #ROOTNAMESPACEEND#

@@ -52,8 +52,9 @@ public class FrameManager : GlobalSingleton<FrameManager>
         for (int i = 0; i < _frames.Length; ++i)
         {
             var curList = _frames[i];
+            int count = curList.Count - 1;
             // 내부 리스트 순회하며 실행
-            for (int j = 0; j < curList.Count; j++)
+            for (int j = count; j >= 0; --j)
             {
                 curList[j].ExecuteFrame();
             }
