@@ -178,8 +178,12 @@ public class PlayerProvider
     /// <param name="amount">지급량</param>
     public int AddMoney(int amount)
     {
+        if(amount <= 0)
+        {
+            return 0;
+        }
         // 오버플로우 방지
-        if (_money == int.MaxValue)
+        if (_money >= K.PLAYER_MAX_MONEY)
         {
             return amount;
         }
@@ -204,7 +208,7 @@ public class PlayerProvider
     /// <param name="amount">차감량</param>
     public int TakeMoney(int amount)
     {
-        if(_money <= 0 || amount == 0)
+        if(_money <= 0 || amount <= 0)
         {
             return 0;
         }
