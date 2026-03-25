@@ -18,6 +18,7 @@ public class FarmArea : BaseMono
 
     [Header("테스트")]
     [SerializeField] private float _tickTime = 10.0f;   // 테스트용
+    [SerializeField] private int _grownTime = 3;
 #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
@@ -66,7 +67,7 @@ public class FarmArea : BaseMono
             //현재 행동으로 씨를 뿌렸다면
             //타일 비교는 하지 않고 씨앗만 뿌리고 끝
             case EFarmlandState.SeededLand:
-                _farmlandsSprites[context.pos].GetComponent<FarmlandSpriteObject>().SetSeedSprite(context.seedId);
+                _farmlandsSprites[context.pos].GetComponent<FarmlandSpriteObject>().SetSeedSprite(context.seedId, context.currentProgress);
                 return;
             //현재 행동으로 땅을 일구었거나, 물을 주었다면 주변 타일과 비교하여 스프라이트 연결.
             case EFarmlandState.SoiledLand:
@@ -155,13 +156,13 @@ public class FarmArea : BaseMono
             case EFarmlandState.IdleLand:
                 break;
             case EFarmlandState.SoiledLand:
-                _farmlandsSprites[context.pos].GetComponent<FarmlandSpriteObject>().SetSoilSprite(context.pos, context.connectionDir);
+                _farmlandsSprites[context.pos].GetComponent<FarmlandSpriteObject>().SetSoilSprite(context.connectionDir);
                 break;
             case EFarmlandState.SeededLand:
   
                 break;
             case EFarmlandState.MoistLand:
-                _farmlandsSprites[context.pos].GetComponent<FarmlandSpriteObject>().SetMoistSprite(context.pos, context.connectionDir);
+                _farmlandsSprites[context.pos].GetComponent<FarmlandSpriteObject>().SetMoistSprite(context.connectionDir);
                 break;
             case EFarmlandState.GrownUp:
                 break;
@@ -186,7 +187,7 @@ public class FarmArea : BaseMono
     //테스트용.
     public void TestFunction(int pos, string seedId)
     {
-        _farmlands[pos].Interact(seedId); // 인벤토리가 생기면 전달인수는 모두 제거 예정.
+        _farmlands[pos].Interact(_grownTime, seedId); // 인벤토리가 생기면 전달인수는 모두 제거 예정.
     }
     #endregion
 
