@@ -12,8 +12,8 @@ public class Farmland
     //N초 (미정) 마다 식물의 성장 주기를 올리는 역할을 함.
     //경작지의 상태가 MoistLand 상태일 때에만 증가함.
     //Idleland > soil(다져진땅) > seeded (씨앗뿌린땅) > MoistLand (물뿌린땅) 의 순서.
-    private float _grownUpTick;         //씨앗이 전부 자랄 때 까지 얼마나 많은 Tick이 지나야 하는가.
-    private float _currentTick;         //현재 얼마나 Tick 이 지났는가.
+    private int _grownUpTick;         //씨앗이 전부 자랄 때 까지 얼마나 많은 Tick이 지나야 하는가.
+    private int _currentTick;         //현재 얼마나 Tick 이 지났는가.
 
     private uint _connectDir;           //현재 주변에 경작지들과 같은 상태라면 (soiled 와 moist만 비교)스프라이트 연결. 이것은 현재 연결된 방향들을 Flag 형식으로 나타낸 것.
     private uint _stateFlag;            //state를 Flag 형태로 나타낸 것. 주변 경작지의 상태 비교에 사용. 
@@ -54,10 +54,10 @@ public class Farmland
         //UDebug.Print($"After State : {_stateTest}");
 
         //경작지 전체를 관리하는 FarmArea에게 나의 좌표(배열 좌표)와 상태를 전달한다.
-        OnFarmStateChange.Publish(_state,_pos, _seededId);
+        OnFarmStateChange.Publish(_state,_pos, _seededId, _currentTick);
     }
     //외부에서 인터랙트를 시도했을 때 불러와질 메서드
-    public void Interact(string seedid = "") //플레이어 및 인벤토리가 제작되면 해당 부분에서 아무것도 받아오지 않아도 됨. 지금은 임시로 씨앗의 정보를 받아 옴.
+    public void Interact(int grownTime, string seedid = "" ) //플레이어 및 인벤토리가 제작되면 해당 부분에서 아무것도 받아오지 않아도 됨. 지금은 임시로 씨앗의 정보를 받아 옴.
     {
         UDebug.Print("Interact");
         
@@ -81,6 +81,7 @@ public class Farmland
                 }
                 #region 인벤토리가 생기면 사라질 영역.
                 _seededId = seedid;
+                _grownUpTick = grownTime;
                 //TODO: 인터랙트 시, seedId를 받아오며 시간도 함께 받아옴.
                 #endregion
 
@@ -127,6 +128,7 @@ public class Farmland
             return;
         }
         UDebug.Print($"Current Grown Progress : {_currentTick} | Full Grown Count : {_grownUpTick} ");
+
         if (++_currentTick >= _grownUpTick)
         {
             UDebug.Print($"Full Grown Up Success");
