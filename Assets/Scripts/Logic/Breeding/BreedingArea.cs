@@ -11,12 +11,11 @@ public class BreedingArea : BaseMono , IFoodProvider
     [Header("프리팹")]
     [SerializeField] private GameObject _cagePrefab;    //울타리로 사용될 프리팹
     [SerializeField] private GameObject _foodBoxPrefab; //먹이통으로 사용될 프리팹
-
     //[SerializeField] private AnimalObject _animalPrefab; // 동물 프리팹 (테스트용 실제로는 사용하지 않을 녀석)
 
     [Header("사이즈")]
-    [SerializeField] private int _witdh;  
-    [SerializeField] private int _height; 
+    [SerializeField] private int _witdh;
+    [SerializeField] private int _height;
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
@@ -35,6 +34,7 @@ public class BreedingArea : BaseMono , IFoodProvider
     {
         return _foodBoxTr;
     }
+
     //사육장을 만드는 기능.
     public void MakeBreedingArea()
     {

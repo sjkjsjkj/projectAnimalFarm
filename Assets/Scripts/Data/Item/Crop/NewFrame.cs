@@ -3,7 +3,7 @@
 /// <summary>
 /// 클래스의 설계 의도입니다.
 /// </summary>
-public class TTFrame : Frameable
+public class NewFrame : Frameable
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     //[Header("주제")]
@@ -11,18 +11,17 @@ public class TTFrame : Frameable
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
-    private int _count = 0;
+
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     // 프레임 매니저에게 호출당하는 순서
-    public override EPriority Priority => EPriority.Lv7;
+    public override EPriority Priority => EPriority.Last;
 
     // 프레임 매니저가 실행할 메서드
     public override void ExecuteFrame()
     {
-        UDebug.Print($"AA{_count++}");
-        UDebug.PrintOnce("??");
+        
     }
     #endregion
 

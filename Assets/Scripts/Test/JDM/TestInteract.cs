@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class TInteract : BaseMono
+public class TestInteract : BaseMono
 {
     private Camera _mainCamera;
 
