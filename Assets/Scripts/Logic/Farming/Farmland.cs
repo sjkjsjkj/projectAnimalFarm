@@ -1,4 +1,6 @@
-﻿/// <summary>
+﻿using System;
+
+/// <summary>
 /// 경작지 각각의 타일의 정보를 담고있는 클래스
 /// 플레이어가 타일의 데이터를 읽어오며 경작 가능여부를 확인할 수 있다면 일반 클래스로, 그렇지 않다면 Mono로 해서 collider Check 방식으로
 /// </summary>
@@ -14,6 +16,7 @@ public class Farmland
     //Idleland > soil(다져진땅) > seeded (씨앗뿌린땅) > MoistLand (물뿌린땅) 의 순서.
     private int _grownUpTick;         //씨앗이 전부 자랄 때 까지 얼마나 많은 Tick이 지나야 하는가.
     private int _currentTick;         //현재 얼마나 Tick 이 지났는가.
+    private float _tickTimer = 0;
 
     private uint _connectDir;           //현재 주변에 경작지들과 같은 상태라면 (soiled 와 moist만 비교)스프라이트 연결. 이것은 현재 연결된 방향들을 Flag 형식으로 나타낸 것.
     private uint _stateFlag;            //state를 Flag 형태로 나타낸 것. 주변 경작지의 상태 비교에 사용. 
@@ -23,6 +26,9 @@ public class Farmland
     public uint ConnectDir => _connectDir;
     public EFarmlandState State => _state;
     public uint StateFlag => _stateFlag;
+
+    public event Action<FarmStateChangeStruct> OnFarmStateChange;
+    public event Action<FarmlandConnetionChangeStruct> OnFarmlandConnetionChange;
     #endregion
 
     #region ─────────────────────────▶  생성자  ◀─────────────────────────
@@ -47,14 +53,11 @@ public class Farmland
         EFarmlandState beforeState = _state;
 
         _state = nextState;
-        //UDebug.Print($"before State : {_stateTest}");
-
+        
         _stateFlag |= (uint)nextState;
 
-        //UDebug.Print($"After State : {_stateTest}");
-
         //경작지 전체를 관리하는 FarmArea에게 나의 좌표(배열 좌표)와 상태를 전달한다.
-        OnFarmStateChange.Publish(_state,_pos, _seededId, _currentTick);
+        OnFarmStateChange?.Invoke(new FarmStateChangeStruct(_state, _pos, _seededId, _currentTick));
     }
     //외부에서 인터랙트를 시도했을 때 불러와질 메서드
     public void Interact(int grownTime, string seedid = "" ) //플레이어 및 인벤토리가 제작되면 해당 부분에서 아무것도 받아오지 않아도 됨. 지금은 임시로 씨앗의 정보를 받아 옴.
@@ -121,7 +124,7 @@ public class Farmland
         }
     }
     //성장 타이머
-    public void Tick()
+    public void Tick(float deltaTime)
     {
         if(_state != EFarmlandState.MoistLand)
         {
@@ -129,24 +132,37 @@ public class Farmland
         }
         UDebug.Print($"Current Grown Progress : {_currentTick} | Full Grown Count : {_grownUpTick} ");
 
-        if (++_currentTick >= _grownUpTick)
+        _tickTimer += deltaTime;
+
+        if(_tickTimer >= _grownUpTick)
+        {
+            GrowUp();
+        }
+    }
+    private void GrowUp()
+    {
+        _tickTimer = 0;
+
+        if (++_currentTick >= K.FARMLAND_MAX_GROWNPROGRESS)
         {
             UDebug.Print($"Full Grown Up Success");
             SetState(EFarmlandState.GrownUp);
+            return;
         }
-        
+
+        OnFarmStateChange?.Invoke(new FarmStateChangeStruct(_state, _pos, _seededId, _currentTick));
     }
     public void SetConnect(uint connection)
     {
         _connectDir |= connection;
 
-        OnFarmlandConnetionChange.Publish(_connectDir, _state, _pos);
+        OnFarmlandConnetionChange?.Invoke(new FarmlandConnetionChangeStruct(_connectDir, _state, _pos));
     }
     public void SetConnect(uint connection, EFarmlandState state)
     {
         _connectDir |= connection;
         //Todo 스위치로 state에 맞는 스프라이트를 불러오는 이벤트
-        OnFarmlandConnetionChange.Publish(_connectDir, state, _pos);
+        OnFarmlandConnetionChange?.Invoke(new FarmlandConnetionChangeStruct(_connectDir, state, _pos));
     }
     #endregion
 }
