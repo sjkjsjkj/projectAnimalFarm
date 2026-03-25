@@ -20,7 +20,7 @@ public class SeedItemSO : ItemSO
     public override bool IsValid()
     {
         if (!base.IsValid()) return false;
-        if (string.IsNullOrEmpty(_placeCropID) || string.IsNullOrWhiteSpace(_placeCropID) ) return false;
+        if (_placeCropID.IsEmpty()) return false;
         if (_needFarmingLevel < 1) return false;
         return true;
     }

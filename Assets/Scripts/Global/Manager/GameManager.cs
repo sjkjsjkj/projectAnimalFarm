@@ -167,9 +167,7 @@ public class GameManager : GlobalSingleton<GameManager>
     private static bool IsValidScene(string name)
     {
         // 존재할 수 없는 인덱스인지 검사
-        if (string.IsNullOrEmpty(name)
-            || string.IsNullOrWhiteSpace(name)
-            || !Application.CanStreamedLevelBeLoaded(name))
+        if (name.IsEmpty() || !Application.CanStreamedLevelBeLoaded(name))
         {
             UDebug.Print($"존재하지 않는 씬 이름({name})을 호출했습니다.");
             return false;
@@ -181,7 +179,7 @@ public class GameManager : GlobalSingleton<GameManager>
     private IEnumerator DoLoadSceneAsync(
         string name, Action callback, Action<float> onProgress, float delay, LoadSceneMode loadSceneMode)
     {
-        if(delay > 0f)
+        if (delay > 0f)
         {
             yield return UCoroutine.GetWait(delay);
         }

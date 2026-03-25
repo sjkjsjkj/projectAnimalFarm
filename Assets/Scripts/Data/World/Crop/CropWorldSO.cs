@@ -52,7 +52,7 @@ public class CropWorldSO : WorldSO
         }
         if (_needFarmingLevel < 1) return false;
         if (_needWateringCanRarity == ERarity.None) return false;
-        if (string.IsNullOrEmpty(_harvestItemId) || string.IsNullOrWhiteSpace(_harvestItemId)) return false;
+        if (_harvestItemId.IsEmpty()) return false;
         if (_minHarvestAmount <= 0) return false;
         if (_maxHarvestAmount <= 0) return false;
         if (_minHarvestAmount > _maxHarvestAmount) return false;

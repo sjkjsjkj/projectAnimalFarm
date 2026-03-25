@@ -111,7 +111,7 @@ public class TileManager : GlobalSingleton<TileManager>
         }
         // 시트가 비어있음
         string idText = json.text;
-        if (string.IsNullOrEmpty(idText) || string.IsNullOrWhiteSpace(idText))
+        if (idText.IsEmpty())
         {
             UDebug.Print($"Json이 비어있습니다.", LogType.Assert);
             return false;

@@ -4,7 +4,7 @@
 /// 월드에서 상호작용 시 획득 가능한 오브젝트가 가지는 정적 데이터입니다.
 /// </summary>
 [CreateAssetMenu(fileName = "FieldWorldSO_", menuName = "ScriptableObjects/World/Field", order = 1)]
-public abstract class FieldWorldSO : WorldSO
+public class FieldWorldSO : WorldSO
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("필드 오브젝트 정보")]
@@ -28,7 +28,7 @@ public abstract class FieldWorldSO : WorldSO
         int length = _acquiredId.Length;
         for (int i = 0; i < length; ++i)
         {
-            if (string.IsNullOrEmpty(_acquiredId[i]) || string.IsNullOrWhiteSpace(_acquiredId[i])) return false;
+            if (_acquiredId[i].IsEmpty()) return false;
             if (_getCountMin[i] < 0) return false;
             if (_getCountMax[i] < 0) return false;
             if (_getCountMin[i] > _getCountMax[i]) return false;

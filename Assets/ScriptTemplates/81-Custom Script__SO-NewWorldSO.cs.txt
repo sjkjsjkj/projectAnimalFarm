@@ -26,12 +26,9 @@ public class #SCRIPTNAME# : ItemSO
     // 값 유효성 검사
     public virtual bool IsValid()
     {
-        if (string.IsNullOrEmpty(_id)) return false;
-        if (string.IsNullOrWhiteSpace(_id)) return false;
-        if (string.IsNullOrEmpty(_name)) return false;
-        if (string.IsNullOrWhiteSpace(_name)) return false;
-        if (string.IsNullOrEmpty(_name)) return false;
-        if (string.IsNullOrWhiteSpace(_name)) return false;
+        if (_id.IsEmpty()) return false;
+        if (_name.IsEmpty()) return false;
+        if (_description.IsEmpty()) return false;
         if (_image == null) return false;
         if (_prefab == null) return false;
         return true;
