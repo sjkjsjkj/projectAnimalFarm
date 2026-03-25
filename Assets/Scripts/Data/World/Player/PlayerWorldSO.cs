@@ -22,6 +22,9 @@ public class PlayerWorldSO : WorldSO
     [SerializeField] protected float _maxHunger = 100f; // 최대 만복도
     [SerializeField] protected float _maxThirst = 100f; // 최대 목마름
 
+    [Header("최대 돈 보유량")]
+    [SerializeField] protected int _maxMoney = int.MaxValue;
+
     [Header("기술 레벨 경험치 테이블")]
     [SerializeField] protected SkillExpData[] _skillExpTables;
     #endregion
@@ -37,6 +40,7 @@ public class PlayerWorldSO : WorldSO
     public float MaxStamina => _maxStamina;
     public float MaxHunger => _maxHunger;
     public float MaxThirst => _maxThirst;
+    public int MaxMoney => _maxMoney;
 
     /// <summary>
     /// 생활 기술 레벨업을 위한 경험치를 반환합니다.
@@ -64,6 +68,25 @@ public class PlayerWorldSO : WorldSO
         return table[index];
     }
 
+    public int GetMaxLevel(ELifeSkill skill)
+    {
+        // 딕셔너리가 비어있다면 지연 초기화
+        if (_skillExpDict == null)
+        {
+            BuildExpDict();
+        }
+        // 해당 스킬의 테이블이 존재하지 않거나 비어있으면 0 반환
+        if (!_skillExpDict.TryGetValue(skill, out int[] table)
+            || table == null
+            || table.Length <= 0)
+        {
+            UDebug.Print($"스킬({skill})이 테이블에 존재하지 않습니다.", LogType.Assert);
+            return 0;
+        }
+        // 인덱스 클램프
+        return table.Length;
+    }
+
     // 정상 값을 가지는지 검사
     public override bool IsValid()
     {
@@ -75,6 +98,7 @@ public class PlayerWorldSO : WorldSO
         if (_maxStamina <= 0f) return false;
         if (_maxHunger <= 0f) return false;
         if (_maxThirst <= 0f) return false;
+        if (_maxMoney <= 0) return false;
         if (!UArray.IsInitedArray(_skillExpTables)) return false;
         for (int i = 0; i < _skillExpTables.Length; i++)
         {
