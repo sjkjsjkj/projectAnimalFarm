@@ -14,8 +14,9 @@ public enum EType
     BaitItem = 2, // 미끼
     SeedItem = 3, // 씨앗
     FeedItem = 4, // 먹이
+    SpecialItem = 21, // 특수 아이템
     // 재료
-    CropItem = 5, // 작물
+    HarvestItem = 5, // 수확물
     WoodItem = 6, // 나무
     FishItem = 7, // 생선
     OreItem = 8, // 광물

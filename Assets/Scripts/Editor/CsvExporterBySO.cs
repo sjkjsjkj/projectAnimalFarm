@@ -118,11 +118,11 @@ public class CsvExporterBySO : EditorWindow
     private static void CreateCsvFile(StringBuilder sb, Type soType)
     {
         // StreamWriter로 파일 쓰기
-        string fileName = $"{K.SO_EXPORT_PATH}/{soType.Name}.csv";
+        string fileName = $"{K.AUTO_SO_EXPORT_PATH}/{soType.Name}.csv";
         using (StreamWriter sw = new StreamWriter(fileName, false, Encoding.UTF8))
         {
             sw.Write(sb);
-            UDebug.Print($"경로({K.SO_EXPORT_PATH})에 {fileName}를 작성했습니다.");
+            UDebug.Print($"경로({K.AUTO_SO_EXPORT_PATH})에 {fileName}를 작성했습니다.");
             AssetDatabase.Refresh(); // 파일을 코드로 생성했음을 알려주기
         }
     }

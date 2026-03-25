@@ -2,7 +2,7 @@
 using UnityEngine;
 
 /// <summary>
-/// 사용 시 고유 효과가 나타나는 아이템이 가지는 정적 데이터입니다.
+/// NPC가 월드에서 가지는 정적 데이터입니다.
 /// </summary>
 [CreateAssetMenu(fileName = "NpcWorldSO_", menuName = "ScriptableObjects/World/Npc", order = 1)]
 public class NpcWorldSO : WorldSO
@@ -19,6 +19,7 @@ public class NpcWorldSO : WorldSO
     public override bool IsValid()
     {
         if (!base.IsValid()) return false;
+        if (_type != EType.NpcWorld) return false;
         if (_animController == null) return false;
         return true;
     }

@@ -29,8 +29,8 @@ public abstract class DatabaseUnitSO : ScriptableObject
         if (_id.IsEmpty()) return false;
         if (_name.IsEmpty()) return false;
         if (_description.IsEmpty()) return false;
-        if (_image == null) return false;
-        if (_prefab == null) return false;
+        //if (_image == null) return false;
+        //if (_prefab == null) return false;
         return true;
     }
     #endregion

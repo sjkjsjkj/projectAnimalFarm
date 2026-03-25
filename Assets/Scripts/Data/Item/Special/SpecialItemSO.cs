@@ -33,6 +33,7 @@ public class SpecialItemSO : ItemSO
     public override bool IsValid()
     {
         if (!base.IsValid()) return false;
+        if (_type != EType.SpecialItem) return false;
         if (_maxUseCount <= 0) return false;
         if (_effects.Length > 0)
         {

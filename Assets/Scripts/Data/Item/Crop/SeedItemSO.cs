@@ -1,15 +1,17 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// 사용 시 고유 효과가 나타나는 아이템이 가지는 정적 데이터입니다.
+/// 씨앗 아이템이 가지는 정적 데이터입니다.
 /// </summary>
 [CreateAssetMenu(fileName = "SeedItemSO_", menuName = "ScriptableObjects/Item/Seed", order = 1)]
 public class SeedItemSO : ItemSO
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("씨앗 아이템 정보")]
-    [SerializeField] protected string _placeCropID; // 심을 작물 ID
-    [SerializeField] protected int _needFarmingLevel = 1; // 심기 위해 필요한 농사 레벨
+    [Tooltip("심을 작물 ID")]
+    [SerializeField] protected string _placeCropID;
+    [Tooltip("심기 위해 필요한 농사 레벨")]
+    [SerializeField] protected int _needFarmingLevel = 1;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -20,6 +22,7 @@ public class SeedItemSO : ItemSO
     public override bool IsValid()
     {
         if (!base.IsValid()) return false;
+        if (_type != EType.SeedItem) return false;
         if (_placeCropID.IsEmpty()) return false;
         if (_needFarmingLevel < 1) return false;
         return true;

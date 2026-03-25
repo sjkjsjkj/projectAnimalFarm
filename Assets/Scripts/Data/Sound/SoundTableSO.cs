@@ -2,9 +2,9 @@
 using UnityEngine;
 
 /// <summary>
-/// SO 클래스의 설계 의도입니다.
+/// 다수의 사운드 SO를 관리하는 테이블 클래스
 /// </summary>
-[CreateAssetMenu(fileName = "SoundTableSO_", menuName = "ScriptableObjects/SoundTableSO", order = 1)]
+[CreateAssetMenu(fileName = "SoundTableSO_", menuName = "ScriptableObjects/Table/Sound", order = 1)]
 public class SoundTableSO : ScriptableObject
 {
     [Header("기본 정보")]

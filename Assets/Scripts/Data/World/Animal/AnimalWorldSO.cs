@@ -5,7 +5,7 @@ using UnityEngine;
 /// 동물이 월드에서 가지는 정적 데이터입니다.
 /// </summary>
 [CreateAssetMenu(fileName = "AnimalWorldSO_", menuName = "ScriptableObjects/World/Animal", order = 1)]
-public class AniamlWorldSO : WorldSO
+public class AnimalWorldSO : WorldSO
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("애니메이션")]

@@ -8,7 +8,7 @@ public struct AnimalWorldData
     public float curProductTime; // 현재까지 진행된 생산 시간
     public bool isProductReady; // 생산 완료하여 대기중
 
-    public AnimalWorldData(AniamlWorldSO so)
+    public AnimalWorldData(AnimalWorldSO so)
     {
         animalId = so.Id;
         curFoodAmount = so.MaxFeedAmount;
