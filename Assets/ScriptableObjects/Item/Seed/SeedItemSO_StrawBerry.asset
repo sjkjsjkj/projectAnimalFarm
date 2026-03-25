@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76ffc8a0f191cfa4fb1e29088206b161, type: 3}
   m_Name: SeedItemSO_StrawBerry
   m_EditorClassIdentifier: 
-  _id: Item_Seed_Rice
+  _id: Item_Seed_StrawBerry
   _type: 3
-  _name: "\uAC10\uC790"
-  _description: "\uB2E4\uB7C9\uC758 \uBB3C\uC744 \uD544\uC694\uB85C \uD558\uB294
-    \uACE1\uBB3C\uC785\uB2C8\uB2E4."
+  _name: "\uB538\uAE30"
+  _description: "\uBD89\uACE0 \uB2EC\uCF64\uD55C \uACFC\uC721\uC744 \uB9FA\uB294
+    \uB9E4\uB825\uC801\uC778 \uC791\uBB3C\uC785\uB2C8\uB2E4."
   _image: {fileID: -795079669, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
   _prefab: {fileID: 0}
   _rarity: 1
   _sellPrice: 100
   _buyPrice: 200
   _maxStack: 64
-  _placeCropID: World_Crop_Rice
+  _placeCropID: World_Crop_StrawBerry
   _needFarmingLevel: 1

@@ -93,12 +93,24 @@ public class StringIdGenerator : EditorWindow
     // 경로에 스크립트 파일 생성
     private static void CreateScriptFile(StringBuilder sb, Type soType)
     {
-        // StreamWriter로 파일 쓰기
         string name = soType.Name;
         string path = $"{K.STRING_ID_EXPORT_PATH}/IdDefine.{name}.cs";
+        // 파일 내용이 동일한지 검사
+        // 동일할 때 덮어씌울 경우 에러 로그 도배 발생
+        string newCode = sb.ToString();
+        if (File.Exists(path))
+        {
+            string oldCode = File.ReadAllText(path);
+            if(newCode == oldCode)
+            {
+                UDebug.Print($"{name}.cs의 내용이 동일하므로 작업을 생략했습니다.");
+                return;
+            }
+        }
+        // StreamWriter로 파일 쓰기
         using (StreamWriter sw = new StreamWriter(path, false, Encoding.UTF8))
         {
-            sw.Write(sb);
+            sw.Write(newCode);
             UDebug.Print($"경로({K.STRING_ID_EXPORT_PATH})에 {name}을 작성했습니다.");
             AssetDatabase.Refresh(); // 파일을 코드로 생성했음을 알려주기
         }
