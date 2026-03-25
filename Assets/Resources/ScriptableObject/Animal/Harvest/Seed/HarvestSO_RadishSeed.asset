@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1514dbd14d89d54b9cea752aeec3f35, type: 3}
+  m_Name: HarvestSO_RadishSeed
+  m_EditorClassIdentifier: 
+  _id: Radish
+  _type: 3
+  _name: "\uBB34"
+  _description: "\uBB34 \uC785\uB2C8\uB2E4."
+  _image: {fileID: -1033185740, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  _prefab: {fileID: 0}
+  _idEnum: 7
+  _grownTime: 10
