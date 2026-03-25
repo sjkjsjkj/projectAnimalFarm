@@ -28,7 +28,7 @@ public class FieldWorldSO : WorldSO
         int length = _acquiredId.Length;
         for (int i = 0; i < length; ++i)
         {
-            if (string.IsNullOrEmpty(_acquiredId[i]) || string.IsNullOrWhiteSpace(_acquiredId[i])) return false;
+            if (_acquiredId[i].IsEmpty()) return false;
             if (_getCountMin[i] < 0) return false;
             if (_getCountMax[i] < 0) return false;
             if (_getCountMin[i] > _getCountMax[i]) return false;
