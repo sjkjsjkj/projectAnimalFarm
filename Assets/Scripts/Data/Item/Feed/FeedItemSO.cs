@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// 사용 시 고유 효과가 나타나는 아이템이 가지는 정적 데이터입니다.
+/// 동물 먹이 아이템이 가지는 정적 데이터입니다.
 /// </summary>
 [CreateAssetMenu(fileName = "FeedItemSO_", menuName = "ScriptableObjects/Item/Feed", order = 1)]
 public class FeedItemSO : ItemSO
@@ -10,6 +10,7 @@ public class FeedItemSO : ItemSO
     public override bool IsValid()
     {
         if (!base.IsValid()) return false;
+        if (_type != EType.FeedItem) return false;
         return true;
     }
 

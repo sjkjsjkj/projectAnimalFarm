@@ -8,7 +8,7 @@ public class SoundSO : ScriptableObject
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("기본 정보")]
-    [SerializeField] protected string _id = "";
+    [SerializeField] protected string _id;
     [SerializeField] protected AudioClip _clip;
     [SerializeField, Range(0f, 1f)] protected float _volume = 0.5f;
     #endregion
@@ -34,7 +34,7 @@ public class SoundSO : ScriptableObject
         // 클립 없거나 이름 이미 설정했으면 건드리지 않기
         if (_clip == null || _id.HasValue())
         {
-            //return;
+            return;
         }
         // 클립 이름 가져와서 Id에 넣기
         _id = _clip.name;
