@@ -12,9 +12,12 @@ public class GameManager : GlobalSingleton<GameManager>
     private static GameObject _uiRoot;
     private static GameObject _objectRoot;
     private bool _isInitialized = false;
+    private EScene _curScene;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
+    public EScene Scene => _curScene;
+
     public static GameObject UIRoot
     {
         get
@@ -54,7 +57,7 @@ public class GameManager : GlobalSingleton<GameManager>
             return;
         }
         // 생성 및 초기화
-
+        _curScene = (EScene)SceneManager.GetActiveScene().buildIndex;
         _isInitialized = true;
     }
 
@@ -83,7 +86,9 @@ public class GameManager : GlobalSingleton<GameManager>
         {
             return;
         }
+        PreProcessing(_curScene, name);
         SceneManager.LoadScene(name, LoadSceneMode.Single);
+        PostProcessing(_curScene, name);
     }
 
     /// <summary>
@@ -123,13 +128,33 @@ public class GameManager : GlobalSingleton<GameManager>
         {
             return;
         }
+        PreProcessing(_curScene, name);
         StartCoroutine(DoLoadSceneAsync(name, callback, onProgress, delay, loadSceneMode));
     }
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
+    // 씬 로드 선행처리
+    private void PreProcessing(EScene prevScene, string nextScenePath)
+    {
+        _uiRoot = null;
+        _objectRoot = null;
+        EScene nextScene = (EScene)SceneUtility.GetBuildIndexByScenePath(nextScenePath);
+        OnSceneLoadStart.Publish(prevScene, nextScene);
+        _curScene = nextScene;
+    }
+    // 씬 로드 후처리
+    private void PostProcessing(EScene prevScene, string nextScenePath)
+    {
+        _uiRoot = UObject.Find(K.NAME_UI_ROOT);
+        _objectRoot = UObject.Find(K.NAME_OBJECT_ROOT);
+        EScene nextScene = (EScene)SceneUtility.GetBuildIndexByScenePath(nextScenePath);
+        OnSceneLoadStart.Publish(prevScene, nextScene);
+        _curScene = nextScene;
+    }
+
     // 씬 유효성 검증
-    private bool IsValidScene(int index)
+    private static bool IsValidScene(int index)
     {
         // 존재할 수 없는 인덱스인지 검사
         if (index < 0 || index >= SceneManager.sceneCountInBuildSettings)
@@ -139,7 +164,7 @@ public class GameManager : GlobalSingleton<GameManager>
         }
         return true;
     }
-    private bool IsValidScene(string name)
+    private static bool IsValidScene(string name)
     {
         // 존재할 수 없는 인덱스인지 검사
         if (string.IsNullOrEmpty(name)
@@ -166,6 +191,7 @@ public class GameManager : GlobalSingleton<GameManager>
         yield return UCoroutine.WaitAsyncOperation(asyncOperation, onProgress);
         // 씬 로드 완료 → 콜백 호출
         callback?.Invoke();
+        PostProcessing(_curScene, name);
     }
     #endregion
 }
