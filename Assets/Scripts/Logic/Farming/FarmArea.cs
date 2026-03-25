@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 
 /// <summary>
 /// 경작지들 전체를 관리하는 클래스
@@ -44,7 +45,7 @@ public class FarmArea : Frameable
 
                 _farmlandsSprites[i * _width + j] = Instantiate(_farmSpritePrefab);
                 _farmlandsSprites[i * _width + j].transform.SetParent(this.transform);
-                _farmlandsSprites[i * _width + j].transform.localPosition = new Vector3(i, j);
+                _farmlandsSprites[i * _width + j].transform.localPosition = new Vector3(j, i);
             }
         }
     }
@@ -55,6 +56,8 @@ public class FarmArea : Frameable
         //변경된 경작지의 상태 불러옴.
         EFarmlandState state = context.state;
 
+        context.ShowStruct();
+        int pos = context.pos;
         //경작지의 상태마다 분기
         switch (state)
         {
@@ -65,15 +68,21 @@ public class FarmArea : Frameable
                 return;
             //현재 행동으로 땅을 일구었거나, 물을 주었다면 주변 타일과 비교하여 스프라이트 연결.
             case EFarmlandState.SoiledLand:
-            case EFarmlandState.MoistLand:
-
-                int pos = context.pos;
-
-                //가장 먼저 아무것도 연결되지 않은 상태의 스프라이트를 넣고
-                _farmlands[pos].SetConnect((uint)EConnectionDir.None);
+                
+                _farmlands[pos].SetConnectSoil();
 
                 //그 후 주변 경작지 상태를 비교하며 스프라이트 변경
                 CheckConnectionDirNearFarmland(pos);
+                break;
+            case EFarmlandState.MoistLand:
+                 
+                //가장 먼저 아무것도 연결되지 않은 상태의 스프라이트를 넣고
+                _farmlands[pos].SetConnectMoist();
+
+                //그 후 주변 경작지 상태를 비교하며 스프라이트 변경
+                CheckConnectionDirNearFarmland(pos);
+
+                _farmlandsSprites[context.pos].GetComponent<FarmlandSpriteObject>().SetSeedSprite(context.seedId, context.currentProgress);
                 break;
             default:
                 return;
@@ -93,12 +102,12 @@ public class FarmArea : Frameable
             CheckConnectDir(pos, pos + _width, EConnectionDir.Up);
         }
         //LEft Connection Check
-        if (pos / _width != 0)
+        if (pos % _width != 0)
         {
             CheckConnectDir(pos, pos - 1, EConnectionDir.Left);
         }
         //Right Connection Check
-        if (pos / _width != _width - 1)
+        if (pos % _width != _width - 1)
         {
             CheckConnectDir(pos, pos + 1, EConnectionDir.Right);
         }
@@ -112,16 +121,17 @@ public class FarmArea : Frameable
     {
         uint sameState = _farmlands[pos1].StateFlag & _farmlands[pos2].StateFlag;
         uint revDir = GetReverseDir((uint)dir);
+
         if ((sameState & (uint)EFarmlandState.SoiledLand) != 0)
         {
-            _farmlands[pos2].SetConnect(revDir, EFarmlandState.SoiledLand);
-            _farmlands[pos1].SetConnect((uint)dir, EFarmlandState.SoiledLand);
+            _farmlands[pos1].SetConnectSoil((uint)dir);
+            _farmlands[pos2].SetConnectSoil((revDir));
         }
 
         if ((sameState & (uint)EFarmlandState.MoistLand) != 0)
         {
-            _farmlands[pos2].SetConnect(revDir, EFarmlandState.MoistLand);
-            _farmlands[pos1].SetConnect((uint)dir, EFarmlandState.MoistLand);
+            _farmlands[pos2].SetConnectMoist(revDir);
+            _farmlands[pos1].SetConnectMoist((uint)dir);
         }
     }
 
@@ -146,18 +156,17 @@ public class FarmArea : Frameable
     {
         switch(context.state)
         {
-            case EFarmlandState.IdleLand:
-                break;
+           
             case EFarmlandState.SoiledLand:
                 _farmlandsSprites[context.pos].GetComponent<FarmlandSpriteObject>().SetSoilSprite(context.connectionDir);
                 break;
-            case EFarmlandState.SeededLand:
-  
-                break;
+            
             case EFarmlandState.MoistLand:
                 _farmlandsSprites[context.pos].GetComponent<FarmlandSpriteObject>().SetMoistSprite(context.connectionDir);
                 break;
-            case EFarmlandState.GrownUp:
+
+            default:
+                //나와선안됨.
                 break;
         }
         UDebug.Print($"Result State : {_farmlands[context.pos].State}");

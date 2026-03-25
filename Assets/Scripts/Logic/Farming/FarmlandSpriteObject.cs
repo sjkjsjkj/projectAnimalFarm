@@ -27,7 +27,9 @@ public class FarmlandSpriteObject : BaseMono
     #endregion
     public void SetSeedSprite(string id, int grownProgress = 0)
     {
-        _seedSprite.sprite = FarmlandSpriteProvider.Ins.GetSeedSprite(id, grownProgress);
+        Sprite changeSprite = FarmlandSpriteProvider.Ins.GetSeedSprite(id, grownProgress);
+        UDebug.Print($"changeSprite Info\nSprite Name : {changeSprite.name}");
+        _seedSprite.sprite = changeSprite;
     }
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
     private void Awake()

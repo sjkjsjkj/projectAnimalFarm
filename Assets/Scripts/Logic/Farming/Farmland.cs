@@ -18,12 +18,13 @@ public class Farmland
     private int _currentTick;         //현재 얼마나 Tick 이 지났는가.
     private float _tickTimer = 0;
 
-    private uint _connectDir;           //현재 주변에 경작지들과 같은 상태라면 (soiled 와 moist만 비교)스프라이트 연결. 이것은 현재 연결된 방향들을 Flag 형식으로 나타낸 것.
+    private uint _soiledConnectDir;           //현재 주변에 경작지들과 같은 상태라면 (soiled 와 moist만 비교)스프라이트 연결. 이것은 현재 연결된 방향들을 Flag 형식으로 나타낸 것.
+    private uint _moistConnectDir;
     private uint _stateFlag;            //state를 Flag 형태로 나타낸 것. 주변 경작지의 상태 비교에 사용. 
     #endregion
 
     #region ─────────────────────────▶  외부 공개 변수  ◀─────────────────────────
-    public uint ConnectDir => _connectDir;
+    public uint ConnectDir => _soiledConnectDir;
     public EFarmlandState State => _state;
     public uint StateFlag => _stateFlag;
 
@@ -39,7 +40,7 @@ public class Farmland
         _seededId = "";
         _grownUpTick = 0;
         _currentTick = 0;
-        _connectDir = 0;
+        _soiledConnectDir = _moistConnectDir = 0;
         _state = EFarmlandState.IdleLand;
         _stateFlag |= (uint)EFarmlandState.IdleLand;
     }
@@ -130,7 +131,7 @@ public class Farmland
         {
             return;
         }
-        UDebug.Print($"Current Grown Progress : {_currentTick} | Full Grown Count : {_grownUpTick} ");
+   
 
         _tickTimer += deltaTime;
 
@@ -142,6 +143,7 @@ public class Farmland
     private void GrowUp()
     {
         _tickTimer = 0;
+        UDebug.Print($"PrevGrowProgress : {_currentTick} | Full Grown Count : {_grownUpTick} ");
 
         if (++_currentTick >= K.FARMLAND_MAX_GROWNPROGRESS)
         {
@@ -150,19 +152,28 @@ public class Farmland
             return;
         }
 
+        UDebug.Print($"CurGrowProgress : {_currentTick} | Full Grown Count : {_grownUpTick} ");
+
         OnFarmStateChange?.Invoke(new FarmStateChangeStruct(_state, _pos, _seededId, _currentTick));
     }
-    public void SetConnect(uint connection)
+    public void SetConnectSoil()
     {
-        _connectDir |= connection;
+        OnFarmlandConnetionChange?.Invoke(new FarmlandConnetionChangeStruct(0, EFarmlandState.SoiledLand, _pos));
+    }
+    public void SetConnectSoil(uint connection)
+    {
+        _soiledConnectDir |= connection;
+        OnFarmlandConnetionChange?.Invoke(new FarmlandConnetionChangeStruct(_soiledConnectDir, EFarmlandState.SoiledLand, _pos));
+    }
+    public void SetConnectMoist()
+    {
+        OnFarmlandConnetionChange?.Invoke(new FarmlandConnetionChangeStruct(0, EFarmlandState.MoistLand, _pos));
+    }
+    public void SetConnectMoist(uint connection)
+    {
+        _moistConnectDir |= connection;
+        OnFarmlandConnetionChange?.Invoke(new FarmlandConnetionChangeStruct(_soiledConnectDir, EFarmlandState.MoistLand, _pos));
+    }
 
-        OnFarmlandConnetionChange?.Invoke(new FarmlandConnetionChangeStruct(_connectDir, _state, _pos));
-    }
-    public void SetConnect(uint connection, EFarmlandState state)
-    {
-        _connectDir |= connection;
-        //Todo 스위치로 state에 맞는 스프라이트를 불러오는 이벤트
-        OnFarmlandConnetionChange?.Invoke(new FarmlandConnetionChangeStruct(_connectDir, state, _pos));
-    }
     #endregion
 }

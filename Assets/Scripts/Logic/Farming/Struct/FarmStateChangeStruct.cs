@@ -14,4 +14,8 @@ public struct FarmStateChangeStruct
         this.seedId = seedId;
         currentProgress = currentGrownProgress;
     }
+    public void ShowStruct()
+    {
+        UDebug.Print($"State : {state} \nPos : {pos} \nseedId : {seedId} \nCurrentProgress : {currentProgress}");
+    }
 }

@@ -1819,10 +1819,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: FarmlandSpriteProvider
       objectReference: {fileID: 0}
-    - target: {fileID: 1914269728707056049, guid: 87c7ec707b7aa2642ba841f8c4001884, type: 3}
-      propertyPath: _strawBerrySprites.Array.data[0]
-      value: 
-      objectReference: {fileID: 612252541, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
     - target: {fileID: 6431975052806251944, guid: 87c7ec707b7aa2642ba841f8c4001884, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.1659255
