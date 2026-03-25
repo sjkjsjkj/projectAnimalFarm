@@ -12,7 +12,7 @@ public enum EHarvest
     BlueBerry=6,
     Radish=7,
     Cabbage=8,
-    WhatIsThis=9,
+    Cauliflower=9,
     Rice=10,
     Broccoli=11
 }

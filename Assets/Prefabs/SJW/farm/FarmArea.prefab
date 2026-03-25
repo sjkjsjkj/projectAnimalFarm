@@ -45,6 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _farmSpritePrefab: {fileID: 8224682955965169805, guid: bc28788ccf6dbe64bb7f4430e95dd9b0, type: 3}
-  _width: 10
+  _width: 7
   _height: 5
-  _tickTime: 10
+  _grownTime: 3

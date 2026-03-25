@@ -73,11 +73,9 @@ public class FarmlandSpriteProvider : Singleton<FarmlandSpriteProvider>
         _seedSprites.Add(EHarvest.BlueBerry.ToSafeString(), _blueBerrySprites);
         _seedSprites.Add(EHarvest.Radish.ToSafeString(), _radishSprites);
         _seedSprites.Add(EHarvest.Cabbage.ToSafeString(), _cabbageSprites);
-        _seedSprites.Add(EHarvest.WhatIsThis.ToSafeString(), _whatSprites);
+        _seedSprites.Add(EHarvest.Cauliflower.ToSafeString(), _whatSprites);
         _seedSprites.Add(EHarvest.Rice.ToSafeString(), _riceSprites);
         _seedSprites.Add(EHarvest.Broccoli.ToSafeString(), _broccoliSprites);
-
-        
     }
     #endregion
 }

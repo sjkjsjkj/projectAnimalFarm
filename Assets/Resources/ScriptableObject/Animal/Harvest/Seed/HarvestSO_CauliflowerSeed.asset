@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a1514dbd14d89d54b9cea752aeec3f35, type: 3}
-  m_Name: HarvestSO_Radish
+  m_Name: HarvestSO_CauliflowerSeed
   m_EditorClassIdentifier: 
-  _id: Radish
-  _icon: {fileID: 2301922973543145194, guid: aa25ad7ff66db5146bd0674977bca7a2, type: 3}
-  _name: "\uBB34"
-  _description: "\uBB34 \uC785\uB2C8\uB2E4."
-  _maxStack: 64
-  _idEnum: 7
+  _id: Cauliflower
+  _type: 3
+  _name: "\uCF5C\uB9AC\uD50C\uB77C\uC6CC"
+  _description: "\uCF5C\uB9AC\uD50C\uB77C\uC6CC"
+  _image: {fileID: 783019644, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  _prefab: {fileID: 0}
+  _idEnum: 9
   _grownTime: 10
