@@ -3,7 +3,7 @@
 /// <summary>
 /// 경작지들 전체를 관리하는 클래스
 /// </summary>
-public class FarmArea : BaseMono
+public class FarmArea : Frameable
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("프리팹")]
@@ -17,46 +17,40 @@ public class FarmArea : BaseMono
     [SerializeField] private int _height;
 
     [Header("테스트")]
-    [SerializeField] private float _tickTime = 10.0f;   // 테스트용
     [SerializeField] private int _grownTime = 3;
 #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private Farmland[] _farmlands;
     private GameObject[] _farmlandsSprites;
-    private float _timer=0;
-    //private float _tickTime = 10.0f;                  //테스트 끝나면 이걸 활성화.              
-    #endregion
-
-    #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
-
+      
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
     //경작지를 생성하는 메서드
     private void MakeFarmlands()
     {
-       
         for (int i=0; i< _height; i++)
         {
             for(int j=0; j<_width; j++)
             {
-                _farmlands[i * _height + j] = new Farmland(i * _height + j);
+                _farmlands[i * _width + j] = new Farmland(i * _width + j);
 
-                EventBus<OnFarmStateChange>.Unsubscribe(SetFarmLandState);
-                EventBus<OnFarmStateChange>.Subscribe(SetFarmLandState);
+                _farmlands[i * _width + j].OnFarmStateChange -= SetFarmLandState;
+                _farmlands[i * _width + j].OnFarmStateChange += SetFarmLandState;
 
-                EventBus<OnFarmlandConnetionChange>.Unsubscribe(SetFarmLandSprite);
-                EventBus<OnFarmlandConnetionChange>.Subscribe(SetFarmLandSprite);
+                _farmlands[i * _width + j].OnFarmlandConnetionChange -= SetFarmLandSprite;
+                _farmlands[i * _width + j].OnFarmlandConnetionChange += SetFarmLandSprite;
 
-                _farmlandsSprites[i * _height + j] = Instantiate(_farmSpritePrefab);
-                _farmlandsSprites[i * _height + j].transform.SetParent(this.transform);
-                _farmlandsSprites[i * _height + j].transform.localPosition = new Vector3(i, j);
+                _farmlandsSprites[i * _width + j] = Instantiate(_farmSpritePrefab);
+                _farmlandsSprites[i * _width + j].transform.SetParent(this.transform);
+                _farmlandsSprites[i * _width + j].transform.localPosition = new Vector3(i, j);
             }
         }
     }
+
     //경작지의 상태가 변화할 때 실행되는 이벤트 액션.
-    private void SetFarmLandState(OnFarmStateChange context)
+    private void SetFarmLandState(FarmStateChangeStruct context)
     {
         //변경된 경작지의 상태 불러옴.
         EFarmlandState state = context.state;
@@ -89,24 +83,24 @@ public class FarmArea : BaseMono
     private void CheckConnectionDirNearFarmland(int pos)
     {
         //Down Connection Check
-        if (pos % _height != 0)
+        if (pos / _width != 0)
         {
-            CheckConnectDir(pos, pos - 1, EConnectionDir.Down);
+            CheckConnectDir(pos, pos - _width, EConnectionDir.Down);
         }
         //Up Connection Check
-        if (pos % _height != _height - 1)
+        if (pos / _width != _height - 1)
         {
-            CheckConnectDir(pos, pos + 1, EConnectionDir.Up);
+            CheckConnectDir(pos, pos + _width, EConnectionDir.Up);
         }
         //LEft Connection Check
-        if (pos / _height != 0)
+        if (pos / _width != 0)
         {
-            CheckConnectDir(pos, pos - _height, EConnectionDir.Left);
+            CheckConnectDir(pos, pos - 1, EConnectionDir.Left);
         }
         //Right Connection Check
-        if (pos / _height != _width - 1)
+        if (pos / _width != _width - 1)
         {
-            CheckConnectDir(pos, pos + _height, EConnectionDir.Right);
+            CheckConnectDir(pos, pos + 1, EConnectionDir.Right);
         }
 
         //추가기능
@@ -140,16 +134,15 @@ public class FarmArea : BaseMono
         mask1 = 0x5;        //0101
         mask2 = 0xA;       //1010
 
-        mask1 = mask1 & dir; //0101
-        mask2 = mask2 & dir; //0010 ?? 왜 0임=?
+        mask1 = mask1 & dir;
+        mask2 = mask2 & dir; 
 
-        //1010      //0001    > 1011
         revDir = mask1 << 1 | mask2 >> 1;
 
         return revDir;
     }
     //주변 경작지의 상태의 의해 스프라이트가 변경될 때 실행되는 이벤트 액션
-    private void SetFarmLandSprite(OnFarmlandConnetionChange context)
+    private void SetFarmLandSprite(FarmlandConnetionChangeStruct context)
     {
         switch(context.state)
         {
@@ -178,16 +171,20 @@ public class FarmArea : BaseMono
         {
             for (int j = 0; j < _width; j++)
             {
-                _farmlands[i * _height + j].Tick();
+                _farmlands[i * _width + j].Tick(Time.deltaTime);
             }
         }
-        _timer = 0;
     }
 
     //테스트용.
     public void TestFunction(int pos, string seedId)
     {
         _farmlands[pos].Interact(_grownTime, seedId); // 인벤토리가 생기면 전달인수는 모두 제거 예정.
+    }
+    public override EPriority Priority => EPriority.Last;
+    public override void ExecuteFrame()
+    {
+        OnTick();
     }
     #endregion
 
@@ -198,15 +195,6 @@ public class FarmArea : BaseMono
         _farmlandsSprites = new GameObject[_width * _height];
 
         MakeFarmlands();
-    }
-    private void Update()
-    {
-        _timer += Time.deltaTime;
-
-        if(_timer >= _tickTime)
-        {
-            OnTick();
-        }
     }
     #endregion
 }

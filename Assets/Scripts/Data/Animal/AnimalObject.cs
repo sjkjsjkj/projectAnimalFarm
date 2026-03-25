@@ -26,10 +26,11 @@ public class AnimalObject : InfoObject
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     public AnimalData Data => _data;
+
+    
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-    //
     private void SetState(EAnimalState nextState)
     {
         EAnimalState prevState = _state;
@@ -70,12 +71,12 @@ public class AnimalObject : InfoObject
 
         _data = new AnimalData(tempSO);
 
-        EventBus<OnHungry>.Unsubscribe(SetHungry);
-        EventBus<OnHungry>.Subscribe(SetHungry);
+        _data.OnHungry -= SetHungry;
+        _data.OnHungry += SetHungry;
 
         _animator.runtimeAnimatorController = tempSO.Anim;
     }
-    private void SetHungry(OnHungry context)
+    private void SetHungry()
     {
         SetState(EAnimalState.MoveToEat);
     }
@@ -170,24 +171,11 @@ public class AnimalObject : InfoObject
         //거짓이라면 즉시 RandomAction();
         //예외처리 해야함. 먹이를 먹으러 가는데 가는 곳이 이동불가다? > RandomAction()으로 초기화도 안됨.
     }
-    #endregion
-
-    #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
-    private void Awake()
-    {
-        _spRenderer = GetComponent<SpriteRenderer>();
-        _animator = GetComponent<Animator>();
-
-        UDebug.IsNull(_spRenderer, LogType.Warning);
-        UDebug.IsNull(_animator, LogType.Warning);
-    }
-
-    private void Update()
+    public override EPriority Priority => EPriority.Last;
+    public override void ExecuteFrame()
     {
         _tickTimer += Time.deltaTime;
         _actionTimer += Time.deltaTime;
-        
-        
 
         if (_tickTimer >= _tickInterval)
         {
@@ -195,14 +183,14 @@ public class AnimalObject : InfoObject
             _data.Tick();
         }
 
-        if(_actionTimer >= _actionInterval)
+        if (_actionTimer >= _actionInterval)
         {
             UDebug.Print($"랜덤 액션 발동!");
-            
+
             RandomAction();
         }
 
-        switch(_state)
+        switch (_state)
         {
             case EAnimalState.MoveToEat:
                 UpdateMoveToEat();
@@ -221,9 +209,16 @@ public class AnimalObject : InfoObject
         }
 
     }
-    private void OnEnable()
+    #endregion
+
+    #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
+    private void Awake()
     {
-        
+        _spRenderer = GetComponent<SpriteRenderer>();
+        _animator = GetComponent<Animator>();
+
+        UDebug.IsNull(_spRenderer, LogType.Warning);
+        UDebug.IsNull(_animator, LogType.Warning);
     }
     #endregion
 

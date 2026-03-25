@@ -19,6 +19,7 @@ public class AnimalData
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     public string Name => _animalName;
     public int Age => _age;
+    public event Action OnHungry;
     #endregion
 
     #region ─────────────────────────▶ 생성자 ◀─────────────────────────
@@ -49,7 +50,6 @@ public class AnimalData
             _hunger = MathF.Max(0, _hunger - _foodConsumeAmount);
             UDebug.Print($"after hunger = {_hunger}");
 
-            
             if (_hunger <= 0)
             {
                 Dead();
@@ -59,7 +59,7 @@ public class AnimalData
             if(_hunger <= K.ANIMAL_HUNGER_CONDITION)
             {
                 UDebug.Print($"{Name} is so Hungry");
-                OnHungry.Publish();
+                OnHungry?.Invoke();
             }
         }
     }
