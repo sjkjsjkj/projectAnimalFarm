@@ -184,7 +184,7 @@ public class PlayerController2D : BaseMono
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
     private void Awake()
-    {
+    {        
         CacheComponents();
         CacheAnimatorHashes();
     }
