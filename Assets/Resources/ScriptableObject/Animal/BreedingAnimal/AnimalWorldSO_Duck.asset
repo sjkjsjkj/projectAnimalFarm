@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef1d2ac67256e74428ff49afae6bb922, type: 3}
+  m_Name: AnimalWorldSO_Duck
+  m_EditorClassIdentifier: 
+  _id: World_Animal_Duck
+  _type: 11
+  _name: "\uC624\uB9AC"
+  _description: "\uB4A4\uB6B1\uAC70\uB9AC\uB294 \uAC78\uC74C\uAC78\uC774\uC640 \uC7A5\uB09C\uAE30
+    \uAC00\uB4DD\uD55C \uC6B8\uC74C\uC18C\uB9AC\uAC00 \uB9E4\uB825\uC801\uC785\uB2C8\uB2E4."
+  _image: {fileID: 1887488111215316913, guid: ffdf05a98ba1ecf4da03968d89936449, type: 3}
+  _prefab: {fileID: 0}
+  _rarity: 1
+  _size: {x: 1, y: 1}
+  _animController: {fileID: 9100000, guid: 9a1d938c82d2cae41b15e64833bf611c, type: 2}
+  _needFood: 1
+  _feedMinRarity: 1
+  _tickFeedAmount: 0.1
+  _maxFeedAmount: 5000
+  _productId: Item_Product_DuckEgg
+  _productCountMin: 1
+  _productCountMax: 1
+  _productTime: 100

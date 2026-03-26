@@ -40,15 +40,47 @@ public static class UObject
     }
 
     /// <summary>
+    /// 프리팹을 생성합니다.
+    /// </summary>
+    /// <param name="prefab">프리펩 게임 오브젝트</param>
+    /// <param name="position">좌표</param>
+    /// <param name="rotation">회전</param>
+    /// <param name="parent">부모 오브젝트</param>
+    /// <returns></returns>
+    public static T Spawn<T>
+        (T prefab, Vector3 position, Quaternion rotation, Transform parent = null)
+        where T : UnityEngine.Object
+    {
+        if (prefab == null)
+        {
+            return null;
+        }
+        return UnityEngine.Object.Instantiate(prefab, position, rotation, parent);
+    }
+
+    /// <summary>
     /// 게임 오브젝트를 파괴합니다.
     /// </summary>
     /// <param name="go">게임 오브젝트</param>
-    /// <param name="delay">f초 후 파괴</param>
+    /// <param name="delay">시간이 지난 후 파괴(초)</param>
     public static void Destroy(GameObject go, float delay = 0f)
     {
         if (go != null)
         {
             UnityEngine.Object.Destroy(go, delay);
+        }
+    }
+
+    /// <summary>
+    /// 프리팹을 파괴합니다.
+    /// </summary>
+    /// <param name="prefab">프리팹</param>
+    /// <param name="delay">시간이 지난 후 파괴(초)</param>
+    public static void Destroy<T>(T prefab, float delay = 0f) where T : Component
+    {
+        if (prefab != null)
+        {
+            UnityEngine.Object.Destroy(prefab.gameObject, delay);
         }
     }
 

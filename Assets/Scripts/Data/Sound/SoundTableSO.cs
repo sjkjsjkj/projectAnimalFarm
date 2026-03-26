@@ -14,9 +14,23 @@ public class SoundTableSO : ScriptableObject
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     /// <summary>
+    /// 사운드 SO를 문자열 ID로 가져옵니다.
+    /// </summary>
+    /// <param name="id">오디오 ID</param>
+    public SoundSO GetSO(string id)
+    {
+        if (_soundDict.TryGetValue(id, out SoundSO so))
+        {
+            return so;
+        }
+        UDebug.Print($"존재하지 않는 ID로 사운드 SO 인스턴스를 가져오려 시도했습니다.", LogType.Assert);
+        return null;
+    }
+
+    /// <summary>
     /// 클립을 문자열 ID로 가져옵니다.
     /// </summary>
-    /// <param name="id">클립 ID</param>
+    /// <param name="id">오디오 ID</param>
     public AudioClip GetClip(string id)
     {
         if (_soundDict.TryGetValue(id, out SoundSO so))
@@ -30,7 +44,7 @@ public class SoundTableSO : ScriptableObject
     /// <summary>
     /// 해당 클립의 개발자가 설정한 볼륨을 가져옵니다.
     /// </summary>
-    /// <param name="id">클립 ID</param>
+    /// <param name="id">오디오 ID</param>
     public float GetVolume(string id)
     {
         if (_soundDict.TryGetValue(id, out SoundSO so))
@@ -44,7 +58,7 @@ public class SoundTableSO : ScriptableObject
     /// <summary>
     /// 해당 클립의 최종 볼륨을 계산해서 가져옵니다.
     /// </summary>
-    /// <param name="id">클립 ID</param>
+    /// <param name="id">오디오 ID</param>
     /// <param name="volume">사용자 볼륨 설정</param>
     public float CalcVolume(string id, float volume)
     {
@@ -76,7 +90,7 @@ public class SoundTableSO : ScriptableObject
     }
     #endregion
 
-    #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
+    #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
     // 인스펙터의 리스트로 SoundSO를 담는 딕셔너리 작성
     private void BuildSoundDict()
     {
