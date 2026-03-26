@@ -20,8 +20,19 @@ public class BootManager : MonoBehaviour
     private IEnumerator CoInitialize(GameObject root)
     {
         UDebug.Print("BootSequence : 초기화 중 ....");
+        // 매니저 생성 및 초기화
         var frameManager = root.AddComponent<FrameManager>();
         frameManager.Initialize();
+        var inputManager = root.AddComponent<InputManager>();
+        inputManager.Initialize();
+        var tileIdToState = root.AddComponent<TileIdToState>();
+        tileIdToState.Initialize();
+        var tileManager = root.AddComponent<TileManager>();
+        tileManager.Initialize();
+        var gameManager = root.AddComponent<GameManager>();
+        gameManager.Initialize();
+
+        // 
         yield return null;
         UDebug.Print("BootSequence : 초기화 완료");
         _co = null;

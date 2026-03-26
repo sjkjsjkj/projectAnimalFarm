@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using UnityEngine;
 /// <summary>
 /// 배열과 리스트를 다루는 유틸리티 클래스입니다.
 /// </summary>
@@ -18,12 +17,12 @@ public static class UArray
             return false;
         }
         long newSize = (long)(targetArray.Length * multiplySize);
+        if (newSize <= 0)
+        {
+            return false; // 목표 크기가 0 이하
+        }
         if (int.MaxValue < newSize)
         {
-            if (newSize <= 0)
-            {
-                return false; // 목표 크기가 0 이하
-            }
             if (targetArray.Length == int.MaxValue)
             {
                 return false; // 배열 확장 불가

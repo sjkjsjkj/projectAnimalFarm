@@ -1,5 +1,3 @@
-using UnityEngine;
-
 /// <summary>
 /// 
 /// </summary>
@@ -18,6 +16,5 @@ public readonly struct #SCRIPTNAME#
     {
         EventBus<#SCRIPTNAME#>.Publish(new #SCRIPTNAME#(number));
     }
-    #endregion
 }
 #ROOTNAMESPACEEND#

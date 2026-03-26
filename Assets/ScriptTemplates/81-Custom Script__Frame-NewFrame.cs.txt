@@ -4,7 +4,7 @@ using UnityEngine;
 /// 클래스의 설계 의도입니다.
 /// </summary>
     #ROOTNAMESPACEBEGIN#
-public class #SCRIPTNAME# : IFrameable
+public class #SCRIPTNAME# : Frameable
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     //[Header("주제")]

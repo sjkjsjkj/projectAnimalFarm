@@ -6,6 +6,7 @@
 public abstract class Singleton<T> : BaseMono where T : BaseMono
 {
     private static T _instance = null;
+    private static bool _isQuitting = false;
 
     public static T Ins
     {
@@ -13,12 +14,17 @@ public abstract class Singleton<T> : BaseMono where T : BaseMono
         {
             if (_instance == null)
             {
+                // 플레이 모드가 종료 중
+                if (_isQuitting)
+                {
+                    UDebug.Print($"글로벌 싱글톤({typeof(T).ToString()})이 호출당했지만 앱 종료중이므로 무시합니다.");
+                    return null;
+                }
                 // 씬에 있는 싱글톤 컴포넌트를 우선 탐색
                 T singleton = FindAnyObjectByType<T>();
                 if (singleton != null)
                 {
                     _instance = singleton;
-                    DontDestroyOnLoad(singleton.gameObject);
                     UDebug.Print($"싱글톤({singleton.gameObject.name}<{typeof(T).ToString()}>)을 탐색하여 등록했습니다.");
                 }
                 // 씬에 배치되어 있지 않으므로 생성
@@ -26,7 +32,6 @@ public abstract class Singleton<T> : BaseMono where T : BaseMono
                 {
                     GameObject go = new GameObject(typeof(T).ToString());
                     _instance = go.AddComponent<T>();
-                    DontDestroyOnLoad(go);
                     UDebug.Print($"인스턴스가 호출당하여 싱글톤({go.name}<{typeof(T).ToString()}>)을 생성했습니다.");
                 }
                 (_instance as Singleton<T>)?.Initialize();
@@ -52,7 +57,6 @@ public abstract class Singleton<T> : BaseMono where T : BaseMono
             return;
         }
         _instance = this as T;
-        DontDestroyOnLoad(gameObject);
         UDebug.Print($"싱글톤({gameObject.name}<{typeof(T).ToString()}>)이 Awake를 통해 등록했습니다.");
         (_instance as Singleton<T>)?.Initialize();
     }
@@ -67,5 +71,11 @@ public abstract class Singleton<T> : BaseMono where T : BaseMono
             _instance = null;
             UDebug.Print($"싱글톤 인스턴스({typeof(T).ToString()})를 청소했습니다.");
         }
+    }
+
+    // 플레이 모드가 종료될 경우 호출
+    private void OnApplicationQuit()
+    {
+        _isQuitting = true;
     }
 }

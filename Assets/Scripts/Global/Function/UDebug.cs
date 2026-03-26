@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
+using System.IO;
 
 /// <summary>
 /// 디버깅 기능을 제공하는 유틸리티 클래스입니다.
@@ -21,7 +22,7 @@ public static class UDebug
     private const bool ENABLE_PAUSE = false;
 #endif
 
-    private static readonly HashSet<string> _logHistory = new HashSet<string>();
+    private static readonly HashSet<string> _logHistory = new();
     private static GUIStyle _rectStyle;
 
     // 플레이 모드가 시작될 때 자동으로 로그 기록을 초기화합니다.
@@ -29,30 +30,40 @@ public static class UDebug
     private static void ResetHistory() => _logHistory.Clear();
 
     // 매개변수를 받아 디버그 로그를 출력합니다.
-    private static void LogInternal(string message, string file, int line, LogType type = LogType.Log, bool once = ENABLE_ONCE)
+    [HideInCallstack]
+    private static void LogInternal(string msg, string file, int line, LogType type = LogType.Log, bool once = ENABLE_ONCE)
     {
         if (!ENABLE_LOG)
         {
             return;
         }
+        // 일회성 검사
         if (once)
         {
             string key = file + line;
-            if (_logHistory.Contains(key)) return;
+            if (_logHistory.Contains(key))
+            {
+                return;
+            }
             _logHistory.Add(key);
         }
+        // 메시지 조립
+        string sColor = GetColorByLogType(type);
+        string fileName = Path.GetFileName(file);
+        msg = $"<color={sColor}>[{fileName}" + msg;
+        // 유니티 로그 분기
         switch (type)
         {
             case LogType.Error:
             case LogType.Assert:
             case LogType.Exception:
-                UnityEngine.Debug.LogError(message);
+                UnityEngine.Debug.LogError(msg);
                 break;
             case LogType.Warning:
-                UnityEngine.Debug.LogWarning(message);
+                UnityEngine.Debug.LogWarning(msg);
                 break;
             default:
-                UnityEngine.Debug.Log(message);
+                UnityEngine.Debug.Log(msg);
                 break;
         }
         if (ENABLE_PAUSE)
@@ -60,12 +71,32 @@ public static class UDebug
             UnityEngine.Debug.Break();
         }
     }
+
+    // 로그 타입을 받아서 문자열 색깔을 반환
+    private static string GetColorByLogType(LogType type)
+    {
+        switch (type)
+        {
+            case LogType.Exception:
+                return "red";
+            case LogType.Assert:
+                return "red";
+            case LogType.Error:
+                return "red";
+            case LogType.Warning:
+                return "yellow";
+            case LogType.Log:
+                return "cyan";
+        }
+        return "white";
+    }
     #endregion
 
     #region ─────────────────────────▶ 로그 함수 ◀─────────────────────────
     /// <summary>
     /// 오브젝트가 Null 또는 Fake Null일 경우 True를 반환하고 로그를 출력합니다.
     /// </summary>
+    [HideInCallstack]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsNull<T>(
         T obj,
@@ -87,7 +118,7 @@ public static class UDebug
         // 로그
         if (isNull && ENABLE_LOG)
         {
-            string msg = $"<color=red>[Null]</color> 오브젝트({objName})가 Null입니다.";
+            string msg = $":Null]</color> 오브젝트({objName})가 Null입니다.";
             LogInternal(msg, file, line, logType);
         }
         return isNull;
@@ -96,11 +127,12 @@ public static class UDebug
     /// <summary>
     /// 조건이 True일 경우 True를 반환하고 로그를 출력합니다.
     /// </summary>
+    [HideInCallstack]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsTrue(
         bool condition,
         LogType logType = LogType.Warning,
-        [CallerArgumentExpression("condition")] string message = "",
+        [CallerArgumentExpression("condition")] string msg = "",
         [CallerFilePath] string file = "",
         [CallerLineNumber] int line = 0)
     {
@@ -108,7 +140,8 @@ public static class UDebug
         {
             if (ENABLE_LOG)
             {
-                LogInternal($"<color=red>[True]</color> 조건식({message})이 True입니다.", file, line, logType);
+                msg = $":True]</color> 조건식({msg})이 참입니다.";
+                LogInternal(msg, file, line, logType);
             }
             return true;
         }
@@ -118,11 +151,12 @@ public static class UDebug
     /// <summary>
     /// 조건이 False일 경우 True를 반환하고 로그를 출력합니다.
     /// </summary>
+    [HideInCallstack]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsFalse(
         bool condition,
         LogType logType = LogType.Warning,
-        [CallerArgumentExpression("condition")] string message = "",
+        [CallerArgumentExpression("condition")] string msg = "",
         [CallerFilePath] string file = "",
         [CallerLineNumber] int line = 0)
     {
@@ -130,7 +164,8 @@ public static class UDebug
         {
             if (ENABLE_LOG)
             {
-                LogInternal($"<color=red>[False]</color> 조건식({message})이 False입니다.", file, line, logType);
+                msg = $":False]</color> 조건식({msg})이 부정입니다.";
+                LogInternal(msg, file, line, logType);
             }
             return true;
         }
@@ -140,44 +175,50 @@ public static class UDebug
     /// <summary>
     /// 로그를 출력합니다.
     /// </summary>
+    [HideInCallstack]
     [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
     public static void Print(
-        object message,
+        object msg,
         LogType logType = LogType.Log,
         [CallerFilePath] string file = "",
         [CallerLineNumber] int line = 0)
     {
-        LogInternal($"<color=cyan>[Log]</color> {message}", file, line, logType);
+        string sMsg = $":Log]</color> {msg}";
+        LogInternal(sMsg, file, line, logType);
     }
 
     /// <summary>
     /// 로그를 출력합니다. (log 변수 편의성)
     /// </summary>
+    [HideInCallstack]
     [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
     public static void Log(
         bool printLog,
-        object message,
+        object msg,
         LogType logType = LogType.Log,
         [CallerFilePath] string file = "",
         [CallerLineNumber] int line = 0)
     {
         if (printLog)
         {
-            LogInternal($"<color=cyan>[Log]</color> {message}", file, line, logType);
+            string sMsg = $":Log]</color> {msg}";
+            LogInternal(sMsg, file, line, logType);
         }
     }
 
     /// <summary>
     /// 로그를 출력합니다.
     /// </summary>
+    [HideInCallstack]
     [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
     public static void PrintOnce(
-        object message,
+        object msg,
         LogType logType = LogType.Log,
         [CallerFilePath] string file = "",
         [CallerLineNumber] int line = 0)
     {
-        LogInternal($"<color=cyan>[Log]</color> {message}", file, line, logType, true);
+        string sMsg = $":Log]</color> {msg}";
+        LogInternal(sMsg, file, line, logType, true);
     }
     #endregion
 

@@ -6,6 +6,7 @@
 public abstract class GlobalSingleton<T> : BaseMono where T : BaseMono
 {
     private static T _instance = null;
+    private static bool _isQuitting = false;
 
     public static T Ins
     {
@@ -13,6 +14,12 @@ public abstract class GlobalSingleton<T> : BaseMono where T : BaseMono
         {
             if (_instance == null)
             {
+                // 플레이 모드가 종료 중
+                if (_isQuitting)
+                {
+                    UDebug.Print($"글로벌 싱글톤({typeof(T).ToString()})이 호출당했지만 앱 종료중이므로 무시합니다.");
+                    return null;
+                }
                 // 씬에 있는 싱글톤 컴포넌트를 우선 탐색
                 T globalSingleton = FindAnyObjectByType<T>();
                 if (globalSingleton != null)
@@ -67,5 +74,11 @@ public abstract class GlobalSingleton<T> : BaseMono where T : BaseMono
             _instance = null;
             UDebug.Print($"글로벌 싱글톤 인스턴스({typeof(T).ToString()})를 청소했습니다.");
         }
+    }
+
+    // 플레이 모드가 종료될 경우 호출
+    private void OnApplicationQuit()
+    {
+        _isQuitting = true;
     }
 }

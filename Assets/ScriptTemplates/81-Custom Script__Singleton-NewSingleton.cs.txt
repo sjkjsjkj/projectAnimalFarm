@@ -20,7 +20,7 @@ public class #SCRIPTNAME# : Singleton<#SCRIPTNAME#>
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-    protected override void Initialize() {
+    public override void Initialize() {
         if (_isInitialized)
         {
             return;
