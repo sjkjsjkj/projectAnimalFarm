@@ -100,7 +100,7 @@ public abstract class CInteractableBase2D : MonoBehaviour
 
         if (!CanInteract(interactor, out string failReason))
         {
-            if (!string.IsNullOrEmpty(failReason))
+            if (failReason.HasValue())
             {
                 Debug.Log($"[{name}] 상호작용 실패: {failReason}");
             }

@@ -16,9 +16,8 @@ public class FarmlandSpriteObject : BaseMono
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
 
-    public void SetSoilSprite(int pos, uint connectDir)
+    public void SetSoilSprite(uint connectDir)
     {
-        UDebug.Print($"farmland{pos} : SetSoilSprite | tileConnectionDir : {connectDir}");
         _soilSprite.sprite = FarmlandSpriteProvider.Ins.GetSoilSprite(connectDir);
     }
     public void SetMoistSprite(uint connectDir)
@@ -26,9 +25,11 @@ public class FarmlandSpriteObject : BaseMono
         _moistSprite.sprite = FarmlandSpriteProvider.Ins.GetMoistSprite(connectDir);
     }
     #endregion
-    public void SetSeedSprite(string id)
+    public void SetSeedSprite(string id, int grownProgress = 0)
     {
-       // _seedSprite.sprite = FarmlandSpriteProvider.Ins.GetMoistSprite(id);
+        Sprite changeSprite = FarmlandSpriteProvider.Ins.GetSeedSprite(id, grownProgress);
+        UDebug.Print($"changeSprite Info\nSprite Name : {changeSprite.name}");
+        _seedSprite.sprite = changeSprite;
     }
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
     private void Awake()

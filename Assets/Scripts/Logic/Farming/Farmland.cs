@@ -1,4 +1,6 @@
-﻿/// <summary>
+﻿using System;
+
+/// <summary>
 /// 경작지 각각의 타일의 정보를 담고있는 클래스
 /// 플레이어가 타일의 데이터를 읽어오며 경작 가능여부를 확인할 수 있다면 일반 클래스로, 그렇지 않다면 Mono로 해서 collider Check 방식으로
 /// </summary>
@@ -8,42 +10,58 @@ public class Farmland
     private EFarmlandState _state;       // 땅의 단계  0:기본 흙 | 1: 일궈진 흙 | 2:
     private string _seededId;           //심어진 씨앗의 id
     private int _pos;            //경작지의 배열좌표
-    private float _grownUpTick;
-    private float _currentTick;
-    private uint _connectDir;
+    //Tick
+    //N초 (미정) 마다 식물의 성장 주기를 올리는 역할을 함.
+    //경작지의 상태가 MoistLand 상태일 때에만 증가함.
+    //Idleland > soil(다져진땅) > seeded (씨앗뿌린땅) > MoistLand (물뿌린땅) 의 순서.
+    private int _grownUpTick;         //씨앗이 전부 자랄 때 까지 얼마나 많은 Tick이 지나야 하는가.
+    private int _currentTick;         //현재 얼마나 Tick 이 지났는가.
+    private float _tickTimer = 0;
+
+    private uint _soiledConnectDir;           //현재 주변에 경작지들과 같은 상태라면 (soiled 와 moist만 비교)스프라이트 연결. 이것은 현재 연결된 방향들을 Flag 형식으로 나타낸 것.
+    private uint _moistConnectDir;
+    private uint _stateFlag;            //state를 Flag 형태로 나타낸 것. 주변 경작지의 상태 비교에 사용. 
     #endregion
 
     #region ─────────────────────────▶  외부 공개 변수  ◀─────────────────────────
-    public uint ConnectDir => _connectDir;
+    public uint ConnectDir => _soiledConnectDir;
     public EFarmlandState State => _state;
+    public uint StateFlag => _stateFlag;
+
+    public event Action<FarmStateChangeStruct> OnFarmStateChange;
+    public event Action<FarmlandConnetionChangeStruct> OnFarmlandConnetionChange;
     #endregion
 
     #region ─────────────────────────▶  생성자  ◀─────────────────────────
     public Farmland(int pos)
     {
-        _state = EFarmlandState.IdleLand;
         //경작지의 배열좌표
         _pos = pos;
         _seededId = "";
         _grownUpTick = 0;
         _currentTick = 0;
-        _connectDir = 0;
+        _soiledConnectDir = _moistConnectDir = 0;
+        _state = EFarmlandState.IdleLand;
+        _stateFlag |= (uint)EFarmlandState.IdleLand;
     }
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
     //인터랙트 시도에서 경작지의 상태가 변할 때 불러와질 메서드
+    //private void SetState(EFarmlandState nextState)
     private void SetState(EFarmlandState nextState)
     {
         EFarmlandState beforeState = _state;
 
         _state = nextState;
+        
+        _stateFlag |= (uint)nextState;
 
         //경작지 전체를 관리하는 FarmArea에게 나의 좌표(배열 좌표)와 상태를 전달한다.
-        OnFarmStateChange.Publish(_state,_pos, _seededId);
+        OnFarmStateChange?.Invoke(new FarmStateChangeStruct(_state, _pos, _seededId, _currentTick));
     }
     //외부에서 인터랙트를 시도했을 때 불러와질 메서드
-    public void Interact()
+    public void Interact(int grownTime, string seedid = "" ) //플레이어 및 인벤토리가 제작되면 해당 부분에서 아무것도 받아오지 않아도 됨. 지금은 임시로 씨앗의 정보를 받아 옴.
     {
         UDebug.Print("Interact");
         
@@ -55,13 +73,39 @@ public class Farmland
                 break;
             case EFarmlandState.SoiledLand:
                 UDebug.Print("check2");
-                //인벤토리 확인
+                if(string.IsNullOrEmpty(seedid))
+                {
+                    UDebug.Print("씨앗의 Id가 비어있음. 확인");
+                    return;
+                }
+                if(seedid.CompareTo("None")==0)
+                {
+                    UDebug.Print("씨앗의 Id가 비어있음. 확인");
+                    return;
+                }
+                #region 인벤토리가 생기면 사라질 영역.
+                _seededId = seedid;
+                _grownUpTick = grownTime;
+                //TODO: 인터랙트 시, seedId를 받아오며 시간도 함께 받아옴.
+                #endregion
+
+                #region 인벤토리가 생기면 추가해야 하는 기능들
+                //인벤토리 확인 >
                 //씨앗이 있다면 플레이어의 농사 레벨에 맞는 씨앗인지 확인
                 //레벨에 맞다면 씨앗의 개수 1감소
                 //_seededId 를 해당 씨앗의 id로 설정
+                //_grownTick 을 씨앗의 GrownTime 으로 받아옴.
                 //SetState(SeededLand);
+                #endregion
+
+                SetState(EFarmlandState.SeededLand);
+
+               
+
                 break;
             case EFarmlandState.SeededLand:
+
+                SetState(EFarmlandState.MoistLand);
                 //플레이어의 장비 확인
                 //씨앗의 등급과 플레이어의 장비 등급 비교
                 //플레이어의 장비 등급이 씨앗의 등급 이상이라면
@@ -81,24 +125,55 @@ public class Farmland
         }
     }
     //성장 타이머
-    public void Tick()
+    public void Tick(float deltaTime)
     {
         if(_state != EFarmlandState.MoistLand)
         {
             return;
         }
+   
 
-        if (++_currentTick >= _grownUpTick)
+        _tickTimer += deltaTime;
+
+        if(_tickTimer >= _grownUpTick)
         {
-            SetState(EFarmlandState.GrownUp);
+            GrowUp();
         }
-        
     }
-    public void SetConnect(EConnectionDir connection)
+    private void GrowUp()
     {
-        _connectDir |= (uint)connection;
+        _tickTimer = 0;
+        UDebug.Print($"PrevGrowProgress : {_currentTick} | Full Grown Count : {_grownUpTick} ");
 
-        OnFarmlandConnetionChange.Publish(_connectDir, _state, _pos);
+        if (++_currentTick >= K.FARMLAND_MAX_GROWNPROGRESS)
+        {
+            UDebug.Print($"Full Grown Up Success");
+            SetState(EFarmlandState.GrownUp);
+            return;
+        }
+
+        UDebug.Print($"CurGrowProgress : {_currentTick} | Full Grown Count : {_grownUpTick} ");
+
+        OnFarmStateChange?.Invoke(new FarmStateChangeStruct(_state, _pos, _seededId, _currentTick));
     }
+    public void SetConnectSoil()
+    {
+        OnFarmlandConnetionChange?.Invoke(new FarmlandConnetionChangeStruct(0, EFarmlandState.SoiledLand, _pos));
+    }
+    public void SetConnectSoil(uint connection)
+    {
+        _soiledConnectDir |= connection;
+        OnFarmlandConnetionChange?.Invoke(new FarmlandConnetionChangeStruct(_soiledConnectDir, EFarmlandState.SoiledLand, _pos));
+    }
+    public void SetConnectMoist()
+    {
+        OnFarmlandConnetionChange?.Invoke(new FarmlandConnetionChangeStruct(0, EFarmlandState.MoistLand, _pos));
+    }
+    public void SetConnectMoist(uint connection)
+    {
+        _moistConnectDir |= connection;
+        OnFarmlandConnetionChange?.Invoke(new FarmlandConnetionChangeStruct(_soiledConnectDir, EFarmlandState.MoistLand, _pos));
+    }
+
     #endregion
 }

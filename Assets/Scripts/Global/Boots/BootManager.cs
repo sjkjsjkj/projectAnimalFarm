@@ -29,7 +29,8 @@ public class BootManager : MonoBehaviour
         tileIdToState.Initialize();
         var tileManager = root.AddComponent<TileManager>();
         tileManager.Initialize();
-
+        var gameManager = root.AddComponent<GameManager>();
+        gameManager.Initialize();
 
         // 
         yield return null;

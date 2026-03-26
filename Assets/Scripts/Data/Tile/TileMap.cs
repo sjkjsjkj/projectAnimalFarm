@@ -415,11 +415,6 @@ public class TileMap
         // 완료
         return (startX, endX, startY, endY);
     }
-
-    internal void IsFarmable(object 월드, object 좌표1, object 격자, object 좌표2)
-    {
-        throw new NotImplementedException();
-    }
     #endregion
 
     #region ─────────────────────────▶ 공개 메서드 ◀─────────────────────────

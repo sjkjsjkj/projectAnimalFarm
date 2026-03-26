@@ -69,7 +69,7 @@ public class TileIdToState : GlobalSingleton<TileIdToState>
         }
         // 시트가 비어있음
         string sheetData = csvData.text;
-        if (string.IsNullOrEmpty(sheetData) || string.IsNullOrWhiteSpace(sheetData))
+        if (sheetData.IsEmpty())
         {
             UDebug.Print($"[TileIdToState] 타일 시트 데이터가 존재하지 않습니다.", LogType.Assert);
             return (null, null);

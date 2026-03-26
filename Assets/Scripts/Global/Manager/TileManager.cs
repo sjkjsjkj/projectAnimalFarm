@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 /// <summary>
 /// 모든 타일 맵, 상태를 미리 생성하여 담는 매니저
@@ -28,7 +26,7 @@ public class TileManager : GlobalSingleton<TileManager>
         BuildLogicMap(ref _mainLogicMap, K.TILE_RESOURCE_MAIN_JSON_PATH);
         BuildLogicMap(ref _farmLogicMap, K.TILE_RESOURCE_FARM_JSON_PATH);
         BuildLogicMap(ref _caveLogicMap, K.TILE_RESOURCE_CAVE_JSON_PATH);
-        EventBus<OnSceneChanged>.Subscribe(MapChangeHandle); // OnEnable이 아닌 이곳에서 구독
+        EventBus<OnSceneLoadStart>.Subscribe(MapChangeHandle); // OnEnable이 아닌 이곳에서 구독
         _curLogicMap = _mainLogicMap;
         // ↑ 필요한 초기화 로직 / 부모 클래스에서 자동 실행
         _isInitialized = true;
@@ -36,10 +34,10 @@ public class TileManager : GlobalSingleton<TileManager>
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-    private void MapChangeHandle(OnSceneChanged ctx)
+    private void MapChangeHandle(OnSceneLoadStart ctx)
     {
-        UDebug.Print($"타일 로직 맵을 {_curLogicMap}에서 {ctx.scene}으로 교체합니다.");
-        switch (ctx.scene)
+        UDebug.Print($"타일 로직 맵을 {_curLogicMap}에서 {ctx.nextScene}으로 교체합니다.");
+        switch (ctx.nextScene)
         {
             case EScene.Main:
                 if(_mainLogicMap == null)
@@ -113,7 +111,7 @@ public class TileManager : GlobalSingleton<TileManager>
         }
         // 시트가 비어있음
         string idText = json.text;
-        if (string.IsNullOrEmpty(idText) || string.IsNullOrWhiteSpace(idText))
+        if (idText.IsEmpty())
         {
             UDebug.Print($"Json이 비어있습니다.", LogType.Assert);
             return false;
@@ -164,7 +162,7 @@ public class TileManager : GlobalSingleton<TileManager>
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
     private void OnDisable()
     {
-        EventBus<OnSceneChanged>.Unsubscribe(MapChangeHandle);
+        EventBus<OnSceneLoadStart>.Unsubscribe(MapChangeHandle);
     }
     #endregion
 }

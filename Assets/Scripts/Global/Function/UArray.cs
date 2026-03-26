@@ -17,12 +17,12 @@ public static class UArray
             return false;
         }
         long newSize = (long)(targetArray.Length * multiplySize);
+        if (newSize <= 0)
+        {
+            return false; // 목표 크기가 0 이하
+        }
         if (int.MaxValue < newSize)
         {
-            if (newSize <= 0)
-            {
-                return false; // 목표 크기가 0 이하
-            }
             if (targetArray.Length == int.MaxValue)
             {
                 return false; // 배열 확장 불가

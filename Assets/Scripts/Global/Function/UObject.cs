@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// 게임 오브젝트를 다루는 유틸리티 클래스입니다.
@@ -136,7 +134,7 @@ public static class UObject
     }
 
     /// <summary>
-    /// 씬 전체에서 특정 컴포넌트를 찾습니다.
+    /// 씬 전체에서 특정 게임 오브젝트를 찾습니다.
     /// </summary>
     /// <param name="name">게임 오브젝트</param>
     /// <returns></returns>

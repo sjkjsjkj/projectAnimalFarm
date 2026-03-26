@@ -1,0 +1,146 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &937513175643945821
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6431975052806251944}
+  - component: {fileID: 1914269728707056049}
+  m_Layer: 0
+  m_Name: FarmlandSpriteProvider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6431975052806251944
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 937513175643945821}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.1659255, y: 0.7747766, z: 200.63893}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1914269728707056049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 937513175643945821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2753733f459b7884491e76a724326f4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soilSprites:
+  - {fileID: -1028571424, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
+  - {fileID: 812602053, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
+  - {fileID: 2574884002043272322, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
+  - {fileID: 1630809944, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
+  - {fileID: 905253284, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
+  - {fileID: 1445869566, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
+  - {fileID: -2815178587732736158, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
+  - {fileID: 1444516583, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
+  - {fileID: -700114834, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
+  - {fileID: -46978941, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
+  - {fileID: 2656985817402111944, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
+  - {fileID: -1050807823, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
+  - {fileID: 769715236, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
+  - {fileID: 542892476, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
+  - {fileID: -1927231296936835361, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
+  - {fileID: 386163821, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
+  _moistSprites:
+  - {fileID: 17301312, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
+  - {fileID: -1218794161, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
+  - {fileID: -1026969265, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
+  - {fileID: 1485351849, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
+  - {fileID: -452409868, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
+  - {fileID: 1570802245, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
+  - {fileID: 301649477, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
+  - {fileID: -1063548290, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
+  - {fileID: -1756954421, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
+  - {fileID: 1886468482, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
+  - {fileID: -1858958027, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
+  - {fileID: 361349490, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
+  - {fileID: -2095099645, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
+  - {fileID: 2029340288, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
+  - {fileID: 1566749383, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
+  - {fileID: 1924902061, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
+  _strawBerrySprites:
+  - {fileID: 612252541, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: -693072869, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: -2099740210, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: -680581001, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: -2056920978, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  _greendOnionSprites:
+  - {fileID: 2136144850, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: 61797508, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: -1038505736, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: -891094858, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: 1447141236, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  _potatoSprites:
+  - {fileID: 564560217, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: -1762176576, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: -179168200, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: 621705088, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: -1685056610, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  _onionSprites:
+  - {fileID: -724628908, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: 260072270, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: 2137989620, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: 624527416, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: -1804307061, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  _carrotSprites:
+  - {fileID: -2093901266, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: 850400020, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: -1261791952, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: -1419042447, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: -1847607095, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  _blueBerrySprites:
+  - {fileID: -1100569605, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: 374330584, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: -1294755856, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: 1540208048, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: 317805762, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  _radishSprites:
+  - {fileID: -1033185740, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: -651792833, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: -1397341244, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: 1070695091, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: -954951872, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  _cabbageSprites:
+  - {fileID: 1748012614, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: 1245053855, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: -1485369359, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: -1112672447, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: -871369569, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  _whatSprites:
+  - {fileID: 783019644, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: 1521338940, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: 1829230452, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: -1343633902, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: -997833858, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  _riceSprites:
+  - {fileID: -795079669, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: 683776000, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: -350160985, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: -466958082, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: 543501919, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  _broccoliSprites:
+  - {fileID: 1508155040, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: -1636993029, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: 1539462624, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: -910224597, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  - {fileID: -74811235, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
