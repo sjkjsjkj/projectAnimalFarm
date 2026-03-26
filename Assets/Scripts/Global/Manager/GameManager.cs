@@ -11,12 +11,16 @@ public class GameManager : GlobalSingleton<GameManager>
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private static GameObject _uiRoot;
     private static GameObject _objectRoot;
+    private OptionData _option;
     private bool _isInitialized = false;
     private EScene _curScene;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     public EScene Scene => _curScene;
+    public VolumeData Sound => _option.Volume;
+    public VolumeData Volume => _option.Volume;
+    public ScreenData Screen => _option.Screen;
 
     public static GameObject UIRoot
     {
@@ -57,6 +61,7 @@ public class GameManager : GlobalSingleton<GameManager>
             return;
         }
         // 생성 및 초기화
+        _option = new();
         _curScene = (EScene)SceneManager.GetActiveScene().buildIndex;
         _isInitialized = true;
     }
