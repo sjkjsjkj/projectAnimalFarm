@@ -9,8 +9,8 @@ using UnityEngine.SceneManagement;
 public class GameManager : GlobalSingleton<GameManager>
 {
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
-    private static GameObject _uiRoot;
-    private static GameObject _objectRoot;
+    private static Transform _uiRoot;
+    private static Transform _objectRoot;
     private OptionData _option;
     private bool _isInitialized = false;
     private EScene _curScene;
@@ -22,13 +22,13 @@ public class GameManager : GlobalSingleton<GameManager>
     public VolumeData Volume => _option.Volume;
     public ScreenData Screen => _option.Screen;
 
-    public static GameObject UIRoot
+    public static Transform UIRoot
     {
         get
         {
             if (_uiRoot == null)
             {
-                _uiRoot = UObject.Find(K.NAME_UI_ROOT);
+                _uiRoot = UObject.Find(K.NAME_UI_ROOT).transform;
                 if (_uiRoot == null)
                 {
                     UDebug.Print($"UI 루트 오브젝트를 찾지 못했습니다.", LogType.Assert);
@@ -38,13 +38,13 @@ public class GameManager : GlobalSingleton<GameManager>
         }
     }
 
-    public static GameObject ObjectRoot
+    public static Transform ObjectRoot
     {
         get
         {
             if (_objectRoot == null)
             {
-                _objectRoot = GameObject.Find(K.NAME_OBJECT_ROOT);
+                _objectRoot = GameObject.Find(K.NAME_OBJECT_ROOT).transform;
                 if (_objectRoot == null)
                 {
                     UDebug.Print($"오브젝트 루트를 찾지 못했습니다.", LogType.Assert);
