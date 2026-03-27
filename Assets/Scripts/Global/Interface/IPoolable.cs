@@ -3,5 +3,5 @@
 /// </summary>
 public interface IPoolable
 {
-    void Initialize();
+    void Setup();
 }

@@ -4,8 +4,8 @@ public static partial class K
 {
     // SO를 수집하여 생성된 Csv 파일 경로
     public static readonly string AUTO_SO_EXPORT_PATH = "Assets/Export";
-    // 사운드 리소스 경로
-    public static readonly string SOUND_RESOURCE_PATH = "ScriptableObject/Sound";
+    // SO 테이블 리소스 경로
+    public static readonly string TABLE_RESOURCE_PATH = "Table";
     // 타일 리소스 경로
     public static readonly string TILE_RESOURCE_SHEET_PATH = "Tile/TileSheet - TileData";
     public static readonly string TILE_RESOURCE_MAIN_BASE_PATH = "Tile/MainGraphicMap";

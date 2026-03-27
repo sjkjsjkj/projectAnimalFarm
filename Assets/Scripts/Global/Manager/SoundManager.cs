@@ -65,7 +65,7 @@ public class SoundManager : GlobalSingleton<SoundManager>
     // 메인 오디오 소스를 갱신합니다.
     private bool TryGetMainSource(out AudioSource source)
     {
-        if (_mainSource != null)
+        if (_mainSource == null)
         {
             source = null;
             return true;
@@ -114,14 +114,14 @@ public class SoundManager : GlobalSingleton<SoundManager>
     private void LoadSoundTable()
     {
         // 사운드 테이블 우선 다 긁어오기
-        var tables = Resources.LoadAll<SoundTableSO>(K.SOUND_RESOURCE_PATH);
+        var tables = Resources.LoadAll<SoundTableSO>(K.TABLE_RESOURCE_PATH);
         int length = tables.Length;
         bool success = true;
         // 순환하며 중복, 일치하지 않는 이름 등 검사하고 내부 변수에 주입하기
         for (int i = 0; i < length; ++i)
         {
             string name = tables[i].name;
-            if (name == K.NAME_TABLE_SOUND_BGM)
+            if (name == K.NAME_TABLE_SOUND_SFX)
             {
                 if (_tableSfx == null)
                 {
@@ -133,7 +133,7 @@ public class SoundManager : GlobalSingleton<SoundManager>
                 }
                 continue;
             }
-            if (name == K.NAME_TABLE_SOUND_SFX)
+            if (name == K.NAME_TABLE_SOUND_BGM)
             {
                 if (_tableBgm == null)
                 {
