@@ -6,11 +6,11 @@
 public class BasicFactory<T> where T : InfoObject
 {
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
-    private DatabaseSO<AnimalSO> _database;
+    private DatabaseSO<AnimalWorldSO> _database;
     #endregion
 
     #region ─────────────────────────▶  생성자  ◀─────────────────────────
-    public BasicFactory(DatabaseSO<AnimalSO> db)
+    public BasicFactory(DatabaseSO<AnimalWorldSO> db)
     {
         _database = db;
     }

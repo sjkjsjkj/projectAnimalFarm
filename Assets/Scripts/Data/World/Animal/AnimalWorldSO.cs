@@ -1,5 +1,4 @@
-﻿using UnityEditor.Animations;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// 동물이 월드에서 가지는 정적 데이터입니다.
@@ -9,7 +8,7 @@ public class AnimalWorldSO : WorldSO
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("애니메이션")]
-    [SerializeField, CsvIgnore] protected AnimatorController _animController; // 동물 애니메이션
+    [SerializeField, CsvIgnore] protected RuntimeAnimatorController _animController; // 동물 애니메이션
 
     [Header("먹이 정보")]
     [SerializeField] protected bool _needFood = true; // 밥이 필요한 동물?
@@ -25,7 +24,7 @@ public class AnimalWorldSO : WorldSO
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
-    public AnimatorController AnimController => _animController;
+    public RuntimeAnimatorController AnimController => _animController;
     public bool NeedFood => _needFood;
     public ERarity FeedRarity => _feedMinRarity;
     public float TickFeedAmount => _tickFeedAmount;

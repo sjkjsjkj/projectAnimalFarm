@@ -62,19 +62,19 @@ public class AnimalObject : InfoObject
     public override void SetInfo(DatabaseUnitSO dataSO)
     {
         _spRenderer.sprite = dataSO.Image;
-        if(!(dataSO as AnimalSO))
+        if(!(dataSO as AnimalWorldSO))
         {
-            UDebug.Print("잘못된 데이터가 들어오고 있음. 이 부분에서는 AnimalSO가 들어와야함.", LogType.Warning);
+            UDebug.Print("잘못된 데이터가 들어오고 있음. 이 부분에서는 AnimalWorldSO가 들어와야함.", LogType.Warning);
             return;
         }
-        AnimalSO tempSO = (AnimalSO)dataSO;
+        AnimalWorldSO tempSO = (AnimalWorldSO)dataSO;
 
         _data = new AnimalData(tempSO);
 
         _data.OnHungry -= SetHungry;
         _data.OnHungry += SetHungry;
 
-        _animator.runtimeAnimatorController = tempSO.Anim;
+        _animator.runtimeAnimatorController = tempSO.AnimController;
     }
     private void SetHungry()
     {

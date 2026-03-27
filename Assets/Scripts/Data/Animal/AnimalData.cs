@@ -23,12 +23,12 @@ public class AnimalData
     #endregion
 
     #region ─────────────────────────▶ 생성자 ◀─────────────────────────
-    public AnimalData(AnimalSO dataSO)
+    public AnimalData(AnimalWorldSO dataSO)
     {
         _animalName = dataSO.Name;
         _age = 0;
         _needFood = true;
-        _foodConsumeAmount = dataSO.FoodConsumeAmount;
+        _foodConsumeAmount = dataSO.TickFeedAmount;
         _hunger = 40.0f;
     }
     #endregion

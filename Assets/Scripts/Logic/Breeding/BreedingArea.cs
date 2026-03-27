@@ -74,12 +74,12 @@ public class BreedingArea : BaseMono , IFoodProvider
         tempGo.transform.SetParent(this.transform);
         tempGo.transform.localPosition = GetRandomPos();
     }
+
     //소환되는 동물의 위치를 사육장 내 랜덤한 위치로 조정하기 위함.
     private Vector3 GetRandomPos()
     {
         float posX = Random.Range(-_witdh / 2 + 1, _witdh / 2 - 1);
         float posY = Random.Range(-_height / 2 + 1, _height / 2 - 1);
-
         return new Vector3(posX, posY);
         #endregion
 
