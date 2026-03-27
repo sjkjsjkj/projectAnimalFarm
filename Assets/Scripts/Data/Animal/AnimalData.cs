@@ -61,6 +61,7 @@ public class AnimalData
                 UDebug.Print($"{Name} is so Hungry");
                 OnHungry?.Invoke();
             }
+           
         }
     }
     // 여러가지의 이유로 동물이 죽었을 때 호출되는 메서드
