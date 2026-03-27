@@ -3,7 +3,7 @@
 /// <summary>
 /// 인벤토리에 존재할 수 있는 아이템이 가지는 정적 데이터입니다.
 /// </summary>
-public abstract class ItemSO : DatabaseUnitSO
+public abstract class ItemSO : UnitSO
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("아이템 기본 정보")]

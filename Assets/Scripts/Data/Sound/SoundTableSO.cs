@@ -5,7 +5,7 @@ using UnityEngine;
 /// 다수의 사운드 SO를 관리하는 테이블 클래스
 /// </summary>
 [CreateAssetMenu(fileName = "SoundTableSO_", menuName = "ScriptableObjects/Table/Sound", order = 1)]
-public class SoundTableSO : ScriptableObject
+public class SoundTableSO : BaseSO
 {
     [Header("기본 정보")]
     [SerializeField] protected List<SoundSO> _sounds;
@@ -72,8 +72,9 @@ public class SoundTableSO : ScriptableObject
     }
 
     // 값 유효성 검사
-    public virtual bool IsValid()
+    public override bool IsValid()
     {
+        if (!base.IsValid()) return false;
         if (UArray.IsInitedList(_sounds))
         {
             return true;

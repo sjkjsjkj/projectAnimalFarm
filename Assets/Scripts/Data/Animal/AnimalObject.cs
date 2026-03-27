@@ -59,7 +59,7 @@ public class AnimalObject : InfoObject
     }
 
     //껍데기 밖에 없던 animalObject에 스프라이트와 데이터, 애니메이터 컨트롤러를 넣어주는 작업.
-    public override void SetInfo(DatabaseUnitSO dataSO)
+    public override void SetInfo(UnitSO dataSO)
     {
         _spRenderer.sprite = dataSO.Image;
         if(!(dataSO as AnimalWorldSO))
