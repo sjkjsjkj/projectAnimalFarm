@@ -91,7 +91,7 @@ TextureImporter:
   swizzle: 50462976
   cookieLightType: 0
   platformSettings:
-  - serializedVersion: 4
+  - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -104,7 +104,7 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
+  - serializedVersion: 3
     buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -117,12 +117,25 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
+  - serializedVersion: 3
     buildTarget: WindowsStoreApps
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -137,14 +150,13 @@ TextureImporter:
       name: temple_0
       rect:
         serializedVersion: 2
-        x: 8
-        y: 0
-        width: 112
-        height: 171
+        x: 146
+        y: 194
+        width: 12
+        height: 11
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
@@ -159,14 +171,13 @@ TextureImporter:
       name: temple_1
       rect:
         serializedVersion: 2
-        x: 113
-        y: 161
-        width: 14
-        height: 13
+        x: 9
+        y: 0
+        width: 110
+        height: 170
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
@@ -181,14 +192,13 @@ TextureImporter:
       name: temple_2
       rect:
         serializedVersion: 2
-        x: 135
-        y: 160
-        width: 19
-        height: 26
+        x: 136
+        y: 161
+        width: 17
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
@@ -203,14 +213,13 @@ TextureImporter:
       name: temple_3
       rect:
         serializedVersion: 2
-        x: 135
-        y: 128
-        width: 19
-        height: 26
+        x: 136
+        y: 129
+        width: 17
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
@@ -225,14 +234,13 @@ TextureImporter:
       name: temple_4
       rect:
         serializedVersion: 2
-        x: 168
+        x: 169
         y: 0
-        width: 112
-        height: 160
+        width: 110
+        height: 159
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
@@ -247,14 +255,13 @@ TextureImporter:
       name: temple_5
       rect:
         serializedVersion: 2
-        x: 135
-        y: 96
-        width: 19
-        height: 27
+        x: 136
+        y: 97
+        width: 17
+        height: 25
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
@@ -269,14 +276,13 @@ TextureImporter:
       name: temple_6
       rect:
         serializedVersion: 2
-        x: 133
-        y: 54
-        width: 23
-        height: 38
+        x: 134
+        y: 55
+        width: 21
+        height: 36
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
@@ -291,14 +297,13 @@ TextureImporter:
       name: temple_7
       rect:
         serializedVersion: 2
-        x: 133
-        y: 6
-        width: 23
-        height: 38
+        x: 134
+        y: 7
+        width: 21
+        height: 36
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
@@ -310,18 +315,15 @@ TextureImporter:
       edges: []
       weights: []
     outline: []
-    customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 87e0fd54f83d2084c852b11c7c2c9ef5
     internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    spriteCustomMetadata:
-      entries: []
     nameFileIdTable:
       temple_0: -1116516773124893796
       temple_1: 8290087107429949983

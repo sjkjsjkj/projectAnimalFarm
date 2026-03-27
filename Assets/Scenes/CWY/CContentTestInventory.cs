@@ -2,31 +2,43 @@
 using UnityEngine;
 
 /// <summary>
-/// 콘텐츠 파트 검증용 임시 인벤토리
-/// 실제 팀 인벤토리 시스템이 들어오면 교체하거나 연결용으로 활용
+/// 시트 기반 문자열 ID를 사용하는 인벤토리
+/// 구글시트의 ID(예: Apple_0, River_1)를 그대로 키로 사용한다.
 /// </summary>
-public class CContentTestInventory : MonoBehaviour, IItemReceiver
+public class CContentTestInventory : MonoBehaviour
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [SerializeField] private bool _logOnAdd = true;
+    [SerializeField] private SheetItemDatabase _database;
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
-    private readonly Dictionary<EItem, int> _itemTable = new Dictionary<EItem, int>();
+    // itemId -> amount
+    private readonly Dictionary<string, int> _itemTable = new Dictionary<string, int>();
     #endregion
 
     #region ─────────────────────────▶ 외부 메서드 ◀─────────────────────────
-    public bool TryAddItem(EItem itemId, int amount)
+    /// <summary>
+    /// 문자열 ID 기반으로 아이템을 추가한다.
+    /// </summary>
+    public bool TryAddItem(string itemId, int amount)
     {
-        if (itemId == EItem.None)
+        if (string.IsNullOrWhiteSpace(itemId))
         {
-            Debug.LogWarning("None 아이템은 추가할 수 없습니다.");
+            Debug.LogWarning("[Inventory] itemId가 비어 있습니다.");
             return false;
         }
 
         if (amount <= 0)
         {
-            Debug.LogWarning($"잘못된 수량입니다. item={itemId}, amount={amount}");
+            Debug.LogWarning($"[Inventory] 잘못된 수량입니다. itemId={itemId}, amount={amount}");
+            return false;
+        }
+
+        // DB에 없는 아이템이면 잘못된 데이터일 가능성이 높음
+        if (_database != null && !_database.TryGetRow(itemId, out SheetItemRow row))
+        {
+            Debug.LogWarning($"[Inventory] DB에 존재하지 않는 itemId입니다: {itemId}");
             return false;
         }
 
@@ -39,22 +51,61 @@ public class CContentTestInventory : MonoBehaviour, IItemReceiver
             _itemTable.Add(itemId, amount);
         }
 
+        // 이벤트 발행
+        OnInventoryItemChanged.Publish(
+            slot: -1,                 // 아직 슬롯 고정 구조가 아니므로 -1
+            id: itemId,
+            amount: _itemTable[itemId]
+        );
+
         if (_logOnAdd)
         {
-            Debug.Log($"[인벤토리] {itemId} +{amount} / 현재 보유량: {_itemTable[itemId]}");
+            string itemName = itemId;
+
+            if (_database != null && _database.TryGetRow(itemId, out SheetItemRow itemRow))
+            {
+                itemName = itemRow.Name;
+            }
+
+            Debug.Log($"[Inventory] {itemName}({itemId}) +{amount} / 현재 보유량: {_itemTable[itemId]}");
         }
 
         return true;
     }
 
-    public int GetAmount(EItem itemId)
+    /// <summary>
+    /// 특정 아이템 현재 수량 반환
+    /// </summary>
+    public int GetAmount(string itemId)
     {
+        if (string.IsNullOrWhiteSpace(itemId))
+        {
+            return 0;
+        }
+
         if (_itemTable.TryGetValue(itemId, out int amount))
         {
             return amount;
         }
 
         return 0;
+    }
+
+    /// <summary>
+    /// 가지고 있는지 여부
+    /// </summary>
+    public bool HasItem(string itemId)
+    {
+        return GetAmount(itemId) > 0;
+    }
+
+    /// <summary>
+    /// 인벤토리 전체 데이터 반환
+    /// UI에서 순회할 때 사용
+    /// </summary>
+    public Dictionary<string, int> GetAllItems()
+    {
+        return new Dictionary<string, int>(_itemTable);
     }
     #endregion
 }
