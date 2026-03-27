@@ -8,21 +8,20 @@ public class InputManager : GlobalSingleton<InputManager>, InputDispatcher.IMain
 {
     private bool _isInitialized = false;
     private InputDispatcher _input;
+    private Vector2 _moveInput; // 추가
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     // 외부 호출 용도가 아닙니다.
+    private void Update()
+    {
+        OnPlayerMove.Publish(_moveInput);
+    }
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        if (context.performed || context.canceled)
-        {
-            OnPlayerMove.Publish(context.ReadValue<Vector2>());
-        }
+        _moveInput = context.ReadValue<Vector2>();
     }
-    //public void OnMove(InputAction.CallbackContext context)
-    //{
-    //    OnPlayerMove.Publish(context.ReadValue<Vector2>());
-    //}
+
     public void OnJump(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -60,13 +59,11 @@ public class InputManager : GlobalSingleton<InputManager>, InputDispatcher.IMain
     // Awake 대용
     public override void Initialize()
     {
-        if(_isInitialized)
-        {
-            return;
-        }
-        // 생성 및 초기화
+        if (_isInitialized) return;
+
         _input = new InputDispatcher();
         _input.MainActionMap.SetCallbacks(this);
+        _input.Enable();
         _isInitialized = true;
     }
     #endregion
