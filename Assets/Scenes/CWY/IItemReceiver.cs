@@ -1,4 +1,4 @@
 ﻿public interface IItemReceiver
 {
-    bool TryAddItem(EItem itemId, int amount);
+    bool TryAddItem(string itemId, int amount);
 }
