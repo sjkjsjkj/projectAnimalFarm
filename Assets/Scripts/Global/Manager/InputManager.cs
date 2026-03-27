@@ -8,17 +8,28 @@ public class InputManager : GlobalSingleton<InputManager>, InputDispatcher.IMain
 {
     private bool _isInitialized = false;
     private InputDispatcher _input;
+    private Vector2 _moveInput; // 추가
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     // 외부 호출 용도가 아닙니다.
+    private void Update() // 추가
+    {
+        // 매 프레임 현재 입력값 발행
+        OnPlayerMove.Publish(_moveInput);
+    }
 
-    public void OnMove(InputAction.CallbackContext context)
+    /// <summary>
+    /// 매 프레임 현재 이동 입력값을 발행합니다.
+    /// Input System 콜백은 값 저장에만 사용하며 실제 발행은 Update에서 처리합니다.
+    /// </summary>
+    public void OnMove(InputAction.CallbackContext context) // 수정
     {
         if (context.performed || context.canceled)
         {
-            OnPlayerMove.Publish(context.ReadValue<Vector2>());
+            _moveInput = context.ReadValue<Vector2>(); 
         }
     }
+    
     //public void OnMove(InputAction.CallbackContext context)
     //{
     //    OnPlayerMove.Publish(context.ReadValue<Vector2>());

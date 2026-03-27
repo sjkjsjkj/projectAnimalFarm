@@ -3,32 +3,34 @@
 /// <summary>
 /// 클래스의 설계 의도입니다.
 /// </summary>
-///
-[RequireComponent(typeof(Rigidbody2D))]
-public class PlayerController2D : BaseMono
+public class PlayerController : BaseMono
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
-    //[Header("주제")]
-    //[SerializeField] private Class _class;
     [Header("이동 속도")]
-    [SerializeField] private float _walkSpeed = 1.0f;
+    [SerializeField] private float _walkSpeed = 3.0f;
 
     [Header("달리기 속도")]
-    [SerializeField] private float _runSpeed = 2.0f;
+    [SerializeField] private float _runSpeed = 6.0f;
 
     [Header("애니메이터")]
     [SerializeField] private Animator _animator;
+
     [Header("좌우 반전용")]
     [SerializeField] private SpriteRenderer _bodySr;
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private const float MOVE_EPSILON = 0.01f;
+    private const float MOVE_EPSILON_SQR = MOVE_EPSILON * MOVE_EPSILON;
 
-    private Rigidbody2D _rigidbody2D;
-    private Vector2 _moveInput;
-    private bool _isRun;
+    private Rigidbody2D _rb;
+
+    private Vector2 _moveInput = Vector2.zero;
+    private Vector2 _prevMoveInput = Vector2.zero;
+
+    private bool _isRun = false;
     private EFacing _facing = EFacing.Down;
+    private EMoveAxis _lastMoveAxis = EMoveAxis.None;
 
     private int _isMoveHash;
     private int _isRunHash;
@@ -45,12 +47,12 @@ public class PlayerController2D : BaseMono
     /// </summary>
     private void CacheComponents()
     {
-        _rigidbody2D = GetComponent<Rigidbody2D>();
+        _rb = GetComponent<Rigidbody2D>();
+        _rb.gravityScale = 0f;
     }
 
     /// <summary>
     /// 애니메이터 파라미터 해시를 캐싱합니다.
-    /// 문자열을 매 프레임 직접 넣는 것보다 조금 더 안전하고 가볍습니다.
     /// </summary>
     private void CacheAnimatorHashes()
     {
@@ -60,12 +62,54 @@ public class PlayerController2D : BaseMono
     }
 
     /// <summary>
-    /// 이동 입력 이벤트를 받아 현재 이동값을 저장합니다.
+    /// 매 프레임 수신되는 이동 입력 이벤트를 처리합니다.
+    /// 이전 프레임과 비교하여 새로 누른 축을 기록한 뒤
+    /// 방향, 스프라이트, 애니메이션을 즉시 갱신합니다.
     /// </summary>
     /// <param name="eventData">이동 입력 데이터</param>
     private void OnPlayerMoveEvent(OnPlayerMove eventData)
     {
-        _moveInput = eventData.moved;
+        Vector2 nextMoveInput = eventData.moved;
+
+        bool prevHasHorizontal = Mathf.Abs(_prevMoveInput.x) > MOVE_EPSILON;
+        bool prevHasVertical = Mathf.Abs(_prevMoveInput.y) > MOVE_EPSILON;
+
+        bool nextHasHorizontal = Mathf.Abs(nextMoveInput.x) > MOVE_EPSILON;
+        bool nextHasVertical = Mathf.Abs(nextMoveInput.y) > MOVE_EPSILON;
+
+        // 새로 눌린 축만 감지
+        bool horizontalJustPressed = nextHasHorizontal && !prevHasHorizontal;
+        bool verticalJustPressed = nextHasVertical && !prevHasVertical;
+
+        if (horizontalJustPressed && !verticalJustPressed)
+        {
+            _lastMoveAxis = EMoveAxis.Horizontal;
+        }
+
+        else if (!horizontalJustPressed && verticalJustPressed)
+        {
+            _lastMoveAxis = EMoveAxis.Vertical;
+        }
+
+        else if (horizontalJustPressed && verticalJustPressed)
+        {
+            // 동시에 눌린 경우 → 수평 유지
+            _lastMoveAxis = EMoveAxis.Horizontal; 
+        }
+        // 둘 다 JustPressed 가 아닌 경우 → _lastMoveAxis 유지
+
+        // 입력이 완전히 없으면 초기화
+        if (!nextHasHorizontal && !nextHasVertical)
+        {
+            _lastMoveAxis = EMoveAxis.None;
+        }
+
+        _prevMoveInput = _moveInput;
+        _moveInput = nextMoveInput;
+
+        UpdateFacing();
+        HandleSpriteFlip();
+        HandleAnimation();
     }
 
     /// <summary>
@@ -75,15 +119,16 @@ public class PlayerController2D : BaseMono
     private void OnPlayerRunEvent(OnPlayerRun eventData)
     {
         _isRun = eventData.isRun;
+        HandleAnimation();
     }
 
     /// <summary>
     /// 현재 입력 상태를 기준으로 최종 이동 속도를 계산합니다.
     /// </summary>
-    /// <returns>걷기 또는 달리기 속도</returns>
+    /// <returns>최종 이동 속도</returns>
     private float GetMoveSpeed()
     {
-        bool hasMoveInput = _moveInput.sqrMagnitude > MOVE_EPSILON;
+        bool hasMoveInput = _moveInput.sqrMagnitude > MOVE_EPSILON_SQR;
 
         if (_isRun == true && hasMoveInput == true)
         {
@@ -95,48 +140,60 @@ public class PlayerController2D : BaseMono
 
     /// <summary>
     /// Rigidbody2D 속도를 갱신하여 플레이어를 이동시킵니다.
+    /// 입력이 없을 때는 velocity를 명시적으로 0으로 초기화합니다.
     /// </summary>
     private void HandleMove()
     {
-        Vector2 moveDir = _moveInput.normalized;
-        float moveSpeed = GetMoveSpeed();
-
-        _rigidbody2D.velocity = moveDir * moveSpeed;
-    }
-
-    /// <summary>
-    /// 현재 입력을 바탕으로 바라보는 방향을 계산합니다.
-    /// 입력이 없을 때는 마지막 방향을 유지합니다.
-    /// </summary>
-    private void UpdateFacing()
-    {
-        bool hasMoveInput = _moveInput.sqrMagnitude > MOVE_EPSILON;
-
-        if (hasMoveInput == false)
+        if (_rb == null)
         {
             return;
         }
 
-        if (Mathf.Abs(_moveInput.y) > Mathf.Abs(_moveInput.x))
+        Vector2 moveDir = _moveInput.normalized;
+
+        if (moveDir == Vector2.zero)
         {
-            if (_moveInput.y > 0.0f)
-            {
-                _facing = EFacing.Up;
-            }
-            else
-            {
-                _facing = EFacing.Down;
-            }
+            _rb.velocity = Vector2.zero;
+            return;
         }
-        else
+
+        _rb.velocity = moveDir * GetMoveSpeed();
+    }
+
+    /// <summary>
+    /// 현재 입력을 바탕으로 바라보는 방향을 계산합니다.
+    /// 대각 입력일 때는 마지막으로 새로 눌린 축을 우선합니다.
+    /// 입력이 없을 때는 마지막 방향을 유지합니다.
+    /// </summary>
+    private void UpdateFacing()
+    {
+        bool hasHorizontal = Mathf.Abs(_moveInput.x) > MOVE_EPSILON;
+        bool hasVertical = Mathf.Abs(_moveInput.y) > MOVE_EPSILON;
+
+        if (hasHorizontal == false && hasVertical == false)
         {
-            _facing = EFacing.Side;
+            return;
         }
+
+        if (hasHorizontal == true && hasVertical == true)
+        {
+            _facing = _lastMoveAxis == EMoveAxis.Vertical
+                ? (_moveInput.y > 0.0f ? EFacing.Up : EFacing.Down)
+                : EFacing.Side;
+            return;
+        }
+
+        if (hasVertical == true)
+        {
+            _facing = _moveInput.y > 0.0f ? EFacing.Up : EFacing.Down;
+            return;
+        }
+
+        _facing = EFacing.Side;
     }
 
     /// <summary>
     /// Side 방향일 때 좌우 반전을 처리합니다.
-    /// 오른쪽 입력이면 기본 방향, 왼쪽 입력이면 뒤집습니다.
     /// </summary>
     private void HandleSpriteFlip()
     {
@@ -154,6 +211,7 @@ public class PlayerController2D : BaseMono
         {
             _bodySr.flipX = true;
         }
+
         else if (_moveInput.x > MOVE_EPSILON)
         {
             _bodySr.flipX = false;
@@ -170,11 +228,8 @@ public class PlayerController2D : BaseMono
             return;
         }
 
-        bool isMove = _moveInput.sqrMagnitude > MOVE_EPSILON;
+        bool isMove = _moveInput.sqrMagnitude > MOVE_EPSILON_SQR;
         bool isRunAnim = isMove == true && _isRun == true;
-
-        UpdateFacing();
-        HandleSpriteFlip();
 
         _animator.SetBool(_isMoveHash, isMove);
         _animator.SetBool(_isRunHash, isRunAnim);
@@ -184,7 +239,7 @@ public class PlayerController2D : BaseMono
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
     private void Awake()
-    {        
+    {
         CacheComponents();
         CacheAnimatorHashes();
     }
@@ -195,15 +250,22 @@ public class PlayerController2D : BaseMono
         EventBus<OnPlayerRun>.Subscribe(OnPlayerRunEvent);
     }
 
+    private void Start()
+    {
+        UpdateFacing();
+        HandleSpriteFlip();
+        HandleAnimation();
+
+        if (_animator != null)
+        {
+            _animator.Update(0f);
+        }
+    }
+
     private void OnDisable()
     {
         EventBus<OnPlayerMove>.Unsubscribe(OnPlayerMoveEvent);
         EventBus<OnPlayerRun>.Unsubscribe(OnPlayerRunEvent);
-    }
-
-    private void Update()
-    {
-        HandleAnimation();
     }
 
     private void FixedUpdate()
@@ -213,11 +275,6 @@ public class PlayerController2D : BaseMono
     #endregion
 
     #region ─────────────────────────▶ 중첩 타입 ◀─────────────────────────
-    private enum EFacing
-    {
-        Down = 0,
-        Up = 1,
-        Side = 2
-    }
+
     #endregion
 }
