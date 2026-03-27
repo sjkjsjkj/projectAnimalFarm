@@ -5,7 +5,11 @@
 /// </summary>
 public class CameraAspectUpdater : Frameable
 {
+    #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private Camera _cam;
+    private int _lastWidth;
+    private int _lastHeight;
+    #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     // 프레임 매니저에게 호출당하는 순서
@@ -18,18 +22,12 @@ public class CameraAspectUpdater : Frameable
         {
             return;
         }
-        // 혹시 게임 매니저가 없을 경우 대비
-        ScreenData screen = GameManager.Ins.Screen;
-        if (UDebug.IsNull(screen))
-        {
-            return;
-        }
         // 프로그램 창 크기가 달라질 경우
-        if (screen.Width != Screen.width || screen.Height != Screen.height)
+        if (_lastWidth != Screen.width || _lastHeight != Screen.height)
         {
-            screen.Width = Screen.width;
-            screen.Height = Screen.height;
-            UCamera.SetCameraAspect(_cam, screen.Width, screen.Height);
+            UCamera.SetCameraAspect(_cam);
+            _lastWidth = Screen.width;
+            _lastHeight = Screen.height;
         }
     }
     #endregion
@@ -38,14 +36,8 @@ public class CameraAspectUpdater : Frameable
     private void CameraCaching()
     {
         _cam = UObject.GetComponent<Camera>(this.gameObject);
-        // 혹시 게임 매니저가 없을 경우 대비
-        ScreenData screen = GameManager.Ins.Screen;
-        if (UDebug.IsNull(screen))
-        {
-            return;
-        }
-        screen.Height = Screen.height;
-        screen.Width = Screen.width;
+        _lastHeight = Screen.height;
+        _lastWidth = Screen.width;
     }
     #endregion
 

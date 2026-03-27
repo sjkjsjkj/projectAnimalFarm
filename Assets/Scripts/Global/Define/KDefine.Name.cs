@@ -10,9 +10,4 @@ public static partial class K
     public static readonly string NAME_UI_ROOT = "Canvas";
     public static readonly string NAME_OBJECT_ROOT = "ObjectRoot";
     public static readonly string NAME_GLOBAL_MANAGER_ROOT = "@GlobalManager";
-
-    // 테이블 이름
-    public static readonly string NAME_TABLE_SOUND_BGM = "SoundTableSO_BGM";
-    public static readonly string NAME_TABLE_SOUND_SFX = "SoundTableSO_SFX";
-    public static readonly string NAME_TABLE_ANIMAL = "AnimalTableSO";
 }

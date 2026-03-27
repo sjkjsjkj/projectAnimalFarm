@@ -1,31 +1,37 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 
 /// <summary>
-/// 풀링 객체를 생성하는 팩토리 클래스
+/// 풀을 사용하는 팩토리입니다.
 /// </summary>
-public class PoolFactory<T> where T : Component, IPoolable
+public class PoolFactory
 {
-    private ObjectPool<T> _pool;
+    #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
+    private ObjectPool _pool;
+    #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
-    // 생성자
-    public PoolFactory(ObjectPool<T> pool)
+
+    #endregion
+
+    #region ─────────────────────────▶  생성자   ◀─────────────────────────
+    public PoolFactory(ObjectPool pool)
     {
         _pool = pool;
     }
-
-    /// <summary>
-    /// 풀링이 적용된 객체를 생성해서 반환합니다.
-    /// </summary>
-    public T Spawn()
+    #endregion
+    #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
+    public PoolItem Spawn()
     {
-        if (_pool.Pull(out T instance))
-        {
-            instance.Initialize();
-            instance.transform.SetParent(GameManager.ObjectRoot);
-            return instance;
-        }
-        return null;
+        PoolItem tempGo = _pool.Get();
+        tempGo.SetInfo();
+        return tempGo;
+        //DatabaseUnitSO tempSO = _animalDB.FindData(id);
+        //return MakeGo(tempSO);
     }
+    //private PoolItem MakeGo(DatabaseUnitSO data)
+    //{
+        
+    //}
     #endregion
 }
