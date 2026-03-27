@@ -70,12 +70,12 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
         tempGo.transform.localPosition = Vector3.zero;
     }
 
-    public void TestFunction3()
+    /*public void TestFunction3()
     {
         PoolItem tempGo = FactoryManager.Ins.VFX.Spawn();
         tempGo.transform.SetParent(this.transform);
         tempGo.transform.localPosition = Vector3.zero;
-    }
+    }*/
 
     public void TestFunction4()
     {

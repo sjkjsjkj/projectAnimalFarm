@@ -6,7 +6,7 @@
 public class TestVFX : BaseMono, IPoolable
 {
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-    public void Initialize()
+    public void Setup()
     {
         UDebug.Print("TestVFX 객체 초기화를 수행했습니다.");
     }

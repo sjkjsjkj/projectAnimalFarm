@@ -1,4 +1,5 @@
 ﻿#pragma warning disable IDE0060, CS0162
+
 using System.Runtime.CompilerServices;
 using System.Collections.Generic;
 using System.Diagnostics;

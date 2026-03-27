@@ -77,7 +77,7 @@ public class CsvExporterBySO : EditorWindow
         {
             // 헤더 채우기
             sb.Append(fieldList[i].Name);
-            sb.Append(',');
+            sb.Append(','); // csv(,) ??(\t)
         }
         sb.Remove(sb.Length - 1, 1); // 마지막 콤마는 제거
         sb.AppendLine();
@@ -103,6 +103,7 @@ public class CsvExporterBySO : EditorWindow
             int length = fieldList.Count;
             for (int j = 0; j < length; ++j)
             {
+                // 구글 시트에 타입 이름도 넣고, 변수 값
                 // 객체에서 해당 필드 타입 가져와서 문자열 추가
                 object fieldValue = fieldList[j].GetValue(so);
                 sb.Append(fieldValue);
