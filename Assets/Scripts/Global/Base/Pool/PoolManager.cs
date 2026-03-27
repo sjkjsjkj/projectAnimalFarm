@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// 오브젝트 풀들을 관리하는 매니저입니다.
-/// 다른 오브젝트들에 접근하는 허브의 역할을 하고 있습니다.
+/// 오브젝트 풀을 관리하는 매니저 (허브 역할)
 /// </summary>
 public class PoolManager : Singleton<PoolManager>
 {
@@ -13,12 +12,11 @@ public class PoolManager : Singleton<PoolManager>
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private bool _isInitialized = false;
-    private ObjectPool _vfxPool;
-
+    private ObjectPool<TestVFX> _vfxPool;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
-    public ObjectPool VFX => _vfxPool;
+    public ObjectPool<TestVFX> VFX => _vfxPool;
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
@@ -27,7 +25,7 @@ public class PoolManager : Singleton<PoolManager>
         {
             return;
         }
-        _vfxPool = new ObjectPool(50, _vfxPrefab);
+        _vfxPool = new ObjectPool<TestVFX>(_vfxPrefab, false, 50);
         // ↑ 필요한 초기화 로직 / 부모 클래스에서 자동 실행
         _isInitialized = true;
     }

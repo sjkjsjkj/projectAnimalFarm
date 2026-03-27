@@ -133,6 +133,8 @@ public class StringIdGenerator : EditorWindow
         if (GUILayout.Button("작물 ID")) soType = typeof(CropWorldSO);
         if (GUILayout.Button("물고기 ID")) soType = typeof(FishWorldSO);
         if (GUILayout.Button("NPC ID")) soType = typeof(NpcWorldSO);
+        GUILayout.Label("▷ 사운드 SO ◁", EditorStyles.boldLabel);
+        if (GUILayout.Button("오디오 ID")) soType = typeof(SoundSO);
         // 버튼을 누르지 않았음
         if (soType == null)
         {
