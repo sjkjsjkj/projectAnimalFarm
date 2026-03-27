@@ -21,7 +21,7 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private bool _isInitialized = false;
-    private AnimalSO _tempDataUnitSO;
+    private AnimalWorldSO _tempDataUnitSO;
     private FarmArea _testFarmArea;
     #endregion
 
@@ -61,11 +61,11 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
     public void TestFunction2()
     {
         GameObject tempGo = Instantiate(_animalObjectPrefab);
-        if(!(_tempDataUnitSO as AnimalSO))
+        if(!(_tempDataUnitSO as AnimalWorldSO))
         {
-            UDebug.Print($"읽어온 데이터에 AnimalSO가 없음.", LogType.Warning);
+            UDebug.Print($"읽어온 데이터에 AnimalWorldSO가 없음.", LogType.Warning);
         }
-        tempGo.GetComponent<AnimalObject>().SetInfo(_tempDataUnitSO as AnimalSO);
+        tempGo.GetComponent<AnimalObject>().SetInfo(_tempDataUnitSO as AnimalWorldSO);
         tempGo.transform.SetParent(this.transform);
         tempGo.transform.localPosition = Vector3.zero;
     }

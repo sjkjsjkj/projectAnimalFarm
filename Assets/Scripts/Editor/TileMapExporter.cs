@@ -99,7 +99,7 @@ public class TilemapExporter : EditorWindow
                 // 아무것도 없는 타일
                 if (tile == null)
                 {
-                    map[index] = -1;
+                    map[index] = 5150; // 봄 잔디 0번 (밟을 수 있는 땅)
                 }
                 // 무언가 있는 타일
                 else

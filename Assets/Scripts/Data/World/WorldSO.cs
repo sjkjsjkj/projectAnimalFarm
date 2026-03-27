@@ -3,7 +3,7 @@
 /// <summary>
 /// 월드에 존재할 수 있는 오브젝트가 가지는 정적 데이터입니다.
 /// </summary>
-public abstract class WorldSO : DatabaseUnitSO
+public abstract class WorldSO : UnitSO
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("월드 기본 정보")]

@@ -3,7 +3,7 @@
 /// <summary>
 /// 동물 DB입니다.
 /// </summary>
-public class AnimalDB : DatabaseSO<AnimalSO>
+public class AnimalDB : DatabaseSO<AnimalWorldSO>
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     #endregion

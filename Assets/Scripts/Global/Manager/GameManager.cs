@@ -151,9 +151,25 @@ public class GameManager : GlobalSingleton<GameManager>
     // 씬 로드 후처리
     private void PostProcessing(EScene prevScene, string nextScenePath)
     {
-        _uiRoot = UObject.Find(K.NAME_UI_ROOT).transform;
-        _objectRoot = UObject.Find(K.NAME_OBJECT_ROOT).transform;
+        GameObject ui = UObject.Find(K.NAME_UI_ROOT);
+        GameObject obj = UObject.Find(K.NAME_OBJECT_ROOT);
         EScene nextScene = (EScene)SceneUtility.GetBuildIndexByScenePath(nextScenePath);
+        if (ui != null)
+        {
+            _uiRoot = ui.transform;
+        }
+        else
+        {
+            UDebug.Print($"새로운 씬({nextScene})에서 UI 루트를 찾지 못했습니다.", LogType.Assert);
+        }
+        if (obj != null)
+        {
+            _objectRoot = obj.transform;
+        }
+        else
+        {
+            UDebug.Print($"새로운 씬({nextScene})에서 오브젝트 루트를 찾지 못했습니다.", LogType.Assert);
+        }
         OnSceneLoadEnd.Publish(prevScene, nextScene);
         _curScene = nextScene;
     }

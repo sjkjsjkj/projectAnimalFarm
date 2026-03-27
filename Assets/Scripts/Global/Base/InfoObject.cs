@@ -6,6 +6,6 @@
 public abstract class InfoObject : Frameable
 {
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-    public abstract void SetInfo(DatabaseUnitSO data);
+    public abstract void SetInfo(UnitSO data);
     #endregion
 }

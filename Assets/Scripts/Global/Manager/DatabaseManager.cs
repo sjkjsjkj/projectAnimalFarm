@@ -14,11 +14,11 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private bool _isInitialized = false;
-    private DatabaseSO<AnimalSO> _animalDB;
+    private DatabaseSO<AnimalWorldSO> _animalDB;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
-    public DatabaseSO<AnimalSO> Animal => _animalDB;
+    public DatabaseSO<AnimalWorldSO> Animal => _animalDB;
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
@@ -27,10 +27,8 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
         {
             return;
         }
-        _animalDB = new DatabaseSO<AnimalSO>();
-
-        _animalDB.MakeDB("ScriptableObject/Animal/");
-       
+        _animalDB = new DatabaseSO<AnimalWorldSO>();
+        _animalDB.MakeDB("Animal");
 
         // ↑ 필요한 초기화 로직 / 부모 클래스에서 자동 실행
         _isInitialized = true;
