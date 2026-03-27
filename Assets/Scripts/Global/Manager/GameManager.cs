@@ -154,7 +154,7 @@ public class GameManager : GlobalSingleton<GameManager>
         _uiRoot = UObject.Find(K.NAME_UI_ROOT).transform;
         _objectRoot = UObject.Find(K.NAME_OBJECT_ROOT).transform;
         EScene nextScene = (EScene)SceneUtility.GetBuildIndexByScenePath(nextScenePath);
-        OnSceneLoadStart.Publish(prevScene, nextScene);
+        OnSceneLoadEnd.Publish(prevScene, nextScene);
         _curScene = nextScene;
     }
 
