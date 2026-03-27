@@ -132,7 +132,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Extra Village Tilesets_0
+      name: Tile_Extra_Village_0
       rect:
         serializedVersion: 2
         x: 0
@@ -140,20 +140,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 81416fcec43bfbbd0800000000000000
-      internalID: -2612172115877161960
+      spriteID: 88db64b957637ac4da88ea65160f046b
+      internalID: 1282075813
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Extra Village Tilesets_1
+      name: Tile_Extra_Village_1
       rect:
         serializedVersion: 2
         x: 16
@@ -161,20 +161,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 021269148e4d8e530800000000000000
-      internalID: 3884588772604911904
+      spriteID: 8a050fd09003c2f45b59dab2426d83e9
+      internalID: -219167620
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Extra Village Tilesets_2
+      name: Tile_Extra_Village_2
       rect:
         serializedVersion: 2
         x: 32
@@ -182,20 +182,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: c6ba015b1dea1fc20800000000000000
-      internalID: 3238561822765263724
+      spriteID: d94cebb5ca3eaaa41bcb62fbac98cf7c
+      internalID: 2053356714
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Extra Village Tilesets_3
+      name: Tile_Extra_Village_3
       rect:
         serializedVersion: 2
         x: 48
@@ -203,20 +203,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2fa549f3b631c9d4cad0a7fc1443f71b
-      internalID: 377324620
+      spriteID: c5c8a15f84bcd874babd7381387e9a65
+      internalID: -1039985360
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Extra Village Tilesets_4
+      name: Tile_Extra_Village_4
       rect:
         serializedVersion: 2
         x: 64
@@ -224,20 +224,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 66d12394ad7ed244c8c308cdfe77a49d
-      internalID: -134548953
+      spriteID: ff217120f2d5bee478aebac6cf625621
+      internalID: 661891155
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Extra Village Tilesets_5
+      name: Tile_Extra_Village_5
       rect:
         serializedVersion: 2
         x: 96
@@ -245,20 +245,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5c7cecb51b442724bbcec3f601128f76
-      internalID: -1701469729
+      spriteID: 410aa02f6f8fe4a4e93b6eeaf7b80718
+      internalID: -1602847045
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Extra Village Tilesets_6
+      name: Tile_Extra_Village_6
       rect:
         serializedVersion: 2
         x: 112
@@ -266,20 +266,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2c09872ee986b1e4990030fd04c974eb
-      internalID: 491578569
+      spriteID: 2869c9d463c78a54bbe4a31e62174b60
+      internalID: 1759278333
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Extra Village Tilesets_7
+      name: Tile_Extra_Village_7
       rect:
         serializedVersion: 2
         x: 128
@@ -287,20 +287,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3337a48fb9a42aa4b9633bab6fff1f28
-      internalID: 773990317
+      spriteID: 594e60a4a2f2e9142acdd6682134e2f2
+      internalID: 942964395
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Extra Village Tilesets_8
+      name: Tile_Extra_Village_8
       rect:
         serializedVersion: 2
         x: 0
@@ -308,20 +308,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d2915153074ca4f46b08c194a4e925ee
-      internalID: 1575951101
+      spriteID: fd0dcafc20fa8404c8e68582b009d9b2
+      internalID: -1550189354
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Extra Village Tilesets_9
+      name: Tile_Extra_Village_9
       rect:
         serializedVersion: 2
         x: 32
@@ -329,20 +329,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5ec16ef24e4cb2c43987652b858b8656
-      internalID: -822916174
+      spriteID: 417bb0017efa06743a066948c6149bef
+      internalID: 1407437368
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Extra Village Tilesets_10
+      name: Tile_Extra_Village_10
       rect:
         serializedVersion: 2
         x: 48
@@ -350,20 +350,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 33910e33fb135a44581e8a6e1c244520
-      internalID: -1859351832
+      spriteID: 73079e6a3273b4746b36cb766d7fe6de
+      internalID: -111294928
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Extra Village Tilesets_11
+      name: Tile_Extra_Village_11
       rect:
         serializedVersion: 2
         x: 64
@@ -371,20 +371,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 259b6ab28107da244a9699a87c5114ed
-      internalID: 184814225
+      spriteID: 7334dfbe0b396774a91205e1c87ed672
+      internalID: -441822355
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Extra Village Tilesets_12
+      name: Tile_Extra_Village_12
       rect:
         serializedVersion: 2
         x: 80
@@ -392,20 +392,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 18f52462954df2c4793475d73c3fa207
-      internalID: 1720952564
+      spriteID: cd8e59427b494284aa0fd9dc82db6549
+      internalID: 492843481
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Extra Village Tilesets_13
+      name: Tile_Extra_Village_13
       rect:
         serializedVersion: 2
         x: 96
@@ -413,20 +413,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a9f0eea2ca0f6f940b9e89007da34218
-      internalID: -1641330167
+      spriteID: 4e40281d7ff160143b87d629319461c5
+      internalID: -50717001
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Extra Village Tilesets_14
+      name: Tile_Extra_Village_14
       rect:
         serializedVersion: 2
         x: 112
@@ -434,20 +434,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 93597c9870bc0a6409ef4beb5e6ad24d
-      internalID: 284893575
+      spriteID: 214ab6dc7874fef48881233ad95e5d77
+      internalID: -222480240
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Extra Village Tilesets_15
+      name: Tile_Extra_Village_15
       rect:
         serializedVersion: 2
         x: 128
@@ -455,20 +455,41 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f301b13ecf62ceb429b8dd79540cf066
-      internalID: -672059368
+      spriteID: 4df41e2314fd2174abba41c98c86f66e
+      internalID: -556711177
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Extra Village Tilesets_16
+      name: Tile_Extra_Village_16
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 48f2e16d4e175e845bcaf55febfabba4
+      internalID: 1807170143
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tile_Extra_Village_17
       rect:
         serializedVersion: 2
         x: 0
@@ -476,20 +497,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 684633614783e334bb3c2ec7b7cb4cf8
-      internalID: 820985806
+      spriteID: 3afff7771c8a72444b5ce0bf2ac2ed9d
+      internalID: 823122960
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Extra Village Tilesets_17
+      name: Tile_Extra_Village_18
       rect:
         serializedVersion: 2
         x: 16
@@ -497,20 +518,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: af06a0869d1beea4ebfe05ed0802c536
-      internalID: 1193327901
+      spriteID: 6d4aa88fbc6bb4947b01380caf54d3b1
+      internalID: 1822907924
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Extra Village Tilesets_18
+      name: Tile_Extra_Village_19
       rect:
         serializedVersion: 2
         x: 32
@@ -518,20 +539,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 77c13d6d19c55a0419995cfc74024771
-      internalID: -485584096
+      spriteID: c4cba357803fdcc4d94f0199469b9d54
+      internalID: -1566572191
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Extra Village Tilesets_19
+      name: Tile_Extra_Village_20
       rect:
         serializedVersion: 2
         x: 80
@@ -539,20 +560,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0e2386be9abf9014799a296fee9795de
-      internalID: -260685484
+      spriteID: b9ca5f44df9dcbc43b0a3104c0f0d525
+      internalID: -1794949255
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Extra Village Tilesets_20
+      name: Tile_Extra_Village_21
       rect:
         serializedVersion: 2
         x: 96
@@ -560,20 +581,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5100ff3f49b4fb647a4bddfc30bb96aa
-      internalID: 838550317
+      spriteID: b6e4be4070d480e49a619ad1b0153dac
+      internalID: -479847322
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Extra Village Tilesets_21
+      name: Tile_Extra_Village_22
       rect:
         serializedVersion: 2
         x: 128
@@ -581,20 +602,41 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6dad76945b11f624ba1bd78cac3f95f1
-      internalID: -2146882882
+      spriteID: 49b48f5a646b95f47bddbb114935a4fb
+      internalID: -292430947
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Extra Village Tilesets_22
+      name: Tile_Extra_Village_23
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 35a3db1c6d36a9c4f930809cd83d510b
+      internalID: -1624935225
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tile_Extra_Village_24
       rect:
         serializedVersion: 2
         x: 0
@@ -602,20 +644,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f5ec397acb428bd45a87768c1b28274e
-      internalID: -1476234497
+      spriteID: a3b833cb2d288254eb8473a383b48051
+      internalID: 1671202494
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Extra Village Tilesets_23
+      name: Tile_Extra_Village_25
       rect:
         serializedVersion: 2
         x: 16
@@ -623,20 +665,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c13fea4c4f603254da4785e5db1f7b07
-      internalID: 871562796
+      spriteID: 7eadffffb3a9123428785b5045796809
+      internalID: 1396946382
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Extra Village Tilesets_24
+      name: Tile_Extra_Village_26
       rect:
         serializedVersion: 2
         x: 32
@@ -644,20 +686,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 46e589ea5897dc94d939468d63240c6d
-      internalID: 1832431734
+      spriteID: 6f0ba5b15ee5c894c97248b1e580ba8a
+      internalID: -185219527
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Extra Village Tilesets_25
+      name: Tile_Extra_Village_27
       rect:
         serializedVersion: 2
         x: 80
@@ -665,20 +707,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 71b6f6e07d29bf646bf714b503848a0f
-      internalID: 1318813314
+      spriteID: 6ccf1d1a6554e4947b405aedc6f0c146
+      internalID: -778426257
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Extra Village Tilesets_26
+      name: Tile_Extra_Village_28
       rect:
         serializedVersion: 2
         x: 96
@@ -686,20 +728,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f3a078040ddf3944e9192bbb53a1ef2b
-      internalID: -1619769616
+      spriteID: 5ff40b89607aa2048a305ca6a304a58d
+      internalID: 1007753213
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Extra Village Tilesets_27
+      name: Tile_Extra_Village_29
       rect:
         serializedVersion: 2
         x: 128
@@ -707,20 +749,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 60a943314b9a9f745bf8e39ab559fe5c
-      internalID: 1917874560
+      spriteID: 48aeabd47392c154bb1e399b42f9b4fa
+      internalID: -686156856
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Extra Village Tilesets_28
+      name: Tile_Extra_Village_30
       rect:
         serializedVersion: 2
         x: 0
@@ -728,20 +770,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 820510d798f28b945a05d49c640a19ca
-      internalID: 36898254
+      spriteID: 32852bef14542c14f8f30de023962f56
+      internalID: -1327943809
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Extra Village Tilesets_29
+      name: Tile_Extra_Village_31
       rect:
         serializedVersion: 2
         x: 16
@@ -749,20 +791,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2f166a60118ed88488ec60f246a4a7b7
-      internalID: -1850052785
+      spriteID: 625c4114e73ccd0469f338fbd2208225
+      internalID: 612063523
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Extra Village Tilesets_30
+      name: Tile_Extra_Village_32
       rect:
         serializedVersion: 2
         x: 32
@@ -770,20 +812,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6d497d0a4ce983148bd5ce8cc44e6bc8
-      internalID: -1859795282
+      spriteID: 998e1d10a800b80488f0ef87e5c0cd26
+      internalID: -2024129327
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Extra Village Tilesets_31
+      name: Tile_Extra_Village_33
       rect:
         serializedVersion: 2
         x: 80
@@ -791,20 +833,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ca45fee75123b324f871f42f72c8fea8
-      internalID: 1756586997
+      spriteID: 2cddab244d7f713478b73cee7abfeccc
+      internalID: -1899494310
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Extra Village Tilesets_32
+      name: Tile_Extra_Village_34
       rect:
         serializedVersion: 2
         x: 96
@@ -812,14 +854,14 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: faaabe6041ff3f748aea4b87a39cc402
-      internalID: -100008067
+      spriteID: b6bce4a34940c784fbe66f1603a4242a
+      internalID: -2018555344
       vertices: []
       indices: 
       edges: []
@@ -835,39 +877,41 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Extra Village Tilesets_0: -2612172115877161960
-      Extra Village Tilesets_1: 3884588772604911904
-      Extra Village Tilesets_10: -1859351832
-      Extra Village Tilesets_11: 184814225
-      Extra Village Tilesets_12: 1720952564
-      Extra Village Tilesets_13: -1641330167
-      Extra Village Tilesets_14: 284893575
-      Extra Village Tilesets_15: -672059368
-      Extra Village Tilesets_16: 820985806
-      Extra Village Tilesets_17: 1193327901
-      Extra Village Tilesets_18: -485584096
-      Extra Village Tilesets_19: -260685484
-      Extra Village Tilesets_2: 3238561822765263724
-      Extra Village Tilesets_20: 838550317
-      Extra Village Tilesets_21: -2146882882
-      Extra Village Tilesets_22: -1476234497
-      Extra Village Tilesets_23: 871562796
-      Extra Village Tilesets_24: 1832431734
-      Extra Village Tilesets_25: 1318813314
-      Extra Village Tilesets_26: -1619769616
-      Extra Village Tilesets_27: 1917874560
-      Extra Village Tilesets_28: 36898254
-      Extra Village Tilesets_29: -1850052785
-      Extra Village Tilesets_3: 377324620
-      Extra Village Tilesets_30: -1859795282
-      Extra Village Tilesets_31: 1756586997
-      Extra Village Tilesets_32: -100008067
-      Extra Village Tilesets_4: -134548953
-      Extra Village Tilesets_5: -1701469729
-      Extra Village Tilesets_6: 491578569
-      Extra Village Tilesets_7: 773990317
-      Extra Village Tilesets_8: 1575951101
-      Extra Village Tilesets_9: -822916174
+      Tile_Extra_Village_0: 1282075813
+      Tile_Extra_Village_1: -219167620
+      Tile_Extra_Village_10: -111294928
+      Tile_Extra_Village_11: -441822355
+      Tile_Extra_Village_12: 492843481
+      Tile_Extra_Village_13: -50717001
+      Tile_Extra_Village_14: -222480240
+      Tile_Extra_Village_15: -556711177
+      Tile_Extra_Village_16: 1807170143
+      Tile_Extra_Village_17: 823122960
+      Tile_Extra_Village_18: 1822907924
+      Tile_Extra_Village_19: -1566572191
+      Tile_Extra_Village_2: 2053356714
+      Tile_Extra_Village_20: -1794949255
+      Tile_Extra_Village_21: -479847322
+      Tile_Extra_Village_22: -292430947
+      Tile_Extra_Village_23: -1624935225
+      Tile_Extra_Village_24: 1671202494
+      Tile_Extra_Village_25: 1396946382
+      Tile_Extra_Village_26: -185219527
+      Tile_Extra_Village_27: -778426257
+      Tile_Extra_Village_28: 1007753213
+      Tile_Extra_Village_29: -686156856
+      Tile_Extra_Village_3: -1039985360
+      Tile_Extra_Village_30: -1327943809
+      Tile_Extra_Village_31: 612063523
+      Tile_Extra_Village_32: -2024129327
+      Tile_Extra_Village_33: -1899494310
+      Tile_Extra_Village_34: -2018555344
+      Tile_Extra_Village_4: 661891155
+      Tile_Extra_Village_5: -1602847045
+      Tile_Extra_Village_6: 1759278333
+      Tile_Extra_Village_7: 942964395
+      Tile_Extra_Village_8: -1550189354
+      Tile_Extra_Village_9: 1407437368
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
