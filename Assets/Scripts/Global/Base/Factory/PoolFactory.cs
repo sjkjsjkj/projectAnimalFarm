@@ -21,7 +21,7 @@ public class PoolFactory<T> where T : Component, IPoolable
     {
         if (_pool.Pull(out T instance))
         {
-            instance.Initialize();
+            instance.Setup();
             instance.transform.SetParent(GameManager.ObjectRoot);
             return instance;
         }

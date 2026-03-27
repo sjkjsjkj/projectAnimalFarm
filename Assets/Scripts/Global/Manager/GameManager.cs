@@ -151,8 +151,8 @@ public class GameManager : GlobalSingleton<GameManager>
     // 씬 로드 후처리
     private void PostProcessing(EScene prevScene, string nextScenePath)
     {
-        _uiRoot = UObject.Find(K.NAME_UI_ROOT);
-        _objectRoot = UObject.Find(K.NAME_OBJECT_ROOT);
+        _uiRoot = UObject.Find(K.NAME_UI_ROOT).transform;
+        _objectRoot = UObject.Find(K.NAME_OBJECT_ROOT).transform;
         EScene nextScene = (EScene)SceneUtility.GetBuildIndexByScenePath(nextScenePath);
         OnSceneLoadStart.Publish(prevScene, nextScene);
         _curScene = nextScene;

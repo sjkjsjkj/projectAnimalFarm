@@ -13,12 +13,12 @@ public class FactoryManager : Singleton<FactoryManager>
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private bool _isInitialized = false;
     private BasicFactory<AnimalObject> _animalFactory;
-    private PoolFactory _vfxFactory;
+    private PoolFactory<TestVFX> _vfxFactory;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     public BasicFactory<AnimalObject> Animal => _animalFactory;
-    public PoolFactory VFX => _vfxFactory;
+    public PoolFactory<TestVFX> VFX => _vfxFactory;
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
@@ -29,7 +29,7 @@ public class FactoryManager : Singleton<FactoryManager>
         }
 
         _animalFactory = new BasicFactory<AnimalObject>(DatabaseManager.Ins.Animal);
-        _vfxFactory = new PoolFactory(PoolManager.Ins.VFX);
+        _vfxFactory = new PoolFactory<TestVFX>(PoolManager.Ins.VFX);
         // ↑ 필요한 초기화 로직 / 부모 클래스에서 자동 실행
         _isInitialized = true;
     }
