@@ -518,5 +518,6 @@ public class TileMap
             canMoveY ? dir.y : 0
         );
         return finalVelocity * speed;
+    }
     #endregion
 }
