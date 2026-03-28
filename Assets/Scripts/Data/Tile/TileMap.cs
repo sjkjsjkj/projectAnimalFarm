@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using UnityEngine;
 
 /// <summary>
@@ -392,6 +391,20 @@ public class TileMap
         y = Mathf.Clamp(y, _startY, _startY + _height - 1);
         return (x, y);
     }
+    #endregion
+
+    #region ─────────────────────────▶ 공개 메서드 ◀─────────────────────────
+    /// <summary>
+    /// 생성자 → 외부에서 TileSingle[]을 주입해주는 구조
+    /// </summary>
+    public TileMap(TileSingle[] tiles, int width, int height, int startX, int startY)
+    {
+        _tiles = tiles;
+        _width = width;
+        _height = height;
+        _startX = startX;
+        _startY = startY;
+    }
 
     /// <summary>
     /// 유닛이 점유한 격자를 순환할 수 있는 변수를 반환받습니다.
@@ -400,7 +413,7 @@ public class TileMap
     /// <param name="size">유닛 크기</param>
     /// <returns></returns>
     public (int startX, int endX, int startY, int endY)
-        GetForeachGrid(Vector2 pos, Vector2 size)
+        GetOccupiedGrid(Vector2 pos, Vector2 size)
     {
         // 유닛 크기 결정
         float halfUnitX = size.x * K.GRID_SIZE_HALF;
@@ -415,19 +428,96 @@ public class TileMap
         // 완료
         return (startX, endX, startY, endY);
     }
-    #endregion
 
-    #region ─────────────────────────▶ 공개 메서드 ◀─────────────────────────
     /// <summary>
-    /// 생성자 → 외부에서 TileSingle[]을 주입해주는 구조
+    /// 유닛이 해당 좌표를 밟을 수 있는지 검사합니다.
     /// </summary>
-    public TileMap(TileSingle[] tiles, int width, int height, int startX, int startY)
+    /// <param name="pos">유닛이 밟을 월드 좌표</param>
+    /// <param name="size">유닛 크기</param>
+    /// <returns></returns>
+    public bool CheckCollision(Vector2 targetPos, Vector2 size)
     {
-        _tiles = tiles;
-        _width = width;
-        _height = height;
-        _startX = startX;
-        _startY = startY;
+        var (startX, endX, startY, endY) = GetOccupiedGrid(targetPos, size);
+        for (int y = startY; y < endY; ++y)
+        {
+            for (int x = startX; x < endX; ++x)
+            {
+                int index = GridToIndex(x, y);
+                // 유효하지 않은 인덱스 or 이동 불가 타일
+                if (!IsValid(index) || !IsMoveable(index))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// 유닛이 이번 프레임이 밟게 될 최종 좌표를 반환합니다.
+    /// </summary>
+    /// <param name="curPos">현재 좌표</param>
+    /// <param name="size">유닛 크기</param>
+    /// <param name="dir">이동 방향</param>
+    /// <param name="speed">초당 이동 속도</param>
+    /// <returns></returns>
+    public Vector2 GetValidPos(Vector2 curPos, Vector2 size, Vector2 dir, float speed)
+    {
+        // 방향 또는 이동 속도에 의해 위치 변화 없음
+        if (dir == Vector2.zero || speed <= 0f)
+        {
+            return curPos;
+        }
+        // 목표 위치가 안전하다면 반환
+        float movement = speed * Time.deltaTime;
+        Vector2 desiredPos = curPos + (dir * speed); // 목표 위치
+        if (!CheckCollision(desiredPos, size))
+        {
+            return desiredPos;
+        }
+        // AABB 충돌 로직
+        Vector2 desiredX = new Vector2(desiredPos.x, curPos.y); // X축 이동 검사
+        bool canMoveX = !CheckCollision(desiredX, size);
+        Vector2 desiredY = new Vector2(curPos.x, desiredPos.y); // Y축 이동 검사
+        bool canMoveY = !CheckCollision(desiredY, size);
+        // 최종 좌표 계산
+        Vector2 finalPos = new Vector2(
+            canMoveX ? desiredPos.x : curPos.x,
+            canMoveY ? desiredPos.y : curPos.y
+        );
+        return finalPos;
+    }
+
+    /// <summary>
+    /// 유닛이 이번 프레임에 가져야 할 속도를 반환합니다.
+    /// 물리 기반 이동이므로 FixedUpdate 전용입니다.
+    /// </summary>
+    /// <param name="curPos">현재 좌표</param>
+    /// <param name="size">유닛 크기</param>
+    /// <param name="dir">이동 방향</param>
+    /// <param name="speed">초당 이동 속도</param>
+    /// <returns></returns>
+    public Vector2 GetValidVelocity(Vector2 curPos, Vector2 size, Vector2 dir, float speed)
+    {
+        // 방향 또는 이동 속도에 의해 위치 변화 없음
+        if (dir == Vector2.zero || speed <= 0f)
+        {
+            return Vector2.zero;
+        }
+        // 예상 이동 위치
+        float movement = speed * Time.fixedDeltaTime;
+        Vector2 desiredPos = curPos + (dir * movement);
+        // AABB 충돌 로직
+        Vector2 desiredX = new Vector2(desiredPos.x, curPos.y); // X축 이동 검사
+        bool canMoveX = !CheckCollision(desiredX, size);
+        Vector2 desiredY = new Vector2(curPos.x, desiredPos.y); // Y축 이동 검사
+        bool canMoveY = !CheckCollision(desiredY, size);
+        // 최종 방향 계산
+        Vector2 finalVelocity = new Vector2(
+            canMoveX ? dir.x : 0,
+            canMoveY ? dir.y : 0
+        );
+        return finalVelocity * speed;
     }
     #endregion
 }
