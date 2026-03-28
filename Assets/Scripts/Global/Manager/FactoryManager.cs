@@ -1,23 +1,18 @@
-﻿using UnityEngine;
-
-/// <summary>
-/// 모든 팩토리 총괄하는 브릿지 역할의 싱글턴 클래스 입니다.
+﻿/// <summary>
+/// 모든 팩토리를 총괄하는 브릿지 역할의 싱글턴 클래스입니다.
 /// Factory.Ins.DB이름 으로 다른 DB에 접근할 수 있으며,
 /// Factory.Ins.DB.Spawn(id)으로 객체를 불러올 수 있습니다.
 /// </summary>
-public class FactoryManager : Singleton<FactoryManager>
+public class FactoryManager : GlobalSingleton<FactoryManager>
 {
-    #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
-    #endregion
-
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private bool _isInitialized = false;
-    private BasicFactory<AnimalObject> _animalFactory;
+    private BasicFactory<AnimalObject, AnimalWorldSO> _animalFactory;
     private PoolFactory<TestVFX> _vfxFactory;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
-    public BasicFactory<AnimalObject> Animal => _animalFactory;
+    public BasicFactory<AnimalObject, AnimalWorldSO> Animal => _animalFactory;
     public PoolFactory<TestVFX> VFX => _vfxFactory;
     #endregion
 
@@ -28,7 +23,7 @@ public class FactoryManager : Singleton<FactoryManager>
             return;
         }
 
-        _animalFactory = new BasicFactory<AnimalObject>(DatabaseManager.Ins.Animal);
+        _animalFactory = new BasicFactory<AnimalObject, AnimalWorldSO>(DatabaseManager.Ins.AnimalWorld);
         _vfxFactory = new PoolFactory<TestVFX>(PoolManager.Ins.VFX);
         // ↑ 필요한 초기화 로직 / 부모 클래스에서 자동 실행
         _isInitialized = true;

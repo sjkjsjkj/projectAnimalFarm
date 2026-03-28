@@ -9,6 +9,7 @@ public abstract class UnitSO : BaseSO
     [Header("기본 정보")]
     [SerializeField] protected string _name = "이름";
     [SerializeField] protected string _description = "설명";
+    [SerializeField] protected ERarity _rarity = ERarity.Basic; // 아이템 희귀도
     [SerializeField, CsvIgnore] protected Sprite _image;
     [SerializeField, CsvIgnore] protected GameObject _prefab;
     #endregion
@@ -16,6 +17,7 @@ public abstract class UnitSO : BaseSO
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     public string Name => _name;
     public string Description => _description;
+    public ERarity Rarity => _rarity;
     public Sprite Image => _image;
     public GameObject Prefab => _prefab;
 
@@ -24,6 +26,7 @@ public abstract class UnitSO : BaseSO
     {
         if (_name.IsEmpty()) return false;
         if (_description.IsEmpty()) return false;
+        if (_rarity == ERarity.None) return false;
         //if (_image == null) return false;
         //if (_prefab == null) return false;
         return true;

@@ -7,7 +7,6 @@ public abstract class WorldSO : UnitSO
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("월드 기본 정보")]
-    [SerializeField] protected ERarity _rarity = ERarity.Basic; // 오브젝트 등급
     [SerializeField] protected Vector2 _size = new Vector2(1f, 1f);
     // ↑ 하지만 콜라이더 등으로 처리할 예정이므로 채울 필요 X
     #endregion
@@ -19,7 +18,6 @@ public abstract class WorldSO : UnitSO
     public override bool IsValid()
     {
         if (!base.IsValid()) return false;
-        if (_rarity == ERarity.None) return false;
         if (_size.x <= 0) return false;
         if (_size.y <= 0) return false;
         return true;

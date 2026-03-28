@@ -10,7 +10,7 @@ public class Observable<T>
     private T _value;
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
-    public event Action<T> OnValueChanged;
+    private event Action<T> OnValueChanged;
     public T Value
     {
         get { return _value; }

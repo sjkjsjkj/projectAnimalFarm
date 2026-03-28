@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 836b9d9784956d149b361a6b9fd6a574, type: 3}
   m_Name: SoundTableSO_SFX
   m_EditorClassIdentifier: 
-  _sounds:
+  _elements:
   - {fileID: 11400000, guid: 13d4f9c8aa32dff4590271f502a34019, type: 2}
   - {fileID: 11400000, guid: 63c2eb0b22960e74f831f6eebc8dd161, type: 2}
   - {fileID: 11400000, guid: fcd676b0e01b7164ba4c77459cfa61ef, type: 2}

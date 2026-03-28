@@ -31,6 +31,8 @@ public class BootManager : MonoBehaviour
         tileManager.Initialize();
         var gameManager = root.AddComponent<GameManager>();
         gameManager.Initialize();
+        var databaseManager = root.AddComponent<DatabaseManager>();
+        databaseManager.Initialize();
         // 
         yield return null;
         UDebug.Print("BootSequence : 초기화 완료");

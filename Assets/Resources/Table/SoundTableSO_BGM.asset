@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 836b9d9784956d149b361a6b9fd6a574, type: 3}
   m_Name: SoundTableSO_BGM
   m_EditorClassIdentifier: 
-  _sounds:
+  _elements:
   - {fileID: 11400000, guid: ef72a40026a70fb489a19f080b8a0fa1, type: 2}
   - {fileID: 11400000, guid: 35ad4d55eecb8fb4da26594b259c150d, type: 2}
   - {fileID: 11400000, guid: af0de20b04d0c164796a3682850dc3fa, type: 2}

@@ -10,7 +10,7 @@ public class ToolItemSO : ItemSO
     [Header("도구 아이템 정보")]
     [SerializeField] protected int _maxDurability = 100; // 최대 내구도
     [SerializeField] protected int _currentLv = 1; // 해당 도구의 레벨
-    [SerializeField] protected float _range = 1; // 도구를 사용할 수 있는 범위
+    [SerializeField] protected float _range = 1f; // 도구를 사용할 수 있는 범위
     [SerializeField] protected float _strength = 1f; // 강도 (작업 효율, 캐는 속도 등)
     #endregion
 

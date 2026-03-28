@@ -438,9 +438,9 @@ public class TileMap
     public bool CheckCollision(Vector2 targetPos, Vector2 size)
     {
         var (startX, endX, startY, endY) = GetOccupiedGrid(targetPos, size);
-        for (int y = startY; y < endY; ++y)
+        for (int y = startY; y <= endY; ++y)
         {
-            for (int x = startX; x < endX; ++x)
+            for (int x = startX; x <= endX; ++x)
             {
                 int index = GridToIndex(x, y);
                 // 유효하지 않은 인덱스 or 이동 불가 타일
