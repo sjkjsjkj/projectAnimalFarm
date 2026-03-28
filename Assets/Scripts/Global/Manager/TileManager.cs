@@ -26,7 +26,7 @@ public class TileManager : GlobalSingleton<TileManager>
         BuildLogicMap(ref _mainLogicMap, K.TILE_RESOURCE_MAIN_JSON_PATH);
         BuildLogicMap(ref _farmLogicMap, K.TILE_RESOURCE_FARM_JSON_PATH);
         BuildLogicMap(ref _caveLogicMap, K.TILE_RESOURCE_CAVE_JSON_PATH);
-        EventBus<OnSceneLoadStart>.Subscribe(MapChangeHandle); // OnEnable이 아닌 이곳에서 구독
+        EventBus<OnSceneLoadEnd>.Subscribe(MapChangeHandle); // OnEnable이 아닌 이곳에서 구독
         _curLogicMap = _mainLogicMap;
         // ↑ 필요한 초기화 로직 / 부모 클래스에서 자동 실행
         _isInitialized = true;
@@ -34,7 +34,7 @@ public class TileManager : GlobalSingleton<TileManager>
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-    private void MapChangeHandle(OnSceneLoadStart ctx)
+    private void MapChangeHandle(OnSceneLoadEnd ctx)
     {
         UDebug.Print($"타일 로직 맵을 {_curLogicMap}에서 {ctx.nextScene}으로 교체합니다.");
         switch (ctx.nextScene)
@@ -162,7 +162,7 @@ public class TileManager : GlobalSingleton<TileManager>
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
     private void OnDisable()
     {
-        EventBus<OnSceneLoadStart>.Unsubscribe(MapChangeHandle);
+        EventBus<OnSceneLoadEnd>.Unsubscribe(MapChangeHandle);
     }
     #endregion
 }
