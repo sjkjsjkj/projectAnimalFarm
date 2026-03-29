@@ -57,7 +57,7 @@ public class SoundSO : BaseSO
         _type = EType.Audio;
         if (!IsValid())
         {
-            UDebug.PrintOnce($"SO({_id})의 값이 올바르지 않습니다.", LogType.Assert);
+            UDebug.PrintOnce($"SO({_id})의 값이 올바르지 않습니다.", LogType.Warning);
         }
     }
     #endregion

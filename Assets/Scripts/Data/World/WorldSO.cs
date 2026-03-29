@@ -31,7 +31,7 @@ public abstract class WorldSO : UnitSO
         base.OnValidate();
         if (!IsValid())
         {
-            UDebug.PrintOnce($"SO({_id})의 값이 올바르지 않습니다.", LogType.Assert);
+            UDebug.PrintOnce($"SO({_id})의 값이 올바르지 않습니다.", LogType.Warning);
         }
     }
     #endregion

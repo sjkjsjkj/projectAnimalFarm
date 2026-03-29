@@ -31,6 +31,105 @@ public class TileMap
     public int Length => _tiles.Length;
     #endregion
 
+    #region ─────────────────────────▶ 상태 접근 (편의성) ◀─────────────────────────
+
+    /// <summary>
+    /// 디버깅 용도 : 타일 원본 ID 반환
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int GetTileID(Vector2 worldPos) => GetTileID(WorldToIndex(worldPos));
+
+    /// <summary>
+    /// 디버깅 용도 : 타일 원본 ID 반환
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int GetTileID(Vector2Int gridPos) => GetTileID(GridToIndex(gridPos));
+
+    /// <summary>
+    /// 상태가 존재하지 않는 타일
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsNone(Vector2 worldPos) => IsNone(WorldToIndex(worldPos));
+
+    /// <summary>
+    /// 상태가 존재하지 않는 타일
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsNone(Vector2Int gridPos) => IsNone(GridToIndex(gridPos));
+
+    /// <summary>
+    /// 걸어다닐 수 있는 타일
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsMoveable(Vector2 worldPos) => IsMoveable(WorldToIndex(worldPos));
+
+    /// <summary>
+    /// 걸어다닐 수 있는 타일
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsMoveable(Vector2Int gridPos) => IsMoveable(GridToIndex(gridPos));
+
+    /// <summary>
+    /// 경작이 가능한 타일
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsFarmable(Vector2 worldPos) => IsFarmable(WorldToIndex(worldPos));
+
+    /// <summary>
+    /// 경작이 가능한 타일
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsFarmable(Vector2Int gridPos) => IsFarmable(GridToIndex(gridPos));
+
+    /// <summary>
+    /// 낚시가 가능한 타일
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsFishingable(Vector2 worldPos) => IsFishingable(WorldToIndex(worldPos));
+
+    /// <summary>
+    /// 낚시가 가능한 타일
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsFishingable(Vector2Int gridPos) => IsFishingable(GridToIndex(gridPos));
+
+    /// <summary>
+    /// 위에 건설이 가능한 타일
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsBuildable(Vector2 worldPos) => IsBuildable(WorldToIndex(worldPos));
+
+    /// <summary>
+    /// 위에 건설이 가능한 타일
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsBuildable(Vector2Int gridPos) => IsBuildable(GridToIndex(gridPos));
+
+    /// <summary>
+    /// 상호작용이 가능한 타일
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsInteractable(Vector2 worldPos) => IsInteractable(WorldToIndex(worldPos));
+
+    /// <summary>
+    /// 상호작용이 가능한 타일
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsInteractable(Vector2Int gridPos) => IsInteractable(GridToIndex(gridPos));
+
+    /// <summary>
+    /// 바다 낚시가 가능한 타일
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsSeaFishingable(Vector2 worldPos) => IsSeaFishingable(WorldToIndex(worldPos));
+
+    /// <summary>
+    /// 바다 낚시가 가능한 타일
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsSeaFishingable(Vector2Int gridPos) => IsSeaFishingable(GridToIndex(gridPos));
+    #endregion
+
     #region ─────────────────────────▶ 상태 접근 ◀─────────────────────────
     /// <summary>
     /// 디버깅 용도 : 타일 원본 ID 반환
