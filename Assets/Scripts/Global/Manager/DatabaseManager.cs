@@ -156,10 +156,11 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
             UDebug.Print($"리소스 폴더에서 로드할 프리펩 이름이 비어있습니다.", LogType.Assert);
             return null;
         }
-        T prefab = Resources.Load<T>(K.PREFAB_RESOURCE_PATH);
+        T prefab = Resources.Load<T>($"{K.PREFAB_RESOURCE_PATH}/{prefabName}");
         if (prefab == null)
         {
-            UDebug.Print($"{prefabName} 이름을 가진 프리펩을 Resources/{K.PREFAB_RESOURCE_PATH}에서 찾을 수 없습니다.", LogType.Assert);
+            UDebug.Print($"{prefabName} 이름을 가진 프리펩을 Resources/{K.PREFAB_RESOURCE_PATH}에서 찾을 수 없습니다." +
+                $"\n또는 {typeof(T).Name} 컴포넌트가 부착되지 않았습니다.", LogType.Assert);
             return null;
         }
         return prefab;

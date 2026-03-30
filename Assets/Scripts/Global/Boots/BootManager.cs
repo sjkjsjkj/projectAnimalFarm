@@ -21,21 +21,27 @@ public class BootManager : MonoBehaviour
     {
         UDebug.Print("BootSequence : 초기화 중 ....");
         // 매니저 생성 및 초기화
-        var frameManager = root.AddComponent<FrameManager>();
-        frameManager.Initialize();
-        var inputManager = root.AddComponent<InputManager>();
+        // 순서 의존성 없음 ↓
+        var inputManager = UObject.AddComponent<InputManager>(root); // Input Action을 읽음
         inputManager.Initialize();
-        var tileIdToState = root.AddComponent<TileIdToState>();
+        var tileIdToState = UObject.AddComponent<TileIdToState>(root); // 구글 시트를 읽음
         tileIdToState.Initialize();
-        var tileManager = root.AddComponent<TileManager>();
-        tileManager.Initialize();
-        var gameManager = root.AddComponent<GameManager>();
+        var gameManager = UObject.AddComponent<GameManager>(root);
         gameManager.Initialize();
-        var databaseManager = root.AddComponent<DatabaseManager>();
+        // TileIdToState 이후 실행 ↓
+        var tileManager = UObject.AddComponent<TileManager>(root);
+        tileManager.Initialize();
+        var databaseManager = UObject.AddComponent<DatabaseManager>(root); // 리소스 폴더의 테이블 SO를 읽음
         databaseManager.Initialize();
-        var dataManager = root.AddComponent<DataManager>();
+        // DatabaseManager 이후 실행 ↓
+        var dataManager = UObject.AddComponent<DataManager>(root);
         dataManager.Initialize();
-        // 
+        // DataManager 이후 실행 ↓
+        var bgmManager = UObject.AddComponent<BgmManager>(root); // 옵션(Data), SO(Database)를 읽음
+        bgmManager.Initialize();
+        // 다른 매니저들을 위해 마지막에 실행 ↓
+        var frameManager = UObject.AddComponent<FrameManager>(root);
+        frameManager.Initialize();
         yield return null;
         UDebug.Print("BootSequence : 초기화 완료");
         _co = null;

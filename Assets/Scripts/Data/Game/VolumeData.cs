@@ -18,12 +18,30 @@ public class VolumeData
     public float Master
     {
         get => _master;
-        set => _master = Mathf.Clamp01(value);
+        set
+        {
+            float newVolume = Mathf.Clamp01(value);
+            if(_master == newVolume)
+            {
+                return;
+            }
+            _master = newVolume;
+            USound.UpdateBgmVolume();
+        }
     }
     public float Bgm
     {
         get => _bgm;
-        set => _bgm = Mathf.Clamp01(value);
+        set
+        {
+            float newVolume = Mathf.Clamp01(value);
+            if (_master == newVolume)
+            {
+                return;
+            }
+            _master = newVolume;
+            USound.UpdateBgmVolume();
+        }
     }
     public float Sfx
     {

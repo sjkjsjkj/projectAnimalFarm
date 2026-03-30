@@ -58,6 +58,7 @@ public class PoolManager : GlobalSingleton<PoolManager>
             return;
         }
         var data = DatabaseManager.Ins;
+        // 일반 프리펩
         CreateFactory(data.SoundPrefab(), K.NAME_SOUND_EMITTER);
         // ↑ 필요한 초기화 로직 / 부모 클래스에서 자동 실행
         _isInitialized = true;

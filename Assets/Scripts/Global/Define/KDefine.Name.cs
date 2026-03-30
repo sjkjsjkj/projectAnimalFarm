@@ -6,6 +6,9 @@ public static partial class K
     public static readonly string NAME_UI_CAMERA = "UI Camera";
     public static readonly string NAME_MAIN_CAMERA = "Main Camera";
 
+    // 사운드 오브젝트 이름
+    public static readonly string NAME_BGM_OBJECT = "BgmSourceGlobal";
+
     // 루트 오브젝트 이름
     public static readonly string NAME_UI_ROOT = "Canvas";
     public static readonly string NAME_OBJECT_ROOT = "@ObjectRoot";

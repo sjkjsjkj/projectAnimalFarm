@@ -23,7 +23,8 @@ public abstract class TableSO<T> : ScriptableObject where T : BaseSO
         {
             return so;
         }
-        UDebug.Print($"존재하지 않는 ID({id})로 SO 인스턴스를 가져오려 시도했습니다.", LogType.Assert);
+        // 데이터베이스 매니저에 위임
+        // UDebug.Print($"존재하지 않는 ID({id})로 SO 인스턴스를 가져오려 시도했습니다.", LogType.Assert);
         return null;
     }
 

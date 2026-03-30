@@ -141,21 +141,22 @@ public class GameManager : GlobalSingleton<GameManager>
         GameObject ui = UObject.Find(K.NAME_UI_ROOT);
         GameObject obj = UObject.Find(K.NAME_OBJECT_ROOT);
         EScene nextScene = (EScene)SceneUtility.GetBuildIndexByScenePath(nextScenePath);
-        if (ui != null)
+        // 루트 생성
         {
-            _uiRoot = ui.transform;
+            Transform root = ObjectRoot;
+            root = obj.transform;
         }
-        else
         {
-            UDebug.Print($"새로운 씬({nextScene})에서 UI 루트를 찾지 못했습니다.", LogType.Assert);
+            Transform root = EnableObjectRoot;
+            root = obj.transform;
         }
-        if (obj != null)
         {
-            _objectRoot = obj.transform;
+            Transform root = DisableObjectRoot;
+            root = obj.transform;
         }
-        else
         {
-            UDebug.Print($"새로운 씬({nextScene})에서 오브젝트 루트를 찾지 못했습니다.", LogType.Assert);
+            Transform root = UIRoot;
+            root = obj.transform;
         }
         OnSceneLoadEnd.Publish(prevScene, nextScene);
         _curScene = nextScene;

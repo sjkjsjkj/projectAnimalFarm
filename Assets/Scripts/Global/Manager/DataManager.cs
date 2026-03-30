@@ -36,7 +36,7 @@ public class DataManager : GlobalSingleton<DataManager>
         _playerProvider = new(playerSO);
         // 완료
         _isInitialized = true;
-        UDebug.Print("모든 테이블 로드가 완료되었습니다.");
+        UDebug.Print("데이터 매니저 초기화가 완료되었습니다.");
     }
     #endregion
 }
