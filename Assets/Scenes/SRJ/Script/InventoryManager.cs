@@ -48,19 +48,34 @@ public class InventoryManager : MonoBehaviour
     void AddTestItems()
     {
         foreach (var item in testItems)
+        {
             AddItem(item);
+            AddItem(item); // 스택 테스트용 2개씩 추가
+        }
     }
 
-    public bool AddItem(ItemData item)
+    public bool AddItem(ItemData item, int count = 1)
     {
+        // 같은 아이템 있으면 스택
+        foreach (var slot in slots)
+        {
+            if (!slot.IsEmpty && slot.CurrentItem == item && slot.ItemCount < item.maxStack)
+            {
+                slot.AddCount(count);
+                return true;
+            }
+        }
+
+        // 빈 슬롯에 추가
         foreach (var slot in slots)
         {
             if (slot.IsEmpty)
             {
-                slot.SetItem(item);
+                slot.SetItem(item, count);
                 return true;
             }
         }
+
         Debug.Log("인벤토리가 가득 찼습니다!");
         return false;
     }

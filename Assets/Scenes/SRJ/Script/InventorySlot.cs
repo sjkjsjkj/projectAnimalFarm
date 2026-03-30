@@ -3,17 +3,16 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 
-public class InventorySlot : MonoBehaviour, IPointerClickHandler, IDropHandler,
-    IPointerEnterHandler, IPointerExitHandler  // 툴팁용 추가
+public class InventorySlot : MonoBehaviour, IPointerClickHandler, IDropHandler
 {
     [Header("UI References")]
     public Image iconImage;
     public GameObject itemObject;
     public GameObject contextMenuPrefab;
-    public TextMeshProUGUI countText; // 추가
+    public TextMeshProUGUI countText;
 
     private ItemData currentItem;
-    private int itemCount = 0; // 추가
+    private int itemCount = 0;
     private Canvas rootCanvas;
 
     public bool IsEmpty => currentItem == null;
@@ -23,6 +22,7 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler, IDropHandler,
     void Awake()
     {
         rootCanvas = GetComponentInParent<Canvas>();
+        if (countText != null) countText.text = "";
     }
 
     public void SetItem(ItemData item, int count = 1)
@@ -32,7 +32,6 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler, IDropHandler,
         iconImage.sprite = item.icon;
         iconImage.color = Color.white;
         itemObject.SetActive(true);
-
         UpdateCountText();
 
         var draggable = itemObject.GetComponent<DraggableItem>();
@@ -50,7 +49,6 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler, IDropHandler,
     void UpdateCountText()
     {
         if (countText == null) return;
-        // 1개면 숫자 숨기기, 2개 이상이면 표시
         countText.text = itemCount > 1 ? itemCount.ToString() : "";
     }
 
@@ -64,26 +62,13 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler, IDropHandler,
         if (countText != null) countText.text = "";
     }
 
-    // 툴팁 - 마우스 올릴 때
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        if (!IsEmpty)
-            TooltipUI.Instance.Show(currentItem);
-    }
-
-    // 툴팁 - 마우스 나갈 때
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        TooltipUI.Instance.Hide();
-    }
-
     public void OnDrop(PointerEventData eventData)
     {
         DraggableItem dragged = eventData.pointerDrag?.GetComponent<DraggableItem>();
         if (dragged == null) return;
 
         InventorySlot fromSlot = dragged.OriginalSlot;
-        if (fromSlot == this) return;
+        if (fromSlot == null || fromSlot == this || fromSlot.IsEmpty) return;
 
         ItemData fromItem = fromSlot.CurrentItem;
         int fromCount = fromSlot.ItemCount;
@@ -92,11 +77,11 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler, IDropHandler,
 
         fromSlot.ClearSlot();
         if (toItem != null) fromSlot.SetItem(toItem, toCount);
-
         ClearSlot();
         SetItem(fromItem, fromCount);
 
-        dragged.transform.SetParent(fromSlot.transform.Find("Icon").transform.parent, false);
+        // 드래그 오브젝트 위치 정리
+        dragged.transform.SetParent(fromSlot.transform, false);
         dragged.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
     }
 
