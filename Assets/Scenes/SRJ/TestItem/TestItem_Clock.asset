@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ad689fcc056b7041be495a4bbb7b0f7, type: 3}
-  m_Name: TestPotion
+  m_Script: {fileID: 11500000, guid: c5838d7b986359a47bdd7297c2c2e8b0, type: 3}
+  m_Name: TestItem_Clock
   m_EditorClassIdentifier: 
-  itemName: "\uD3EC\uC158"
-  icon: {fileID: -4725872483281334863, guid: 6f4be33904f68ab47ba0da8a81f32747, type: 3}
-  maxStack: 99
+  itemName: Clock
+  icon: {fileID: 4214149858688995037, guid: 169d89fa36b54d44e9e1716ebf9e22e8, type: 3}
+  description: "\uC2DC\uAC04\uC744 \uBCF4\uC5EC\uC900\uB2E4"
+  itemType: 0
