@@ -12,4 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbaee2de26c89b54d971bfb1074ecb2c, type: 3}
   m_Name: SeedItemTableSO
   m_EditorClassIdentifier: 
-  _elements: []
+  _elements:
+  - {fileID: 11400000, guid: 2faf84055c388fb49bedb1f7985c0651, type: 2}
+  - {fileID: 11400000, guid: 6e33e387b6ce19d4f83c689d77ee9b48, type: 2}
+  - {fileID: 11400000, guid: 20914844657a8544ca068549b3c0e25f, type: 2}
+  - {fileID: 11400000, guid: 077c89bb4884b49478de56aaec53893a, type: 2}
+  - {fileID: 11400000, guid: 17ecb4096e6b1c540b17c43328e6c47f, type: 2}
+  - {fileID: 11400000, guid: 383a564b07e05924f91548145c758e86, type: 2}
+  - {fileID: 11400000, guid: 076f1d6b99cef3d46b4b0aab590321b3, type: 2}
+  - {fileID: 11400000, guid: fc1bc452925a81f46b10702fb4b225da, type: 2}
+  - {fileID: 11400000, guid: 05b1194ace0c73d4d8154897a2788953, type: 2}
+  - {fileID: 11400000, guid: dee8d6cedb80aa646b9db5ca33306d7e, type: 2}
+  - {fileID: 11400000, guid: 3ffae09c945094b4b9e7ab7ae113d75d, type: 2}

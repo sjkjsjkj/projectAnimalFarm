@@ -73,7 +73,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -87,7 +87,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -106,12 +106,12 @@ TextureImporter:
   swizzle: 50462976
   cookieLightType: 0
   platformSettings:
-  - serializedVersion: 4
+  - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -119,7 +119,7 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
+  - serializedVersion: 3
     buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -132,8 +132,21 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
+  - serializedVersion: 3
     buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -153,13 +166,12 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 96
-        width: 128
-        height: 49
+        y: 144
+        width: 32
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
@@ -174,14 +186,13 @@ TextureImporter:
       name: Pine Tree Animation_1
       rect:
         serializedVersion: 2
-        x: 3
-        y: 145
-        width: 25
-        height: 34
+        x: 32
+        y: 144
+        width: 32
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
@@ -196,14 +207,13 @@ TextureImporter:
       name: Pine Tree Animation_2
       rect:
         serializedVersion: 2
-        x: 34
-        y: 145
-        width: 27
-        height: 37
+        x: 64
+        y: 144
+        width: 32
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
@@ -218,14 +228,13 @@ TextureImporter:
       name: Pine Tree Animation_3
       rect:
         serializedVersion: 2
-        x: 64
-        y: 145
-        width: 31
-        height: 39
+        x: 96
+        y: 144
+        width: 32
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
@@ -240,14 +249,13 @@ TextureImporter:
       name: Pine Tree Animation_4
       rect:
         serializedVersion: 2
-        x: 95
-        y: 145
-        width: 33
-        height: 41
+        x: 0
+        y: 96
+        width: 32
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
@@ -262,14 +270,13 @@ TextureImporter:
       name: Pine Tree Animation_5
       rect:
         serializedVersion: 2
-        x: 1
-        y: 48
-        width: 30
-        height: 45
+        x: 32
+        y: 96
+        width: 32
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
@@ -284,14 +291,13 @@ TextureImporter:
       name: Pine Tree Animation_6
       rect:
         serializedVersion: 2
-        x: 31
-        y: 48
+        x: 64
+        y: 96
         width: 32
         height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
@@ -306,14 +312,13 @@ TextureImporter:
       name: Pine Tree Animation_7
       rect:
         serializedVersion: 2
-        x: 63
-        y: 48
-        width: 33
-        height: 49
+        x: 96
+        y: 96
+        width: 32
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
@@ -328,14 +333,13 @@ TextureImporter:
       name: Pine Tree Animation_8
       rect:
         serializedVersion: 2
-        x: 95
+        x: 0
         y: 48
-        width: 33
-        height: 49
+        width: 32
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
@@ -350,14 +354,13 @@ TextureImporter:
       name: Pine Tree Animation_9
       rect:
         serializedVersion: 2
-        x: 10
-        y: 0
-        width: 12
-        height: 12
+        x: 32
+        y: 48
+        width: 32
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
@@ -372,14 +375,13 @@ TextureImporter:
       name: Pine Tree Animation_10
       rect:
         serializedVersion: 2
-        x: 36
-        y: 0
-        width: 25
-        height: 13
+        x: 64
+        y: 48
+        width: 32
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
@@ -394,14 +396,13 @@ TextureImporter:
       name: Pine Tree Animation_11
       rect:
         serializedVersion: 2
-        x: 66
-        y: 0
-        width: 35
-        height: 14
+        x: 96
+        y: 48
+        width: 32
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
@@ -416,14 +417,13 @@ TextureImporter:
       name: Pine Tree Animation_12
       rect:
         serializedVersion: 2
-        x: 106
+        x: 0
         y: 0
-        width: 22
-        height: 12
+        width: 32
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
@@ -434,25 +434,88 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Pine Tree Animation_13
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 46e9ecd0b9c1505408efcfa9d52ba899
+      internalID: -559055430
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree Animation_14
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 14a0380b3aca1c344b2d721757af46ea
+      internalID: 391061711
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree Animation_15
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f2176aa96cddcc64da656f9e5eef50ab
+      internalID: 656116153
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
-    customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 02182e9003f472d41a4c68243a72ee10
     internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    spriteCustomMetadata:
-      entries: []
     nameFileIdTable:
       Pine Tree Animation_0: -7159763503364627529
       Pine Tree Animation_1: 7353626965263262209
       Pine Tree Animation_10: 1778063121208857476
       Pine Tree Animation_11: -2184660585252317309
       Pine Tree Animation_12: 4874031352413731613
+      Pine Tree Animation_13: -559055430
+      Pine Tree Animation_14: 391061711
+      Pine Tree Animation_15: 656116153
       Pine Tree Animation_2: 8838924933018337548
       Pine Tree Animation_3: -1762790350866421621
       Pine Tree Animation_4: 3963039096378449534

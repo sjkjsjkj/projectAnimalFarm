@@ -17,6 +17,9 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
     [SerializeField] private GameObject _farmAreaPrefab;
     [SerializeField] private int _pos;
     [SerializeField] private EHarvest _seedId;
+
+    [Header("인벤토리 테스트")]
+    [SerializeField] private string _SeedItemId;
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
@@ -54,9 +57,7 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
     public void TestFunction()
     {
         _tempDataUnitSO = DatabaseManager.Ins.AnimalWorld(_testID);
-        //TileData tempTileData = Database.Ins.Tile.FindData(_testTileID);
-        
-        //UDebug.Print($"{_testID} : {_tempDataUnitSO.Name}\ntempTileData's State : {tempTileData.State}");
+
     }
     public void TestFunction2()
     {
@@ -70,18 +71,16 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
         tempGo.transform.localPosition = Vector3.zero;
     }
 
-    /*public void TestFunction3()
+    public void TestFunction3()
     {
-        PoolItem tempGo = FactoryManager.Ins.VFX.Spawn();
-        tempGo.transform.SetParent(this.transform);
-        tempGo.transform.localPosition = Vector3.zero;
-    }*/
+        ItemSO tempItemSO = DatabaseManager.Ins.SeedItem(_SeedItemId);
+
+        InventoryManager.Ins.PlayerInventory.TryGetItem(tempItemSO);
+    }
 
     public void TestFunction4()
     {
         _testFarmArea.TestFunction(_pos, _seedId.ToString());
-
-        
     }
     #endregion
 }
