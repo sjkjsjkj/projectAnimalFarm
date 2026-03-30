@@ -5,12 +5,12 @@ using UnityEngine;
 /// 테이블 SO의 기반을 구현하는 추상화 클래스
 /// 상속받아서 편하게 테이블 SO를 만들 것
 /// </summary>
-public class TableSO<T> : ScriptableObject where T : BaseSO
+public abstract class TableSO<T> : ScriptableObject where T : BaseSO
 {
     [Header("SO 인스턴스 목록")]
     [SerializeField] protected List<T> _elements;
 
-    private Dictionary<string, T> _elementDict;
+    protected Dictionary<string, T> _elementDict;
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     /// <summary>
@@ -30,11 +30,8 @@ public class TableSO<T> : ScriptableObject where T : BaseSO
     // 값 유효성 검사
     public virtual bool IsValid()
     {
-        if (UArray.IsInitedList(_elements))
-        {
-            return true;
-        }
-        return false;
+        if (!UArray.IsInitedList(_elements)) return false;
+        return true;
     }
 
     /// <summary>
@@ -42,13 +39,13 @@ public class TableSO<T> : ScriptableObject where T : BaseSO
     /// </summary>
     public void Initialize()
     {
-        BuildSoundDict();
+        BuildElementDict();
     }
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
     // 인스펙터의 리스트로 SoundSO를 담는 딕셔너리 작성
-    private void BuildSoundDict()
+    private void BuildElementDict()
     {
         if (UDebug.IsNull(_elements))
         {
@@ -73,7 +70,7 @@ public class TableSO<T> : ScriptableObject where T : BaseSO
             }
             success++;
         }
-        UDebug.Print($"사운드 테이블의 딕셔너리 작성을 완료했습니다. (총 {success}개)");
+        UDebug.Print($"테이블의 딕셔너리 작성을 완료했습니다. (총 {success}개)");
     }
     #endregion
 
@@ -82,7 +79,7 @@ public class TableSO<T> : ScriptableObject where T : BaseSO
     {
         if (!IsValid())
         {
-            UDebug.PrintOnce($"사운드 테이블에 할당한 값이 올바르지 않습니다.", LogType.Assert);
+            UDebug.PrintOnce($"테이블({typeof(T).Name})에 할당한 값이 올바르지 않습니다.", LogType.Assert);
         }
     }
     #endregion

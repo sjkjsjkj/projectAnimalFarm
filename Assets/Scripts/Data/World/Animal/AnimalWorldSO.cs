@@ -18,8 +18,8 @@ public class AnimalWorldSO : WorldSO
 
     [Header("생산품 정보")]
     [SerializeField] protected string _productId = null; // 생산하는 아이템 ID
-    [SerializeField] protected int _productCountMin = 1; // 한 번에 생산하는 아이템 최소 개수
-    [SerializeField] protected int _productCountMax = 1; // 한 번에 생산하는 아이템 최대 개수
+    [SerializeField] protected int _productMinCount = 1; // 한 번에 생산하는 아이템 최소 개수
+    [SerializeField] protected int _productMaxCount = 1; // 한 번에 생산하는 아이템 최대 개수
     [SerializeField] protected float _productTime = 100f; // 생산에 걸리는 시간
     #endregion
 
@@ -30,8 +30,8 @@ public class AnimalWorldSO : WorldSO
     public float TickFeedAmount => _tickFeedAmount;
     public float MaxFeedAmount => _maxFeedAmount;
     public string ProductId => _productId;
-    public int ProductCountMin => _productCountMin;
-    public int ProductCountMax => _productCountMax;
+    public int ProductMinCount => _productMinCount;
+    public int ProductMaxCount => _productMaxCount;
     public float ProductTime => _productTime;
 
 
@@ -47,8 +47,8 @@ public class AnimalWorldSO : WorldSO
         if (_maxFeedAmount < 0f) return false;
         // 생산품
         if (_productId.IsEmpty()) return false;
-        if (ProductCountMin <= 0) return false;
-        if (ProductCountMax <= 0) return false;
+        if (ProductMinCount <= 0) return false;
+        if (ProductMaxCount <= 0) return false;
         if (ProductTime <= 0f) return false;
         return true;
     }

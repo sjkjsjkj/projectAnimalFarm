@@ -7,14 +7,12 @@ public abstract class ItemSO : UnitSO
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("아이템 기본 정보")]
-    [SerializeField] protected ERarity _rarity = ERarity.Basic; // 아이템 희귀도
     [SerializeField] protected int _sellPrice = 100; // 판매 가격
     [SerializeField] protected int _buyPrice = 200; // 구매 가격
     [SerializeField] protected int _maxStack = 64; // 최대 중첩 수
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
-    public ERarity Rarity => _rarity;
     public int SellPrice => _sellPrice;
     public int BuyPrice => _buyPrice;
     public int MaxStack => _maxStack;
@@ -23,7 +21,6 @@ public abstract class ItemSO : UnitSO
     public override bool IsValid()
     {
         if (!base.IsValid()) return false;
-        if (_rarity == ERarity.None) return false;
         if (_sellPrice < 0) return false;
         if (_buyPrice < 0) return false;
         if (_sellPrice > _buyPrice) return false;

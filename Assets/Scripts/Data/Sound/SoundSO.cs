@@ -20,9 +20,20 @@ public class SoundSO : BaseSO
     public override bool IsValid()
     {
         if (!base.IsValid()) return false;
+        if (_type != EType.Audio) return false;
         if (_clip == null) return false;
         if (_volume <= 0f) return false;
         return true;
+    }
+
+    /// <summary>
+    /// 해당 클립의 최종 볼륨을 계산해서 가져옵니다.
+    /// </summary>
+    /// <param name="userVolume">사용자 볼륨 설정</param>
+    public float CalcVolume(float userVolume)
+    {
+        userVolume = Mathf.Clamp01(userVolume);
+        return Mathf.Min(_volume * userVolume, 1f);
     }
     #endregion
 
@@ -40,9 +51,10 @@ public class SoundSO : BaseSO
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
-    protected virtual void OnValidate()
+    protected override void OnValidate()
     {
         AutomaticallyId();
+        _type = EType.Audio;
         if (!IsValid())
         {
             UDebug.PrintOnce($"SO({_id})의 값이 올바르지 않습니다.", LogType.Assert);

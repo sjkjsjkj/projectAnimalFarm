@@ -155,7 +155,7 @@ public class PlayerController : BaseMono
         Vector2 moveDir = _moveInput.normalized;
         Vector2 curPos = transform.position;
         _rb.velocity = TileManager.Ins.Tile.GetValidVelocity
-            (curPos, Vector2.one, moveDir, GetMoveSpeed());
+            (curPos, Vector2.one * 0.5f, moveDir, GetMoveSpeed());
     }
 
     /// <summary>
