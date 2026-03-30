@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: SoundSO_Sfx_WalkingCollison
   m_EditorClassIdentifier: 
   _id: Sfx_WalkingCollison
+  _type: 22
   _clip: {fileID: 8300000, guid: 4a5b22da472d0ea459699a051d1c3512, type: 3}
-  _volume: 0.5
+  _volume: 0.8

@@ -11,48 +11,19 @@ public class GameManager : GlobalSingleton<GameManager>
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private static Transform _uiRoot;
     private static Transform _objectRoot;
-    private OptionData _option;
+    private static Transform _enableObjectRoot;
+    private static Transform _disableObjectRoot;
     private bool _isInitialized = false;
     private EScene _curScene;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     public EScene Scene => _curScene;
-    public VolumeData Sound => _option.Volume;
-    public VolumeData Volume => _option.Volume;
-    public ScreenData Screen => _option.Screen;
 
-    public static Transform UIRoot
-    {
-        get
-        {
-            if (_uiRoot == null)
-            {
-                _uiRoot = UObject.Find(K.NAME_UI_ROOT).transform;
-                if (_uiRoot == null)
-                {
-                    UDebug.Print($"UI 루트 오브젝트를 찾지 못했습니다.", LogType.Assert);
-                }
-            }
-            return _uiRoot;
-        }
-    }
-
-    public static Transform ObjectRoot
-    {
-        get
-        {
-            if (_objectRoot == null)
-            {
-                _objectRoot = GameObject.Find(K.NAME_OBJECT_ROOT).transform;
-                if (_objectRoot == null)
-                {
-                    UDebug.Print($"오브젝트 루트를 찾지 못했습니다.", LogType.Assert);
-                }
-            }
-            return _objectRoot;
-        }
-    }
+    public static Transform UIRoot => RootProvider(_uiRoot, K.NAME_UI_ROOT);
+    public static Transform ObjectRoot => RootProvider(_objectRoot, K.NAME_OBJECT_ROOT);
+    public static Transform EnableObjectRoot => RootProvider(_enableObjectRoot, K.NAME_ENABLE_OBJECT_ROOT);
+    public static Transform DisableObjectRoot => RootProvider(_disableObjectRoot, K.NAME_DISABLE_OBJECT_ROOT);
 
     public override void Initialize()
     {
@@ -61,7 +32,6 @@ public class GameManager : GlobalSingleton<GameManager>
             return;
         }
         // 생성 및 초기화
-        _option = new();
         _curScene = (EScene)SceneManager.GetActiveScene().buildIndex;
         _isInitialized = true;
     }
@@ -71,6 +41,7 @@ public class GameManager : GlobalSingleton<GameManager>
     /// 동일한 이름을 가지는 씬도 있을 수 있기 때문에 표준적으로는 인덱스 사용이 권장됩니다.
     /// </summary>
     /// <param name="index">씬 인덱스</param>
+    [Obsolete("비동기 씬 로드를 권장합니다.")]
     public void LoadScene(int index)
     {
         if (!IsValidScene(index))
@@ -85,6 +56,7 @@ public class GameManager : GlobalSingleton<GameManager>
     /// 해당 씬을 동기 로드합니다.
     /// </summary>
     /// <param name="name">씬 이름</param>
+    [Obsolete("비동기 씬 로드를 권장합니다.")]
     public void LoadScene(string name)
     {
         if (!IsValidScene(name))
@@ -139,6 +111,25 @@ public class GameManager : GlobalSingleton<GameManager>
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
+    // 루트 오브젝트를 안전하게 가져오고 없으면 새로 생성
+    private static Transform RootProvider(Transform root, string name)
+    {
+        if (root == null)
+        {
+            GameObject go = GameObject.Find(name);
+            if (go == null)
+            {
+                root = UObject.Create(name).transform;
+                UDebug.Print($"{name} 루트를 찾지 못하여 빈 오브젝트를 새로 생성했습니다.");
+            }
+            else
+            {
+                root = go.transform;
+            }
+        }
+        return root;
+    }
+
     // 씬 로드 선행처리
     private void PreProcessing(EScene prevScene, string nextScenePath)
     {
@@ -151,24 +142,19 @@ public class GameManager : GlobalSingleton<GameManager>
     // 씬 로드 후처리
     private void PostProcessing(EScene prevScene, string nextScenePath)
     {
-        GameObject ui = UObject.Find(K.NAME_UI_ROOT);
-        GameObject obj = UObject.Find(K.NAME_OBJECT_ROOT);
         EScene nextScene = (EScene)SceneUtility.GetBuildIndexByScenePath(nextScenePath);
-        if (ui != null)
+        // 루트 생성
         {
-            _uiRoot = ui.transform;
+            Transform root = ObjectRoot;
         }
-        else
         {
-            UDebug.Print($"새로운 씬({nextScene})에서 UI 루트를 찾지 못했습니다.", LogType.Assert);
+            Transform root = EnableObjectRoot;
         }
-        if (obj != null)
         {
-            _objectRoot = obj.transform;
+            Transform root = DisableObjectRoot;
         }
-        else
         {
-            UDebug.Print($"새로운 씬({nextScene})에서 오브젝트 루트를 찾지 못했습니다.", LogType.Assert);
+            Transform root = UIRoot;
         }
         OnSceneLoadEnd.Publish(prevScene, nextScene);
         _curScene = nextScene;

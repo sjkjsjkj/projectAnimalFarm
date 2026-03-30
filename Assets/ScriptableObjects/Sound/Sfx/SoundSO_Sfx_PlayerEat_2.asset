@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: SoundSO_Sfx_PlayerEat_2
   m_EditorClassIdentifier: 
   _id: Sfx_PlayerEat_2
+  _type: 22
   _clip: {fileID: 8300000, guid: 187c606719aeaec419ef20fc3290fa76, type: 3}
-  _volume: 0.5
+  _volume: 0.8

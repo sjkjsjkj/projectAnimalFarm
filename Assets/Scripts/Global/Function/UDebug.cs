@@ -50,7 +50,7 @@ public static class UDebug
         }
         // 메시지 조립
         string sColor = GetColorByLogType(type);
-        string fileName = Path.GetFileName(file);
+        string fileName = Path.GetFileName(file).Replace(".cs", "");
         msg = $"<color={sColor}>[{fileName}" + msg;
         // 유니티 로그 분기
         switch (type)
@@ -119,7 +119,7 @@ public static class UDebug
         // 로그
         if (isNull && ENABLE_LOG)
         {
-            string msg = $":Null]</color> 오브젝트({objName})가 Null입니다.";
+            string msg = $"]</color> 오브젝트({objName})가 Null입니다.";
             LogInternal(msg, file, line, logType);
         }
         return isNull;
@@ -141,7 +141,7 @@ public static class UDebug
         {
             if (ENABLE_LOG)
             {
-                msg = $":True]</color> 조건식({msg})이 참입니다.";
+                msg = $"]</color> 조건식({msg})이 참입니다.";
                 LogInternal(msg, file, line, logType);
             }
             return true;
@@ -165,7 +165,7 @@ public static class UDebug
         {
             if (ENABLE_LOG)
             {
-                msg = $":False]</color> 조건식({msg})이 부정입니다.";
+                msg = $"]</color> 조건식({msg})이 부정입니다.";
                 LogInternal(msg, file, line, logType);
             }
             return true;
@@ -184,7 +184,7 @@ public static class UDebug
         [CallerFilePath] string file = "",
         [CallerLineNumber] int line = 0)
     {
-        string sMsg = $":Log]</color> {msg}";
+        string sMsg = $"]</color> {msg}";
         LogInternal(sMsg, file, line, logType);
     }
 
@@ -202,7 +202,7 @@ public static class UDebug
     {
         if (printLog)
         {
-            string sMsg = $":Log]</color> {msg}";
+            string sMsg = $"]</color> {msg}";
             LogInternal(sMsg, file, line, logType);
         }
     }
@@ -218,7 +218,7 @@ public static class UDebug
         [CallerFilePath] string file = "",
         [CallerLineNumber] int line = 0)
     {
-        string sMsg = $":Log]</color> {msg}";
+        string sMsg = $"]</color> {msg}";
         LogInternal(sMsg, file, line, logType, true);
     }
     #endregion

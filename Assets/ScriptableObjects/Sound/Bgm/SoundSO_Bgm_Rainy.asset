@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: SoundSO_Bgm_Rainy
   m_EditorClassIdentifier: 
   _id: Bgm_Rainy
+  _type: 22
   _clip: {fileID: 8300000, guid: 7e39dce61b2570e458585da563e4ae80, type: 3}
-  _volume: 0.5
+  _volume: 0.6

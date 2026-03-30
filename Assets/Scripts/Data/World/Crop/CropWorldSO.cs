@@ -8,8 +8,7 @@ public class CropWorldSO : WorldSO
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("농사 정보")]
-    [SerializeField] private float[] _growTimes; // 단계별 성장 필요 시간
-    [SerializeField] private Sprite[] _stageSprites; // 단계별 스프라이트
+    [SerializeField] private float[] _growTimes = new float[5]; // 단계별 성장 필요 시간
     [SerializeField] private int _needFarmingLevel = 1; // 요구 농사 레벨
     [SerializeField] private ERarity _needWateringCanRarity = ERarity.Basic; // 요구 물뿌리개 레벨
 
@@ -21,7 +20,6 @@ public class CropWorldSO : WorldSO
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     public float GrowTime(int index) => _growTimes[index];
-    public Sprite StageSprites(int index) => _stageSprites[index];
     public int NeedFarmingLevel => _needFarmingLevel;
     public ERarity NeedWateringCanLevel => _needWateringCanRarity;
     public string HarvestItemId => _harvestItemId;
@@ -41,9 +39,7 @@ public class CropWorldSO : WorldSO
         if (!base.IsValid()) return false;
         if (_type != EType.CropWorld) return false;
         if (!UArray.IsInitedArray(_growTimes)) return false;
-        if (!UArray.IsInitedArray(_stageSprites)) return false;
         int length = _growTimes.Length;
-        if (length != _stageSprites.Length) return false;
         for (int i = 0; i < length; ++i)
         {
             if (_growTimes[i] <= 0f) return false;
@@ -65,7 +61,7 @@ public class CropWorldSO : WorldSO
         base.OnValidate();
         if (!IsValid())
         {
-            UDebug.PrintOnce($"SO({_id})의 값이 올바르지 않습니다.", LogType.Assert);
+            UDebug.PrintOnce($"SO({_id})의 값이 올바르지 않습니다.", LogType.Warning);
         }
     }
     #endregion

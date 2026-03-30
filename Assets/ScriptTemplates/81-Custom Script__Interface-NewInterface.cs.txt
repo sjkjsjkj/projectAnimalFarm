@@ -2,7 +2,7 @@
 /// 
 /// </summary>
     #ROOTNAMESPACEBEGIN#
-public interface I#SCRIPTNAME#
+public interface #SCRIPTNAME#
 {
     
 }

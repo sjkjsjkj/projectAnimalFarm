@@ -19,7 +19,7 @@ public class CameraAspectUpdater : Frameable
             return;
         }
         // 혹시 게임 매니저가 없을 경우 대비
-        ScreenData screen = GameManager.Ins.Screen;
+        ScreenData screen = DataManager.Ins.Screen;
         if (UDebug.IsNull(screen))
         {
             return;
@@ -39,7 +39,7 @@ public class CameraAspectUpdater : Frameable
     {
         _cam = UObject.GetComponent<Camera>(this.gameObject);
         // 혹시 게임 매니저가 없을 경우 대비
-        ScreenData screen = GameManager.Ins.Screen;
+        ScreenData screen = DataManager.Ins.Screen;
         if (UDebug.IsNull(screen))
         {
             return;

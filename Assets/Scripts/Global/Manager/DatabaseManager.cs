@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// 대부분의 데이터를 보관하는 매니저입니다.
+/// 정적 데이터를 보관하는 매니저입니다.
 /// </summary>
 public class DatabaseManager : GlobalSingleton<DatabaseManager>
 {
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private bool _isInitialized = false;
+    // 테이블
     private BaitItemTableSO[] _baitItemTables;
     private SeedItemTableSO[] _seedItemTables;
     private FeedItemTableSO[] _feedItemTables;
@@ -19,6 +20,9 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
     private NpcWorldTableSO[] _npcWorldTables;
     private StaticWorldTableSO[] _staticWorldTables;
     private SoundTableSO[] _soundTables;
+    private PlayerWorldTableSO[] _playerWorldTables;
+    // 프리펩
+    private SoundEmitter _soundEmiiterPrefab;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -105,6 +109,18 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
     /// <param name="id">사운드 ID</param>
     public SoundSO Sound(string id)
         => FindData<SoundTableSO, SoundSO>(_soundTables, id);
+
+    /// <summary>
+    /// 플레이어의 정적 데이터를 반환합니다.
+    /// </summary>
+    /// <param name="id">플레이어 ID</param>
+    public PlayerWorldSO Player(string id)
+        => FindData<PlayerWorldTableSO, PlayerWorldSO>(_playerWorldTables, id);
+
+    /// <summary>
+    /// 사운드 이미터 프리펩을 반환합니다.
+    /// </summary>
+    public SoundEmitter SoundPrefab() => GetSafePrefab(_soundEmiiterPrefab);
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
@@ -124,9 +140,30 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
         _npcWorldTables = LoadTables<NpcWorldTableSO, NpcWorldSO>();
         _staticWorldTables = LoadTables<StaticWorldTableSO, StaticWorldSO>();
         _soundTables = LoadTables<SoundTableSO, SoundSO>();
+        _playerWorldTables = LoadTables<PlayerWorldTableSO, PlayerWorldSO>();
+        // 프리펩 로드
+        _soundEmiiterPrefab = LoadPrefab<SoundEmitter>(K.NAME_SOUND_EMITTER);
         // 완료
         _isInitialized = true;
         UDebug.Print("모든 테이블 로드가 완료되었습니다.");
+    }
+
+    // 프리펩을 컴포넌트로 반환합니다.
+    private T LoadPrefab<T>(string prefabName) where T : Component
+    {
+        if (prefabName.IsEmpty())
+        {
+            UDebug.Print($"리소스 폴더에서 로드할 프리펩 이름이 비어있습니다.", LogType.Assert);
+            return null;
+        }
+        T prefab = Resources.Load<T>($"{K.PREFAB_RESOURCE_PATH}/{prefabName}");
+        if (prefab == null)
+        {
+            UDebug.Print($"{prefabName} 이름을 가진 프리펩을 Resources/{K.PREFAB_RESOURCE_PATH}에서 찾을 수 없습니다." +
+                $"\n또는 {typeof(T).Name} 컴포넌트가 부착되지 않았습니다.", LogType.Assert);
+            return null;
+        }
+        return prefab;
     }
 
     // 리소스 폴더에서 특정 타입의 모든 테이블 SO를 찾아 배열로 반환
@@ -149,6 +186,17 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
             UDebug.Print($"경로({K.TABLE_RESOURCE_PATH})에서 테이블({typeof(TTable).Name})을 찾았습니다.");
         }
         return tables;
+    }
+
+    // Null 검사해서 프리펩 가져오기
+    private T GetSafePrefab<T>(T prefab) where T : Component
+    {
+        if(prefab == null)
+        {
+            UDebug.Print($"가져올 {typeof(T).Name} 타입 프리펩이 존재하지 않습니다.");
+            return null;
+        }
+        return prefab;
     }
 
     // 테이블에서 ID로 SO 인스턴스를 가져옵니다.

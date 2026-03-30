@@ -1,21 +1,24 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// 풀링 객체를 생성하는 팩토리 클래스
+/// 풀링 객체를 생성 및 반환하는 팩토리 클래스
 /// </summary>
-public class PoolFactory<T> where T : Component, IPoolable
+public sealed class PoolFactory<T> : IPoolFactory where T : Component, IPoolable
 {
     private ObjectPool<T> _pool;
 
-    #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
-    // 생성자
-    public PoolFactory(ObjectPool<T> pool)
+    /// <summary>
+    /// 팩토리의 생성자입니다.
+    /// </summary>
+    /// <param name="prefab">프리펩</param>
+    /// <param name="capacity">초기 풀 크기</param>
+    public PoolFactory(T prefab, int capacity)
     {
-        _pool = pool;
+        _pool = new ObjectPool<T>(prefab, true, capacity);
     }
 
     /// <summary>
-    /// 풀링이 적용된 객체를 생성해서 반환합니다.
+    /// 객체를 스폰하고 초기화 함수를 실행합니다.
     /// </summary>
     public T Spawn()
     {
@@ -27,5 +30,21 @@ public class PoolFactory<T> where T : Component, IPoolable
         }
         return null;
     }
-    #endregion
+
+    /// <summary>
+    /// 객체를 풀로 반환합니다.
+    /// </summary>
+    public void Despawn(T instance)
+    {
+        _pool.Push(instance);
+        instance.transform.SetParent(GameManager.ObjectRoot);
+    }
+
+    /// <summary>
+    /// 팩토리를 정리합니다.
+    /// </summary>
+    public void Clear()
+    {
+        _pool = null;
+    }
 }

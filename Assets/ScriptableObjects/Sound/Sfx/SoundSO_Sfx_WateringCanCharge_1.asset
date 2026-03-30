@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: SoundSO_Sfx_WateringCanCharge_1
   m_EditorClassIdentifier: 
   _id: Sfx_WateringCanCharge_1
+  _type: 22
   _clip: {fileID: 8300000, guid: a2288eac37fa8eb4b9a70180f5a67aa5, type: 3}
-  _volume: 0.5
+  _volume: 0.8
