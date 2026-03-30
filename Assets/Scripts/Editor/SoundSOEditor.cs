@@ -1,12 +1,11 @@
-﻿/// <summary>
-/// 타일 맵을 빌드합니다.
-/// </summary>
-public class TileMapBuilder
-{
-    // json 파일 읽어오고
-    // 그걸로 TileMap 클래스를 담는 필드가 여러개
-    // Tilemap 컴포넌트도 넣기
+﻿using UnityEngine;
+using UnityEditor;
 
+/// <summary>
+/// 사운드 SO에 재생 버튼을 부착하기 위한 스크립트
+/// </summary>
+public class SoundSOEditor : Editor
+{
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
 
     #endregion
@@ -16,9 +15,6 @@ public class TileMapBuilder
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-    private void EEE()
-    {
 
-    }
     #endregion
 }

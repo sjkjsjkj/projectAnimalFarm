@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: SoundSO_Sfx_TreeFalling_1
   m_EditorClassIdentifier: 
   _id: Sfx_TreeFalling_1
+  _type: 22
   _clip: {fileID: 8300000, guid: f54aacfdf1259ff48b07e4d860567ed2, type: 3}
-  _volume: 0.5
+  _volume: 0.8

@@ -32,7 +32,7 @@ public class ObjectPool<T> where T : Component
         // 새로운 풀 생성
         Queue<T> newPool = new(capacity);
         int activeCount = _pool.Count;
-        int length = activeCount > capacity ? capacity : activeCount;
+        int length = activeCount > capacity ? capacity : activeCount; // 기존 크기보다 축소되는 경우를 대비
         // 새로운 풀로 인스턴스 옮기기
         for (int i = 0; i < length; ++i)
         {

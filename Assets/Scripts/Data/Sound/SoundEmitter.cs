@@ -7,20 +7,31 @@
 public class SoundEmitter : Frameable, IPoolable
 {
     private AudioSource _source;
+    private Transform _tr;
     
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
-    // 소리 재생 시작
-    public void Play()
-    {
-
-    }
-
     // 초기화
     public void Setup()
     {
-        _source = GetComponent<AudioSource>();
+        _tr = null;
+        _source = UObject.AddComponent<AudioSource>(this.gameObject);
         _source.playOnAwake = false;
     }
+
+    /// <summary>
+    /// 오디오 소스 가져오기
+    /// </summary>
+    public AudioSource Source => _source;
+
+    /// <summary>
+    /// 따라갈 오브젝트
+    /// </summary>
+    public void Follow(Transform tr) => _tr = tr;
+
+    /// <summary>
+    /// 위치할 좌표
+    /// </summary>
+    public void Follow(Vector3 pos) => transform.position = pos;
 
     // 프레임 매니저에게 호출당하는 순서
     public override EPriority Priority => EPriority.Last;
@@ -31,19 +42,15 @@ public class SoundEmitter : Frameable, IPoolable
         // 아직 재생중
         if (_source.isPlaying)
         {
+            // 오브젝트 따라가기
+            if(_tr != null)
+            {
+                transform.position = _tr.position;
+            }
             return;
         }
         // 재생이 끝났으므로 풀에 스스로 반납
-    }
-    #endregion
-
-    #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-    private void Check()
-    {
-        if (_source.isPlaying)
-        {
-
-        }
+        PoolManager.Ins.Despawn(K.NAME_SOUND_EMITTER, this);
     }
     #endregion
 }

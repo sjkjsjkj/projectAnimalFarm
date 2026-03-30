@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: SoundSO_Sfx_WalkingUpper_1
   m_EditorClassIdentifier: 
   _id: Sfx_WalkingUpper_1
+  _type: 22
   _clip: {fileID: 8300000, guid: 9c8f409f267a98e47b70ee0ee1e8024b, type: 3}
-  _volume: 0.5
+  _volume: 0.8

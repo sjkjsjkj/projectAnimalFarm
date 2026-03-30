@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: SoundSO_Sfx_ToolChange_1
   m_EditorClassIdentifier: 
   _id: Sfx_ToolChange_1
+  _type: 22
   _clip: {fileID: 8300000, guid: b56a95cedbc8ed040acf3983c8e325d1, type: 3}
-  _volume: 0.5
+  _volume: 0.8

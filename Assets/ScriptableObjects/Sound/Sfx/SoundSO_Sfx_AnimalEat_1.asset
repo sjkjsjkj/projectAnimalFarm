@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: SoundSO_Sfx_AnimalEat_1
   m_EditorClassIdentifier: 
   _id: Sfx_AnimalEat_1
+  _type: 22
   _clip: {fileID: 8300000, guid: b9e422193439b8f44aea50f616fa1a96, type: 3}
-  _volume: 0.5
+  _volume: 0.8

@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: SoundSO_Sfx_FishingWater_7
   m_EditorClassIdentifier: 
   _id: Sfx_FishingWater_7
+  _type: 22
   _clip: {fileID: 8300000, guid: fcd2a715ef882a643aa7fd542a77a88f, type: 3}
-  _volume: 0.5
+  _volume: 0.8

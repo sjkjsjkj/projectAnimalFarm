@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: SoundSO_Sfx_Thirst_1
   m_EditorClassIdentifier: 
   _id: Sfx_Thirst_1
+  _type: 22
   _clip: {fileID: 8300000, guid: fc824c1fcab330f4687fd6b1f63197b5, type: 3}
-  _volume: 0.5
+  _volume: 0.8

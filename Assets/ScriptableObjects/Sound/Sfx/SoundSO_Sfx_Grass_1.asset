@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: SoundSO_Sfx_Grass_1
   m_EditorClassIdentifier: 
   _id: Sfx_Grass_1
+  _type: 22
   _clip: {fileID: 8300000, guid: 3b452dee06d2dbc428800fbe3fb8be16, type: 3}
-  _volume: 0.5
+  _volume: 0.8

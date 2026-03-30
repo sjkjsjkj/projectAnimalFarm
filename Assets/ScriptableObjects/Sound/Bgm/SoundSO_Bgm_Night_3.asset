@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: SoundSO_Bgm_Night_3
   m_EditorClassIdentifier: 
   _id: Bgm_Night_3
+  _type: 22
   _clip: {fileID: 8300000, guid: 59210df0e437978438eb44ea7eb8d620, type: 3}
-  _volume: 0.5
+  _volume: 0.6

@@ -336,9 +336,7 @@ public class PlayerProvider
         OnPlayerThirstChanged.Publish(_curThirst, _maxThirst);
         return true;
     }
-    #endregion
 
-    #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
     /// <summary>
     /// 생활 기술 경험치를 증가시킵니다.
     /// 조건이 만족되면 자동으로 레벨 업 합니다.
@@ -354,7 +352,9 @@ public class PlayerProvider
         _skillExps[index] += expAmount;
         TryLevelUp(skill, so);
     }
+    #endregion
 
+    #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
     // 레벨 업을 시도합니다.
     private void TryLevelUp(ELifeSkill skill, PlayerWorldSO so)
     {
