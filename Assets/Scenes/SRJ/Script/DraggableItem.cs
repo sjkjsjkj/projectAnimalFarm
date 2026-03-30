@@ -10,7 +10,7 @@ public class DraggableItem : MonoBehaviour,
     private CanvasGroup canvasGroup;
     private RectTransform rectTransform;
     private Transform originalParent;
-    private Vector2 originalPosition;
+    private bool isDragging = false;
 
     public InventorySlot OriginalSlot => originalSlot;
     public ItemData ItemData => originalSlot?.CurrentItem;
@@ -27,10 +27,15 @@ public class DraggableItem : MonoBehaviour,
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (originalSlot == null || originalSlot.IsEmpty) return;
+        // 빈 슬롯 드래그 차단
+        if (originalSlot == null || originalSlot.IsEmpty)
+        {
+            eventData.pointerDrag = null;
+            return;
+        }
 
+        isDragging = true;
         originalParent = transform.parent;
-        originalPosition = rectTransform.anchoredPosition;
 
         transform.SetParent(rootCanvas.transform, true);
         transform.SetAsLastSibling();
@@ -39,18 +44,23 @@ public class DraggableItem : MonoBehaviour,
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (!isDragging) return;
         rectTransform.anchoredPosition += eventData.delta / rootCanvas.scaleFactor;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (!isDragging) return;
+        isDragging = false;
         canvasGroup.blocksRaycasts = true;
 
-        // 드롭 실패 시 (빈 곳에 드롭) 원래 슬롯으로 복귀
+        // 드롭 실패 시 원래 슬롯으로 복귀
         if (transform.parent == rootCanvas.transform)
         {
             transform.SetParent(originalParent, false);
-            rectTransform.anchoredPosition = originalPosition;
+            rectTransform.anchoredPosition = Vector2.zero;
         }
+
+        originalParent = null;
     }
 }
