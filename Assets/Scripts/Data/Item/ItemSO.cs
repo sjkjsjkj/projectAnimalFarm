@@ -23,7 +23,7 @@ public abstract class ItemSO : UnitSO
         if (!base.IsValid()) return false;
         if (_sellPrice < 0) return false;
         if (_buyPrice < 0) return false;
-        if (_sellPrice > _buyPrice) return false;
+        if (_buyPrice > 0 && _sellPrice > _buyPrice) return false;
         if (_maxStack <= 0) return false;
         return true;
     }

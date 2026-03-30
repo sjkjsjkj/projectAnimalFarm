@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2c022c5127670c48a898afb5e92d602, type: 3}
+  m_Name: StaticItemSO_All_Fish_35
+  m_EditorClassIdentifier: 
+  _id: All Fish_35
+  _type: 7
+  _name: "\uBC30\uAC00\uC0AC\uB9AC"
+  _description: "\uAC15\uC5D0\uC11C \uBCF4\uAE30 \uB4DC\uBB38 \uC5B4\uC885"
+  _rarity: 2
+  _image: {fileID: 21300000, guid: a76880c18d601264cbcfaf6c9565378a, type: 2}
+  _prefab: {fileID: 0}
+  _sellPrice: 210
+  _buyPrice: 0
+  _maxStack: 64

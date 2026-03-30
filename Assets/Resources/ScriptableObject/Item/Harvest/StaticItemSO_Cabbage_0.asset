@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2c022c5127670c48a898afb5e92d602, type: 3}
+  m_Name: StaticItemSO_Cabbage_0
+  m_EditorClassIdentifier: 
+  _id: Cabbage_0
+  _type: 5
+  _name: "\uC591\uBC30\uCD94"
+  _description: "\uC78E\uC774 \uD48D\uC131\uD55C \uCC44\uC18C"
+  _rarity: 3
+  _image: {fileID: 21300000, guid: 015b543b2933fe444ba44f281f7873b6, type: 2}
+  _prefab: {fileID: 0}
+  _sellPrice: 430
+  _buyPrice: 0
+  _maxStack: 64

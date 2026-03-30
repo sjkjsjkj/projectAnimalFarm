@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2c022c5127670c48a898afb5e92d602, type: 3}
+  m_Name: StaticItemSO_Orange_0
+  m_EditorClassIdentifier: 
+  _id: Orange_0
+  _type: 5
+  _name: "\uC624\uB80C\uC9C0"
+  _description: "\uC0C1\uD07C\uD55C \uD5A5\uC758 \uACFC\uC77C"
+  _rarity: 5
+  _image: {fileID: 21300000, guid: b030e6e911322664e92aaae4588d34bd, type: 2}
+  _prefab: {fileID: 0}
+  _sellPrice: 850
+  _buyPrice: 0
+  _maxStack: 64

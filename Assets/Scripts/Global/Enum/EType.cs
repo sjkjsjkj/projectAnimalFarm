@@ -6,10 +6,12 @@ public enum EType
     None = 0,
     #region ─────────────────────────▶ 아이템 ◀─────────────────────────
     // 도구
-    HoeItem = 1, // 괭이
+    SickleItem = 1, // 낫
+    ShovelItem = 23, // 삽
     AxeItem = 18, // 도끼
     PickaxeItem = 19, // 곡괭이
     WateringCan = 20, // 물뿌리개
+    Fishingrod = 24, // 낚싯대
     // 소모품
     BaitItem = 2, // 미끼
     SeedItem = 3, // 씨앗
