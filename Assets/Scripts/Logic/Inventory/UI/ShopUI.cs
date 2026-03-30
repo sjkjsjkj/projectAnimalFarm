@@ -25,11 +25,15 @@ public class ShopUI : InventoryUI
             _itemInfoFileds[i] = Instantiate(_itemInfoFiledPrefab);
         }
     }
-    public override void ShowUI()
+    //public override void ShowUI()
+    //{
+    //    throw new System.NotImplementedException();
+    //}
+    public override void RefreshInventoryUI(int slotIdx, InventorySlot invenSlot)
     {
-        throw new System.NotImplementedException();
+        _inventorySlotUIs[slotIdx].SetInfo(invenSlot.ItemSO.Image, invenSlot.CurStack);
     }
-    public override void RefreshInventoryUI()
+    public override void RefreshInventoryUI(Inventory inventory)
     {
         throw new System.NotImplementedException();
     }

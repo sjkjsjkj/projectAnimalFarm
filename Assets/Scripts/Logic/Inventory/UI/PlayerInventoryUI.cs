@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// 플레이어 인벤토리의 UI 입니다.
@@ -14,38 +15,45 @@ public class PlayerInventoryUI : InventoryUI
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
-
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
     public override void SetInfo(int invenSize)
     {
         UDebug.Print("InventoryUI SetInfo");
+
+        _inventorySlotUIs = new InventoryUISlot[invenSize];
+
         for (int i = 0; i < invenSize; i++)
         {
             GameObject tempSlotUI = Instantiate(_inventorySlotUIPrefab);
-            tempSlotUI.GetComponent<PlayerInventorySlotUI>().SetInfo();
+            _inventorySlotUIs[i] = tempSlotUI.GetComponent<PlayerInventorySlotUI>();
+            _inventorySlotUIs[i].SetInfo(this, i);
             tempSlotUI.transform.SetParent(_contentsArea);
         }
     }
-    public override void ShowUI()
-    {
-        throw new System.NotImplementedException();
-    }
-    public override void RefreshInventoryUI()
-    {
-        throw new System.NotImplementedException();
-    }
-    #endregion
 
-    #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
-    private void Awake()
+    public override void RefreshInventoryUI(int slotIdx, InventorySlot invenSlot)
     {
-        
+        if(invenSlot == null || invenSlot.IsEmpty)
+        {
+            _inventorySlotUIs[slotIdx].SlotClear();
+            return;
+        }
+        UDebug.Print($"Change Slot Idx : {slotIdx} | ItemData : {invenSlot.ItemSO.Name}");
+        _inventorySlotUIs[slotIdx].SetInfo(invenSlot.ItemSO.Image, invenSlot.CurStack);
     }
-    #endregion
-
-    #region ─────────────────────────▶ 중첩 타입 ◀─────────────────────────
-
+    public override void RefreshInventoryUI(Inventory inventory)
+    {
+        InventorySlot[] tempInvenSlot = inventory.InventorySlots;
+        for (int i = 0; i < tempInvenSlot.Length; i++)
+        {
+            if (tempInvenSlot[i].IsEmpty)
+            {
+                continue;
+            }
+            _inventorySlotUIs[i].SetInfo(tempInvenSlot[i].ItemSO.Image, tempInvenSlot[i].CurStack);
+        }
+    }
     #endregion
 }

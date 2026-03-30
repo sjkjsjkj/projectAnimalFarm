@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-/// <summary>
+﻿/// <summary>
 /// 창고의 UI 입니다.
 /// </summary>
 public class StorageUI : InventoryUI
@@ -23,11 +21,15 @@ public class StorageUI : InventoryUI
     {
         throw new System.NotImplementedException();
     }
-    public override void ShowUI()
+    //public override void ShowUI()
+    //{
+    //    throw new System.NotImplementedException();
+    //}
+    public override void RefreshInventoryUI(int slotIdx, InventorySlot invenSlot)
     {
-        throw new System.NotImplementedException();
+        _inventorySlotUIs[slotIdx].SetInfo(invenSlot.ItemSO.Image, invenSlot.CurStack);
     }
-    public override void RefreshInventoryUI()
+    public override void RefreshInventoryUI(Inventory inventory)
     {
         throw new System.NotImplementedException();
     }

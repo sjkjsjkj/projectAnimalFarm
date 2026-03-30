@@ -1,11 +1,12 @@
 ﻿using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 /// <summary>
 /// 인벤토리UI 의 각각의 슬롯UI 입니다.
 /// </summary>
-[RequireComponent(typeof(Button))]
-public class InventoryUISlot : BaseMono
+//[RequireComponent(typeof(Button))]
+public class InventoryUISlot : BaseMono, IBeginDragHandler, IDragHandler ,IEndDragHandler, IDropHandler
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [SerializeField] protected Image _itemIcon;
@@ -14,7 +15,8 @@ public class InventoryUISlot : BaseMono
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
-
+    protected InventoryUI _inventoryUI;
+    protected int _thisSlotIdx;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -22,24 +24,52 @@ public class InventoryUISlot : BaseMono
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-    public void SetInfo()
+    public void SetInfo(InventoryUI invenUI, int slotIdx)
     {
-        _itemIcon = null;
-        _itemStackCountTxt.text = "";
+        SlotClear();
+        _inventoryUI = invenUI;
+        _thisSlotIdx = slotIdx;
     }
     public void SetInfo(Sprite itemIcon, int itemStackCount)
     {
+        if(itemIcon == null)
+        {
+            UDebug.Print("아이템 스프라이트가 없음");
+            return;
+        }
         _itemIcon.sprite = itemIcon;
         _itemStackCountTxt.text = itemStackCount.ToString();
     }
     public void SlotClear()
     {
-        SetInfo();
+        _itemIcon.sprite = null;
+        _itemStackCountTxt.text = "";
+    }
+    public void UseSlot()
+    {
+
     }
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
-
+    
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        //eventData.useDragThreshold = false;
+        _inventoryUI.BeginDrag(_thisSlotIdx);
+    }
+    public void OnDrag(PointerEventData eventData)
+    {
+        _inventoryUI.DragIng();
+    }
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        _inventoryUI.EndDrag();
+    }
+    public void OnDrop(PointerEventData eventData)
+    {
+        _inventoryUI.DragDrop(_thisSlotIdx);
+    }
     #endregion
 
     #region ─────────────────────────▶ 중첩 타입 ◀─────────────────────────
