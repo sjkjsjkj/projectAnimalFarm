@@ -54,9 +54,7 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
     public void TestFunction()
     {
         _tempDataUnitSO = DatabaseManager.Ins.AnimalWorld(_testID);
-        //TileData tempTileData = Database.Ins.Tile.FindData(_testTileID);
-        
-        //UDebug.Print($"{_testID} : {_tempDataUnitSO.Name}\ntempTileData's State : {tempTileData.State}");
+
     }
     public void TestFunction2()
     {
@@ -70,12 +68,11 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
         tempGo.transform.localPosition = Vector3.zero;
     }
 
-    /*public void TestFunction3()
+    public void TestFunction3()
     {
-        PoolItem tempGo = FactoryManager.Ins.VFX.Spawn();
-        tempGo.transform.SetParent(this.transform);
-        tempGo.transform.localPosition = Vector3.zero;
-    }*/
+        ItemSO tempItemSO = DatabaseManager.Ins.SeedItem(Id.Item_Seed_BlueBerry);
+        InventoryManager.Ins.PlayerInventory.TryGetItem(tempItemSO);
+    }
 
     public void TestFunction4()
     {

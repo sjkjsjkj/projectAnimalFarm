@@ -23,6 +23,7 @@ public class FactoryManager : GlobalSingleton<FactoryManager>
             return;
         }
 
+
         _animalFactory = new BasicFactory<AnimalObject, AnimalWorldSO>(DatabaseManager.Ins.AnimalWorld);
         _vfxFactory = new PoolFactory<TestVFX>(PoolManager.Ins.VFX);
         // ↑ 필요한 초기화 로직 / 부모 클래스에서 자동 실행
