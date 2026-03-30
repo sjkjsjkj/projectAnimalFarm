@@ -28,7 +28,6 @@ public class FarmlandSpriteProvider : Singleton<FarmlandSpriteProvider>
     [SerializeField] private Sprite[] _broccoliSprites;     
     #endregion
 
-
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private bool _isInitialized = false;
     #endregion

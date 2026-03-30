@@ -33,6 +33,8 @@ public class BootManager : MonoBehaviour
         gameManager.Initialize();
         var databaseManager = root.AddComponent<DatabaseManager>();
         databaseManager.Initialize();
+        var dataManager = root.AddComponent<DataManager>();
+        dataManager.Initialize();
         // 
         yield return null;
         UDebug.Print("BootSequence : 초기화 완료");

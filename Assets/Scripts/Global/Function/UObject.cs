@@ -136,7 +136,7 @@ public static class UObject
     /// </summary>
     /// <typeparam name="T">컴포넌트</typeparam>
     /// <param name="go">게임 오브젝트</param>
-    /// <returns></returns>
+    /// <returns>컴포넌트</returns>
     public static T AddComponent<T>(GameObject go) where T : Component
     {
         if (go == null)
@@ -155,7 +155,7 @@ public static class UObject
     /// </summary>
     /// <typeparam name="T">컴포넌트</typeparam>
     /// <param name="go">게임 오브젝트</param>
-    /// <returns></returns>
+    /// <returns>컴포넌트</returns>
     public static T GetComponent<T>(GameObject go) where T : Component
     {
         if (go == null)
@@ -180,7 +180,7 @@ public static class UObject
     /// </summary>
     /// <typeparam name="T">컴포넌트</typeparam>
     /// <param name="name">게임 오브젝트</param>
-    /// <returns></returns>
+    /// <returns>컴포넌트</returns>
     public static T FindComponent<T>(string name) where T : Component
     {
         GameObject go = Find(name);

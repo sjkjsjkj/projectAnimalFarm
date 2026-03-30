@@ -9,6 +9,12 @@ public class NpcWorldSO : WorldSO
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("애니메이션")]
     [SerializeField, CsvIgnore] protected RuntimeAnimatorController _animController;
+
+    [Header("대사")]
+    [SerializeField, CsvIgnore] protected string[] _dialouge; 
+    // NPC가 존재할 씬 ID?
+    // NPC가 이동하는 포인트 좌표?
+    // NPC가 이동하는 속도
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
