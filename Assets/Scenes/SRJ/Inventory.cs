@@ -1,28 +1,16 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    public List<InventorySlot> slots = new List<InventorySlot>();
+    public InventorySlot[] slots;
 
     public void AddItem(Item item)
     {
-        // 1. 같은 아이템이 있는지 먼저 확인
-        foreach (InventorySlot slot in slots)
+        for (int i = 0; i < slots.Length; i++)
         {
-            if (!slot.IsEmpty() && slot.GetItem() == item)
+            if (slots[i].GetItem() == null)
             {
-                slot.AddCount(1);
-                return;
-            }
-        }
-
-        // 2. 빈 슬롯 찾기
-        foreach (InventorySlot slot in slots)
-        {
-            if (slot.IsEmpty())
-            {
-                slot.SetItem(item, 1);
+                slots[i].SetItem(item, 1);
                 return;
             }
         }
