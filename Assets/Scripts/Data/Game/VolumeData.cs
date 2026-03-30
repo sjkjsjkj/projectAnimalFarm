@@ -7,9 +7,9 @@
 public class VolumeData
 {
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
-    [SerializeField, Range(0f, 1f)] private float _master = 0.5f;
+    [SerializeField, Range(0f, 1f)] private float _master = 0.7f;
     [SerializeField, Range(0f, 1f)] private float _bgm = 0.5f;
-    [SerializeField, Range(0f, 1f)] private float _sfx = 0.5f;
+    [SerializeField, Range(0f, 1f)] private float _sfx = 0.8f;
     [SerializeField] private bool _isBgmMute = false;
     [SerializeField] private bool _isSfxMute = false;
     #endregion

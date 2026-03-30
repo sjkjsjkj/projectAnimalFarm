@@ -116,11 +116,15 @@ public class GameManager : GlobalSingleton<GameManager>
     {
         if (root == null)
         {
-            root = GameObject.Find(name).transform;
-            if (root == null)
+            GameObject go = GameObject.Find(name);
+            if (go == null)
             {
                 root = UObject.Create(name).transform;
-                UDebug.Print($"{name} 루트를 찾지 못하여 빈 오브젝트를 새로 생성했습니다.", LogType.Assert);
+                UDebug.Print($"{name} 루트를 찾지 못하여 빈 오브젝트를 새로 생성했습니다.");
+            }
+            else
+            {
+                root = go.transform;
             }
         }
         return root;
@@ -138,25 +142,19 @@ public class GameManager : GlobalSingleton<GameManager>
     // 씬 로드 후처리
     private void PostProcessing(EScene prevScene, string nextScenePath)
     {
-        GameObject ui = UObject.Find(K.NAME_UI_ROOT);
-        GameObject obj = UObject.Find(K.NAME_OBJECT_ROOT);
         EScene nextScene = (EScene)SceneUtility.GetBuildIndexByScenePath(nextScenePath);
         // 루트 생성
         {
             Transform root = ObjectRoot;
-            root = obj.transform;
         }
         {
             Transform root = EnableObjectRoot;
-            root = obj.transform;
         }
         {
             Transform root = DisableObjectRoot;
-            root = obj.transform;
         }
         {
             Transform root = UIRoot;
-            root = obj.transform;
         }
         OnSceneLoadEnd.Publish(prevScene, nextScene);
         _curScene = nextScene;

@@ -81,7 +81,6 @@ public static class USound
         if (TryGetBgmSource(out AudioSource source))
         {
             PlayBgm(source, id);
-
         }
     }
 
@@ -89,15 +88,15 @@ public static class USound
     /// BGM 재생을 중단합니다.
     /// </summary>
     /// <param name="source">글로벌 BGM 오디오 소스</param>
-    public static void StopBgm(AudioSource source)
+    public static void StopBgm()
     {
-        if (source == null)
+        if (_bgmSource == null)
         {
             UDebug.Print($"BGM 오디오 소스가 존재하지 않습니다.", LogType.Assert);
             return;
         }
         _curBgmId = string.Empty;
-        source.Stop();
+        _bgmSource.Stop();
     }
 
     /// <summary>
