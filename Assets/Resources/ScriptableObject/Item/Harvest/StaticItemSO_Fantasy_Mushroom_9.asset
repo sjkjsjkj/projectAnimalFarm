@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2c022c5127670c48a898afb5e92d602, type: 3}
+  m_Name: StaticItemSO_Fantasy_Mushroom_9
+  m_EditorClassIdentifier: 
+  _id: Fantasy Mushroom_9
+  _type: 5
+  _name: "\uC11D\uC774\uBC84\uC12F"
+  _description: "\uADC0\uD558\uAC8C \uCDE8\uAE09\uB418\uB294 \uBC84\uC12F"
+  _rarity: 5
+  _image: {fileID: 21300000, guid: 2da962ef3f372414ab6b0b19fa45d8b3, type: 2}
+  _prefab: {fileID: 0}
+  _sellPrice: 910
+  _buyPrice: 0
+  _maxStack: 64
