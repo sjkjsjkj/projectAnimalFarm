@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: SoundSO_Bgm_Autumn_1
   m_EditorClassIdentifier: 
   _id: Bgm_Autumn_1
+  _type: 22
   _clip: {fileID: 8300000, guid: a45cc1f661597fc49be984f2bdafc621, type: 3}
-  _volume: 0.5
+  _volume: 0.6
