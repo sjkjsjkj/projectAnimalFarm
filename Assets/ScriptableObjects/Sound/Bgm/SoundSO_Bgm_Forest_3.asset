@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: SoundSO_Bgm_Forest_3
   m_EditorClassIdentifier: 
   _id: Bgm_Forest_3
+  _type: 22
   _clip: {fileID: 8300000, guid: ffc9c2a7437932f45a9516882a910b13, type: 3}
-  _volume: 0.5
+  _volume: 0.6

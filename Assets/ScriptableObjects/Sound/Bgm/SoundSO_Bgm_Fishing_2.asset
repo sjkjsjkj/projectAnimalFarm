@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: SoundSO_Bgm_Fishing_2
   m_EditorClassIdentifier: 
   _id: Bgm_Fishing_2
+  _type: 22
   _clip: {fileID: 8300000, guid: ef0798b0c885d5b4cab07a45ccd089d8, type: 3}
-  _volume: 0.5
+  _volume: 0.6

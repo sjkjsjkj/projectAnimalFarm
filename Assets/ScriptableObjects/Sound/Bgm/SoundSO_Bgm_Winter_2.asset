@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: SoundSO_Bgm_Winter_2
   m_EditorClassIdentifier: 
   _id: Bgm_Winter_2
+  _type: 22
   _clip: {fileID: 8300000, guid: 97ca71f1def490e49a363f5ec2f08757, type: 3}
-  _volume: 0.5
+  _volume: 0.6
