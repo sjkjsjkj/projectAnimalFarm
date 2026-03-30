@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ad689fcc056b7041be495a4bbb7b0f7, type: 3}
-  m_Name: TestPotion
+  m_Script: {fileID: 11500000, guid: 318f9f4ab4e2a10499c6e42a3fa6ad4f, type: 3}
+  m_Name: Potion
   m_EditorClassIdentifier: 
-  itemName: "\uD3EC\uC158"
-  icon: {fileID: -4725872483281334863, guid: 6f4be33904f68ab47ba0da8a81f32747, type: 3}
-  maxStack: 99
+  itemName: 
+  icon: {fileID: 0}

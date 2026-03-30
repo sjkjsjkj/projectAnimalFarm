@@ -1,20 +1,15 @@
-﻿using TMPro;
-using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using UnityEngine.EventSystems;
 
 public class InventorySlot : MonoBehaviour, IPointerClickHandler
 {
     public Image icon;
     public TextMeshProUGUI countText;
 
-    Item item;
-    int count;
-
-    public bool IsEmpty()
-    {
-        return item == null;
-    }
+    private Item item;
+    private int count;
 
     public void SetItem(Item newItem, int newCount)
     {
@@ -27,19 +22,22 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
         countText.text = count.ToString();
     }
 
-    public void AddCount(int value)
-    {
-        count += value;
-        countText.text = count.ToString();
-    }
-
     public void ClearSlot()
     {
         item = null;
         count = 0;
 
+        icon.sprite = null;
         icon.enabled = false;
+
         countText.text = "";
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (item == null) return;
+
+        ItemPopupUI.instance.Open(this);
     }
 
     public Item GetItem()
@@ -47,14 +45,8 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
         return item;
     }
 
-    // 우클릭 감지 코드
-    public void OnPointerClick(PointerEventData eventData)
+    public void RemoveItem()
     {
-        if (eventData.button == PointerEventData.InputButton.Right)
-        {
-            if (item == null) return;
-
-            RightClickMenu.instance.OpenMenu(this, Input.mousePosition);
-        }
+        ClearSlot();
     }
 }
