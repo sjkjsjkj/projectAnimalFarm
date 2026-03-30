@@ -4,27 +4,36 @@
 /// 사운드를 올려두는 SO입니다.
 /// </summary>
 [CreateAssetMenu(fileName = "SoundSO_", menuName = "ScriptableObjects/Sound", order = 4)]
-public class SoundSO : ScriptableObject
+public class SoundSO : BaseSO
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("기본 정보")]
-    [SerializeField] protected string _id;
     [SerializeField] protected AudioClip _clip;
     [SerializeField, Range(0f, 1f)] protected float _volume = 0.5f;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
-    public string Id => _id;
     public AudioClip Clip => _clip;
     public float Volume => _volume;
 
     // 값 유효성 검사
-    public virtual bool IsValid()
+    public override bool IsValid()
     {
-        if (_id.IsEmpty()) return false;
+        if (!base.IsValid()) return false;
+        if (_type != EType.Audio) return false;
         if (_clip == null) return false;
         if (_volume <= 0f) return false;
         return true;
+    }
+
+    /// <summary>
+    /// 해당 클립의 최종 볼륨을 계산해서 가져옵니다.
+    /// </summary>
+    /// <param name="userVolume">사용자 볼륨 설정</param>
+    public float CalcVolume(float userVolume)
+    {
+        userVolume = Mathf.Clamp01(userVolume);
+        return Mathf.Min(_volume * userVolume, 1f);
     }
     #endregion
 
@@ -42,9 +51,10 @@ public class SoundSO : ScriptableObject
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
-    protected virtual void OnValidate()
+    protected override void OnValidate()
     {
         AutomaticallyId();
+        _type = EType.Audio;
         if (!IsValid())
         {
             UDebug.PrintOnce($"SO({_id})의 값이 올바르지 않습니다.", LogType.Assert);

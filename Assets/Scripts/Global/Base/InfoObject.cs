@@ -1,11 +1,7 @@
-﻿using UnityEngine;
-
-/// <summary>
-/// 클래스의 설계 의도입니다.
+﻿/// <summary>
+/// 매 프레임 동작하는 월드 객체가 상속받는 추상화 클래스
 /// </summary>
 public abstract class InfoObject : Frameable
 {
-    #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-    public abstract void SetInfo(DatabaseUnitSO data);
-    #endregion
+    public abstract void SetInfo(UnitSO data);
 }

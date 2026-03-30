@@ -1,60 +1,115 @@
-﻿using TMPro;
-using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using TMPro;
 
-public class InventorySlot : MonoBehaviour, IPointerClickHandler
+public class InventorySlot : MonoBehaviour, IPointerClickHandler, IDropHandler,
+    IPointerEnterHandler, IPointerExitHandler  // 툴팁용 추가
 {
-    public Image icon;
-    public TextMeshProUGUI countText;
+    [Header("UI References")]
+    public Image iconImage;
+    public GameObject itemObject;
+    public GameObject contextMenuPrefab;
+    public TextMeshProUGUI countText; // 추가
 
-    Item item;
-    int count;
+    private ItemData currentItem;
+    private int itemCount = 0; // 추가
+    private Canvas rootCanvas;
 
-    public bool IsEmpty()
+    public bool IsEmpty => currentItem == null;
+    public ItemData CurrentItem => currentItem;
+    public int ItemCount => itemCount;
+
+    void Awake()
     {
-        return item == null;
+        rootCanvas = GetComponentInParent<Canvas>();
     }
 
-    public void SetItem(Item newItem, int newCount)
+    public void SetItem(ItemData item, int count = 1)
     {
-        item = newItem;
-        count = newCount;
+        currentItem = item;
+        itemCount = count;
+        iconImage.sprite = item.icon;
+        iconImage.color = Color.white;
+        itemObject.SetActive(true);
 
-        icon.sprite = item.icon;
-        icon.enabled = true;
+        UpdateCountText();
 
-        countText.text = count.ToString();
+        var draggable = itemObject.GetComponent<DraggableItem>();
+        if (draggable != null) draggable.Init(this);
     }
 
-    public void AddCount(int value)
+    public void AddCount(int amount)
     {
-        count += value;
-        countText.text = count.ToString();
+        itemCount += amount;
+        if (itemCount > currentItem.maxStack)
+            itemCount = currentItem.maxStack;
+        UpdateCountText();
+    }
+
+    void UpdateCountText()
+    {
+        if (countText == null) return;
+        // 1개면 숫자 숨기기, 2개 이상이면 표시
+        countText.text = itemCount > 1 ? itemCount.ToString() : "";
     }
 
     public void ClearSlot()
     {
-        item = null;
-        count = 0;
-
-        icon.enabled = false;
-        countText.text = "";
+        currentItem = null;
+        itemCount = 0;
+        iconImage.sprite = null;
+        iconImage.color = Color.clear;
+        itemObject.SetActive(false);
+        if (countText != null) countText.text = "";
     }
 
-    public Item GetItem()
+    // 툴팁 - 마우스 올릴 때
+    public void OnPointerEnter(PointerEventData eventData)
     {
-        return item;
+        if (!IsEmpty)
+            TooltipUI.Instance.Show(currentItem);
     }
 
-    // 우클릭 감지 코드
+    // 툴팁 - 마우스 나갈 때
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        TooltipUI.Instance.Hide();
+    }
+
+    public void OnDrop(PointerEventData eventData)
+    {
+        DraggableItem dragged = eventData.pointerDrag?.GetComponent<DraggableItem>();
+        if (dragged == null) return;
+
+        InventorySlot fromSlot = dragged.OriginalSlot;
+        if (fromSlot == this) return;
+
+        ItemData fromItem = fromSlot.CurrentItem;
+        int fromCount = fromSlot.ItemCount;
+        ItemData toItem = currentItem;
+        int toCount = itemCount;
+
+        fromSlot.ClearSlot();
+        if (toItem != null) fromSlot.SetItem(toItem, toCount);
+
+        ClearSlot();
+        SetItem(fromItem, fromCount);
+
+        dragged.transform.SetParent(fromSlot.transform.Find("Icon").transform.parent, false);
+        dragged.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+    }
+
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Right)
+        if (eventData.button == PointerEventData.InputButton.Right && !IsEmpty)
         {
-            if (item == null) return;
+            var existing = FindObjectOfType<InventoryContextMenu>();
+            if (existing != null) Destroy(existing.gameObject);
 
-            RightClickMenu.instance.OpenMenu(this, Input.mousePosition);
+            GameObject menuGO = Instantiate(contextMenuPrefab, rootCanvas.transform);
+            InventoryContextMenu menu = menuGO.GetComponent<InventoryContextMenu>();
+            menu.Open(this, eventData.position);
         }
     }
 }

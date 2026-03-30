@@ -38,5 +38,6 @@ public enum EType
 
     #region ─────────────────────────▶ 기타 ◀─────────────────────────
     Recipe = 17,
+    Audio = 22,
     #endregion
 }

@@ -20,9 +20,6 @@ public class PlayerController : BaseMono
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
-    private const float MOVE_EPSILON = 0.01f;
-    private const float MOVE_EPSILON_SQR = MOVE_EPSILON * MOVE_EPSILON;
-
     private Rigidbody2D _rb;
 
     private Vector2 _moveInput = Vector2.zero;
@@ -71,11 +68,11 @@ public class PlayerController : BaseMono
     {
         Vector2 nextMoveInput = eventData.moved;
 
-        bool prevHasHorizontal = Mathf.Abs(_prevMoveInput.x) > MOVE_EPSILON;
-        bool prevHasVertical = Mathf.Abs(_prevMoveInput.y) > MOVE_EPSILON;
+        bool prevHasHorizontal = Mathf.Abs(_prevMoveInput.x) > K.SMALL_DISTANCE;
+        bool prevHasVertical = Mathf.Abs(_prevMoveInput.y) > K.SMALL_DISTANCE;
 
-        bool nextHasHorizontal = Mathf.Abs(nextMoveInput.x) > MOVE_EPSILON;
-        bool nextHasVertical = Mathf.Abs(nextMoveInput.y) > MOVE_EPSILON;
+        bool nextHasHorizontal = Mathf.Abs(nextMoveInput.x) > K.SMALL_DISTANCE;
+        bool nextHasVertical = Mathf.Abs(nextMoveInput.y) > K.SMALL_DISTANCE;
 
         // 새로 눌린 축만 감지
         bool horizontalJustPressed = nextHasHorizontal && !prevHasHorizontal;
@@ -128,7 +125,7 @@ public class PlayerController : BaseMono
     /// <returns>최종 이동 속도</returns>
     private float GetMoveSpeed()
     {
-        bool hasMoveInput = _moveInput.sqrMagnitude > MOVE_EPSILON_SQR;
+        bool hasMoveInput = _moveInput.sqrMagnitude > K.SMALL_DISTANCE;
 
         if (_isRun == true && hasMoveInput == true)
         {
@@ -148,16 +145,17 @@ public class PlayerController : BaseMono
         {
             return;
         }
-
-        Vector2 moveDir = _moveInput.normalized;
-
-        if (moveDir == Vector2.zero)
+        // 입력이 없다고 판단되면 이동 종료
+        if(_moveInput.sqrMagnitude < K.SMALL_DISTANCE)
         {
-            _rb.velocity = Vector2.zero;
+            _rb.velocity = Vector3.zero;
             return;
         }
-
-        _rb.velocity = moveDir * GetMoveSpeed();
+        // 이동 실행
+        Vector2 moveDir = _moveInput.normalized;
+        Vector2 curPos = transform.position;
+        _rb.velocity = TileManager.Ins.Tile.GetValidVelocity
+            (curPos, Vector2.one * 0.5f, moveDir, GetMoveSpeed());
     }
 
     /// <summary>
@@ -167,8 +165,8 @@ public class PlayerController : BaseMono
     /// </summary>
     private void UpdateFacing()
     {
-        bool hasHorizontal = Mathf.Abs(_moveInput.x) > MOVE_EPSILON;
-        bool hasVertical = Mathf.Abs(_moveInput.y) > MOVE_EPSILON;
+        bool hasHorizontal = Mathf.Abs(_moveInput.x) > K.SMALL_DISTANCE;
+        bool hasVertical = Mathf.Abs(_moveInput.y) > K.SMALL_DISTANCE;
 
         if (hasHorizontal == false && hasVertical == false)
         {
@@ -207,12 +205,12 @@ public class PlayerController : BaseMono
             return;
         }
 
-        if (_moveInput.x < -MOVE_EPSILON)
+        if (_moveInput.x < -K.SMALL_DISTANCE)
         {
             _bodySr.flipX = true;
         }
 
-        else if (_moveInput.x > MOVE_EPSILON)
+        else if (_moveInput.x > K.SMALL_DISTANCE)
         {
             _bodySr.flipX = false;
         }
@@ -228,7 +226,7 @@ public class PlayerController : BaseMono
             return;
         }
 
-        bool isMove = _moveInput.sqrMagnitude > MOVE_EPSILON_SQR;
+        bool isMove = _moveInput.sqrMagnitude > K.SMALL_DISTANCE;
         bool isRunAnim = isMove == true && _isRun == true;
 
         _animator.SetBool(_isMoveHash, isMove);

@@ -9,13 +9,13 @@ public class SeedItemSO : ItemSO
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("씨앗 아이템 정보")]
     [Tooltip("심을 작물 ID")]
-    [SerializeField] protected string _placeCropID;
+    [SerializeField] protected string _placeCropId;
     [Tooltip("심기 위해 필요한 농사 레벨")]
     [SerializeField] protected int _needFarmingLevel = 1;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
-    public string PlaceCropID => _placeCropID;
+    public string PlaceCropId => _placeCropId;
     public int NeedFarmingLevel => _needFarmingLevel;
 
     // 정상 값을 가지는지 검사
@@ -23,7 +23,7 @@ public class SeedItemSO : ItemSO
     {
         if (!base.IsValid()) return false;
         if (_type != EType.SeedItem) return false;
-        if (_placeCropID.IsEmpty()) return false;
+        if (_placeCropId.IsEmpty()) return false;
         if (_needFarmingLevel < 1) return false;
         return true;
     }

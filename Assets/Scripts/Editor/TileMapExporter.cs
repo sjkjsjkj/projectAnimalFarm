@@ -44,8 +44,7 @@ public class TilemapExporter : EditorWindow
         {
             string line = csvLines[i];
             // 비어있는거 거르기
-            if (string.IsNullOrEmpty(line)) continue;
-            if (string.IsNullOrWhiteSpace(line)) continue;
+            if (line.IsEmpty()) continue;
 
             // 콤마 기준으로 쪼개서 이름만 가져오기 (B열 → 1번 인덱스)
             string[] cols = line.Split(',');
@@ -58,8 +57,7 @@ public class TilemapExporter : EditorWindow
             // 안전한 이름 가져오기
             string name = cols[K.TILE_CSV_NAME].Trim();
             if (colLength <= K.TILE_CSV_NAME) continue;
-            if (string.IsNullOrEmpty(name)) continue;
-            if (string.IsNullOrWhiteSpace(name)) continue;
+            if (name.IsEmpty()) continue;
 
             // 문제가 없으므로 딕셔너리 등록
             if (fileToId.TryAdd(name, id))
@@ -99,7 +97,7 @@ public class TilemapExporter : EditorWindow
                 // 아무것도 없는 타일
                 if (tile == null)
                 {
-                    map[index] = -1;
+                    map[index] = 5150; // 봄 잔디 0번 (밟을 수 있는 땅)
                 }
                 // 무언가 있는 타일
                 else

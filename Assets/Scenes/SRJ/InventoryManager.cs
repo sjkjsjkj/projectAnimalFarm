@@ -1,33 +1,84 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class InventoryManager : MonoBehaviour
 {
-    public List<InventorySlot> slots = new List<InventorySlot>();
+    public static InventoryManager Instance;
 
-    public bool AddItem(Item item)
+    [Header("UI")]
+    public GameObject inventoryPanel;
+    public Transform slotContainer;
+    public GameObject slotPrefab;
+
+    [Header("Settings")]
+    public int totalSlots = 15;
+
+    [Header("Test Items")]
+    public List<ItemData> testItems;
+
+    private List<InventorySlot> slots = new List<InventorySlot>();
+    private bool isOpen = false;
+
+    void Awake() => Instance = this;
+
+    void Start()
     {
-        // 같은 아이템 먼저 찾기
-        foreach (InventorySlot slot in slots)
+        InitSlots();
+        AddTestItems();
+        inventoryPanel.SetActive(false);
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.I))
+            ToggleInventory();
+    }
+
+    void InitSlots()
+    {
+        for (int i = 0; i < totalSlots; i++)
         {
-            if (!slot.IsEmpty() && slot.GetItem() == item)
+            GameObject go = Instantiate(slotPrefab, slotContainer);
+            InventorySlot slot = go.GetComponent<InventorySlot>();
+            slots.Add(slot);
+        }
+    }
+
+    void AddTestItems()
+    {
+        foreach (var item in testItems)
+            AddItem(item);
+    }
+
+    public bool AddItem(ItemData item)
+    {
+        foreach (var slot in slots)
+        {
+            if (slot.IsEmpty)
             {
-                slot.AddCount(1);
+                slot.SetItem(item);
                 return true;
             }
         }
-
-        // 빈 슬롯 찾기
-        foreach (InventorySlot slot in slots)
-        {
-            if (slot.IsEmpty())
-            {
-                slot.SetItem(item, 1);
-                return true;
-            }
-        }
-
         Debug.Log("인벤토리가 가득 찼습니다!");
         return false;
+    }
+
+    public void RemoveItem(InventorySlot slot)
+    {
+        slot.ClearSlot();
+    }
+
+    public void ToggleInventory()
+    {
+        isOpen = !isOpen;
+        inventoryPanel.SetActive(isOpen);
+    }
+
+    public void CloseInventory()
+    {
+        isOpen = false;
+        inventoryPanel.SetActive(false);
     }
 }

@@ -64,7 +64,7 @@ public class BreedingArea : BaseMono , IFoodProvider
         GameObject tempGo = FactoryManager.Ins.Animal.Spawn(id);
         if(!tempGo.GetComponent<AnimalObject>())
         {
-            UDebug.Print("잘못된 객체가 생성되고 있습니다. 여기에는 AnimalObject가 반환되어야 합니다. 팩토리확인");
+            UDebug.Print("잘못된 객체가 생성되고 있습니다. 여기에는 AnimalObject가 반환되어야 합니다. 팩토리 확인");
             return;
         }
 
@@ -74,12 +74,12 @@ public class BreedingArea : BaseMono , IFoodProvider
         tempGo.transform.SetParent(this.transform);
         tempGo.transform.localPosition = GetRandomPos();
     }
+
     //소환되는 동물의 위치를 사육장 내 랜덤한 위치로 조정하기 위함.
     private Vector3 GetRandomPos()
     {
         float posX = Random.Range(-_witdh / 2 + 1, _witdh / 2 - 1);
         float posY = Random.Range(-_height / 2 + 1, _height / 2 - 1);
-
         return new Vector3(posX, posY);
         #endregion
 

@@ -56,7 +56,7 @@ public class ObjectPool<T> where T : Component
     {
         if(instance == null)
         {
-            UDebug.Print($"오브젝트 풀({_prefab.name})에서 비어있는 인스턴스를 푸쉬받았습니다.", LogType.Warning);
+            UDebug.Print($"오브젝트 풀({(_prefab == null ? null : _prefab.name)})에서 비어있는 인스턴스를 푸쉬받았습니다.", LogType.Warning);
             return;
         }
         _pool.Enqueue(instance);

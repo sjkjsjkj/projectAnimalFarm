@@ -1,5 +1,4 @@
-﻿using UnityEditor.Animations;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// NPC가 월드에서 가지는 정적 데이터입니다.
@@ -9,11 +8,11 @@ public class NpcWorldSO : WorldSO
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("애니메이션")]
-    [SerializeField, CsvIgnore] protected AnimatorController _animController;
+    [SerializeField, CsvIgnore] protected RuntimeAnimatorController _animController;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
-    public AnimatorController AnimController => _animController;
+    public RuntimeAnimatorController AnimController => _animController;
 
     // 정상 값을 가지는지 검사
     public override bool IsValid()

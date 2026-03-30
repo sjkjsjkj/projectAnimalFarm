@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.Animations;
 
 /// <summary>
 /// 플레이어의 초기 스탯과 설정 값을 담는 정적 데이터입니다.
@@ -11,7 +10,7 @@ public class PlayerWorldSO : WorldSO
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("애니메이션")]
-    [SerializeField, CsvIgnore] protected AnimatorController _animController;
+    [SerializeField, CsvIgnore] protected RuntimeAnimatorController _animController;
 
     [Header("이동 초기값")]
     [SerializeField] protected float _walkSpeed = 5f;
@@ -34,7 +33,7 @@ public class PlayerWorldSO : WorldSO
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
-    public AnimatorController AnimController => _animController;
+    public RuntimeAnimatorController AnimController => _animController;
     public float WalkSpeed => _walkSpeed;
     public float RunMultiplier => _runMultiplier;
     public float MaxStamina => _maxStamina;

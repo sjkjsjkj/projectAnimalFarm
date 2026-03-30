@@ -123,7 +123,6 @@ public class StringIdGenerator : EditorWindow
         Type soType = null;
         GUILayout.Label("▷ 아이템 SO ◁", EditorStyles.boldLabel);
         if (GUILayout.Button("미끼 ID")) soType = typeof(BaitItemSO);
-        if (GUILayout.Button("수확물 ID")) soType = typeof(HarvestItemSO);
         if (GUILayout.Button("씨앗 ID")) soType = typeof(SeedItemSO);
         if (GUILayout.Button("먹이 ID")) soType = typeof(FeedItemSO);
         if (GUILayout.Button("특수 ID")) soType = typeof(SpecialItemSO);
@@ -131,7 +130,6 @@ public class StringIdGenerator : EditorWindow
         GUILayout.Label("▷ 월드 SO ◁", EditorStyles.boldLabel);
         if (GUILayout.Button("동물 ID")) soType = typeof(AnimalWorldSO);
         if (GUILayout.Button("작물 ID")) soType = typeof(CropWorldSO);
-        if (GUILayout.Button("물고기 ID")) soType = typeof(FishWorldSO);
         if (GUILayout.Button("NPC ID")) soType = typeof(NpcWorldSO);
         GUILayout.Label("▷ 사운드 SO ◁", EditorStyles.boldLabel);
         if (GUILayout.Button("오디오 ID")) soType = typeof(SoundSO);
