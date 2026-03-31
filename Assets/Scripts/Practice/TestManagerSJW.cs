@@ -20,6 +20,10 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
 
     [Header("인벤토리 테스트")]
     [SerializeField] private string _SeedItemId;
+
+    [Header("제작대 테스트")]
+    [SerializeField] private RecipeSO[] _recipeSOs;
+    [SerializeField] private int _recipeIdx;
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
@@ -57,7 +61,6 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
     public void TestFunction()
     {
         _tempDataUnitSO = DatabaseManager.Ins.AnimalWorld(_testID);
-
     }
     public void TestFunction2()
     {
@@ -81,6 +84,26 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
     public void TestFunction4()
     {
         _testFarmArea.TestFunction(_pos, _seedId.ToString());
+    }
+
+    public void WorkbenchTestFunction()
+    {
+        UDebug.Print("제작대 테스트");
+
+        Workbench.Ins.OnChenageRecipe -= ShowCurrentRequireCondition;
+        Workbench.Ins.OnChenageRecipe += ShowCurrentRequireCondition;
+
+        Workbench.Ins.SetRecipe(_recipeSOs[_recipeIdx]);
+
+        Id.Item_Seed_Carrot
+    }
+
+    public void ShowCurrentRequireCondition(WorkbenchReturnStruct[] curRequireCondition)
+    {
+        for (int i = 0; i < curRequireCondition.Length; i++)
+        {
+            UDebug.Print($"요구 아이템 {i} [{_recipeSOs[_recipeIdx].RequiedItems[i].Id}] : {curRequireCondition[i].CurHasCount} / {curRequireCondition[i].RequireCount} | 제작 가능 여부 : {curRequireCondition[i].IsCondition}");
+        }
     }
     #endregion
 }
