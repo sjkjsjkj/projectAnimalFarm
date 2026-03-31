@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 441bc420fb759fa4595dad1fdd5c7b11, type: 3}
   m_Name: PlayerWorldTableSO
   m_EditorClassIdentifier: 
-  _elements: []
+  _elements:
+  - {fileID: 11400000, guid: 6f5de4b0ae9d64f4e9f1515bd1f83194, type: 2}

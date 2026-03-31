@@ -4,6 +4,8 @@ public static partial class K
 {
     // SO를 수집하여 생성된 Csv 파일 경로
     public static readonly string AUTO_SO_EXPORT_PATH = "Assets/Export";
+    // 부트 프리펩 리소스 경로
+    public static readonly string BOOT_PREFAB_RESOURCE_PATH = "BootPrefab";
     // SO 테이블 리소스 경로
     public static readonly string TABLE_RESOURCE_PATH = "Table";
     public static readonly string PREFAB_RESOURCE_PATH = "Prefab";

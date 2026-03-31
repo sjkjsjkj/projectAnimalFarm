@@ -111,6 +111,11 @@ public class PlayerProvider
         }
         UDebug.Print($"플레이어 프로바이더 초기화를 완료했습니다.");
     }
+
+    /// <summary>
+    /// 플레이어가 초기화되지 않은 상태인지 검사하여 반환합니다.
+    /// </summary>
+    public bool IsEmpty() => (_state == EPlayerState.None);
     #endregion
 
     #region ─────────────────────────▶ 읽기 전용 멤버 ◀─────────────────────────
