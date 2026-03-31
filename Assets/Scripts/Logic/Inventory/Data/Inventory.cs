@@ -155,5 +155,21 @@ public class Inventory
         OnChangeSlot?.Invoke(_inventoryType, _inventorySlots[slotIdx2]);
 
     }
+
+    public int FindItem(string itemId)
+    {
+        for(int i=0; i< _inventorySlots.Length; i++)
+        {
+            if (_inventorySlots[i].ItemSO == null)
+            {
+                continue;
+            }
+            if (_inventorySlots[i].ItemSO.Id.CompareTo(itemId)==0)
+            {
+                return _inventorySlots[i].CurStack;
+            }
+        }
+        return 0;
+    }
     #endregion
 }

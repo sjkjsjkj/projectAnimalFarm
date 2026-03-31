@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+<<<<<<<< Updated upstream:Assets/ScriptableObjects/Item/Harvest/StaticItemSO_stone_with_minerals_28.asset.meta
+guid: 35cd5ebebe4cdc84282a901c7151ff26
+NativeFormatImporter:
+========
+guid: 9ef901e09513cc941a11f73057894b10
+MonoImporter:
+>>>>>>>> Stashed changes:Assets/Scripts/Data/Recipe/RecipeSO.cs.meta
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
