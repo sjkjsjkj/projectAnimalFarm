@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: AnimalWorldTableSO
   m_EditorClassIdentifier: 
   _elements:
-  - {fileID: 11400000, guid: 30500bf50f8c9bb44a1baea69fd6c332, type: 2}
-  - {fileID: 11400000, guid: eb5079decbc55b94bbcfed531b7e6c53, type: 2}
-  - {fileID: 11400000, guid: 38193d3d189bf554286458582a6c16e8, type: 2}
-  - {fileID: 11400000, guid: 2e297ee858e387443a985b4eb645fa85, type: 2}
-  - {fileID: 11400000, guid: 20333f3c5a9caf847ae73dbc5c318613, type: 2}
-  - {fileID: 11400000, guid: 24b90b6dbfd55e5448ed964f9cbef2df, type: 2}
-  - {fileID: 11400000, guid: d7f64b72991dfa244a450ae835baaf89, type: 2}
-  - {fileID: 11400000, guid: a6b0e4648864848439fcbde6b24f7ec5, type: 2}
+  - {fileID: 11400000, guid: ed78799f08026674e8c55c29cd9d3ecd, type: 2}
+  - {fileID: 11400000, guid: 6198e3c8b8b525743a7d2ebc31d50da2, type: 2}
+  - {fileID: 11400000, guid: 6560d415eff318c4392a57ddd3ddd0f8, type: 2}
+  - {fileID: 11400000, guid: 036944e096db19d409bbe1478f0dc4a9, type: 2}
+  - {fileID: 11400000, guid: da4322f508cdffa4f84917b9f22f0a4f, type: 2}
+  - {fileID: 11400000, guid: f5065ae421750e2458aeb934a3c46645, type: 2}
+  - {fileID: 11400000, guid: 1b45dd88e95afd648b1fc01921d09a7d, type: 2}
+  - {fileID: 11400000, guid: bfb7d1b81a83efc44be0dc359d36e6ca, type: 2}

@@ -3,5 +3,7 @@
 /// </summary>
 public interface IPoolFactory
 {
+    BaseMono Spawn();
+    void Despawn(BaseMono instance);
     void Clear();
 }

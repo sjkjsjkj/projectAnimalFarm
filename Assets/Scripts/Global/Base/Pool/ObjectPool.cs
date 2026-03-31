@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// 오브젝트를 풀링으로 저장 및 관리해주는 추상화 클래스
 /// </summary>
-public class ObjectPool<T> where T : Component
+public class ObjectPool<T> where T : BaseMono, IPoolable
 {
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private Queue<T> _pool;

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sheetName: ITEM_STATIC
   _tsvUrl: https://docs.google.com/spreadsheets/d/1UtO-nEBDL64Yv6t33M3JRkg_MC8sGO3nAa50-MdfaMU/export?format=tsv&gid=0
-  _outputFolder: Assets/Resources/ScriptableObject/Item
+  _outputFolder: Assets/ScriptableObjects/Item
   _overwriteImageWhenSpriteFound: 1
   _spriteSearchFolders:
   - Assets/Inventory,pictorial book(Icon)
