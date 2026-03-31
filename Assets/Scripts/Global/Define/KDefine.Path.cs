@@ -24,4 +24,9 @@ public static partial class K
     public static readonly string TILE_MAP_EXPORT_NAME = "MapData.json";
     // 문자열 ID 스크립트 경로
     public static readonly string STRING_ID_EXPORT_PATH = "Assets/Scripts/Global/Define";
+
+    // 저장 경로
+    // AppData\LocalLow\<CompanyName>\<ProductName>
+    //string path = $"{Application.persistentDataPath}/{PRESISTENT_OBJECT_PATH}/{class.UniqueId}.json";
+    public static readonly string PRESISTENT_OBJECT_PATH = "Objects";
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -18,11 +17,12 @@ public class PoolManager : GlobalSingleton<PoolManager>
     /// </summary>
     /// <typeparam name="T">풀링 인터페이스가 부착된 해당 유닛이 가지는 컴포넌트</typeparam>
     /// <param name="id">유닛 ID</param>
-    public T Spawn<T>(string id) where T : Component, IPoolable
+    public T Spawn<T>(string id) where T : BaseMono, IPoolable
     {
         // 해당 ID 유닛을 생성하는 팩토리 가져오기
-        if(_factoryDict.TryGetValue(id, out IPoolFactory factory)){
-            return (factory as PoolFactory<T>)?.Spawn();
+        if (_factoryDict.TryGetValue(id, out IPoolFactory factory))
+        {
+            return factory.Spawn() as T;
         }
         // 해당 유닛은 풀링 생성을 지원하지 않습니다.
         else
@@ -37,11 +37,12 @@ public class PoolManager : GlobalSingleton<PoolManager>
     /// </summary>
     /// <typeparam name="T">풀링 인터페이스가 부착된 해당 유닛이 가지는 컴포넌트</typeparam>
     /// <param name="id">유닛 ID</param>
-    public void Despawn<T>(string id, T instance) where T : Component, IPoolable
+    public void Despawn<T>(string id, T instance) where T : BaseMono, IPoolable
     {
         // 해당 ID 유닛을 생성하는 팩토리 가져오기
-        if(_factoryDict.TryGetValue(id, out IPoolFactory factory)){
-            (factory as PoolFactory<T>)?.Despawn(instance);
+        if (_factoryDict.TryGetValue(id, out IPoolFactory factory))
+        {
+            factory.Despawn(instance);
         }
         // 해당 유닛은 풀링 생성을 지원하지 않습니다.
         else
@@ -60,6 +61,14 @@ public class PoolManager : GlobalSingleton<PoolManager>
         var data = DatabaseManager.Ins;
         // 일반 프리펩
         CreateFactory(data.SoundPrefab(), K.NAME_SOUND_EMITTER);
+        /*{
+            string id = Id.World_Animal_Chicken;
+            GameObject prefab = data.AnimalWorld(id).Prefab;
+            if (prefab.TryGetComponent(out BaseMono component) && component is IPoolable)
+            {
+                CreateFactory(component, id);
+            }
+        }*/
         // ↑ 필요한 초기화 로직 / 부모 클래스에서 자동 실행
         _isInitialized = true;
     }
@@ -67,16 +76,16 @@ public class PoolManager : GlobalSingleton<PoolManager>
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
     // 팩토리를 생성합니다.
-    private void CreateFactory<T>(T prefab, string id) where T : Component, IPoolable
+    private void CreateFactory<T>(T prefab, string id) where T : BaseMono, IPoolable
     {
         // 방어 코드
-        if(prefab == null || id.IsEmpty())
+        if (prefab == null || id.IsEmpty())
         {
             UDebug.Print($"팩토리 생성 함수에서 초기화되지 않은 매개변수를 받았습니다.", LogType.Assert);
         }
         // 팩토리 생성
         var factory = new PoolFactory<T>(prefab, 10);
-        if(_factoryDict.TryAdd(id, factory))
+        if (_factoryDict.TryAdd(id, factory))
         {
             return;
         }

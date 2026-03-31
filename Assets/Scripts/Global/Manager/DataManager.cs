@@ -10,6 +10,8 @@ public class DataManager : GlobalSingleton<DataManager>
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
+    public OptionData Option => _gameOption;
+
     /// <summary>
     /// 소리 설정에 접근합니다.
     /// </summary>

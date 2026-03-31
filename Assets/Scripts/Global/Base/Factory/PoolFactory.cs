@@ -1,9 +1,7 @@
-﻿using UnityEngine;
-
-/// <summary>
+﻿/// <summary>
 /// 풀링 객체를 생성 및 반환하는 팩토리 클래스
 /// </summary>
-public sealed class PoolFactory<T> : IPoolFactory where T : Component, IPoolable
+public sealed class PoolFactory<T> : IPoolFactory where T : BaseMono, IPoolable
 {
     private ObjectPool<T> _pool;
 
@@ -20,12 +18,12 @@ public sealed class PoolFactory<T> : IPoolFactory where T : Component, IPoolable
     /// <summary>
     /// 객체를 스폰하고 초기화 함수를 실행합니다.
     /// </summary>
-    public T Spawn()
+    public BaseMono Spawn()
     {
         if (_pool.Pull(out T instance))
         {
             instance.Setup();
-            instance.transform.SetParent(GameManager.ObjectRoot);
+            instance.transform.SetParent(GameManager.EnableObjectRoot);
             return instance;
         }
         return null;
@@ -34,10 +32,17 @@ public sealed class PoolFactory<T> : IPoolFactory where T : Component, IPoolable
     /// <summary>
     /// 객체를 풀로 반환합니다.
     /// </summary>
-    public void Despawn(T instance)
+    public void Despawn(BaseMono instance)
     {
-        _pool.Push(instance);
-        instance.transform.SetParent(GameManager.ObjectRoot);
+        if (instance is T ins)
+        {
+            _pool.Push(ins);
+            instance.transform.SetParent(GameManager.DisableObjectRoot);
+        }
+        else
+        {
+            UObject.Destroy(instance);
+        }
     }
 
     /// <summary>

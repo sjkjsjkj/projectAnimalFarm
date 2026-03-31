@@ -42,6 +42,11 @@ public abstract class TableSO<T> : ScriptableObject where T : BaseSO
     {
         BuildElementDict();
     }
+
+    /// <summary>
+    /// 순회를 위해 원본 리스트 받기
+    /// </summary>
+    public IReadOnlyList<T> ReadList() => _elements;
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────

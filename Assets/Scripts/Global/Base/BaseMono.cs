@@ -19,10 +19,19 @@ public abstract class BaseMono : MonoBehaviour
         }
     }
 
-    // 복사 시 UUID 복제 방지
+    // 오브젝트 복사 시 UUID 복제 방지
     protected virtual void Reset()
     {
         NewGuid();
+    }
+
+    // 새로 생성된 오브젝트일 경우 Awake 단계에서 UUID 부여
+    protected virtual void Awake()
+    {
+        if (_uniqueId.IsEmpty())
+        {
+            NewGuid();
+        }
     }
 
     // 고유 UUID 부여
