@@ -14,12 +14,7 @@ public class InventoryManager : Singleton<InventoryManager>
     [SerializeField] private Transform _inventoriesCanvasTr;
 
     [Header("테스트")]
-    //[SerializeField] private int _playerInventoryUISize;
-    //[SerializeField] private int _storageInventoryUISize;
-    //[SerializeField] private int _shopInventoryUISize;
-
     [SerializeField] private int _inventorySize;
-
     [SerializeField] private KeyCode _inventoryKeycode = KeyCode.I;
     #endregion
 
@@ -30,13 +25,9 @@ public class InventoryManager : Singleton<InventoryManager>
     private PlayerInventoryUI _playerInventoryUI;
     private StorageUI _storageUI;
     private ShopUI _shopUI;
-    //private Inventory _playerInventory;
-    //private Dictionary<int, Inventory> _storageList;
-    //private Dictionary<int, Inventory> _shopList;
+    
     private Dictionary<int, Inventory> _inventoryList;
 
-    //private int _storageCount;
-    //private int _shopCount;
     private int _inventoryCount = 0;
     #endregion
 
@@ -44,7 +35,6 @@ public class InventoryManager : Singleton<InventoryManager>
     public Inventory PlayerInventory => _inventoryList[0];
     public PlayerInventoryUI PlayerInvenUI => _playerInventoryUI;
     public Dictionary<int, Inventory> Inventories => _inventoryList;
-    //public InventoryUI
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
@@ -53,30 +43,28 @@ public class InventoryManager : Singleton<InventoryManager>
         {
             return;
         }
-        //_storageList = new Dictionary<int, Inventory>();
-        //_shopList = new Dictionary<int, Inventory>();
+        
         _inventoryList = new Dictionary<int, Inventory>();
 
-        //MakeNewInventory(15, EInventoryType.PlayerInventory); // 게임 시작시 자동으로 플레이어의 인벤토리 생성.
+        MakeInventoryUIs();//인벤토리 UI들 생성 (인벤 / 창고 / 상점 각각 하나씩)
 
-        TestFunction();
-
+        MakeNewInventory(_inventorySize, EInventoryType.PlayerInventory); // 가장 먼저 플레이어의 인벤토리 생성.
 
         // ↑ 필요한 초기화 로직 / 부모 클래스에서 자동 실행
         _isInitialized = true;
     }
-    /// <summary>
-    /// 테스트용 메서드
-    /// </summary>
-    public void TestFunction()
-    {
-        MakeInventoryUIs();
-        MakeNewInventory(_inventorySize, EInventoryType.PlayerInventory);
-    }
+
     //각 UI들을 생성하는 메서드.
     //이곳에서 생성된 UI로 각종 창고와 상점 / 플레이어의 인벤토리 UI를 보여 줌.
     private void MakeInventoryUIs()
     {
+        //추 후 UI가 생기면 활성화
+        //if(_playerInventoryPrefab == null || _shopPrefab == null || _storagePrefab == null)
+        //{
+        //    UDebug.Print("인벤토리 UI 찾을 수 없음. 확인", LogType.Warning);
+        //    return;
+        //}
+
         //플레이어 인벤토리 UI 세팅
         _playerInventoryUI = Instantiate(_playerInventoryPrefab);
         _playerInventoryUI.SetInfo(_inventorySize);
@@ -84,6 +72,7 @@ public class InventoryManager : Singleton<InventoryManager>
         _playerInventoryUI.transform.localPosition = new Vector3(-300, 0);
         _playerInventoryUI.gameObject.SetActive(false);
 
+        //추 후 UI가 생기면 활성화
         ////창고 UI 세팅
         //_storageUI = Instantiate(_storagePrefab);
         //_storageUI.SetInfo(_storageInventoryUISize);
@@ -91,6 +80,7 @@ public class InventoryManager : Singleton<InventoryManager>
         //_storageUI.transform.localPosition = new Vector3(300, 0);
         //_storageUI.gameObject.SetActive(false);
 
+        //추 후 UI가 생기면 활성화
         ////상점 UI 세팅
         //_shopUI = Instantiate(_shopPrefab);
         //_shopUI.SetInfo(_shopInventoryUISize);
@@ -160,44 +150,38 @@ public class InventoryManager : Singleton<InventoryManager>
                 break;
         }
     }
+
+
     /// <summary>
+    /// //여기서 실제 인벤토리들의 UI On / Off 호출
     /// 외부에서 인벤토리를 UI를 On할때 불러와질 메서드.
     /// 이곳에서 인벤토리 타입에 따라 열리는 형식과 목록이 달라질 예정.
     /// </summary>
-    public void InventoryUIActiveOn(int id, EInventoryType invenType) 
+    public void InventoryUIToggle(int id, EInventoryType invenType) 
     {
         switch(invenType)
         {
             case EInventoryType.PlayerInventory:
-                PlayerInvenUI.gameObject.SetActive(true);
+                PlayerInvenUI.SetToggleUI();
                 break;
             case EInventoryType.Storage:
-
+                _storageUI.RefreshInventoryUI(_inventoryList[id]);
+                _storageUI.SetToggleUI();
                 break;
             case EInventoryType.Shop:
-
+                _shopUI.RefreshInventoryUI(_inventoryList[id]);
+                _shopUI.SetToggleUI();
                 break;
         }
     }
-    //각종 인벤토리들의 ON N OFF 토글
-    public void InventoryUIToggle(EInventoryType invenType)
-    {
-        switch(invenType)
-        {
-            case EInventoryType.PlayerInventory:
-                break;
-            case EInventoryType.Storage:
-                break;
-            case EInventoryType.Shop:
-                break;
-        }
-    }
+    
+    //테스트 용 메서드
     //UI On 키를 입력했는지 확인하는 메서드
     private void UIKeyInputHandle()
     {
         if(Input.GetKeyDown(_inventoryKeycode))
         {
-            PlayerInvenUI.SetToggleUI();//gameObject.SetActive(true);
+            InventoryUIToggle(0, EInventoryType.PlayerInventory);
         }
     }
     #endregion
