@@ -151,7 +151,7 @@ public class AnimalObject : InfoObject
         //랜덤 행동
         //현재 Idle 애니메이션이 없는 동물이 많아서 이동의 비중을 높힘.
         float randomValue = Random.Range(0.0f, 1.0f);
-        UDebug.Print($"RandomAction : {randomValue}");
+        //UDebug.Print($"RandomAction : {randomValue}");
         if(randomValue >= 0.3f)
         {
             SetState(EAnimalState.Move);
@@ -185,7 +185,7 @@ public class AnimalObject : InfoObject
 
         if (_actionTimer >= _actionInterval)
         {
-            UDebug.Print($"랜덤 액션 발동!");
+            //UDebug.Print($"랜덤 액션 발동!");
 
             RandomAction();
         }

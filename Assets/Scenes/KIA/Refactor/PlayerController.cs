@@ -236,8 +236,9 @@ public class PlayerController : BaseMono
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         CacheComponents();
         CacheAnimatorHashes();
     }

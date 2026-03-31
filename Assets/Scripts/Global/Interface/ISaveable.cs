@@ -3,7 +3,8 @@
 /// </summary>
 public interface ISaveable
 {
-    string UniqueId { get; }
+    string UnitId { get; set; }
+    string UniqueId { get; set; }
     string SaveData();
     void LoadData(string stateJson);
 }

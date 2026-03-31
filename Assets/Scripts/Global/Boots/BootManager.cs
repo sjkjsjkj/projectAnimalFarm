@@ -37,6 +37,8 @@ public class BootManager : MonoBehaviour
         var dataManager = UObject.AddComponent<DataManager>(root);
         dataManager.Initialize();
         // DataManager 이후 실행 ↓
+        var persistenceManager = UObject.AddComponent<PersistenceManager>(root);
+        persistenceManager.Initialize();
         var bgmManager = UObject.AddComponent<BgmManager>(root); // 옵션(Data), SO(Database)를 읽음
         bgmManager.Initialize();
         // 다른 매니저들을 위해 마지막에 실행 ↓

@@ -16,13 +16,16 @@ public class #SCRIPTNAME# : BaseMono, ISaveable
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
+    // 매니저에서 사용할 유닛 ID
+    public string UnitId { get; set; }
+
     // 매니저에서 호출하는 데이터 직렬화 함수
     public string SaveData()
     {
         UnitSaveData data = new();
-        data.health = _health;
-        data.pos = transform.position;
-        data.rot = transform.rotation;
+        data.health = this._health;
+        data.pos = this.transform.position;
+        data.rot = this.transform.rotation;
         return JsonUtility.ToJson(data);
     }
 
@@ -30,9 +33,9 @@ public class #SCRIPTNAME# : BaseMono, ISaveable
     public void LoadData(string dataJson)
     {
         UnitSaveData data = JsonUtility.FromJson<UnitSaveData>(dataJson);
-        _health = data.health;
-        transform.position = data.pos;
-        transform.rotation = data.rot;
+        this._health = data.health;
+        this.transform.position = data.pos;
+        this.transform.rotation = data.rot;
     }
     #endregion
 

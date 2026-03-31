@@ -85,8 +85,9 @@ public class BreedingArea : BaseMono , IFoodProvider
 
     }
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         UDebug.IsNull(_cagePrefab);
         UDebug.IsNull(_foodBoxPrefab);
 

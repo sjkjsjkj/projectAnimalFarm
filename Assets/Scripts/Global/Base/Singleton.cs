@@ -48,8 +48,9 @@ public abstract class Singleton<T> : BaseMono where T : BaseMono
     /// <summary>
     /// Singleton Awake Function
     /// </summary>
-    protected virtual void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         if (_instance != null && _instance != this)
         {
             Destroy(gameObject);

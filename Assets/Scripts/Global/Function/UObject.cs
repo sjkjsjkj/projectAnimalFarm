@@ -26,6 +26,21 @@ public static class UObject
     /// 프리팹을 생성합니다.
     /// </summary>
     /// <param name="prefab">프리펩 게임 오브젝트</param>
+    /// <param name="parent">부모 오브젝트</param>
+    /// <returns></returns>
+    public static GameObject Spawn(GameObject prefab, Transform parent = null)
+    {
+        if (prefab == null)
+        {
+            return null;
+        }
+        return UnityEngine.Object.Instantiate(prefab, parent);
+    }
+
+    /// <summary>
+    /// 프리팹을 생성합니다.
+    /// </summary>
+    /// <param name="prefab">프리펩 게임 오브젝트</param>
     /// <param name="position">좌표</param>
     /// <param name="rotation">회전</param>
     /// <param name="parent">부모 오브젝트</param>
