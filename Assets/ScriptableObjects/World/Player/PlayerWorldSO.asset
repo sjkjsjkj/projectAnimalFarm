@@ -18,7 +18,7 @@ MonoBehaviour:
   _description: "\uAC8C\uC784\uC758 \uC8FC\uC778\uACF5"
   _rarity: 5
   _image: {fileID: -855298285791758126, guid: 760baaed2cd83a24da00021f69ac80ca, type: 3}
-  _prefab: {fileID: 0}
+  _prefab: {fileID: 5251321745402914498, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
   _size: {x: 1, y: 1}
   _animController: {fileID: 0}
   _walkSpeed: 5

@@ -94,8 +94,6 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
         Workbench.Ins.OnChenageRecipe += ShowCurrentRequireCondition;
 
         Workbench.Ins.SetRecipe(_recipeSOs[_recipeIdx]);
-
-        Id.Item_Seed_Carrot
     }
 
     public void ShowCurrentRequireCondition(WorkbenchReturnStruct[] curRequireCondition)
