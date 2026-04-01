@@ -174,6 +174,8 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
         SettingUnitDict<StaticWorldTableSO, StaticWorldSO>(_staticWorldTables);
         _playerWorldTables = LoadTables<PlayerWorldTableSO, PlayerWorldSO>();
         SettingUnitDict<PlayerWorldTableSO, PlayerWorldSO>(_playerWorldTables);
+        // UnitSO를 상속받지 않는 SO 작성
+        _soundTables = LoadTables<SoundTableSO, SoundSO>();
         // 프리펩 로드
         _soundEmiiterPrefab = LoadPrefab<SoundEmitter>(K.NAME_SOUND_EMITTER);
         // 완료

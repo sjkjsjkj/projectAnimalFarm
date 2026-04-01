@@ -7,7 +7,7 @@ using UnityEngine;
 /// - 버튼 입력(E키 등)으로 수동 획득
 /// - ItemCollectionCoordinator를 통해 인벤토리/도감에 반영
 /// </summary>
-public class CPlayerCollector2D : MonoBehaviour
+public class CPlayerCollector2D : BaseMono
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("입력 설정")]
@@ -181,6 +181,20 @@ public class CPlayerCollector2D : MonoBehaviour
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
+    protected override void Awake()
+    {
+        base.Awake();
+        var component = UObject.FindComponent<ItemCollectionCoordinator>(K.NAME_ITEM_COLLECT_ADMIN);
+        if (component)
+        {
+            _collectionCoordinator = component;
+        }
+        else
+        {
+            UDebug.Print($"컴포넌트 Iteam Collection Coordinator을 씬에서 찾지 못했습니다.", LogType.Assert);
+        }
+    }
+
     private void Update()
     {
         CleanupNullTargets();

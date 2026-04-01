@@ -7,7 +7,7 @@ public static partial class K
     public static readonly string NAME_MAIN_CAMERA = "Main Camera";
 
     // 사운드 오브젝트 이름
-    public static readonly string NAME_BGM_OBJECT = "BgmSourceGlobal";
+    public static readonly string NAME_BGM_OBJECT = "Bgm_Source_Global";
 
     // 루트 오브젝트 이름
     public static readonly string NAME_UI_ROOT = "Canvas";
@@ -24,4 +24,10 @@ public static partial class K
 
     // 사운드 이미터 인스턴스
     public static readonly string NAME_SOUND_EMITTER = "SoundEmitterInstance";
+
+    // 아이템 수집 필수 클래스
+    public static readonly string NAME_ITEM_COLLECT_ADMIN = "Item_Collection_Coordinator";
+
+    // 플레이어 오브젝트 이름
+    public static readonly string NAME_PLAYER = "Player";
 }
