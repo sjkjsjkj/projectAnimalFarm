@@ -9,7 +9,7 @@ public class TileManager : GlobalSingleton<TileManager>
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private bool _isInitialized = false;
     private TileMap _mainLogicMap;
-    private TileMap _farmLogicMap;
+    private TileMap _forestLogicMap;
     private TileMap _caveLogicMap;
     private TileMap _curLogicMap;
     #endregion
@@ -24,19 +24,26 @@ public class TileManager : GlobalSingleton<TileManager>
             return;
         }
         BuildLogicMap(ref _mainLogicMap, K.TILE_RESOURCE_MAIN_JSON_PATH);
-        BuildLogicMap(ref _farmLogicMap, K.TILE_RESOURCE_FARM_JSON_PATH);
+        BuildLogicMap(ref _forestLogicMap, K.TILE_RESOURCE_FOREST_JSON_PATH);
         BuildLogicMap(ref _caveLogicMap, K.TILE_RESOURCE_CAVE_JSON_PATH);
-        EventBus<OnSceneLoadEnd>.Subscribe(MapChangeHandle); // OnEnable이 아닌 이곳에서 구독
-        _curLogicMap = _mainLogicMap;
+        EventBus<OnSceneLoadEnd>.Subscribe(ChangeMapHandle); // OnEnable이 아닌 이곳에서 구독
+        ChangeMapInit();
         // ↑ 필요한 초기화 로직 / 부모 클래스에서 자동 실행
         _isInitialized = true;
     }
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-    private void MapChangeHandle(OnSceneLoadEnd ctx)
+    // 초기 부팅 시 현재 씬에 맞는 타일 맵을 로드하기
+    private void ChangeMapInit()
     {
-        UDebug.Print($"타일 로직 맵을 {_curLogicMap}에서 {ctx.nextScene}으로 교체합니다.");
+        EScene curScene = GameManager.Ins.Scene;
+        OnSceneLoadEnd ctx = new(EScene.Boot, curScene);
+        ChangeMapHandle(ctx);
+    }
+
+    private void ChangeMapHandle(OnSceneLoadEnd ctx)
+    {
         switch (ctx.nextScene)
         {
             case EScene.Main:
@@ -47,13 +54,13 @@ public class TileManager : GlobalSingleton<TileManager>
                 }
                 _curLogicMap = _mainLogicMap;
                 break;
-            case EScene.Farm:
-                if (_farmLogicMap == null)
+            case EScene.Forest:
+                if (_forestLogicMap == null)
                 {
-                    UDebug.Print("농사 로직 맵이 초기화되지 않은 상태에서 호출되었습니다.", LogType.Assert);
+                    UDebug.Print("숲 로직 맵이 초기화되지 않은 상태에서 호출되었습니다.", LogType.Assert);
                     return;
                 }
-                _curLogicMap = _farmLogicMap;
+                _curLogicMap = _forestLogicMap;
                 break;
             case EScene.Cave:
                 if (_caveLogicMap == null)
@@ -63,7 +70,12 @@ public class TileManager : GlobalSingleton<TileManager>
                 }
                 _curLogicMap = _caveLogicMap;
                 break;
+            default:
+                _curLogicMap = null;
+                UDebug.Print($"{ctx.nextScene} 맵은 타일 맵이 존재하지 않는 맵입니다.");
+                break;
         }
+        UDebug.Print($"타일 로직 맵을 {ctx.prevScene}에서 {ctx.nextScene}으로 교체합니다.");
     }
 
     // 초기화 진입점
@@ -162,7 +174,7 @@ public class TileManager : GlobalSingleton<TileManager>
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
     private void OnDisable()
     {
-        EventBus<OnSceneLoadEnd>.Unsubscribe(MapChangeHandle);
+        EventBus<OnSceneLoadEnd>.Unsubscribe(ChangeMapHandle);
     }
     #endregion
 }

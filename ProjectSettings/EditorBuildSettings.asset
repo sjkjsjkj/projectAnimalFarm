@@ -14,4 +14,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Game/SMain.unity
     guid: dae10b9b153731c4e8e32fa03da638b1
+  - enabled: 1
+    path: Assets/Scenes/Game/SForest.unity
+    guid: 7311a90dd236fb8428546d7e84cf7233
+  - enabled: 1
+    path: Assets/Scenes/Game/SCave.unity
+    guid: d7f503afb3f432b4d870b03e09c6bfe0
   m_configObjects: {}

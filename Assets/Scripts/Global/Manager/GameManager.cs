@@ -33,6 +33,7 @@ public class GameManager : GlobalSingleton<GameManager>
         }
         // 생성 및 초기화
         _curScene = (EScene)SceneManager.GetActiveScene().buildIndex;
+        OnSceneLoadEnd.Publish(EScene.Boot, _curScene); // 초기 부팅 시 씬 전환 이벤트 뿌리기
         _isInitialized = true;
     }
 

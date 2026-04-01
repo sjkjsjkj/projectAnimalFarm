@@ -6,6 +6,6 @@ public enum EScene : byte
     Boot = 0,
     Title = 1,
     Main = 2,
-    Farm = 3,
+    Forest = 3,
     Cave = 4,
 }

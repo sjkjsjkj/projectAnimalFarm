@@ -86,7 +86,7 @@ public abstract class TableSO<T> : ScriptableObject where T : BaseSO
     {
         if (!IsValid())
         {
-            UDebug.PrintOnce($"테이블({typeof(T).Name})에 할당한 값이 올바르지 않습니다.", LogType.Warning);
+            UDebug.PrintOnce($"테이블({this.name})의 값이 올바르지 않습니다. (Type = {this.GetType().Name})", LogType.Warning);
         }
     }
     #endregion

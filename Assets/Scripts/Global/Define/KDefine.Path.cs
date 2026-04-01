@@ -11,11 +11,8 @@ public static partial class K
     public static readonly string PREFAB_RESOURCE_PATH = "Prefab";
     // 타일 리소스 경로
     public static readonly string TILE_RESOURCE_SHEET_PATH = "Tile/TileSheet - TileData";
-    public static readonly string TILE_RESOURCE_MAIN_BASE_PATH = "Tile/MainGraphicMap";
-    public static readonly string TILE_RESOURCE_FARM_BASE_PATH = "Tile/FarmGraphicMap";
-    public static readonly string TILE_RESOURCE_CAVE_BASE_PATH = "Tile/CaveGraphicMap";
     public static readonly string TILE_RESOURCE_MAIN_JSON_PATH = "Tile/MainLogicMap";
-    public static readonly string TILE_RESOURCE_FARM_JSON_PATH = "Tile/FarmLogicMap";
+    public static readonly string TILE_RESOURCE_FOREST_JSON_PATH = "Tile/ForestLogicMap";
     public static readonly string TILE_RESOURCE_CAVE_JSON_PATH = "Tile/CaveLogicMap";
     // 타일 파일 경로
     public static readonly string TILE_BASE_PATH = "Assets/Farm RPG - Tiny Asset Pack - (All in One)/Farm/Tileset/Palette";

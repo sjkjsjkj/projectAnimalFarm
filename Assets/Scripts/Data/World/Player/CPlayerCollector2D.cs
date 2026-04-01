@@ -379,8 +379,18 @@ public class CPlayerCollector2D : BaseMono
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+        var component = UObject.FindComponent<ItemCollectionCoordinator>(K.NAME_ITEM_COLLECT_ADMIN);
+        if (component)
+        {
+            _collectionCoordinator = component;
+        }
+        else
+        {
+            UDebug.Print($"컴포넌트 Iteam Collection Coordinator을 씬에서 찾지 못했습니다.", LogType.Assert);
+        }
         if (_fishingController == null)
         {
             _fishingController = GetComponent<CFishingController2D>();

@@ -13,12 +13,12 @@ public class BgmManager : Singleton<BgmManager>
         {
             return;
         }
-        EventBus<OnSceneLoadStart>.Subscribe(SceneChangeHandle);
+        EventBus<OnSceneLoadEnd>.Subscribe(SceneChangeHandle);
         // ↑ 필요한 초기화 로직 / 부모 클래스에서 자동 실행
         _isInitialized = true;
     }
 
-    private void SceneChangeHandle(OnSceneLoadStart ctx)
+    private void SceneChangeHandle(OnSceneLoadEnd ctx)
     {
         ChangeBGM(ctx.nextScene);
     }
@@ -33,7 +33,7 @@ public class BgmManager : Singleton<BgmManager>
             case EScene.Main:
                 USound.PlayBgm(Id.Bgm_Spring_1);
                 break;
-            case EScene.Farm:
+            case EScene.Forest:
                 USound.PlayBgm(Id.Bgm_Forest_1);
                 break;
             case EScene.Cave:
@@ -50,7 +50,7 @@ public class BgmManager : Singleton<BgmManager>
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
     private void OnDisable()
     {
-        EventBus<OnSceneLoadStart>.Unsubscribe(SceneChangeHandle);
+        EventBus<OnSceneLoadEnd>.Unsubscribe(SceneChangeHandle);
     }
     #endregion
 }
