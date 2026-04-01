@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35cd5ebebe4cdc84282a901c7151ff26, type: 3}
+  m_Name: RecipeSO_StoneAxe
+  m_EditorClassIdentifier: 
+  _id: Recipe_StoneAxe
+  _type: 17
+  _makeTargetItemId: Item_Tool_StoneAxe
+  _requireItems:
+  - {fileID: 11400000, guid: 822ef59babc68eb408681a06fa145610, type: 2}
+  - {fileID: 11400000, guid: afd0327ef0a22e64f8b9e097b9e02550, type: 2}
