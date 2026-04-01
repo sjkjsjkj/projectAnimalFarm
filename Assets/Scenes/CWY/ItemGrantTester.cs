@@ -4,7 +4,7 @@
 /// 테스트용 스크립트
 /// 특정 키를 누르면 아이템을 획득하게 해서 인벤토리 / 도감 연동 확인
 /// </summary>
-public class ItemGrantTester : MonoBehaviour
+public class ItemGrantTester : BaseMono
 {
     [SerializeField] private ItemCollectionCoordinator _coordinator;
 

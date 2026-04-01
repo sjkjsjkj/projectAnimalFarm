@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 /// 구글시트 TSV 데이터를 읽어서 SheetItemDatabase에 넣는 로더
 /// 시트 구조가 달라도 최소한 ID / NAME은 공통으로 처리한다.
 /// </summary>
-public class GoogleSheetTsvLoader : MonoBehaviour
+public class GoogleSheetTsvLoader : BaseMono
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("대상 DB")]
