@@ -11,6 +11,7 @@ public class PlayerProvider
     // 위치 정보
     [SerializeField] private Vector2 _position;
     [SerializeField] private Vector2 _direction;
+    [SerializeField] private EScene _curScene;
     // 상태 / 장비 / 재화
     [SerializeField] private EPlayerState _state;
     [SerializeField] private string _heldItemId;
@@ -126,6 +127,7 @@ public class PlayerProvider
     #region ─────────────────────────▶ 읽기 전용 멤버 ◀─────────────────────────
     public Vector2 Position => _position;
     public Vector2 Direction => _direction;
+    public EScene CurScene => _curScene;
     public EPlayerState State => _state;
     public string HeldItemId => _heldItemId;
     public int Money => _money;
@@ -155,6 +157,13 @@ public class PlayerProvider
         _position = pos;
         _direction = dir;
     }
+
+    /// <summary>
+    /// 씬 이동이 발생했을 경우 갱신되어야 합니다.
+    /// 로드 시 저장했던 씬에서 시작하기 위해 사용됩니다.
+    /// </summary>
+    /// <param name="scene">현재 씬</param>
+    public void SaveSceneId(EScene scene) => _curScene = scene;
 
     /// <summary>
     /// 플레이어의 상태를 변경합니다.

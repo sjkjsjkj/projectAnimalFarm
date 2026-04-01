@@ -50,11 +50,12 @@ public abstract class GlobalSingleton<T> : BaseMono where T : BaseMono
     /// <summary>
     /// GlobalSingleton Awake Function
     /// </summary>
-    protected virtual void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         if (_instance != null && _instance != this)
         {
-            Destroy(gameObject);
+            Destroy(this);
             UDebug.Print($"글로벌 싱글톤({gameObject.name}<{typeof(T).ToString()}>)이 Awake에서 삭제되었습니다.");
             return;
         }
