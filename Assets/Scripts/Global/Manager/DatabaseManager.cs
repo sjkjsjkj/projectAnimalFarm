@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// 정적 데이터를 보관하는 매니저입니다.
@@ -7,6 +8,8 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
 {
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private bool _isInitialized = false;
+    // 마스터 유닛 SO
+    private Dictionary<string, UnitSO> _unitDict;
     // 테이블
     private BaitItemTableSO[] _baitItemTables;
     private SeedItemTableSO[] _seedItemTables;
@@ -26,6 +29,24 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
+    /// <summary>
+    /// 기본적인 정적 데이터를 반환합니다. (UnitSO)
+    /// 구체적인 SO 데이터는 가져올 수 없습니다.
+    /// </summary>
+    /// <param name="id">유닛 ID</param>
+    public UnitSO Unit(string id)
+    {
+        if (_unitDict.TryGetValue(id, out UnitSO unit))
+        {
+            return unit;
+        }
+        else
+        {
+            UDebug.Print($"데이터베이스 매니저에서 존재하지 않는 유닛({id})을 가져오려 했습니다.", LogType.Warning);
+            return null;
+        }
+    }
+
     /// <summary>
     /// 미끼 아이템의 정적 데이터를 반환합니다.
     /// </summary>
@@ -127,20 +148,32 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
     public override void Initialize()
     {
         if (_isInitialized) return;
-        // 모든 테이블 로드
+        _unitDict = new();
+        // 모든 테이블 로드, UnitDict 작성
         _baitItemTables = LoadTables<BaitItemTableSO, BaitItemSO>();
+        SettingUnitDict<BaitItemTableSO, BaitItemSO>(_baitItemTables);
         _seedItemTables = LoadTables<SeedItemTableSO, SeedItemSO>();
+        SettingUnitDict<SeedItemTableSO, SeedItemSO>(_seedItemTables);
         _feedItemTables = LoadTables<FeedItemTableSO, FeedItemSO>();
+        SettingUnitDict<FeedItemTableSO, FeedItemSO>(_feedItemTables);
         _specialItemTables = LoadTables<SpecialItemTableSO, SpecialItemSO>();
+        SettingUnitDict<SpecialItemTableSO, SpecialItemSO>(_specialItemTables);
         _staticItemTables = LoadTables<StaticItemTableSO, StaticItemSO>();
+        SettingUnitDict<StaticItemTableSO, StaticItemSO>(_staticItemTables);
         _toolItemTables = LoadTables<ToolItemTableSO, ToolItemSO>();
+        SettingUnitDict<ToolItemTableSO, ToolItemSO>(_toolItemTables);
         _animalWorldTables = LoadTables<AnimalWorldTableSO, AnimalWorldSO>();
+        SettingUnitDict<AnimalWorldTableSO, AnimalWorldSO>(_animalWorldTables);
         _cropWorldTables = LoadTables<CropWorldTableSO, CropWorldSO>();
+        SettingUnitDict<CropWorldTableSO, CropWorldSO>(_cropWorldTables);
         _fieldWorldTables = LoadTables<FieldWorldTableSO, FieldWorldSO>();
+        SettingUnitDict<FieldWorldTableSO, FieldWorldSO>(_fieldWorldTables);
         _npcWorldTables = LoadTables<NpcWorldTableSO, NpcWorldSO>();
+        SettingUnitDict<NpcWorldTableSO, NpcWorldSO>(_npcWorldTables);
         _staticWorldTables = LoadTables<StaticWorldTableSO, StaticWorldSO>();
-        _soundTables = LoadTables<SoundTableSO, SoundSO>();
+        SettingUnitDict<StaticWorldTableSO, StaticWorldSO>(_staticWorldTables);
         _playerWorldTables = LoadTables<PlayerWorldTableSO, PlayerWorldSO>();
+        SettingUnitDict<PlayerWorldTableSO, PlayerWorldSO>(_playerWorldTables);
         // 프리펩 로드
         _soundEmiiterPrefab = LoadPrefab<SoundEmitter>(K.NAME_SOUND_EMITTER);
         // 완료
@@ -187,11 +220,55 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
         }
         return tables;
     }
+    // 테이블 배열을 받기 위한 진입점
+    private void SettingUnitDict<TTable, TData>(TTable[] tables)
+        where TTable : TableSO<TData> where TData : BaseSO
+    {
+        if (tables == null)
+        {
+            UDebug.Print($"unitDict 작성 도중 비어있는 테이블 배열({typeof(TTable).Name})을 받았습니다.", LogType.Assert);
+            return;
+        }
+        // 테이블 순회
+        for (int i = 0; i < tables.Length; i++)
+        {
+            SettingUnitDict<TTable, TData>(tables[i]);
+        }
+    }
+
+    // 전역적인 데이터에 접근할 수 있도록 UnitDict 작성
+    private void SettingUnitDict<TTable, TData>(TTable table)
+        where TTable : TableSO<TData> where TData : BaseSO
+    {
+        // 방어 코드
+        if (table == null)
+        {
+            UDebug.Print($"unitDict 작성 도중 비어있는 테이블({typeof(TTable).Name})을 받았습니다.", LogType.Assert);
+            return;
+        }
+        // 테이블에서 SO가 담긴 원본 리스트를 가져오기
+        IReadOnlyList<TData> list = table.ReadList();
+        int length = list.Count;
+        for (int i = 0; i < length; ++i)
+        {
+            // 유닛 변환 + 중복 아닐 경우 등록
+            if (list[i] is not UnitSO unit)
+            {
+                UDebug.Print($"unitDict 작성 도중 {list[i].Id}({typeof(TData).Name})를 UnitSO로 변환하지 못했습니다.", LogType.Assert);
+                continue;
+            }
+            if (!_unitDict.TryAdd(unit.Id, unit))
+            {
+                UDebug.Print($"unitDict 작성 도중 중복 등록이 감지되었습니다. {list[i].Id}({typeof(TData).Name})", LogType.Assert);
+                continue;
+            }
+        }
+    }
 
     // Null 검사해서 프리펩 가져오기
     private T GetSafePrefab<T>(T prefab) where T : Component
     {
-        if(prefab == null)
+        if (prefab == null)
         {
             UDebug.Print($"가져올 {typeof(T).Name} 타입 프리펩이 존재하지 않습니다.");
             return null;
@@ -207,7 +284,7 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
         // 혹시나 방어 코드
         if (tables == null || tables.Length == 0)
         {
-            UDebug.Print($"테이블을 찾을 수 없습니다. ({typeof(TTable).Name})", LogType.Assert);
+            UDebug.Print($"테이블을 찾을 수 없습니다. ({typeof(TTable).Name}, {typeof(TData).Name})", LogType.Assert);
             return null;
         }
         // 해당 테이블을 모두 순회하며 데이터 탐색

@@ -17,6 +17,13 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
     [SerializeField] private GameObject _farmAreaPrefab;
     [SerializeField] private int _pos;
     [SerializeField] private EHarvest _seedId;
+
+    [Header("인벤토리 테스트")]
+    [SerializeField] private string _SeedItemId;
+
+    [Header("제작대 테스트")]
+    [SerializeField] private RecipeSO[] _recipeSOs;
+    [SerializeField] private int _recipeIdx;
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
@@ -54,9 +61,6 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
     public void TestFunction()
     {
         _tempDataUnitSO = DatabaseManager.Ins.AnimalWorld(_testID);
-        //TileData tempTileData = Database.Ins.Tile.FindData(_testTileID);
-        
-        //UDebug.Print($"{_testID} : {_tempDataUnitSO.Name}\ntempTileData's State : {tempTileData.State}");
     }
     public void TestFunction2()
     {
@@ -70,18 +74,34 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
         tempGo.transform.localPosition = Vector3.zero;
     }
 
-    /*public void TestFunction3()
+    public void TestFunction3()
     {
-        PoolItem tempGo = FactoryManager.Ins.VFX.Spawn();
-        tempGo.transform.SetParent(this.transform);
-        tempGo.transform.localPosition = Vector3.zero;
-    }*/
+        ItemSO tempItemSO = DatabaseManager.Ins.SeedItem(_SeedItemId);
+
+        InventoryManager.Ins.PlayerInventory.TryGetItem(tempItemSO);
+    }
 
     public void TestFunction4()
     {
         _testFarmArea.TestFunction(_pos, _seedId.ToString());
+    }
 
-        
+    public void WorkbenchTestFunction()
+    {
+        UDebug.Print("제작대 테스트");
+
+        Workbench.Ins.OnChenageRecipe -= ShowCurrentRequireCondition;
+        Workbench.Ins.OnChenageRecipe += ShowCurrentRequireCondition;
+
+        Workbench.Ins.SetRecipe(_recipeSOs[_recipeIdx]);
+    }
+
+    public void ShowCurrentRequireCondition(WorkbenchReturnStruct[] curRequireCondition)
+    {
+        for (int i = 0; i < curRequireCondition.Length; i++)
+        {
+            UDebug.Print($"요구 아이템 {i} [{_recipeSOs[_recipeIdx].RequiedItems[i].Id}] : {curRequireCondition[i].CurHasCount} / {curRequireCondition[i].RequireCount} | 제작 가능 여부 : {curRequireCondition[i].IsCondition}");
+        }
     }
     #endregion
 }

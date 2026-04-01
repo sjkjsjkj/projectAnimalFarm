@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 956c7dc7782b1ea47a791916c13d2fca, type: 3}
-  m_Name: PlayerWorldSO_
+  m_Name: PlayerWorldSO
   m_EditorClassIdentifier: 
-  _id: 
-  _type: 0
-  _name: "\uC774\uB984"
-  _description: "\uC124\uBA85"
-  _rarity: 1
-  _image: {fileID: 0}
-  _prefab: {fileID: 0}
+  _id: World_Player
+  _type: 9
+  _name: "\uD50C\uB808\uC774\uC5B4"
+  _description: "\uAC8C\uC784\uC758 \uC8FC\uC778\uACF5"
+  _rarity: 5
+  _image: {fileID: -855298285791758126, guid: 760baaed2cd83a24da00021f69ac80ca, type: 3}
+  _prefab: {fileID: 5251321745402914498, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
   _size: {x: 1, y: 1}
   _animController: {fileID: 0}
   _walkSpeed: 5
