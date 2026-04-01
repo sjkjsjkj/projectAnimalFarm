@@ -5,7 +5,7 @@ using UnityEngine;
 /// 아이템 ID 또는 IconKey와 실제 스프라이트를 연결하는 레지스트리
 /// 인스펙터에서 직접 매칭해두면 UI에서 쉽게 가져올 수 있다.
 /// </summary>
-public class SpriteRegistry : MonoBehaviour
+public class SpriteRegistry : BaseMono
 {
     [System.Serializable]
     public class SpriteEntry

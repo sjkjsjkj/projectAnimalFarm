@@ -5,7 +5,7 @@ using UnityEngine;
 /// 구글시트에서 읽어온 아이템들을 저장하는 런타임 데이터베이스
 /// 인벤토리 / 도감 / UI가 여기서 공통으로 데이터를 가져간다.
 /// </summary>
-public class SheetItemDatabase : MonoBehaviour
+public class SheetItemDatabase : BaseMono
 {
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private readonly Dictionary<string, SheetItemRow> _itemTable = new Dictionary<string, SheetItemRow>();

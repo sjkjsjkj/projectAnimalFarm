@@ -5,7 +5,7 @@ using UnityEngine;
 /// 시트 기반 문자열 ID를 사용하는 인벤토리
 /// 구글시트의 ID(예: Apple_0, River_1)를 그대로 키로 사용한다.
 /// </summary>
-public class CContentTestInventory : MonoBehaviour
+public class CContentTestInventory : BaseMono
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [SerializeField] private bool _logOnAdd = true;

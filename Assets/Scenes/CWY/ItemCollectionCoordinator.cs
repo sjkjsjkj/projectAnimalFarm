@@ -4,7 +4,7 @@
 /// 아이템 획득 시 인벤토리와 도감을 동시에 갱신하는 중간 관리자
 /// 다른 시스템은 이 클래스만 호출하면 된다.
 /// </summary>
-public class ItemCollectionCoordinator : MonoBehaviour
+public class ItemCollectionCoordinator : BaseMono
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [SerializeField] private CContentTestInventory _inventory;

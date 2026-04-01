@@ -5,7 +5,7 @@ using UnityEngine;
 /// 도감 해금 여부를 관리하는 시스템
 /// 아이템을 처음 획득하면 해당 ID를 도감에 등록한다.
 /// </summary>
-public class PictorialBookSystem : MonoBehaviour
+public class PictorialBookSystem : BaseMono
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [SerializeField] private SheetItemDatabase _database;
