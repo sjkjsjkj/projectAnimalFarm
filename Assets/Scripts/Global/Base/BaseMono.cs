@@ -25,6 +25,7 @@ public abstract class BaseMono : MonoBehaviour
     {
         if (_uniqueId.IsEmpty())
         {
+            _instanceId = GetInstanceID();
             NewGuid();
         }
     }

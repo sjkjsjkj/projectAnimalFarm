@@ -109,6 +109,61 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "2D Vector",
+                    "id": "82703107-6a50-44af-9aa9-811cdaa10d7f",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "bb712bab-eeb7-47ab-82bb-dd708f31a24e",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "f4d479da-c318-4d91-8e55-07256b780056",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "31f7b9b1-c96b-4e01-ae27-c60418647cd3",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "5834a193-9e3c-405a-8499-a0ef75ed934a",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "",
                     "id": "4debaece-776f-4c6a-b070-29126bcb6d17",
                     "path": "<Keyboard>/space",
@@ -132,6 +187,17 @@
                 },
                 {
                     "name": "",
+                    "id": "0b6599ec-698d-48d2-bc42-cb1bfe4ac08d",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "f252be0b-51d4-4a93-a5af-10d35679452a",
                     "path": "<Keyboard>/e",
                     "interactions": "",
@@ -143,7 +209,29 @@
                 },
                 {
                     "name": "",
+                    "id": "760ffa12-ab22-4bc7-95e1-243997ba5bea",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "16af75bf-240b-49ee-8ebe-aaad1396c6d2",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Run",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b0da1500-3b1c-47de-be9e-f7eb0ce3a81a",
                     "path": "<Keyboard>/leftShift",
                     "interactions": "",
                     "processors": "",

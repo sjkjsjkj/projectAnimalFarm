@@ -21,7 +21,7 @@ public class FeedItemSO : ItemSO
         base.OnValidate();
         if (!IsValid())
         {
-            UDebug.PrintOnce($"SO({_id})의 값이 올바르지 않습니다.", LogType.Warning);
+            UDebug.PrintOnce($"SO 인스턴스({this.name})의 값이 올바르지 않습니다. (ID = {_id}, Type = {this.GetType().Name})", LogType.Warning);
         }
     }
     #endregion
