@@ -6,7 +6,7 @@ using UnityEngine.UI;
 /// 인벤토리 한 칸 UI
 /// 아이콘 / 이름 / 수량을 표시한다.
 /// </summary>
-public class InventorySlotUI : MonoBehaviour
+public class InventorySlotUI : BaseMono
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [SerializeField] private Image _iconImage;
