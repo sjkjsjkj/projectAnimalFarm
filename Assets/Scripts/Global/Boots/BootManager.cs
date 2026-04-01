@@ -40,16 +40,17 @@ public class BootManager : MonoBehaviour
         inputManager.Initialize();
         var tileIdToState = UObject.AddComponent<TileIdToState>(root); // 구글 시트를 읽음
         tileIdToState.Initialize();
-        var gameManager = UObject.AddComponent<GameManager>(root);
-        gameManager.Initialize();
-        // TileIdToState 이후 실행 ↓
-        var tileManager = UObject.AddComponent<TileManager>(root);
-        tileManager.Initialize();
         var databaseManager = UObject.AddComponent<DatabaseManager>(root); // 리소스 폴더의 테이블 SO를 읽음
         databaseManager.Initialize();
         // DatabaseManager 이후 실행 ↓
         var dataManager = UObject.AddComponent<DataManager>(root);
         dataManager.Initialize();
+        // Databasemanager, DataManager 이후 실행 ↓
+        var gameManager = UObject.AddComponent<GameManager>(root);
+        gameManager.Initialize();
+        // TileIdToState 이후 실행 ↓
+        var tileManager = UObject.AddComponent<TileManager>(root);
+        tileManager.Initialize();
         // DataManager 이후 실행 ↓
         var persistenceManager = UObject.AddComponent<PersistenceManager>(root);
         persistenceManager.Initialize();
