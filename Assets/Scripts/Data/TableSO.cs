@@ -64,8 +64,9 @@ public abstract class TableSO<T> : ScriptableObject where T : BaseSO
         for (int i = 0; i < length; ++i)
         {
             T so = _elements[i];
-            if (UDebug.IsNull(so))
+            if (so == null)
             {
+                UDebug.Print($"테이블({typeof(T).Name})의 {i}번째 공간이 비어있습니다.", LogType.Warning);
                 continue;
             }
             // 딕셔너리 등록 시도

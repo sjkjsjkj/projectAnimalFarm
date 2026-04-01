@@ -149,23 +149,31 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
     {
         if (_isInitialized) return;
         _unitDict = new();
-        // 모든 테이블 로드
+        // 모든 테이블 로드, UnitDict 작성
         _baitItemTables = LoadTables<BaitItemTableSO, BaitItemSO>();
-        SettingUnitDict<BaitItemTableSO, BaitItemSO>(_baitItemTables[0]);
+        SettingUnitDict<BaitItemTableSO, BaitItemSO>(_baitItemTables);
         _seedItemTables = LoadTables<SeedItemTableSO, SeedItemSO>();
+        SettingUnitDict<SeedItemTableSO, SeedItemSO>(_seedItemTables);
         _feedItemTables = LoadTables<FeedItemTableSO, FeedItemSO>();
+        SettingUnitDict<FeedItemTableSO, FeedItemSO>(_feedItemTables);
         _specialItemTables = LoadTables<SpecialItemTableSO, SpecialItemSO>();
+        SettingUnitDict<SpecialItemTableSO, SpecialItemSO>(_specialItemTables);
         _staticItemTables = LoadTables<StaticItemTableSO, StaticItemSO>();
+        SettingUnitDict<StaticItemTableSO, StaticItemSO>(_staticItemTables);
         _toolItemTables = LoadTables<ToolItemTableSO, ToolItemSO>();
+        SettingUnitDict<ToolItemTableSO, ToolItemSO>(_toolItemTables);
         _animalWorldTables = LoadTables<AnimalWorldTableSO, AnimalWorldSO>();
+        SettingUnitDict<AnimalWorldTableSO, AnimalWorldSO>(_animalWorldTables);
         _cropWorldTables = LoadTables<CropWorldTableSO, CropWorldSO>();
+        SettingUnitDict<CropWorldTableSO, CropWorldSO>(_cropWorldTables);
         _fieldWorldTables = LoadTables<FieldWorldTableSO, FieldWorldSO>();
+        SettingUnitDict<FieldWorldTableSO, FieldWorldSO>(_fieldWorldTables);
         _npcWorldTables = LoadTables<NpcWorldTableSO, NpcWorldSO>();
+        SettingUnitDict<NpcWorldTableSO, NpcWorldSO>(_npcWorldTables);
         _staticWorldTables = LoadTables<StaticWorldTableSO, StaticWorldSO>();
-        _soundTables = LoadTables<SoundTableSO, SoundSO>();
+        SettingUnitDict<StaticWorldTableSO, StaticWorldSO>(_staticWorldTables);
         _playerWorldTables = LoadTables<PlayerWorldTableSO, PlayerWorldSO>();
-        // UnitDict 작성
-
+        SettingUnitDict<PlayerWorldTableSO, PlayerWorldSO>(_playerWorldTables);
         // 프리펩 로드
         _soundEmiiterPrefab = LoadPrefab<SoundEmitter>(K.NAME_SOUND_EMITTER);
         // 완료
@@ -211,6 +219,21 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
             UDebug.Print($"경로({K.TABLE_RESOURCE_PATH})에서 테이블({typeof(TTable).Name})을 찾았습니다.");
         }
         return tables;
+    }
+    // 테이블 배열을 받기 위한 진입점
+    private void SettingUnitDict<TTable, TData>(TTable[] tables)
+        where TTable : TableSO<TData> where TData : BaseSO
+    {
+        if (tables == null)
+        {
+            UDebug.Print($"unitDict 작성 도중 비어있는 테이블 배열({typeof(TTable).Name})을 받았습니다.", LogType.Assert);
+            return;
+        }
+        // 테이블 순회
+        for (int i = 0; i < tables.Length; i++)
+        {
+            SettingUnitDict<TTable, TData>(tables[i]);
+        }
     }
 
     // 전역적인 데이터에 접근할 수 있도록 UnitDict 작성

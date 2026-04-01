@@ -15,6 +15,7 @@ public static partial class K
     public static readonly string NAME_ENABLE_OBJECT_ROOT = "@EnableObjectRoot";
     public static readonly string NAME_DISABLE_OBJECT_ROOT = "@DisableObjectRoot";
     public static readonly string NAME_GLOBAL_MANAGER_ROOT = "@GlobalManager";
+    public static readonly string NAME_GLOBAL_PREFAB_ROOT = "@GlobalPrefab";
 
     // 테이블 이름
     public static readonly string NAME_TABLE_SOUND_BGM = "SoundTableSO_BGM";

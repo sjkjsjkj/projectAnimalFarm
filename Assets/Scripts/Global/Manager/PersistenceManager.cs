@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using UnityEngine;
 
 /// <summary>
@@ -11,6 +13,36 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
+    /// <summary>
+    /// 글로벌 데이터와 현재 씬 정보를 저장합니다.
+    /// </summary>
+    public void Save()
+    {
+        EScene curScene = GameManager.Ins.Scene;
+        UDebug.Print($"씬 {curScene}에서 저장을 시작합니다.");
+        Stopwatch sw = new();
+        sw.Start();
+        SaveDataManager();
+        CollectObjectsAndSaveJson(curScene);
+        sw.Stop();
+        UDebug.Print($"씬 {curScene}의 저장이 완료되었습니다. ({(sw.ElapsedMilliseconds * 0.001):F2}s)");
+    }
+
+    /// <summary>
+    /// 저장해둔 글로벌 데이터와 씬 정보를 로드합니다.
+    /// </summary>
+    public void Load()
+    {
+        EScene curScene = GameManager.Ins.Scene;
+        UDebug.Print($"씬 {curScene}에서 로드를 시작합니다.");
+        Stopwatch sw = new();
+        sw.Start();
+        LoadDataManager();
+        ReadJsonAndLoadObjects(curScene);
+        sw.Stop();
+        UDebug.Print($"씬 {curScene}의 로드가 완료되었습니다. ({(sw.ElapsedMilliseconds * 0.001):F2}s)");
+    }
+
     public override void Initialize()
     {
         if (_isInitialized)
@@ -19,7 +51,7 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         }
         // 초기 데이터 먼저 불러오기
         LoadDataManager();
-        // 
+        // 이벤트 구독
         EventBus<OnSceneLoadStart>.Subscribe(SceneChangeStartHandle);
         EventBus<OnSceneLoadEnd>.Subscribe(SceneChangeEndHandle);
         // ↑ 필요한 초기화 로직 / 부모 클래스에서 자동 실행
@@ -31,11 +63,11 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
     // 씬 전환 핸들
     private void SceneChangeStartHandle(OnSceneLoadStart ctx)
     {
-        ReadJsonAndLoadObjects(ctx.nextScene);
+        CollectObjectsAndSaveJson(ctx.prevScene);
     }
     private void SceneChangeEndHandle(OnSceneLoadEnd ctx)
     {
-        CollectObjectsAndSaveJson(ctx.prevScene);
+        ReadJsonAndLoadObjects(ctx.nextScene);
     }
     #endregion
 
@@ -50,12 +82,14 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         {
             return;
         }
-        // 디렉토리 존재를 보장하기
+        // 디렉토리를 삭제하여 기존 세이브 파일 제거
         string dirPath = $"{Application.persistentDataPath}/{K.PRESISTENT_OBJECT_PATH}/{prevScene}";
-        if (!Directory.Exists(dirPath))
+        if (Directory.Exists(dirPath))
         {
-            Directory.CreateDirectory(dirPath);
+            Directory.Delete(dirPath, true);
         }
+        // 디렉토리 생성
+        Directory.CreateDirectory(dirPath);
         // 모든 BaseMono 순회
         int length = gos.Length;
         string basePath = $"{Application.persistentDataPath}/{K.PRESISTENT_OBJECT_PATH}/{prevScene}";
@@ -74,7 +108,7 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
                 continue;
             }
             // 고유 ID로 저장
-            string path = $"{basePath}/{component.UniqueId}.json";
+            string path = $"{basePath}/{component.UnitId}@{component.UniqueId}.json";
             using (StreamWriter sw = new(path))
             {
                 sw.Write(json);
@@ -82,41 +116,76 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         }
     }
 
-    // 씬을 통해 알맞은 폴더 경로에서 Json을 읽어서 오브젝트를 생성합니다.
-    // 
+    // 알맞은 폴더 경로에서 Json을 읽어서 오브젝트를 생성합니다.
     private void ReadJsonAndLoadObjects(EScene nextScene)
     {
-        // 폴더 경로에 존재하는 모든 Json 읽기
-        // 씬에 존재하는 모든 BaseMono 오브젝트 수집
-        BaseMono[] gos = FindObjectsByType<BaseMono>(FindObjectsSortMode.None);
-        // 하나도 수집되지 않았을 경우 방어 코드
+        // 폴더가 없다면 불러올 것이 없음
         string dirPath = $"{Application.persistentDataPath}/{K.PRESISTENT_OBJECT_PATH}/{nextScene}";
-        if (gos == null || gos.Length <= 0 || !Directory.Exists(dirPath))
+        if (!Directory.Exists(dirPath))
         {
             return;
         }
-        // 모든 BaseMono 순회
-        int length = gos.Length;
-        string basePath = $"{Application.persistentDataPath}/{K.PRESISTENT_OBJECT_PATH}/{nextScene}";
-        for (int i = 0; i < length; ++i)
+        // 씬에 존재하는 모든 BaseMono 오브젝트 수집 및 딕셔너리 작성
+        BaseMono[] gos = FindObjectsByType<BaseMono>(FindObjectsSortMode.None);
+        Dictionary<string, ISaveable> saveableDict = new();
+        int goCount = gos.Length;
+        for (int i = 0; i < goCount; ++i)
         {
-            // 저장 컴포넌트 가져오기 시도
-            if (!gos[i].TryGetComponent(out ISaveable component))
+            BaseMono mono = gos[i];
+            if (mono is not ISaveable saveable)
             {
                 continue;
             }
-            // Json 가져오기 시도
-            string json = component.SaveData();
-            if (json.IsEmpty())
+            if (!saveableDict.TryAdd(saveable.UniqueId, saveable))
             {
-                UDebug.Print($"컴포넌트({component.UniqueId})에게서 저장 데이터를 가져오려 했지만 빈 문자열을 받았습니다.", LogType.Warning);
+                UDebug.Print($"모노 딕셔너리를 작성하는 도중 중복 등록이 발생했습니다." +
+                    $"\n(UUID = {saveable.UniqueId})", LogType.Assert);
+            }
+        }
+        // 폴더 경로에 존재하는 모든 Json 파일 가져오기
+        string[] files = Directory.GetFiles(dirPath, "*.json");
+        // 모든 파일을 순회하여 오브젝트 로드
+        int fileCount = files.Length;
+        var dm = DatabaseManager.Ins;
+        for (int i = 0; i < fileCount; ++i)
+        {
+            string filePath = files[i];
+            string fileName = Path.GetFileNameWithoutExtension(filePath); // 경로와 확장자 제거
+            int index = fileName.IndexOf('@');
+            // 잘못된 파일 형식
+            if (index < 0)
+            {
                 continue;
             }
-            // 고유 ID로 저장
-            string path = $"{basePath}/{component.UniqueId}.json";
-            using (StreamWriter sw = new(path))
+            string uniqueId = fileName.Substring(index + 1);
+            string json = File.ReadAllText(filePath);
+            // 씬에 존재하는 UUID
+            if (saveableDict.TryGetValue(uniqueId, out ISaveable val))
             {
-                sw.Write(json);
+                val.LoadData(json);
+                continue;
+            }
+            // 씬에 없으므로 생성하여 데이터 주입
+            string unitId = fileName.Substring(0, index);
+            GameObject prefab = dm.Unit(unitId)?.Prefab;
+            if (prefab == null)
+            {
+                UDebug.Print($"UnitSO에 {unitId} ID를 가진 프리펩이 존재하지 않습니다.", LogType.Warning);
+                continue;
+            }
+            // 생성 및 데이터 주입
+            GameObject instance = UObject.Spawn(prefab, GameManager.ObjectRoot);
+            if (instance.TryGetComponent(out ISaveable saveable))
+            {
+                saveable.UniqueId = uniqueId;
+                saveable.UnitId = unitId;
+                saveable.LoadData(json);
+            }
+            // 세이브 컴포넌트를 가져오지 못했으므로 다시 파괴
+            else
+            {
+                UDebug.Print($"데이터를 로드하여 프리펩을 생성했으나 ISaveable을 발견하지 못했습니다.", LogType.Warning);
+                UObject.Destroy(instance);
             }
         }
     }
@@ -136,10 +205,10 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
     // DataManager의 데이터 일괄 로드
     private void LoadDataManager()
     {
-        DataManager manager = DataManager.Ins;
-        var option = manager.Option;
+        DataManager m = DataManager.Ins;
+        var option = m.Option;
         LoadData(ref option);
-        var player = manager.Player;
+        var player = m.Player;
         LoadData(ref player);
     }
     /*
@@ -149,16 +218,10 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         mng.Player = player;
     */
 
-    // 직렬화 가능한 클래스나 구조체를 경로에 저장합니다.
+    // 단일 글로벌 데이터 저장하기
     private void SaveData<T>(ref T target)
     {
-        // 값 형식 & 참조 형식 모두 아닐 경우
-        if (!(typeof(T).IsValueType || typeof(T).IsClass))
-        {
-            UDebug.Print($"{target}은 저장 대상(값 형식 or 클래스)이 아닙니다.", LogType.Assert);
-            return;
-        }
-        // 로드 → AppData\LocalLow\<CompanyName>\<ProductName>
+        // 저장하기 → AppData\LocalLow\<CompanyName>\<ProductName>
         string path = $"{Application.persistentDataPath}/{typeof(T).Name}.json";
         string json = JsonUtility.ToJson(target, true);
         using (StreamWriter sw = new(path))
@@ -167,15 +230,9 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         }
     }
 
-    // 클래스나 구조체의 이름으로 
+    // 단일 글로벌 데이터 불러오기
     private void LoadData<T>(ref T target)
     {
-        // 값 형식 & 참조 형식 모두 아닐 경우
-        if (!(typeof(T).IsValueType || typeof(T).IsClass))
-        {
-            UDebug.Print($"{target}은 불러오기 대상(값 형식 or 클래스)이 아닙니다.", LogType.Assert);
-            return;
-        }
         // 불러오기 → AppData\LocalLow\<CompanyName>\<ProductName>
         string path = $"{Application.persistentDataPath}/{typeof(T).Name}.json";
         if (File.Exists(path))
@@ -183,8 +240,7 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
             using (StreamReader sr = new(path))
             {
                 string json = sr.ReadToEnd();
-                T data = JsonUtility.FromJson<T>(json);
-                target = data;
+                JsonUtility.FromJsonOverwrite(json, target);
             }
         }
         // 파일이 존재하지 않음

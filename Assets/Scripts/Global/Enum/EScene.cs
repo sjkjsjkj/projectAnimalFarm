@@ -3,8 +3,9 @@
 /// </summary>
 public enum EScene : byte
 {
-    Title = 0,
-    Main = 1,
-    Farm = 2,
-    Cave = 3,
+    Boot = 0,
+    Title = 1,
+    Main = 2,
+    Farm = 3,
+    Cave = 4,
 }

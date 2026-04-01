@@ -1,17 +1,11 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// 클래스의 설계 의도입니다.
+/// 플레이어 오브젝트의 이동과 애니메이션을 담당합니다.
 /// </summary>
 public class PlayerController : BaseMono
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
-    [Header("이동 속도")]
-    [SerializeField] private float _walkSpeed = 3.0f;
-
-    [Header("달리기 속도")]
-    [SerializeField] private float _runSpeed = 6.0f;
-
     [Header("애니메이터")]
     [SerializeField] private Animator _animator;
 
@@ -32,10 +26,6 @@ public class PlayerController : BaseMono
     private int _isMoveHash;
     private int _isRunHash;
     private int _facingHash;
-    #endregion
-
-    #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
-
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
@@ -125,14 +115,20 @@ public class PlayerController : BaseMono
     /// <returns>최종 이동 속도</returns>
     private float GetMoveSpeed()
     {
+        var provider = DataManager.Ins.Player;
         bool hasMoveInput = _moveInput.sqrMagnitude > K.SMALL_DISTANCE;
-
-        if (_isRun == true && hasMoveInput == true)
+        float baseSpeed = provider.CurWalkSpeed;
+        // 달리고 있을 경우
+        if (_isRun && hasMoveInput) 
         {
-            return _runSpeed;
+            return baseSpeed * provider.CurRunMultiplier;
         }
-
-        return _walkSpeed;
+        // 걷거나 정지 상태일 경우
+        else
+        {
+            return baseSpeed;
+        }
+            
     }
 
     /// <summary>
@@ -236,8 +232,9 @@ public class PlayerController : BaseMono
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         CacheComponents();
         CacheAnimatorHashes();
     }
@@ -250,10 +247,17 @@ public class PlayerController : BaseMono
 
     private void Start()
     {
+        // 데이터 동기화
+        var provider = DataManager.Ins.Player;
+        if (provider != null)
+        {
+            transform.position = provider.Position;
+        }
+        // 초기화
         UpdateFacing();
         HandleSpriteFlip();
         HandleAnimation();
-
+        // 애니메이션 업데이트
         if (_animator != null)
         {
             _animator.Update(0f);
@@ -269,10 +273,10 @@ public class PlayerController : BaseMono
     private void FixedUpdate()
     {
         HandleMove();
+        // 데이터 업데이트
+        var player = DataManager.Ins.Player;
+        Vector2 curDir = (_moveInput.sqrMagnitude > 0) ? _moveInput.normalized : player.Direction;
+        player.SetTransform(transform.position, curDir);
     }
-    #endregion
-
-    #region ─────────────────────────▶ 중첩 타입 ◀─────────────────────────
-
     #endregion
 }

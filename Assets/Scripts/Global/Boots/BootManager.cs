@@ -19,8 +19,24 @@ public class BootManager : MonoBehaviour
 
     private IEnumerator CoInitialize(GameObject root)
     {
-        UDebug.Print("BootSequence : 초기화 중 ....");
+        UDebug.Print("매니저 생성을 시작합니다.");
         // 매니저 생성 및 초기화
+        ManagerSpawner(root);
+        UDebug.Print("글로벌 프리펩 생성을 시작합니다.");
+        // 글로벌 프리펩
+        // 매니저를 담는 루트 오브젝트
+        GameObject prefabRoot = new GameObject(K.NAME_GLOBAL_PREFAB_ROOT);
+        Object.DontDestroyOnLoad(prefabRoot);
+        // 부트 매니저 생성 및 실행
+        var bootManager = prefabRoot.AddComponent<BootManager>();
+
+        yield return null;
+        UDebug.Print("부트 시퀀스가 완료되었습니다.");
+        _co = null;
+    }
+
+    private void ManagerSpawner(GameObject root)
+    {
         // 순서 의존성 없음 ↓
         var inputManager = UObject.AddComponent<InputManager>(root); // Input Action을 읽음
         inputManager.Initialize();
@@ -37,13 +53,12 @@ public class BootManager : MonoBehaviour
         var dataManager = UObject.AddComponent<DataManager>(root);
         dataManager.Initialize();
         // DataManager 이후 실행 ↓
+        var persistenceManager = UObject.AddComponent<PersistenceManager>(root);
+        persistenceManager.Initialize();
         var bgmManager = UObject.AddComponent<BgmManager>(root); // 옵션(Data), SO(Database)를 읽음
         bgmManager.Initialize();
         // 다른 매니저들을 위해 마지막에 실행 ↓
         var frameManager = UObject.AddComponent<FrameManager>(root);
         frameManager.Initialize();
-        yield return null;
-        UDebug.Print("BootSequence : 초기화 완료");
-        _co = null;
     }
 }

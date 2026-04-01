@@ -10,4 +10,5 @@ public static partial class Id
     public const string World_Animal_Ostrich = "World_Animal_Ostrich";
     public const string World_Animal_Pig = "World_Animal_Pig";
     public const string World_Animal_Sheep = "World_Animal_Sheep";
+    public const string World_Animal_TestObj = "World_Animal_TestObj";
 }

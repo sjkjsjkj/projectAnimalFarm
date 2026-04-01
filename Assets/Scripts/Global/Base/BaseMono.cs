@@ -5,24 +5,19 @@
 /// </summary>
 public abstract class BaseMono : MonoBehaviour
 {
-    [HideInInspector]
-    [SerializeField] private string _uniqueId; // UUID
+    [HideInInspector] [SerializeField] private string _uniqueId; // UUID
+    [HideInInspector] [SerializeField] private int _instanceId; // 유니티가 오브젝트에 부여하는 고유 ID
 
-    public string UniqueId => _uniqueId;
+    public string UniqueId { get => _uniqueId; set => _uniqueId = value; }
 
     // 스크립트 로드 or 인스펙터 값 변경 시 호출
     protected virtual void OnValidate()
     {
-        if (_uniqueId.IsEmpty())
+        if (_uniqueId.IsEmpty() || _instanceId != GetInstanceID())
         {
+            _instanceId = GetInstanceID();
             NewGuid();
         }
-    }
-
-    // 오브젝트 복사 시 UUID 복제 방지
-    protected virtual void Reset()
-    {
-        NewGuid();
     }
 
     // 새로 생성된 오브젝트일 경우 Awake 단계에서 UUID 부여
