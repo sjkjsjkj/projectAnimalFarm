@@ -44,8 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3524e35a93fb61246a3b65632fca6db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: f3b95dd0-0a50-454d-863d-792b575a1c61
-  _instanceId: -292558
+  _uniqueId: 8c10a915-5fc1-489d-a1a6-2ce3f4bc9d61
+  _instanceId: -308534
   _playerTr: {fileID: 0}
   _cameraTr: {fileID: 0}
   _smoothTime: 0.1

@@ -33,7 +33,7 @@ public class GameManager : GlobalSingleton<GameManager>
         }
         // 생성 및 초기화
         _curScene = (EScene)SceneManager.GetActiveScene().buildIndex;
-        OnSceneLoadEnd.Publish(EScene.Boot, _curScene); // 초기 부팅 시 씬 전환 이벤트 뿌리기
+        PublishLoadEnd(EScene.Boot, _curScene); // 초기 부팅 시 씬 전환 이벤트 뿌리기
         _isInitialized = true;
     }
 
@@ -157,7 +157,7 @@ public class GameManager : GlobalSingleton<GameManager>
         {
             Transform root = UIRoot;
         }
-        OnSceneLoadEnd.Publish(prevScene, nextScene);
+        PublishLoadEnd(prevScene, nextScene);
         _curScene = nextScene;
     }
 
@@ -198,6 +198,16 @@ public class GameManager : GlobalSingleton<GameManager>
         // 씬 로드 완료 → 콜백 호출
         callback?.Invoke();
         PostProcessing(_curScene, name);
+    }
+
+    private void PublishLoadEnd(EScene prevScene, EScene nextScene)
+    {
+        OnSceneLoadEnd.Publish(prevScene, nextScene);
+        var provider = DataManager.Ins.Player;
+        if (provider != null)
+        {
+            provider.SaveSceneId(_curScene);
+        }
     }
     #endregion
 }
