@@ -254,12 +254,12 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
             // 유닛 변환 + 중복 아닐 경우 등록
             if (list[i] is not UnitSO unit)
             {
-                UDebug.Print($"unitDict 작성 도중 {typeof(TData).Name}를 UnitSO로 변환하지 못했습니다.", LogType.Assert);
+                UDebug.Print($"unitDict 작성 도중 {list[i].Id}({typeof(TData).Name})를 UnitSO로 변환하지 못했습니다.", LogType.Assert);
                 continue;
             }
             if (!_unitDict.TryAdd(unit.Id, unit))
             {
-                UDebug.Print($"unitDict 작성 도중 중복 등록이 감지되었습니다. ({typeof(TData).Name})", LogType.Assert);
+                UDebug.Print($"unitDict 작성 도중 중복 등록이 감지되었습니다. {list[i].Id}({typeof(TData).Name})", LogType.Assert);
                 continue;
             }
         }
@@ -284,7 +284,7 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
         // 혹시나 방어 코드
         if (tables == null || tables.Length == 0)
         {
-            UDebug.Print($"테이블을 찾을 수 없습니다. ({typeof(TTable).Name})", LogType.Assert);
+            UDebug.Print($"테이블을 찾을 수 없습니다. ({typeof(TTable).Name}, {typeof(TData).Name})", LogType.Assert);
             return null;
         }
         // 해당 테이블을 모두 순회하며 데이터 탐색

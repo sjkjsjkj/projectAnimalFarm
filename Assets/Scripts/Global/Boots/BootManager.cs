@@ -11,7 +11,7 @@ public class BootManager : MonoBehaviour
     {
         if(_co != null)
         {
-            UDebug.Print("StartBootSequence()가 중복 호출되었습니다.", LogType.Assert);
+            UDebug.Print("부트 시퀀스가 중복 호출되었습니다.", LogType.Assert);
             return;
         }
         _co = StartCoroutine(CoInitialize(root));
@@ -19,19 +19,17 @@ public class BootManager : MonoBehaviour
 
     private IEnumerator CoInitialize(GameObject root)
     {
-        UDebug.Print("매니저 생성을 시작합니다.");
+        UDebug.Print("▷ 매니저 생성을 시작합니다. ◁");
         // 매니저 생성 및 초기화
         ManagerSpawner(root);
-        UDebug.Print("글로벌 프리펩 생성을 시작합니다.");
-        // 글로벌 프리펩
-        // 매니저를 담는 루트 오브젝트
+        UDebug.Print("▷ 글로벌 프리펩 생성을 시작합니다. ◁");
+        // 글로벌 프리펩 생성 및 초기화
         GameObject prefabRoot = new GameObject(K.NAME_GLOBAL_PREFAB_ROOT);
         Object.DontDestroyOnLoad(prefabRoot);
-        // 부트 매니저 생성 및 실행
-        var bootManager = prefabRoot.AddComponent<BootManager>();
-
+        var globalPrefab = prefabRoot.AddComponent<GlobalPrefabLoader>();
+        globalPrefab.Initialize(prefabRoot.transform);
         yield return null;
-        UDebug.Print("부트 시퀀스가 완료되었습니다.");
+        UDebug.Print("▷ 부트 시퀀스가 완료되었습니다. ◁");
         _co = null;
     }
 

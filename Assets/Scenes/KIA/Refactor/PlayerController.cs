@@ -274,9 +274,17 @@ public class PlayerController : BaseMono
     {
         HandleMove();
         // 데이터 업데이트
-        var player = DataManager.Ins.Player;
-        Vector2 curDir = (_moveInput.sqrMagnitude > 0) ? _moveInput.normalized : player.Direction;
-        player.SetTransform(transform.position, curDir);
+        var provider = DataManager.Ins.Player;
+        if(provider != null)
+        {
+            if (provider.IsLoaded)
+            {
+                provider.IsLoaded = false;
+                transform.position = provider.Position;
+            }
+            Vector2 curDir = (_moveInput.sqrMagnitude > 0) ? _moveInput.normalized : provider.Direction;
+            provider.SetTransform(transform.position, curDir);
+        }
     }
     #endregion
 }

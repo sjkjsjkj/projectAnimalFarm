@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: FeedItemTableSO
   m_EditorClassIdentifier: 
   _elements:
-  - {fileID: 11400000, guid: 05b3bf7bb8403544d98a385230dc1a2e, type: 2}
-  - {fileID: 11400000, guid: ec4b2330be4c5d649a89f53ab25d03f4, type: 2}
-  - {fileID: 11400000, guid: 9fb16e6f897f5b54c9b85803f62fdc78, type: 2}
-  - {fileID: 11400000, guid: 770bd903cb6ebf54c8d16b146c4d3451, type: 2}
+  - {fileID: 11400000, guid: a22089fe5ffb0a949abbb202bd09cb86, type: 2}
+  - {fileID: 11400000, guid: 35aa4f32915d0184bbd300ddfb2ba9e4, type: 2}
+  - {fileID: 11400000, guid: a4f7c0c33a920df4b8dc20bd058adcbb, type: 2}
+  - {fileID: 11400000, guid: 5357c4eccf567ae49b125575d194e05f, type: 2}
   - {fileID: 11400000, guid: 639c8ebe3a71a7d4c908b62bc76073ae, type: 2}

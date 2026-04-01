@@ -210,6 +210,7 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         LoadData(ref option);
         var player = m.Player;
         LoadData(ref player);
+        player.IsLoaded = true;
     }
     /*
         구조체 적용법
