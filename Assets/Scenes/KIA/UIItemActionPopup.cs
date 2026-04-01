@@ -3,6 +3,8 @@ using UnityEngine.UI;
 
 /// <summary>
 /// 슬롯 옆에 표시되는 액션 팝업입니다.
+/// 실제 아이템 사용/버리기 로직은 갖지 않고,
+/// 버튼 입력만 부모 인벤토리 패널에 전달합니다.
 /// </summary>
 public class UIItemActionPopup : BaseMono
 {
@@ -17,18 +19,12 @@ public class UIItemActionPopup : BaseMono
     public bool IsOpen => gameObject.activeSelf;
     #endregion
 
-    #region ─────────────────────────▶ 중첩 타입 ◀─────────────────────────
-    #endregion
-
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private UIInventory _owner;
     private RectTransform _rectTr;
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-    /// <summary>
-    /// 사용 버튼 입력을 부모 인벤토리에 전달합니다.
-    /// </summary>
     private void OnClickUse()
     {
         if (_owner == null)
@@ -39,9 +35,6 @@ public class UIItemActionPopup : BaseMono
         _owner.OnClickUseFromPopup();
     }
 
-    /// <summary>
-    /// 버리기 버튼 입력을 부모 인벤토리에 전달합니다.
-    /// </summary>
     private void OnClickTrash()
     {
         if (_owner == null)
@@ -52,9 +45,6 @@ public class UIItemActionPopup : BaseMono
         _owner.OnClickTrashFromPopup();
     }
 
-    /// <summary>
-    /// 취소 버튼 입력을 부모 인벤토리에 전달합니다.
-    /// </summary>
     private void OnClickCancel()
     {
         if (_owner == null)
@@ -62,12 +52,9 @@ public class UIItemActionPopup : BaseMono
             return;
         }
 
-        _owner.CloseActionPopup();
+        _owner.ClearSelection();
     }
 
-    /// <summary>
-    /// 버튼 이벤트를 안전하게 다시 연결합니다.
-    /// </summary>
     private void BindButtons()
     {
         if (_useButton != null)
