@@ -29,15 +29,19 @@ public class BgmManager : Singleton<BgmManager>
         {
             case EScene.Title:
                 USound.PlayBgm(Id.Bgm_Autumn_1);
+                UDebug.Print($"타이틀 BGM을 재생합니다.");
                 break;
             case EScene.Main:
                 USound.PlayBgm(Id.Bgm_Spring_1);
+                UDebug.Print($"마을 BGM을 재생합니다.");
                 break;
             case EScene.Forest:
                 USound.PlayBgm(Id.Bgm_Forest_1);
+                UDebug.Print($"숲 BGM을 재생합니다.");
                 break;
             case EScene.Cave:
                 USound.PlayBgm(Id.Bgm_Cave_1);
+                UDebug.Print($"동굴 BGM을 재생합니다.");
                 break;
             default:
                 UDebug.Print($"등록되지 않은 씬이므로 기본 Bgm을 재생합니다.");

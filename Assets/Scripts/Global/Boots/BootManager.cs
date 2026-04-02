@@ -63,6 +63,8 @@ public class BootManager : MonoBehaviour
         if(root == null)
         {
             UDebug.Print($"글로벌 매니저 루트가 파괴되었습니다!", LogType.Assert);
+            return;
         }
+        gameManager.BootComplete();
     }
 }

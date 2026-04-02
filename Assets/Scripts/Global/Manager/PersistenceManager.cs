@@ -33,14 +33,23 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
     /// </summary>
     public void Load()
     {
-        EScene curScene = GameManager.Ins.Scene;
-        UDebug.Print($"씬 {curScene}에서 로드를 시작합니다.");
+        var dm = DataManager.Ins;
+        var gm = GameManager.Ins;
+        EScene prevScene = gm.Scene;
+        UDebug.Print($"씬 {prevScene}에서 로드를 시작합니다.");
         Stopwatch sw = new();
         sw.Start();
-        LoadDataManager();
-        ReadJsonAndLoadObjects(curScene);
+        // 씬 로드 시작
+        LoadDataManager(); // 글로벌 데이터
+        EScene nextScene = dm.Player.CurScene;
+        if (prevScene != nextScene)
+        {
+            gm.LoadScene((int)nextScene); // 씬 동기로 전환한 후에
+        }
+        ReadJsonAndLoadObjects(nextScene); // 씬 데이터
+        // 씬 로드 종료
         sw.Stop();
-        UDebug.Print($"씬 {curScene}의 로드가 완료되었습니다. ({(sw.ElapsedMilliseconds * 0.001):F2}s)");
+        UDebug.Print($"씬 {nextScene}의 로드가 완료되었습니다. ({(sw.ElapsedMilliseconds * 0.001):F2}s)");
     }
 
     public override void Initialize()
