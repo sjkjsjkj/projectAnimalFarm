@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// 사육장 클래스 입니다.
 /// </summary>
-public class BreedingArea : BaseMono , IFoodProvider
+public class BreedingArea : BaseMono, IFoodProvider
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("프리팹")]
@@ -64,8 +64,15 @@ public class BreedingArea : BaseMono , IFoodProvider
     [ContextMenu("AnimalSpawnTest")]
     public void SpawnAnimal(string id)
     {
-        //GameObject tempGo = FactoryManager.Ins.Animal.Spawn(id);
-        GameObject tempGo = FactoryManager.Ins.Animal.Spawn(_testId);
+        GameObject tempGo;
+        if (id == null)
+        {
+            tempGo = FactoryManager.Ins.Animal.Spawn(_testId);
+        }
+        else
+        {
+            tempGo = FactoryManager.Ins.Animal.Spawn(id);
+        }
 
         if (!tempGo.GetComponent<AnimalObject>())
         {
@@ -75,7 +82,7 @@ public class BreedingArea : BaseMono , IFoodProvider
 
         _animals.Add(tempGo.GetComponent<AnimalObject>());
         tempGo.GetComponent<AnimalObject>().SetFoodProvider(this);
-        
+
         tempGo.transform.SetParent(this.transform);
         tempGo.transform.localPosition = GetRandomPos();
     }

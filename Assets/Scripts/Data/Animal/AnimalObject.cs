@@ -45,7 +45,7 @@ public class AnimalObject : InfoObject, ISaveable
 
         data.pos = this.transform.position;
         data.rot = this.transform.rotation;
-        return JsonUtility.ToJson(data);
+        return JsonUtility.ToJson(data, true);
     }
 
     // 매니저에서 호출하는 데이터 복구 함수
