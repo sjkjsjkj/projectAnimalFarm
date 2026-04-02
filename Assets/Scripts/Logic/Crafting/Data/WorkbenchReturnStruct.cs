@@ -14,15 +14,21 @@ public class WorkbenchReturnStruct
     public int CurHasCount=>_curHasCount;
     public int RequireCount=>_requireCount;
     public bool IsCondition => _isCondition;
-    
     #endregion
 
+    #region 테스트용
+    private int _slotIdx;
+    public int SlotIdx => _slotIdx;
+    #endregion
+
+
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-    public WorkbenchReturnStruct(int curHasCount, int requireCount,  bool isCondition)
+    public WorkbenchReturnStruct(int curHasCount, int requireCount, int slotIdx, bool isCondition)
     {
         _curHasCount = curHasCount;
         _requireCount = requireCount;
         _isCondition = isCondition;
+        _slotIdx = slotIdx;
     }
     #endregion
 }

@@ -55,9 +55,24 @@ public class InventorySlot
     public void SlotClear()
     {
         if(_itemData == null) return;
-
+        UDebug.Print($"SlotClear [{_slotIdx}]");
         _itemData = null;
         _stack = 0;
+    }
+
+    public void RemoveAmount(int amount)
+    {
+        if(amount < 0)
+        {
+            UDebug.Print("음수 값만큼 아이템을 제거할 수 없습니다.");
+            return;
+        }
+        if (_stack == amount)
+        {
+            SlotClear();
+            return;
+        }
+        _stack -= amount;
     }
     #endregion
 }

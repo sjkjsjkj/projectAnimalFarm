@@ -59,8 +59,10 @@ public class BootManager : MonoBehaviour
         // 다른 매니저들을 위해 마지막에 실행 ↓
         var frameManager = UObject.AddComponent<FrameManager>(root);
         frameManager.Initialize();
+        var inventoryManager = UObject.AddComponent<InventoryManager>(root);
+        inventoryManager.Initialize();
         // 검증
-        if(root == null)
+        if (root == null)
         {
             UDebug.Print($"글로벌 매니저 루트가 파괴되었습니다!", LogType.Assert);
             return;

@@ -15,6 +15,7 @@ MonoBehaviour:
   _id: Recipe_StoneAxe
   _type: 17
   _makeTargetItemId: Item_Tool_StoneAxe
+  _targetItemType: 18
   _requireItems:
   - {fileID: 11400000, guid: 822ef59babc68eb408681a06fa145610, type: 2}
   - {fileID: 11400000, guid: afd0327ef0a22e64f8b9e097b9e02550, type: 2}

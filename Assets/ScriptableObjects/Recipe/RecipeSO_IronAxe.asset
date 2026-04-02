@@ -15,6 +15,7 @@ MonoBehaviour:
   _id: Recipe_IronAxe
   _type: 17
   _makeTargetItemId: Item_Tool_IronAxe
+  _targetItemType: 18
   _requireItems:
   - {fileID: 11400000, guid: 8dbaba26297fb2649b9e0004205e3938, type: 2}
   - {fileID: 11400000, guid: afd0327ef0a22e64f8b9e097b9e02550, type: 2}

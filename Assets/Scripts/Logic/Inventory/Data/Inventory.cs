@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Collections.Generic;
 
 
 /// <summary>
@@ -43,7 +43,11 @@ public class Inventory
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
     public bool TryGetItem(ItemSO itemData)
     {
-        UDebug.IsNull(itemData);
+        if(UDebug.IsNull(itemData))
+        {
+            UDebug.Print("아이템 데이터가 비어있습니다.");
+            return false;
+        }
         int itemInputSlot = CheckSlots(itemData);
 
         if (itemInputSlot != -1 )
@@ -66,9 +70,6 @@ public class Inventory
                 if (_inventorySlots[i].IsEmpty)
                 {
                     _inventorySlots[i].SetItem(itemData);
-
-                    
-
                     return i;//성공시 해당 슬롯의 번호를 반환.
                 }
             }
@@ -156,11 +157,12 @@ public class Inventory
 
     }
 
-    public int FindItem(string itemId)
+    //해당 아이템이 있는 인벤토리의 슬롯 번호를 반환
+    public int FindItemToSlot(string itemId)
     {
-        for(int i=0; i< _inventorySlots.Length; i++)
+        for(int i= 0; i< _inventorySlots.Length; i++)
         {
-            if (_inventorySlots[i].ItemSO == null)
+            if (_inventorySlots[i].IsEmpty)
             {
                 continue;
             }
@@ -169,7 +171,98 @@ public class Inventory
                 return _inventorySlots[i].CurStack;
             }
         }
-        return 0;
+        return -1;
+    }
+    //Todo:
+    //인벤토리에 해당 아이템이 총 몇개 있는지 반환하는 메서드 작성
+    public int FindItemToInventory(string itemId)
+    {
+        int totalCount = 0;
+
+        for(int i=0; i<_inventorySlots.Length; i++)
+        {
+            if (_inventorySlots[i].IsEmpty)
+            {
+                continue;
+            }
+            if (_inventorySlots[i].ItemSO.Id.CompareTo(itemId) == 0)
+            {
+                totalCount += _inventorySlots[i].CurStack;
+            }
+        }
+
+        return totalCount;
+    }
+
+
+    //아이템제거 시도
+    public bool TryRemoveItem(string itemId, int count =1)
+    {
+        int slotIdx = FindItemToSlot(itemId);
+        
+        if(slotIdx == -1)
+        {
+            UDebug.Print("해당 아이템을 찾을 수 없습니다.");
+            return false;
+        }
+        
+        if(CheckHasItem(itemId,count))
+        {
+            RemoveItem(itemId, count);
+            return true;
+        }
+        else
+        {
+            UDebug.Print("아이템의 개수가 부족합니다.");
+            return false;
+        }
+    }
+    //
+    private void RemoveItem(string itemId, int count =1)
+    {
+        for (int i = 0; i < _inventorySlots.Length; i++)
+        {
+            if (_inventorySlots[i].IsEmpty)
+            {
+                continue;
+            }
+            //Todo : 조건 변경
+            //ㄴ같으면 들어오는것이 아니라, 다르면 컨티뉴로
+            if (_inventorySlots[i].ItemSO.Id.CompareTo(itemId)==0)
+            {
+                int removeValue = (int)MathF.Min(count, _inventorySlots[i].CurStack);
+
+                _inventorySlots[i].RemoveAmount(removeValue);
+                count -= removeValue;
+
+                if (count <= 0) break;
+            }
+        }
+        
+        OnChangeSlots?.Invoke(EInventoryType.PlayerInventory, this);
+    }
+    //슬롯 전체 제거
+    public void RemoveItemSlot(int slotIdx)
+    {
+        _inventorySlots[slotIdx].SlotClear();
+
+        OnChangeSlot?.Invoke(EInventoryType.PlayerInventory, _inventorySlots[slotIdx]);
+    }
+    //해당 아이템이 인벤토리에 충분하게 있는지 체크
+    public bool CheckHasItem(string itemId, int count)
+    {
+        int hasItemCount = 0;
+        
+        hasItemCount = FindItemToInventory(itemId);
+        UDebug.Print($"인벤토리에 현재 아이템 개수 : {hasItemCount} | 필요 개수 : {count}");
+        if (hasItemCount >= count)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
     #endregion
 }

@@ -10,6 +10,7 @@ public class RecipeSO : BaseSO
     [Header("기본 정보")]
     //만드는 아이템 아이디
     [SerializeField] private string _makeTargetItemId;
+    [SerializeField] private EType _targetItemType;
     //필요한 아이템 목록
     [SerializeField] private RequireItemSO[] _requireItems;
     
@@ -18,6 +19,7 @@ public class RecipeSO : BaseSO
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     public string Id => _id;
     public string TargetItemId => _makeTargetItemId;
+    public EType TargetItemType => _targetItemType;
     public RequireItemSO[] RequiedItems => _requireItems;
 
 
