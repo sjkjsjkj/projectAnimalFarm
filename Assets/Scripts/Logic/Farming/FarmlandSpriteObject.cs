@@ -32,8 +32,9 @@ public class FarmlandSpriteObject : BaseMono
         _seedSprite.sprite = changeSprite;
     }
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         if(_soilSprite == null || _moistSprite == null || _seedSprite == null)
         {
             UDebug.Print($"인스펙터 확인 필요.");

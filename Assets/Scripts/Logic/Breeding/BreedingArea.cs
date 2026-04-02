@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -38,19 +37,19 @@ public class BreedingArea : BaseMono , IFoodProvider
     //사육장을 만드는 기능.
     public void MakeBreedingArea()
     {
-        for (int i = -_witdh/2; i < _witdh/2; i++)
-        {
-            for (int j = -_height/2; j < _height/2; j++)
-            {
-                //울타리 세팅
-                if (i == -_witdh / 2 || i == _witdh / 2 - 1 || j == -_height / 2 || j == _height / 2 - 1)
-                {
-                    GameObject tempGo = Instantiate(_cagePrefab);
-                    tempGo.transform.SetParent(transform);
-                    tempGo.transform.localPosition = new Vector3(i, j);
-                }
-            }
-        }
+        //for (int i = -_witdh/2; i < _witdh/2; i++)
+        //{
+        //    for (int j = -_height/2; j < _height/2; j++)
+        //    {
+        //        //울타리 세팅
+        //        if (i == -_witdh / 2 || i == _witdh / 2 - 1 || j == -_height / 2 || j == _height / 2 - 1)
+        //        {
+        //            GameObject tempGo = Instantiate(_cagePrefab);
+        //            tempGo.transform.SetParent(transform);
+        //            tempGo.transform.localPosition = new Vector3(i, j);
+        //        }
+        //    }
+        //}
         //먹이통 세팅
         GameObject tempGoFB = Instantiate(_foodBoxPrefab);
         _foodBoxTr = tempGoFB.transform;
@@ -81,9 +80,8 @@ public class BreedingArea : BaseMono , IFoodProvider
         float posX = Random.Range(-_witdh / 2 + 1, _witdh / 2 - 1);
         float posY = Random.Range(-_height / 2 + 1, _height / 2 - 1);
         return new Vector3(posX, posY);
-        #endregion
-
     }
+    #endregion
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
     protected override void Awake()
     {

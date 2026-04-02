@@ -15,6 +15,7 @@ MonoBehaviour:
   _id: Recipe_GoldAxe
   _type: 17
   _makeTargetItemId: Item_Tool_GoldAxe
+  _targetItemType: 18
   _requireItems:
   - {fileID: 11400000, guid: 421bc09e35d1e564f9f7630c3a97ef5c, type: 2}
   - {fileID: 11400000, guid: afd0327ef0a22e64f8b9e097b9e02550, type: 2}

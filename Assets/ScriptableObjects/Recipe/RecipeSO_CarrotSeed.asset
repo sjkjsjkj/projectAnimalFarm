@@ -15,6 +15,7 @@ MonoBehaviour:
   _id: Recipe_CarrotSeed
   _type: 17
   _makeTargetItemId: Item_Seed_Carrot
+  _targetItemType: 3
   _requireItems:
   - {fileID: 11400000, guid: 9001100466dc76248a369c15eb04dad3, type: 2}
   - {fileID: 11400000, guid: 62270fde355ae254eb8adb78adcbf192, type: 2}

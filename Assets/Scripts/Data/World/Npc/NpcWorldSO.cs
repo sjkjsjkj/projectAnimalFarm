@@ -11,10 +11,14 @@ public class NpcWorldSO : WorldSO
     [SerializeField, CsvIgnore] protected RuntimeAnimatorController _animController;
 
     [Header("대사")]
-    [SerializeField, CsvIgnore] protected string[] _dialouge; 
-    // NPC가 존재할 씬 ID?
-    // NPC가 이동하는 포인트 좌표?
-    // NPC가 이동하는 속도
+    [SerializeField, CsvIgnore] protected string[] _dialouge;
+
+    [Header("속성")]
+    [SerializeField, CsvIgnore] private float _moveSpeed;
+    // NPC나 상점 / 맵에 종속된 컨텐츠의 경우, Map SO를 만들던지 해서 관리하는게 편하다고 판단.
+    // NPC가 존재할 씬 ID?   X
+    // NPC가 이동하는 포인트 좌표?    O
+    // NPC가 이동하는 속도           일단은 1로 고정
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
