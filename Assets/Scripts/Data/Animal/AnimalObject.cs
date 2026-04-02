@@ -3,7 +3,8 @@
 /// 동물의 MonoBehaivour를 관리하는 객체입니다.
 /// 데이터는 .Data로 접근할 수 있습니다.
 /// </summary>
-public class AnimalObject : InfoObject
+/// 
+public class AnimalObject : InfoObject, ISaveable
 {
     #region ─────────────────────────▶ 인스 펙터 ◀─────────────────────────
     [Header("MonoBehaviour")]
@@ -14,10 +15,10 @@ public class AnimalObject : InfoObject
     private AnimalData _data;
     private EAnimalState _state;
     private float _tickTimer = 0;        // Data는 일반 클래스이기 때문에 Update를 사용할 수 없음. 
-    private float _tickInterval = 10.0f; // 그렇기 때문에 여기서 Update를 대신 돌아 줌. 
+    private float _tickInterval = K.ANIMAL_TICK_INTERVAL; // 그렇기 때문에 여기서 Update를 대신 돌아 줌. 
 
     private float _actionTimer = 0;       // Idle <> Move 상태를 자연스럽게 변경해줄 때 사용할 타이머
-    private float _actionInterval = 3.0f; // 3초마다 한번씩 Move/Idle일 경우 랜덤하게 Move/Idle로 행동을 변경할 예정.
+    private float _actionInterval = K.ANIMAL_ACTION_INTERVAL; // 3초마다 한번씩 Move/Idle일 경우 랜덤하게 Move/Idle로 행동을 변경할 예정.
     private Animator _animator;
 
     private Transform _foodBoxTr;
@@ -27,7 +28,44 @@ public class AnimalObject : InfoObject
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     public AnimalData Data => _data;
 
-    
+    // 매니저에서 사용할 유닛 ID
+    public string UnitId { get; set; } = Id.World_Animal_Cow;
+
+    // 매니저에서 호출하는 데이터 직렬화 함수
+    public string SaveData()
+    {
+        UnitSaveData data = new();
+        data.data = _data;
+        data.state = _state;
+        data.tickTimer = _tickTimer;
+        data.actionTimer = _actionTimer;
+        data.animator = _animator;
+        data.foodBoxTr = _foodBoxTr;
+        data.moveDir = _moveDir;
+
+        data.pos = this.transform.position;
+        data.rot = this.transform.rotation;
+        return JsonUtility.ToJson(data);
+    }
+
+    // 매니저에서 호출하는 데이터 복구 함수
+    public void LoadData(string dataJson)
+    {
+        UnitSaveData data = JsonUtility.FromJson<UnitSaveData>(dataJson);
+
+        this._data = new AnimalData(data.data);
+        this._state = data.state;
+        this._tickTimer = data.tickTimer;
+        this._actionTimer = data.actionTimer;
+        this._animator = data.animator;
+        this._foodBoxTr = data.foodBoxTr;
+        this._moveDir = data.moveDir;
+
+        this._actionInterval = K.ANIMAL_ACTION_INTERVAL;
+        this._tickInterval = K.ANIMAL_TICK_INTERVAL;
+        this.transform.position = data.pos;
+        this.transform.rotation = data.rot;
+    }
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
@@ -209,11 +247,14 @@ public class AnimalObject : InfoObject
         }
 
     }
+    
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         _spRenderer = GetComponent<SpriteRenderer>();
         _animator = GetComponent<Animator>();
 
@@ -223,6 +264,23 @@ public class AnimalObject : InfoObject
     #endregion
 
     #region ─────────────────────────▶ 중첩 타입 ◀─────────────────────────
+    [System.Serializable]
+    private struct UnitSaveData
+    {
+        public AnimalData data;
+        public EAnimalState state;
+        public float tickTimer;
+        public float tickInterval;
 
+        public float actionTimer;
+        public float actionInterval;
+        public Animator animator;
+        
+        public Transform foodBoxTr;
+        public Vector3 moveDir;
+
+        public Vector3 pos;
+        public Quaternion rot;
+    }
     #endregion
 }

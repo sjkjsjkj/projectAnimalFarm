@@ -9278,15 +9278,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7116f37a184de894bbf48bc13d0bdd00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: e0259b98-e9b0-4afc-9cf5-3fae9e640ab3
-  _instanceId: -31892
+  _uniqueId: b4dd10ca-0687-4b45-8f50-fee95e49f627
+  _instanceId: 109104
   _testTileID: 10000
   _animalID: World_Animal_Cow
   _breedingArea: {fileID: 1198626934}
   _farmArea: {fileID: 598444024}
   _pos: 0
   _seedId: 0
-  _seedItemId: 
   _recipeSOs:
   - {fileID: 11400000, guid: 2f5dacf4f38e62f45b178e4bb9fe43c5, type: 2}
   - {fileID: 11400000, guid: ba2ce127e29eec84eb46913b2d7c5645, type: 2}
@@ -9442,6 +9441,75 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 257474255}
   m_CullTransparentMesh: 1
+--- !u!1 &378489920
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 378489923}
+  - component: {fileID: 378489922}
+  - component: {fileID: 378489921}
+  m_Layer: 0
+  m_Name: NPCObjectPrefab
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!95 &378489921
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 378489920}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &378489922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 378489920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9965b09d4f25cf54d8eaa1d5a145f90d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _uniqueId: c3ee2ca8-2141-40ea-801c-758bfb4ab1d0
+  _instanceId: -167820
+  _spRenderer: {fileID: 0}
+--- !u!4 &378489923
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 378489920}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -31.381546, y: 2.750091, z: -0.13520995}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &393220443
 GameObject:
   m_ObjectHideFlags: 0
@@ -11334,3 +11402,4 @@ SceneRoots:
   - {fileID: 1644319451}
   - {fileID: 467927370}
   - {fileID: 1421242168}
+  - {fileID: 378489923}
