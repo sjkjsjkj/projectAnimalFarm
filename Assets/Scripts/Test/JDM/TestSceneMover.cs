@@ -9,7 +9,7 @@ public class TestSceneMover : Frameable
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     // 프레임 매니저에게 호출당하는 순서
-    public override EPriority Priority => EPriority.Lv9;
+    public override EPriority Priority => EPriority.First;
 
     // 프레임 매니저가 실행할 메서드
     public override void ExecuteFrame()
@@ -47,6 +47,23 @@ public class TestSceneMover : Frameable
     private void SceneCallbackHandle()
     {
         UDebug.Print($"씬 콜백 핸들을 실행합니다.");
+    }
+    private void SceneLoadEndHandle(OnSceneLoadEnd ctx)
+    {
+        _curSceneIndex = (int)ctx.nextScene;
+    }
+    #endregion
+
+    #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        EventBus<OnSceneLoadEnd>.Subscribe(SceneLoadEndHandle);
+    }
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        EventBus<OnSceneLoadEnd>.Unsubscribe(SceneLoadEndHandle);
     }
     #endregion
 }

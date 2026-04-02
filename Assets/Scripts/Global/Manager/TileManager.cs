@@ -73,7 +73,7 @@ public class TileManager : GlobalSingleton<TileManager>
             default:
                 _curLogicMap = null;
                 UDebug.Print($"{ctx.nextScene} 맵은 타일 맵이 존재하지 않는 맵입니다.");
-                break;
+                return;
         }
         UDebug.Print($"타일 로직 맵을 {ctx.prevScene}에서 {ctx.nextScene}으로 교체합니다.");
     }

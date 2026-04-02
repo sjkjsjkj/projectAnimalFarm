@@ -15,10 +15,13 @@ public class GameManager : GlobalSingleton<GameManager>
     private static Transform _disableObjectRoot;
     private bool _isInitialized = false;
     private EScene _curScene;
+    private bool _isBooted = false;
+    private Coroutine _bootCoroutine;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     public EScene Scene => _curScene;
+    public void BootComplete() => _isBooted = true;
 
     public static Transform UIRoot => RootProvider(_uiRoot, K.NAME_UI_ROOT);
     public static Transform ObjectRoot => RootProvider(_objectRoot, K.NAME_OBJECT_ROOT);
@@ -33,7 +36,15 @@ public class GameManager : GlobalSingleton<GameManager>
         }
         // 생성 및 초기화
         _curScene = (EScene)SceneManager.GetActiveScene().buildIndex;
-        PublishLoadEnd(EScene.Boot, _curScene); // 초기 부팅 시 씬 전환 이벤트 뿌리기
+        // 초기 부팅 시 씬 전환 이벤트 뿌리기
+        if (_bootCoroutine == null)
+        {
+            _bootCoroutine = StartCoroutine(FirstLoadComplete(EScene.Boot, _curScene));
+        }
+        else
+        {
+            UDebug.Print($"부트 코루틴이 중복 호출되었습니다.", LogType.Assert);
+        }
         _isInitialized = true;
     }
 
@@ -208,6 +219,17 @@ public class GameManager : GlobalSingleton<GameManager>
         {
             provider.SaveSceneId(_curScene);
         }
+    }
+
+    // 유니티 에디터 용도, 어느 씬에서 시작하던 그 씬을 로드하는 효과를 내기 위함
+    private IEnumerator FirstLoadComplete(EScene prevScene, EScene nextScene)
+    {
+        while (!_isBooted)
+        {
+            yield return null;
+        }
+        PublishLoadEnd(prevScene, nextScene);
+        _bootCoroutine = null;
     }
     #endregion
 }
