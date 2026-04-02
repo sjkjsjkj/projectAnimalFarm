@@ -1,28 +1,28 @@
-﻿using System;
-
-/// <summary>
-/// NPC의 내부 데이터를 가지고 있는 클래스 입니다.
+﻿/// <summary>
+/// NPC가 움직이고 있는 상태
 /// </summary>
-public class NPCData
+public class NPCStateMove : NPCState
 {
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
 
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
-    public event Action<ENpcState> OnChangeState;
-    #endregion
-    #region ─────────────────────────▶  생성자  ◀─────────────────────────
-    public NPCData(NpcWorldSO npcData)
-    {
-
-    }
+    public NPCStateMove(NPCFSM npcFSM) : base(npcFSM) { }
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-    public void Tick()
+    public override void StateEnter()
     {
-        //Todo : 조건에 맞게 OnChageState 이벤트 발행.
+        throw new System.NotImplementedException();
+    }
+    public override void StateExit()
+    {
+        throw new System.NotImplementedException();
+    }
+    public override void StateUpdate()
+    {
+        throw new System.NotImplementedException();
     }
     #endregion
 }

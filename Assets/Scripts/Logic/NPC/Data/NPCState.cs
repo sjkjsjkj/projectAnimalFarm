@@ -1,28 +1,25 @@
-﻿using System;
-
-/// <summary>
-/// NPC의 내부 데이터를 가지고 있는 클래스 입니다.
+﻿/// <summary>
+/// NPC의 각 상태가 가질 부모 클래스
 /// </summary>
-public class NPCData
+public abstract class NPCState
 {
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
-
+    private NPCFSM _npcFSM;
     #endregion
 
-    #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
-    public event Action<ENpcState> OnChangeState;
-    #endregion
     #region ─────────────────────────▶  생성자  ◀─────────────────────────
-    public NPCData(NpcWorldSO npcData)
+    public NPCState(NPCFSM npcFSM)
     {
-
+        _npcFSM = npcFSM;
     }
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-    public void Tick()
-    {
-        //Todo : 조건에 맞게 OnChageState 이벤트 발행.
-    }
+    public abstract void StateEnter();
+
+    public abstract void StateExit();
+
+    public abstract void StateUpdate();
+
     #endregion
 }

@@ -52,28 +52,10 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
     }
     private void InitSetting()
     {
-        TestSetting();
     }
-    private void TestSetting()
-    {
-        //GameObject testFarmAreaPrefabGo = Instantiate(_farmAreaPrefab);
-        //_testFarmArea = testFarmAreaPrefabGo.GetComponent<FarmArea>();
-        //_testFarmArea.transform.position = new Vector3(-52.5f, 3.5f, 0);
-    }
-    public void TestFunction()
-    {
-        
-    }
+    [ContextMenu("AnimalSpawnTest")]
     public void TestFunction2()
     {
-        //GameObject tempGo = Instantiate(_animalObjectPrefab);
-        //if(!(_tempDataUnitSO as AnimalWorldSO))
-        //{
-        //    UDebug.Print($"읽어온 데이터에 AnimalWorldSO가 없음.", LogType.Warning);
-        //}
-        //tempGo.GetComponent<AnimalObject>().SetInfo(_tempDataUnitSO as AnimalWorldSO);
-        //tempGo.transform.SetParent(this.transform);
-        //tempGo.transform.localPosition = Vector3.zero;
         _breedingArea.SpawnAnimal(_animalID);
     }
 

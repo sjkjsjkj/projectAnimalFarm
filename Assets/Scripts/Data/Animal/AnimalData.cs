@@ -1,19 +1,20 @@
 ﻿using System;
-
+using UnityEngine;
 /// <summary>
 /// 동물의 데이터들을 담고있는 클래스입니다.
 /// Monobehaviour 가 필요하지 않는 내부 데이터들 계산과 처리들을 담당합니다.
 /// 이 클래스에서 계산된 결과로 Object에게 상태변화를 요청합니다.
 /// </summary>
+[System.Serializable]
 public class AnimalData
 {
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
-    private string _animalName;
-    private int _age;
-
-    private bool _needFood;           // 음식을 먹어야 하는 동물인지
-    private float _hunger;            // 현재 허기짐 정도
-    private float _foodConsumeAmount; // 음식을 얼마나 섭취하는지 (1틱당 소모되는 허기짐)
+    [SerializeField] private string _animalName;
+    [SerializeField] private int _age;
+                     
+    [SerializeField] private bool _needFood;           // 음식을 먹어야 하는 동물인지
+    [SerializeField] private float _hunger;            // 현재 허기짐 정도
+    [SerializeField] private float _foodConsumeAmount; // 음식을 얼마나 섭취하는지 (1틱당 소모되는 허기짐)
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -23,6 +24,10 @@ public class AnimalData
     #endregion
 
     #region ─────────────────────────▶ 생성자 ◀─────────────────────────
+    public AnimalData()
+    {
+
+    }
     public AnimalData(AnimalWorldSO dataSO)
     {
         _animalName = dataSO.Name;
@@ -30,6 +35,14 @@ public class AnimalData
         _needFood = true;
         _foodConsumeAmount = dataSO.TickFeedAmount;
         _hunger = 40.0f;
+    }
+    public AnimalData(AnimalData data)
+    {
+        _animalName = data.Name;
+        _age = data.Age;
+        _needFood = true;
+        _foodConsumeAmount = data._foodConsumeAmount;
+        _hunger = data._hunger;
     }
     #endregion
 
