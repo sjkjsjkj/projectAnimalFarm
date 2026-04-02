@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// 모든 타일 맵, 상태를 미리 생성하여 담는 매니저
@@ -12,6 +13,7 @@ public class TileManager : GlobalSingleton<TileManager>
     private TileMap _forestLogicMap;
     private TileMap _caveLogicMap;
     private TileMap _curLogicMap;
+    private bool _testMode = false;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -39,15 +41,32 @@ public class TileManager : GlobalSingleton<TileManager>
     {
         EScene curScene = GameManager.Ins.Scene;
         OnSceneLoadEnd ctx = new(EScene.Boot, curScene);
-        ChangeMapHandle(ctx);
+        string sceneName = SceneManager.GetActiveScene().name;
+        // 테스트 용도 ─ 테스트 씬일 경우
+        if (sceneName.Contains("_Test"))
+        {
+            UDebug.Print($"현재 씬은 테스트 씬입니다. !({sceneName})");
+            _testMode = true;
+            LoadTestMap(sceneName);
+        }
+        // 게임 정상 씬
+        else
+        {
+            ChangeMapHandle(ctx);
+        }
     }
 
     private void ChangeMapHandle(OnSceneLoadEnd ctx)
     {
+        if (_testMode && _isInitialized)
+        {
+            UDebug.Print("씬 변경이 발생했지만 테스트 모드이므로 타일 로직 맵 변경을 무시합니다.", LogType.Warning);
+            return;
+        }
         switch (ctx.nextScene)
         {
             case EScene.Main:
-                if(_mainLogicMap == null)
+                if (_mainLogicMap == null)
                 {
                     UDebug.Print("메인 로직 맵이 초기화되지 않은 상태에서 호출되었습니다.", LogType.Assert);
                     return;
@@ -76,6 +95,41 @@ public class TileManager : GlobalSingleton<TileManager>
                 return;
         }
         UDebug.Print($"타일 로직 맵을 {ctx.prevScene}에서 {ctx.nextScene}으로 교체합니다.");
+    }
+
+    // 테스트 씬일 경우 대응하기
+    private void LoadTestMap(string sceneName)
+    {
+        OnSceneLoadEnd ctx;
+        if (sceneName.Contains("Boot"))
+        {
+            ctx = new(EScene.Boot, EScene.Boot);
+            ChangeMapHandle(ctx);
+        }
+        else if (sceneName.Contains("Title"))
+        {
+            ctx = new(EScene.Boot, EScene.Title);
+            ChangeMapHandle(ctx);
+        }
+        else if (sceneName.Contains("Main"))
+        {
+            ctx = new(EScene.Boot, EScene.Main);
+            ChangeMapHandle(ctx);
+        }
+        else if (sceneName.Contains("Forest"))
+        {
+            ctx = new(EScene.Boot, EScene.Forest);
+            ChangeMapHandle(ctx);
+        }
+        else if (sceneName.Contains("Cave"))
+        {
+            ctx = new(EScene.Boot, EScene.Cave);
+            ChangeMapHandle(ctx);
+        }
+        else
+        {
+            UDebug.Print($"테스트 모드에서 임시로 사용할 씬을 인식하지 못했습니다. 타일맵 로직을 로드할 수 없습니다.", LogType.Assert);
+        }
     }
 
     // 초기화 진입점

@@ -1,7 +1,7 @@
 ﻿/// <summary>
 /// 씬이 전환될 때마다 재생하는 BGM을 변경합니다.
 /// </summary>
-public class BgmManager : Singleton<BgmManager>
+public class BgmManager : GlobalSingleton<BgmManager>
 {
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private bool _isInitialized = false;
