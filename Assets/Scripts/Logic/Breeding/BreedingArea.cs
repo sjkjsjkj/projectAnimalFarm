@@ -15,6 +15,9 @@ public class BreedingArea : BaseMono , IFoodProvider
     [Header("사이즈")]
     [SerializeField] private int _witdh;
     [SerializeField] private int _height;
+
+    [Header("테스트")]
+    [SerializeField] private string _testId;
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
@@ -58,10 +61,13 @@ public class BreedingArea : BaseMono , IFoodProvider
     }
 
     //동물의 ID를 입력하여 객체를 소환하는 기능
+    [ContextMenu("AnimalSpawnTest")]
     public void SpawnAnimal(string id)
     {
-        GameObject tempGo = FactoryManager.Ins.Animal.Spawn(id);
-        if(!tempGo.GetComponent<AnimalObject>())
+        //GameObject tempGo = FactoryManager.Ins.Animal.Spawn(id);
+        GameObject tempGo = FactoryManager.Ins.Animal.Spawn(_testId);
+
+        if (!tempGo.GetComponent<AnimalObject>())
         {
             UDebug.Print("잘못된 객체가 생성되고 있습니다. 여기에는 AnimalObject가 반환되어야 합니다. 팩토리 확인");
             return;
