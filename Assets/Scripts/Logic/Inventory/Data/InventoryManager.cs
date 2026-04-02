@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 /// <summary>
 /// 모든 인벤토리들 (플레이어 인벤 / 창고 / 상점 등) 들을 관리하는 매니저 
@@ -43,15 +45,42 @@ public class InventoryManager : Singleton<InventoryManager>
         {
             return;
         }
-        
         _inventoryList = new Dictionary<int, Inventory>();
 
-        MakeInventoryUIs();//인벤토리 UI들 생성 (인벤 / 창고 / 상점 각각 하나씩)
-
-        MakeNewInventory(_inventorySize, EInventoryType.PlayerInventory); // 가장 먼저 플레이어의 인벤토리 생성.
+        InitSetting();
 
         // ↑ 필요한 초기화 로직 / 부모 클래스에서 자동 실행
         _isInitialized = true;
+    }
+
+    private void InitSetting()
+    {
+        _inventorySize = K.PLAYER_INVENTORY_SIZE;
+        //TODO : 창고 / 상점 / 먹이통 생기면 사이즈 추가.
+        CollectPrefab();
+    }
+    //Resources 안의 Prefab들을 수집하는 메서드.
+    private void CollectPrefab()
+    {
+        _playerInventoryPrefab = Resources.Load<PlayerInventoryUI>("BootPrefab/PlayerInventoryUIPrefab");
+        StartCoroutine(SceneLoadWaitCoroutine());
+    }
+
+    private IEnumerator SceneLoadWaitCoroutine()
+    {
+        while (true)
+        {
+            yield return null;
+            GameObject tempCanvas = UObject.Find(K.NAME_UI_ROOT);
+            if (tempCanvas != null)
+            {
+                _inventoriesCanvasTr = tempCanvas.transform;
+                break;
+            }
+        }
+        MakeInventoryUIs();//인벤토리 UI들 생성 (인벤 / 창고 / 상점 각각 하나씩)
+
+        MakeNewInventory(_inventorySize, EInventoryType.PlayerInventory); // 가장 먼저 플레이어의 인벤토리 생성.
     }
 
     //각 UI들을 생성하는 메서드.
@@ -159,6 +188,10 @@ public class InventoryManager : Singleton<InventoryManager>
     /// </summary>
     public void InventoryUIToggle(int id, EInventoryType invenType) 
     {
+        if(_inventoriesCanvasTr == null)
+        {
+            _inventoriesCanvasTr = UObject.Find("Canvas").transform;
+        }
         switch(invenType)
         {
             case EInventoryType.PlayerInventory:

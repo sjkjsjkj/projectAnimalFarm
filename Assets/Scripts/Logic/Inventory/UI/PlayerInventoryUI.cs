@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
 
 /// <summary>
 /// 플레이어 인벤토리의 UI 입니다.
@@ -50,6 +49,7 @@ public class PlayerInventoryUI : InventoryUI
         {
             if (tempInvenSlot[i].IsEmpty)
             {
+                _inventorySlotUIs[i].SlotClear();
                 continue;
             }
             _inventorySlotUIs[i].SetInfo(tempInvenSlot[i].ItemSO.Image, tempInvenSlot[i].CurStack);

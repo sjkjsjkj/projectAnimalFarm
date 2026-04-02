@@ -44,6 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6be32df04954079429af89c179fd22a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _uniqueId: 052757e7-f925-43ce-ad25-126f91457dc9
+  _instanceId: -3532
   _cagePrefab: {fileID: 6151157869910277712, guid: 986eaaf5e36440a48b6b968fb9962bb2, type: 3}
   _foodBoxPrefab: {fileID: 5243685284054541183, guid: e547249c1c474c643a154a1da0d57a02, type: 3}
   _witdh: 20

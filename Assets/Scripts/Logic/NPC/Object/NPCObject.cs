@@ -1,10 +1,20 @@
-﻿
+﻿using UnityEngine;
+
 /// <summary>
-/// 플레이어 인벤토리 슬롯 UI 입니다.
+/// NPC의 구조 전체를 담당하는 스크립트입니다.
 /// </summary>
-//[RequireComponent(typeof(Button))]
-public class PlayerInventorySlotUI : InventoryUISlot
+public class NPCObject : BaseMono
 {
+    #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
+    //[Header("Objects")]
+    //[SerializeField] private Class _class;
+    //FSM
+    //Animator
+    //Interation
+    //Data
+    
+    #endregion
+
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
 
     #endregion
@@ -18,6 +28,10 @@ public class PlayerInventorySlotUI : InventoryUISlot
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
- 
+
+    #endregion
+
+    #region ─────────────────────────▶ 중첩 타입 ◀─────────────────────────
+
     #endregion
 }
