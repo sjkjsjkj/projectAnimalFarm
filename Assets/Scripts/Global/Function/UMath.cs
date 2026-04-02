@@ -6,6 +6,26 @@ using UnityEngine;
 public class UMath : MonoBehaviour
 {
     /// <summary>
+    /// 쿨다운이 종료되었다면 True를 반환하고 다음 쿨다운 시간을 갱신합니다.
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool TryCooldownEnd(float curTime, ref float nextTime, float interval)
+    {
+        // 쿨다운 상태
+        if (curTime < nextTime) return false;
+        // 쿨타임을 갱신해도 시간이 뒤쳐질 경우 강제 갱신
+        if (curTime > nextTime + interval)
+        {
+            nextTime = curTime + interval;
+        }
+        else
+        {
+            nextTime += interval;
+        }
+        return true;
+    }
+
+    /// <summary>
     /// 지수 보간한 값(0 ~ 1)을 반환합니다.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -20,12 +40,14 @@ public class UMath : MonoBehaviour
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static (Vector2 minPos, Vector2 maxPos) SortNumericSize(Vector2 pos1, Vector2 pos2)
     {
-        if (pos2.x <= pos1.x) {
+        if (pos2.x <= pos1.x)
+        {
             float tmp = pos1.x;
             pos1.x = pos2.x;
             pos2.x = tmp;
         }
-        if (pos2.y <= pos1.y) {
+        if (pos2.y <= pos1.y)
+        {
             float tmp = pos1.y;
             pos1.y = pos2.y;
             pos2.y = tmp;
@@ -39,12 +61,14 @@ public class UMath : MonoBehaviour
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static (Vector2Int minPos, Vector2Int maxPos) SortNumericSize(Vector2Int pos1, Vector2Int pos2)
     {
-        if (pos2.x <= pos1.x) {
+        if (pos2.x <= pos1.x)
+        {
             int tmp = pos1.x;
             pos1.x = pos2.x;
             pos2.x = tmp;
         }
-        if (pos2.y <= pos1.y) {
+        if (pos2.y <= pos1.y)
+        {
             int tmp = pos1.y;
             pos1.y = pos2.y;
             pos2.y = tmp;
@@ -58,12 +82,14 @@ public class UMath : MonoBehaviour
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static (float minX, float maxX, float minY, float maxY) SortNumericSize(float x1, float y1, float x2, float y2)
     {
-        if (x2 <= x1) {
+        if (x2 <= x1)
+        {
             float tmp = x1;
             x1 = x2;
             x2 = tmp;
         }
-        if (y2 <= y1) {
+        if (y2 <= y1)
+        {
             float tmp = y1;
             y1 = y2;
             y2 = tmp;
@@ -250,26 +276,35 @@ public class UMath : MonoBehaviour
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector2 GetDirection4(Vector2 direction)
     {
-        if (direction.x == 0f && direction.y == 0f) {
+        if (direction.x == 0f && direction.y == 0f)
+        {
             return Vector2.zero;
         }
         float absX = Mathf.Abs(direction.x);
         float absY = Mathf.Abs(direction.y);
         // 세로가 더 길다면 UP or Down
-        if (absX < absY) {
+        if (absX < absY)
+        {
             direction.x = 0;
-            if (0 < direction.y) {
+            if (0 < direction.y)
+            {
                 direction.y = 1;
-            } else {
+            }
+            else
+            {
                 direction.y = -1;
             }
         }
         // 가로가 더 길다면 Left or Right
-        else {
+        else
+        {
             direction.y = 0;
-            if (0 < direction.x) {
+            if (0 < direction.x)
+            {
                 direction.x = 1;
-            } else {
+            }
+            else
+            {
                 direction.x = -1;
             }
         }
@@ -282,24 +317,33 @@ public class UMath : MonoBehaviour
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector2Int GetDirection4Int(Vector2 direction)
     {
-        if (direction.x == 0f && direction.y == 0f) {
+        if (direction.x == 0f && direction.y == 0f)
+        {
             return Vector2Int.zero;
         }
         float absX = Mathf.Abs(direction.x);
         float absY = Mathf.Abs(direction.y);
         // 세로가 더 길다면 UP or Down
-        if (absX < absY) {
-            if (0 < direction.y) {
+        if (absX < absY)
+        {
+            if (0 < direction.y)
+            {
                 return new Vector2Int(0, 1);
-            } else {
+            }
+            else
+            {
                 return new Vector2Int(0, -1);
             }
         }
         // 가로가 더 길다면 Left or Right
-        else {
-            if (0 < direction.x) {
+        else
+        {
+            if (0 < direction.x)
+            {
                 return new Vector2Int(1, 0);
-            } else {
+            }
+            else
+            {
                 return new Vector2Int(-1, 0);
             }
         }
@@ -311,7 +355,8 @@ public class UMath : MonoBehaviour
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector2Int GetDirection8Int(Vector2 direction)
     {
-        if (direction.x == 0f && direction.y == 0f) {
+        if (direction.x == 0f && direction.y == 0f)
+        {
             return Vector2Int.zero;
         }
         // 방향 벡터를 각도로 변환
@@ -328,7 +373,8 @@ public class UMath : MonoBehaviour
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector2 GetDirection8(Vector2 direction)
     {
-        if (direction.x == 0f && direction.y == 0f) {
+        if (direction.x == 0f && direction.y == 0f)
+        {
             return Vector2Int.zero;
         }
         // 방향 벡터를 각도로 변환

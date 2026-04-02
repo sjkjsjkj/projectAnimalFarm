@@ -11,6 +11,9 @@ public class PlayerController : BaseMono
 
     [Header("좌우 반전용")]
     [SerializeField] private SpriteRenderer _bodySr;
+
+    [Header("달리기 목마름")]
+    [SerializeField] private float _tickThirstAmount = 0.1f;
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
@@ -119,7 +122,7 @@ public class PlayerController : BaseMono
         bool hasMoveInput = _moveInput.sqrMagnitude > K.SMALL_DISTANCE;
         float baseSpeed = provider.CurWalkSpeed;
         // 달리고 있을 경우
-        if (_isRun && hasMoveInput) 
+        if (_isRun && hasMoveInput && provider.CurThirst >= _tickThirstAmount)
         {
             return baseSpeed * provider.CurRunMultiplier;
         }
@@ -148,10 +151,16 @@ public class PlayerController : BaseMono
             return;
         }
         // 이동 실행
+        Vector2 playerSize = DatabaseManager.Ins.Player(Id.World_Player).Size;
         Vector2 moveDir = _moveInput.normalized;
         Vector2 curPos = transform.position;
         _rb.velocity = TileManager.Ins.Tile.GetValidVelocity
-            (curPos, Vector2.one * 0.5f, moveDir, GetMoveSpeed());
+            (curPos, playerSize, moveDir, GetMoveSpeed());
+        // 목마름
+        if (_isRun)
+        {
+            DataManager.Ins.Player.ConsumeThirst(_tickThirstAmount);
+        }
     }
 
     /// <summary>
@@ -222,8 +231,9 @@ public class PlayerController : BaseMono
             return;
         }
 
+        var provider = DataManager.Ins.Player;
         bool isMove = _moveInput.sqrMagnitude > K.SMALL_DISTANCE;
-        bool isRunAnim = isMove == true && _isRun == true;
+        bool isRunAnim = isMove == true && _isRun == true && provider.CurThirst >= _tickThirstAmount;
 
         _animator.SetBool(_isMoveHash, isMove);
         _animator.SetBool(_isRunHash, isRunAnim);

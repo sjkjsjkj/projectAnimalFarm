@@ -19,7 +19,7 @@ MonoBehaviour:
   _rarity: 5
   _image: {fileID: -855298285791758126, guid: 760baaed2cd83a24da00021f69ac80ca, type: 3}
   _prefab: {fileID: 5251321745402914498, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
-  _size: {x: 1, y: 1}
+  _size: {x: 0.4, y: 0.4}
   _animController: {fileID: 0}
   _walkSpeed: 5
   _runMultiplier: 1.5
