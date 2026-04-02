@@ -17,7 +17,8 @@ public class TestSceneMover : Frameable
         // 디버그 키 안내
         if (Input.GetKeyDown(KeyCode.Backspace))
         {
-            UDebug.Print($"우측 씬 로드 : 오른쪽 대괄호" +
+            UDebug.Print(
+                $"\n우측 씬 로드 : 오른쪽 대괄호" +
                 $"\n왼측 씬 로드 : 왼쪽 대괄호");
         }
 
