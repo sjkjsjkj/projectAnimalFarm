@@ -82,6 +82,17 @@ public class FarmArea : Frameable
 
         context.ShowStruct();
         int pos = context.pos;
+        // 디버깅
+        if(pos < 0 || pos >= _farmlandsSprites.Length)
+        {
+            UDebug.Print($"{pos}는 존재할 수 없는 인덱스입니다.", LogType.Assert);
+            return;
+        }
+        if (_farmlandsSprites[pos] == null)
+        {
+            UDebug.Print($"{pos}에 스프라이트 프리팹이 존재하지 않습니다.", LogType.Assert);
+            return;
+        }
         //경작지의 상태마다 분기
         switch (state)
         {

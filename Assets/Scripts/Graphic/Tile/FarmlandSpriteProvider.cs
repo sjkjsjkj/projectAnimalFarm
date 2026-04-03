@@ -55,7 +55,18 @@ public class FarmlandSpriteProvider : Singleton<FarmlandSpriteProvider>
     }
     public Sprite GetSeedSprite(string id, int grownProgress)
     {
-        return _seedSprites[id][grownProgress];
+        if (!_seedSprites.ContainsKey(id))
+        {
+            UDebug.Print($"{id}는 seedSprites에 존재하지 않습니다.", LogType.Assert);
+            return null;
+        }
+        int index = Mathf.Clamp(grownProgress, 0, _seedSprites[id].Length - 1);
+        /*if (grownProgress < 0 || _seedSprites[id].Length <= grownProgress)
+        {
+            UDebug.Print($"{grownProgress}는 {_seedSprites[id]}의 배열 크기를 벗어났습니다. (최대 {_seedSprites[id].Length})", LogType.Assert);
+            return null;
+        }*/
+        return _seedSprites[id][index];
     }
     public Sprite GetMoistSprite(uint index)
     {
