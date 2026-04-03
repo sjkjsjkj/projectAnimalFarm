@@ -3,7 +3,7 @@
 /// <summary>
 /// 경작지 각각의 스프라이트를 관리하는 스크립트입니다.
 /// </summary>
-public class FarmlandSpriteObject : BaseMono 
+public class FarmlandSpriteObject : BaseMono , IAutoInteractable
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("Sprite renderer")]
@@ -15,6 +15,32 @@ public class FarmlandSpriteObject : BaseMono
     #region  ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private int _idx;
     private string _currentSeededId;
+    private bool _isGrownUp;
+    private EFarmlandState _state;
+    #endregion
+
+    #region  ─────────────────────────▶ 외부 메서드 ◀─────────────────────────
+    //public bool CanInteract(GameObject player)
+    //{
+    //    //if(_state == E)
+    //}
+
+    public string GetMessage()
+    {
+        UDebug.Print("생산 완료!");
+        return "생산 완료!";
+    }
+
+    public void Interact(GameObject player)
+    {
+        _isGrownUp = false;
+
+        //ItemCollectionCoordinator.Ins.TryCollectItem(_productItemId, 1);
+
+        //_productFinishIcon.SetActive(false);
+        //_isProductFinish = false;
+        //_data.ProductReset();
+    }
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
