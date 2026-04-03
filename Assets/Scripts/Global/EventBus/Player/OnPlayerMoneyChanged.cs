@@ -1,5 +1,5 @@
 ﻿/// <summary>
-/// 플레이어의 스태미나가 변경되었을 때
+/// 플레이어의 돈이 변경되었을 때
 /// </summary>
 public readonly struct OnPlayerMoneyChanged
 {
