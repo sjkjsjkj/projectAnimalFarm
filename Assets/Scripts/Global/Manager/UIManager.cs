@@ -1,6 +1,4 @@
-using UnityEngine;
-
-/// <summary>
+﻿/// <summary>
 /// 싱글톤 클래스의 설계 의도입니다.
 /// </summary>
 public class UIManager : Singleton<UIManager>

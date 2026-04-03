@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.InputSystem.LowLevel;
 
 /// <summary>
 /// NPC의 구조 전체를 담당하는 스크립트입니다.

@@ -11,7 +11,7 @@ using UnityEngine.Events;
 /// - 획득 후 비활성화 / 파괴 / 리스폰 처리 가능
 /// </summary>
 [RequireComponent(typeof(Collider2D))]
-public class CCollectableInteractObject2D : BaseMono
+public class CCollectableInteractObject2D : BaseMono, IInteractable
 {
     public enum ECollectMode
     {
@@ -573,8 +573,9 @@ public class CCollectableInteractObject2D : BaseMono
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         _triggerCollider = GetComponent<Collider2D>();
 
         if (_triggerCollider != null && !_triggerCollider.isTrigger)
@@ -639,6 +640,11 @@ public class CCollectableInteractObject2D : BaseMono
             StopCoroutine(_respawnRoutine);
             _respawnRoutine = null;
         }
+    }
+
+    public bool Interact(GameObject player) {
+
+        return false;
     }
     #endregion
 }

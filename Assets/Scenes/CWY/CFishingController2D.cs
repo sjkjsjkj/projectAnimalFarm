@@ -176,7 +176,7 @@ public class CFishingController2D : BaseMono
         }
         else
         {
-            bool received = collector != null && collector.TryReceiveItem(fishRow.Id, _amount);
+            bool received = collector != null && collector.TryReceiveItem(fishRow.id, _amount);
 
             if (received)
             {
@@ -187,12 +187,12 @@ public class CFishingController2D : BaseMono
 
                 if (_logEnabled)
                 {
-                    Debug.Log($"[CFishingController2D] 낚시 성공: {fishRow.Name} ({fishRow.Id}) x{_amount}");
+                    Debug.Log($"[CFishingController2D] 낚시 성공: {fishRow.name} ({fishRow.id}) x{_amount}");
                 }
             }
             else if (_logEnabled)
             {
-                Debug.LogWarning($"[CFishingController2D] 낚시 보상 지급 실패: {fishRow.Id}");
+                Debug.LogWarning($"[CFishingController2D] 낚시 보상 지급 실패: {fishRow.id}");
             }
         }
 
@@ -295,7 +295,7 @@ public class CFishingController2D : BaseMono
                 continue;
             }
 
-            if (row.Category != "Fish")
+            if (row.category != "Fish")
             {
                 continue;
             }
@@ -303,14 +303,14 @@ public class CFishingController2D : BaseMono
             switch (areaType)
             {
                 case EFishingAreaType.FreshWater:
-                    if (!row.IsWaterFish)
+                    if (!row.isWaterFish)
                     {
                         continue;
                     }
                     break;
 
                 case EFishingAreaType.SeaWater:
-                    if (!row.IsDeepWaterFish)
+                    if (!row.isDeepWaterFish)
                     {
                         continue;
                     }
@@ -375,7 +375,7 @@ public class CFishingController2D : BaseMono
 
         for (int i = 0; i < candidates.Count; i++)
         {
-            totalWeight += Mathf.Max(0.01f, GetWeightByRarity(candidates[i].Rarity));
+            totalWeight += Mathf.Max(0.01f, GetWeightByRarity(candidates[i].rarity));
         }
 
         float randomValue = Random.Range(0f, totalWeight);
@@ -383,7 +383,7 @@ public class CFishingController2D : BaseMono
 
         for (int i = 0; i < candidates.Count; i++)
         {
-            cumulative += Mathf.Max(0.01f, GetWeightByRarity(candidates[i].Rarity));
+            cumulative += Mathf.Max(0.01f, GetWeightByRarity(candidates[i].rarity));
 
             if (randomValue <= cumulative)
             {

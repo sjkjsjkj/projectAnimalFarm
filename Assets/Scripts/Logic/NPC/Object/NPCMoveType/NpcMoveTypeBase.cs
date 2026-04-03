@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-/// <summary>
+﻿/// <summary>
 /// NPC의 이동 타입의 부모가 되는 클래스
 /// </summary>
 public abstract class NpcMoveTypeBase : BaseMono

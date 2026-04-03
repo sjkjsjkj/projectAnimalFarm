@@ -81,7 +81,7 @@ public class CPlayerCollector2D : BaseMono
 
         if (_logEnabled)
         {
-            Debug.Log($"[CPlayerCollector2D] 타겟 등록: {target.name}");
+            Debug.Log($"타겟 등록: {target.name}");
         }
     }
 
@@ -99,7 +99,7 @@ public class CPlayerCollector2D : BaseMono
 
         if (_logEnabled)
         {
-            Debug.Log($"[CPlayerCollector2D] 타겟 해제: {target.name}");
+            Debug.Log($"타겟 해제: {target.name}");
         }
     }
 
@@ -111,19 +111,19 @@ public class CPlayerCollector2D : BaseMono
     {
         if (_collectionCoordinator == null)
         {
-            Debug.LogError("[CPlayerCollector2D] ItemCollectionCoordinator가 연결되지 않았습니다.");
+            Debug.LogError("ItemCollectionCoordinator가 연결되지 않았습니다.");
             return false;
         }
 
         if (string.IsNullOrWhiteSpace(itemId))
         {
-            Debug.LogWarning("[CPlayerCollector2D] itemId가 비어 있습니다.");
+            Debug.LogWarning("itemId가 비어 있습니다.");
             return false;
         }
 
         if (amount <= 0)
         {
-            Debug.LogWarning($"[CPlayerCollector2D] amount가 0 이하입니다. itemId={itemId}, amount={amount}");
+            Debug.LogWarning($"amount가 0 이하입니다. itemId={itemId}, amount={amount}");
             return false;
         }
 
@@ -186,7 +186,7 @@ public class CPlayerCollector2D : BaseMono
 
         if (_logEnabled)
         {
-            Debug.Log($"[CPlayerCollector2D] Busy 상태 변경: {_isBusy}");
+            Debug.Log($"Busy 상태 변경: {_isBusy}");
         }
     }
 
@@ -226,7 +226,7 @@ public class CPlayerCollector2D : BaseMono
         {
             if (_logEnabled)
             {
-                Debug.LogWarning("[CPlayerCollector2D] PlayerWorldSO가 연결되지 않아 생활 스킬 경험치 지급을 건너뜁니다.");
+                Debug.LogWarning("PlayerWorldSO가 연결되지 않아 생활 스킬 경험치 지급을 건너뜁니다.");
             }
             return;
         }
@@ -235,7 +235,7 @@ public class CPlayerCollector2D : BaseMono
         {
             if (_logEnabled)
             {
-                Debug.LogWarning("[CPlayerCollector2D] DataManager 또는 PlayerProvider가 없어 생활 스킬 경험치 지급을 건너뜁니다.");
+                Debug.LogWarning("DataManager 또는 PlayerProvider가 없어 생활 스킬 경험치 지급을 건너뜁니다.");
             }
             return;
         }
@@ -244,7 +244,7 @@ public class CPlayerCollector2D : BaseMono
 
         if (_logEnabled)
         {
-            Debug.Log($"[CPlayerCollector2D] 생활 스킬 경험치 지급: skill={skill}, exp={expAmount}");
+            Debug.Log($"생활 스킬 경험치 지급: skill={skill}, exp={expAmount}");
         }
     }
     #endregion
