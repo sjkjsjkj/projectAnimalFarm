@@ -10,6 +10,7 @@ using UnityEngine.Events;
 /// - 버튼 채집 시에는 모션 / 딜레이를 줄 수 있음
 /// - 획득 후 비활성화 / 파괴 / 리스폰 처리 가능
 /// </summary>
+
 [RequireComponent(typeof(Collider2D))]
 public class CCollectableInteractObject2D : BaseMono, IInteractable
 {
@@ -97,7 +98,9 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     {
         if (_isCollected)
         {
-            return false;
+            //ItemSO a = DatabaseManager.Ins.("aa");
+
+            return false;     
         }
 
         if (_isProcessing)

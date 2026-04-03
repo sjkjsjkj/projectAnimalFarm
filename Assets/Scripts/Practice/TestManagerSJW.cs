@@ -18,9 +18,12 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
     [SerializeField] private FarmArea _farmArea;
     [SerializeField] private int _pos;
     [SerializeField] private EHarvest _seedId;
+    [SerializeField] private string _seedItemId;
 
     [Header("인벤토리 테스트")]
-    //[SerializeField] private string _seedItemId;
+    [SerializeField] private string _itemId;
+    [SerializeField] private ItemCollectionCoordinator _itemCoordinatior;
+    
 
     [Header("제작대 테스트")]
     [SerializeField] private RecipeSO[] _recipeSOs;
@@ -54,24 +57,28 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
     {
     }
     [ContextMenu("AnimalSpawnTest")]
-    public void TestFunction2()
+    public void TestAnimalSpawn()
     {
         _breedingArea.SpawnAnimal(_animalID);
     }
 
-    public void TestFunction3()
+    public void TestGetItemInvenDir()
     {
-        ItemSO tempItemSO = DatabaseManager.Ins.SeedItem(_seedId.ToString());
+        ItemSO tempItemSO = DatabaseManager.Ins.Item(_itemId);
 
         InventoryManager.Ins.PlayerInventory.TryGetItem(tempItemSO);
     }
-
-    public void TestFunction4()
+    public void TestGetItemInvenCoordinator()
     {
-        _farmArea.TestFunction(_pos, _seedId.ToString());
+        _itemCoordinatior.TryCollectItem(_itemId, 1);
     }
 
-    public void WorkbenchItemCheckFunction()
+    public void TestFarm()
+    {
+        _farmArea.TestFunction(_pos, _itemId);
+    }
+
+    public void TestCheckRecipe()
     {
         UDebug.Print("제작대 테스트");
 
@@ -96,11 +103,18 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
             _makeButton.gameObject.SetActive(false);
         }
     }
-    public void WorkbenchMakeItemFunction()
+    public void TestMakeItem()
     {
         Workbench.Ins.MakeItem();
 
         Workbench.Ins.SetRecipe(_recipeSOs[_recipeIdx]);
+    }
+    #endregion
+
+    #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
+    private void Start()
+    {
+        _itemCoordinatior = GameObject.Find("Item_Collection_Coordinator").GetComponent<ItemCollectionCoordinator>();
     }
     #endregion
 }

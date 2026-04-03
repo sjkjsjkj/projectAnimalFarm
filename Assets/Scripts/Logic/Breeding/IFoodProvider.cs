@@ -5,5 +5,5 @@
 /// </summary>
 public interface IFoodProvider
 {
-    Transform GetFoodBoxPosition();
+    Vector3 GetFoodBoxPosition();
 }

@@ -24,6 +24,7 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
     private StaticWorldTableSO[] _staticWorldTables;
     private SoundTableSO[] _soundTables;
     private PlayerWorldTableSO[] _playerWorldTables;
+    private ProductTableSO[] _productTables;
     // 프리펩
     private SoundEmitter _soundEmiiterPrefab;
     #endregion
@@ -46,7 +47,28 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
             return null;
         }
     }
-
+    /// <summary>
+    /// ID 만으로 정적 데이터를 반환합니다.
+    /// </summary>
+    /// <param name="id">아이템 ID</param>
+    /// <returns></returns>
+    public ItemSO Item(string id)
+    {
+        UnitSO tempUnitSo = Unit(id);
+        if(tempUnitSo == null)
+        {
+            //데이터베이스에 없음.
+            return null;
+        }
+        ItemSO tempItemSO = Categorize(tempUnitSo);
+        if(tempItemSO == null)
+        {
+            //아이템 아님
+            return null;
+        }
+        return tempItemSO;
+    }
+    
     /// <summary>
     /// 미끼 아이템의 정적 데이터를 반환합니다.
     /// </summary>
@@ -139,6 +161,13 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
         => FindData<PlayerWorldTableSO, PlayerWorldSO>(_playerWorldTables, id);
 
     /// <summary>
+    /// 생산품 정적 데이터를 반환합니다.
+    /// </summary>
+    /// <param name="id">생산품 ID</param>
+    public ProductSO Product(string id)
+        => FindData<ProductTableSO, ProductSO>(_productTables, id);
+
+    /// <summary>
     /// 사운드 이미터 프리펩을 반환합니다.
     /// </summary>
     public SoundEmitter SoundPrefab() => GetSafePrefab(_soundEmiiterPrefab);
@@ -174,6 +203,9 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
         SettingUnitDict<StaticWorldTableSO, StaticWorldSO>(_staticWorldTables);
         _playerWorldTables = LoadTables<PlayerWorldTableSO, PlayerWorldSO>();
         SettingUnitDict<PlayerWorldTableSO, PlayerWorldSO>(_playerWorldTables);
+        _productTables = LoadTables<ProductTableSO, ProductSO>();
+        SettingUnitDict<ProductTableSO, ProductSO>(_productTables);
+
         // UnitSO를 상속받지 않는 SO 작성
         _soundTables = LoadTables<SoundTableSO, SoundSO>();
         // 프리펩 로드
@@ -303,5 +335,45 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
         UDebug.Print($"테이블({typeof(TTable).Name})에서 SO 에셋을 찾을 수 없습니다.(ID = {id})", LogType.Assert);
         return null;
     }
+    // UnitSO의 타입에 따라 어떤 데이터베이스에서 ItemSO를 반환해야 하는지 분류합니다.
+    // 조금 무식한 방법이라도 넘어갑시다.
+    private ItemSO Categorize(UnitSO unitSO)
+    {
+        ItemSO tempSO;
+        switch (unitSO.Type)
+        {
+            case EType.SickleItem:
+            case EType.ShovelItem:
+            case EType.AxeItem:
+            case EType.PickaxeItem:
+            case EType.WateringCan:
+            case EType.Fishingrod:
+                tempSO = DatabaseManager.Ins.ToolItem(unitSO.Id);
+                break;
+            case EType.ProductItem:
+                tempSO = DatabaseManager.Ins.Product(unitSO.Id);
+                break;
+            case EType.BaitItem:
+                tempSO = DatabaseManager.Ins.BaitItem(unitSO.Id);
+                break;
+            case EType.SeedItem:
+                tempSO = DatabaseManager.Ins.SeedItem(unitSO.Id);
+                break;
+            case EType.FeedItem:
+                tempSO = DatabaseManager.Ins.FeedItem(unitSO.Id);
+                break;
+            case EType.HarvestItem:
+            case EType.WoodItem:
+            case EType.FishItem:
+            case EType.OreItem:
+                tempSO = DatabaseManager.Ins.StaticItem(unitSO.Id);
+                break;
+            default:
+                UDebug.Print("해당 아이템은 아이템이 아닙니다.");
+                return null;
+        }
+        return tempSO;
+    }
+
     #endregion
 }
