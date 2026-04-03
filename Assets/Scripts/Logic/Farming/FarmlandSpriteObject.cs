@@ -20,10 +20,10 @@ public class FarmlandSpriteObject : BaseMono , IAutoInteractable
     #endregion
 
     #region  ─────────────────────────▶ 외부 메서드 ◀─────────────────────────
-    //public bool CanInteract(GameObject player)
-    //{
-    //    //if(_state == E)
-    //}
+    public bool CanInteract(GameObject player)
+    {
+        return true;
+    }
 
     public string GetMessage()
     {

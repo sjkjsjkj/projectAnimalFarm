@@ -42,10 +42,7 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         // 씬 로드 시작
         LoadDataManager(); // 글로벌 데이터
         EScene nextScene = dm.Player.CurScene;
-        if (prevScene != nextScene)
-        {
-            gm.LoadScene((int)nextScene); // 씬 동기로 전환한 후에
-        }
+        gm.LoadScene((int)nextScene); // 동기 전환 + 동일 씬이어도 무조건 전환
         ReadJsonAndLoadObjects(nextScene); // 씬 데이터
         // 씬 로드 종료
         sw.Stop();

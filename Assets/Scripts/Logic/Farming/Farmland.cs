@@ -210,5 +210,18 @@ public class Farmland
 
         OnFarmStateChange?.Invoke(new FarmStateChangeStruct(EFarmlandState.MoistLand, _pos, _seededId, _currentTick));
     }
+
+    // 데이터 다시 덮어씌우기
+    public void Overwrite(Farmland savedData)
+    {
+        this._state = savedData._state;
+        this._seededId = savedData._seededId;
+        this._grownUpTick = savedData._grownUpTick;
+        this._currentTick = savedData._currentTick;
+        this._tickTimer = savedData._tickTimer;
+        this._soiledConnectDir = savedData._soiledConnectDir;
+        this._moistConnectDir = savedData._moistConnectDir;
+        this._stateFlag = savedData._stateFlag;
+    }
     #endregion
 }
