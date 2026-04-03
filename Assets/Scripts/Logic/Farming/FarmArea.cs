@@ -32,6 +32,9 @@ public class FarmArea : Frameable
     /// </summary>
     public void OnLoadFarmArea()
     {
+        var farmlands = DataManager.Ins.Farmlands;
+        if (farmlands == null) return;
+        _farmlands = farmlands;
         for (int i = 0; i < _farmlands.Length; i++)
         {
             _farmlands[i].OnLoadFunction();
@@ -217,6 +220,7 @@ public class FarmArea : Frameable
         _farmlandsSprites = new GameObject[_width * _height];
 
         MakeFarmlands();
+        OnLoadFarmArea();
     }
     #endregion
 }

@@ -204,11 +204,13 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
     // DataManager의 데이터 일괄 저장
     private void SaveDataManager()
     {
-        DataManager manager = DataManager.Ins;
-        var option = manager.Option;
+        DataManager m = DataManager.Ins;
+        var option = m.Option;
         SaveData(ref option);
-        var player = manager.Player;
+        var player = m.Player;
         SaveData(ref player);
+        var farmland = m.Farmlands;
+        SaveData(ref farmland);
     }
 
     // DataManager의 데이터 일괄 로드
@@ -219,6 +221,8 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         LoadData(ref option);
         var player = m.Player;
         LoadData(ref player);
+        var farmland = m.Farmlands;
+        LoadData(ref farmland);
         player.IsLoaded = true;
     }
     /*
