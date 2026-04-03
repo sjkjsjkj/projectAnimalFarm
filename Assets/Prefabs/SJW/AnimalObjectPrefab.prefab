@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 994634631910092032}
   - component: {fileID: 1375611238863064987}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ProductFinish
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 685875927565814188}
   - component: {fileID: -4781075338778700419}
   - component: {fileID: 8658901455358550310}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: AnimalObjectPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -184,9 +184,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58a67226833d58d458e2a6a8a9738dea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: 8353b05e-8ae9-4fb8-a9b1-9a0e780e3ede
-  _instanceId: -185214
-  _spRenderer: {fileID: 0}
+  _uniqueId: 
+  _instanceId: 0
+  _productFinishIcon: {fileID: 6767761499460884282}
 --- !u!95 &-4781075338778700419
 Animator:
   serializedVersion: 5

@@ -13,5 +13,11 @@ MonoBehaviour:
   m_Name: ProductTableSO
   m_EditorClassIdentifier: 
   _elements:
+  - {fileID: 11400000, guid: 5af7c6b462e8a99469f66d338b020c14, type: 2}
+  - {fileID: 11400000, guid: 166731fdf64fed34eb7ec76aa293bae7, type: 2}
+  - {fileID: 11400000, guid: 0dbaa3e2c777f464793e67e83d5a279a, type: 2}
+  - {fileID: 11400000, guid: 9f029a34bde5f744687cc19bc8a273ac, type: 2}
   - {fileID: 11400000, guid: d7e60d90a95ad924d84c30335ce632dd, type: 2}
-  - {fileID: 11400000, guid: d7e60d90a95ad924d84c30335ce632dd, type: 2}
+  - {fileID: 11400000, guid: 92d2799f283e0e749bed3512661b81d9, type: 2}
+  - {fileID: 11400000, guid: a5d5cf44db1777c4abe80802ad3cfae2, type: 2}
+  - {fileID: 11400000, guid: 6494582c0abed5c4689ad0831262ee31, type: 2}

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 992ccb837235f7a4f9e0d433bd074cb2, type: 3}
   m_Name: ProductSO_GoatMilk
   m_EditorClassIdentifier: 
-  _id: ITEM_PRODUCT_GOATMILK
+  _id: Item_Product_GoatMilk
   _type: 25
   _name: "\uC5FC\uC18C\uC6B0\uC720"
   _description: "\uC5FC\uC18C\uC6B0\uC720\uB77C\uACE0"
