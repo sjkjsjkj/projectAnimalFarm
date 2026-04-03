@@ -11,6 +11,7 @@ public class Farmland
     [SerializeField] private EFarmlandState _state;       // 땅의 단계  0:기본 흙 | 1: 일궈진 흙 | 2:
     [SerializeField] private string _seededId;           //심어진 씨앗의 id
     [SerializeField] private int _pos;            //경작지의 배열좌표
+    [SerializeField] private string _harvestItemId;
     //Tick
     //N초 (미정) 마다 식물의 성장 주기를 올리는 역할을 함.
     //경작지의 상태가 MoistLand 상태일 때에만 증가함.
@@ -31,7 +32,8 @@ public class Farmland
 
     public event Action<FarmStateChangeStruct> OnFarmStateChange;
     public event Action<FarmlandConnetionChangeStruct> OnFarmlandConnetionChange;
-
+    public event Action<int> OnGrownUp;
+    public event Action<int> OnGetHarvest;
     #endregion
 
     #region ─────────────────────────▶  생성자  ◀─────────────────────────
@@ -43,15 +45,8 @@ public class Farmland
     {
         //경작지의 배열좌표
         _pos = pos;
-        _seededId = "";
-        _grownUpTick = 0;
-        _currentTick = 0;
-        _soiledConnectDir = 0;
-        _moistConnectDir = 0;
-        _state = EFarmlandState.IdleLand;
-        _stateFlag |= (uint)EFarmlandState.IdleLand;
+        SetClear();
     }
-    
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
@@ -68,62 +63,68 @@ public class Farmland
         //경작지 전체를 관리하는 FarmArea에게 나의 좌표(배열 좌표)와 상태를 전달한다.
         OnFarmStateChange?.Invoke(new FarmStateChangeStruct(_state, _pos, _seededId, _currentTick));
     }
+    //최초의 경작지의 상태로
+    private void SetClear()
+    {
+        _seededId = "";
+        _harvestItemId = "";
+        _grownUpTick = K.FARMLAND_GROWNTIME;
+        _currentTick = 0;
+        _soiledConnectDir = 0;
+        _moistConnectDir = 0;
+        SetState(EFarmlandState.IdleLand);
+        _stateFlag = (uint)EFarmlandState.IdleLand;
+    }
+    //인터랙트가 가능한지의 여부를 반환해줄 메서드
+    public bool CanInteract()
+    {
+        switch (_state)
+        {
+            case EFarmlandState.IdleLand:
+                return true;
+            case EFarmlandState.SeededLand:
+                //Todo:플레이어의 물뿌리개 레벨이..
+                return true;
+            case EFarmlandState.SoiledLand:
+                int slotIdx = InventoryManager.Ins.PlayerInventory.FindItemType(EType.SeedItem);
+                if (slotIdx == -1)
+                {
+                    return false;
+                }
+                return true;
+            case EFarmlandState.MoistLand:
+                
+                return false;
+            case EFarmlandState.GrownUp:
+                return true;
+            default:
+                UDebug.Print("있을 수 없는 일");
+                return false;
+        }
+    }
+
     //외부에서 인터랙트를 시도했을 때 불러와질 메서드
-    public void Interact(int grownTime, string seedid = "" ) //플레이어 및 인벤토리가 제작되면 해당 부분에서 아무것도 받아오지 않아도 됨. 지금은 임시로 씨앗의 정보를 받아 옴.
+    public void Interact(string seedid = "" ) //플레이어 및 인벤토리가 제작되면 해당 부분에서 아무것도 받아오지 않아도 됨. 지금은 임시로 씨앗의 정보를 받아 옴.
     {
         UDebug.Print("Interact");
         
         switch (_state)
         {
             case EFarmlandState.IdleLand:
-                UDebug.Print("check1");
-                SetState(EFarmlandState.SoiledLand);
+                IdleLandInteract();
                 break;
             case EFarmlandState.SoiledLand:
-                UDebug.Print("check2");
-                if(string.IsNullOrEmpty(seedid))
-                {
-                    UDebug.Print("씨앗의 Id가 비어있음. 확인");
-                    return;
-                }
-                if(seedid.CompareTo("None")==0)
-                {
-                    UDebug.Print("씨앗의 Id가 비어있음. 확인");
-                    return;
-                }
-                #region 인벤토리가 생기면 사라질 영역.
-                _seededId = seedid;
-                _grownUpTick = grownTime;
-                //TODO: 인터랙트 시, seedId를 받아오며 시간도 함께 받아옴.
-                #endregion
-
-                #region 인벤토리가 생기면 추가해야 하는 기능들
-                //인벤토리 확인 >
-                //씨앗이 있다면 플레이어의 농사 레벨에 맞는 씨앗인지 확인
-                //레벨에 맞다면 씨앗의 개수 1감소
-                //_seededId 를 해당 씨앗의 id로 설정
-                //_grownTick 을 씨앗의 GrownTime 으로 받아옴.
-                //SetState(SeededLand);
-                #endregion
-
-                SetState(EFarmlandState.SeededLand);
-
-               
-
+                SoiledLandInteract();
                 break;
             case EFarmlandState.SeededLand:
-
-                SetState(EFarmlandState.MoistLand);
-                //플레이어의 장비 확인
-                //씨앗의 등급과 플레이어의 장비 등급 비교
-                //플레이어의 장비 등급이 씨앗의 등급 이상이라면
-                //_grownUpTime = 심은 씨앗의 등급과 비례.
-                //SetState(MoistLand);
+                SeedLandInteract();
                 break;
             case EFarmlandState.MoistLand:
+                MoistLandInteract();
                 //아무런 효과 없음.
                 break;
             case EFarmlandState.GrownUp:
+                GrownUpInterInteract();
                 //인벤토리에 농작물 추가 시도.
                 //성공하면
                 //SetState(Idleland);
@@ -132,6 +133,88 @@ public class Farmland
                 break;
         }
     }
+
+    
+     private void IdleLandInteract()
+    {
+        SetState(EFarmlandState.SoiledLand);
+    }
+    private void SoiledLandInteract()
+    {
+        int slotIdx = 0;
+        Inventory playerInven = InventoryManager.Ins.PlayerInventory;
+
+        if(playerInven == null)
+        {
+            UDebug.Print("플레이어 인벤 찾지 못함.");
+            return;
+        }
+        int count = 0;
+        while (true)
+        {
+            if(++count >= K.PLAYER_INVENTORY_SIZE)
+            {
+                break;
+            }
+
+            slotIdx = playerInven.FindItemType(EType.SeedItem, slotIdx);
+            if (slotIdx == -1)
+            {
+                UDebug.Print("인벤토리에 씨앗 없음");
+                return;
+            }
+
+            ItemSO tempItemSO = playerInven.GetItemType(EType.SeedItem);   //InventorySlots[slotIdx].ItemSO;
+
+            if (!(tempItemSO as SeedItemSO))
+            {
+                UDebug.Print("인벤토리의 FindItemType의 반환이 잘못되었습니다.", LogType.Warning);
+                return;
+            }
+            else
+            {
+                //ToDo
+                //씨앗의 _needFarmingLevel 과 플레이어의 농사 스탯 비교하여 같은지 확인.
+                //if (DataManager.Ins.Player.농사레벨 > tempSeedItemSO.NeedFarmingLevel)
+                //{
+                //    _area.Farmlands[_idx].Interact(tempItemSO.Id);
+                //    return;
+                //}
+
+                SeedItemSO tempSeedItemSO = (SeedItemSO)tempItemSO;
+                _harvestItemId = tempSeedItemSO.HarvestItemId;
+
+                _seededId = tempSeedItemSO.Id;
+
+                SetState(EFarmlandState.SeededLand);
+
+                UDebug.Print("씨앗심기!");
+
+
+                //playerInven.InventorySlots[slotIdx].RemoveAmount(1);
+
+                break;
+            }
+        }
+    }
+    private void SeedLandInteract()
+    {
+        SetState(EFarmlandState.MoistLand);
+    }
+    private void MoistLandInteract()
+    {
+        UDebug.Print("해당 단계에서는 인터랙트 불가.");
+    }
+    private void GrownUpInterInteract()
+    {
+
+        OnGetHarvest?.Invoke(_pos);
+        //ItemSO tempItemSO = DatabaseManager.Ins.Item(_harvestItemId);
+        ItemCollectionCoordinator.Ins.TryCollectItem(_harvestItemId, 1);
+        SetClear();
+    }
+
+
     //성장 타이머
     public void Tick(float deltaTime)
     {
@@ -154,10 +237,12 @@ public class Farmland
         _tickTimer = 0;
         UDebug.Print($"PrevGrowProgress : {_currentTick} | Full Grown Count : {_grownUpTick} ");
 
-        if (++_currentTick >= K.FARMLAND_MAX_GROWNPROGRESS)
+
+        if ((_currentTick = (int)MathF.Min(_currentTick+1, K.FARMLAND_MAX_GROWNPROGRESS))  == K.FARMLAND_MAX_GROWNPROGRESS)
         {
             UDebug.Print($"Full Grown Up Success");
             SetState(EFarmlandState.GrownUp);
+            OnGrownUp?.Invoke(_pos);
             return;
         }
 

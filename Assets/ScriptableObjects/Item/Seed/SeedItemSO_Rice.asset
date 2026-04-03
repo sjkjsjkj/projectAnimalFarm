@@ -17,11 +17,12 @@ MonoBehaviour:
   _name: "\uBCBC"
   _description: "\uB2E4\uB7C9\uC758 \uBB3C\uC744 \uD544\uC694\uB85C \uD558\uB294
     \uACE1\uBB3C\uC785\uB2C8\uB2E4."
+  _rarity: 1
   _image: {fileID: -795079669, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
   _prefab: {fileID: 0}
-  _rarity: 1
   _sellPrice: 100
   _buyPrice: 200
   _maxStack: 64
-  _placeCropID: World_Crop_Rice
+  _placeCropId: 
   _needFarmingLevel: 1
+  _harvestItemId: Rice_0

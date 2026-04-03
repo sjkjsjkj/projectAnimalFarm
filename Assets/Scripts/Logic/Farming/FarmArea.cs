@@ -22,11 +22,12 @@ public class FarmArea : Frameable
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private Farmland[] _farmlands;
-    private GameObject[] _farmlandsSprites;
+    private FarmlandSpriteObject[] _farmlandsSprites;
 
     #endregion
 
     #region ─────────────────────────▶ 공개 변수 ◀─────────────────────────
+    public Farmland[] Farmlands => _farmlands;
     /// <summary>
     /// 세이브 로드 시 해당 메서드 실행.
     /// </summary>
@@ -47,6 +48,11 @@ public class FarmArea : Frameable
         }
         return;
     }
+    public bool ReturnFarmLandCanInteract(int idx)
+    {
+        return _farmlands[idx].CanInteract();
+    }
+    
     #endregion
 
 
@@ -60,20 +66,48 @@ public class FarmArea : Frameable
             {
                 // Awake쪽에서 처리해보도록 수정
                 //_farmlands[i * _width + j] = new Farmland(i * _width + j);
+                
                 int index = i * _width + j;
+
                 _farmlands[index].OnFarmStateChange -= SetFarmLandState;
                 _farmlands[index].OnFarmStateChange += SetFarmLandState;
 
                 _farmlands[index].OnFarmlandConnetionChange -= SetFarmLandSprite;
                 _farmlands[index].OnFarmlandConnetionChange += SetFarmLandSprite;
+                
+                _farmlands[index].OnGrownUp -= FarmlandGrownUp;
+                _farmlands[index].OnGrownUp += FarmlandGrownUp;
 
-                _farmlandsSprites[index] = Instantiate(_farmSpritePrefab);
+                _farmlands[index].OnGetHarvest -= GetHarvest;
+                _farmlands[index].OnGetHarvest += GetHarvest;
+
+                GameObject tempFarmLansSpObject = Instantiate(_farmSpritePrefab);
+
+                _farmlandsSprites[index] = tempFarmLansSpObject.GetComponent<FarmlandSpriteObject>();
+
                 _farmlandsSprites[index].transform.SetParent(this.transform);
+                _farmlandsSprites[index].SetInfo(this, index);
+
+                _farmlandsSprites[index].OnInteract -= OnInteract;
+                _farmlandsSprites[index].OnInteract += OnInteract;
+
                 _farmlandsSprites[index].transform.localPosition = new Vector3(j, i);
             }
         }
     }
 
+    private void FarmlandGrownUp(int idx)
+    {
+        _farmlandsSprites[idx].FinishIcon.enabled = true;
+    }
+    private void OnInteract(int farmlandIdx)
+    {
+        _farmlands[farmlandIdx].Interact();
+    }
+    private void GetHarvest(int farmlandIdx)
+    {
+        _farmlandsSprites[farmlandIdx].ResetSprite();
+    }
     //경작지의 상태가 변화할 때 실행되는 이벤트 액션.
     private void SetFarmLandState(FarmStateChangeStruct context)
     {
@@ -223,7 +257,7 @@ public class FarmArea : Frameable
     //테스트용.
     public void TestFunction(int pos, string seedId)
     {
-        _farmlands[pos].Interact(_grownTime, seedId); // 인벤토리가 생기면 전달인수는 모두 제거 예정.
+        _farmlands[pos].Interact(seedId); // 인벤토리가 생기면 전달인수는 모두 제거 예정.
     }
     public override EPriority Priority => EPriority.Last;
     public override void ExecuteFrame()
@@ -237,7 +271,7 @@ public class FarmArea : Frameable
     {
         // 빈 팜랜드 먼저 생성
         _farmlands = new Farmland[_width * _height];
-        _farmlandsSprites = new GameObject[_width * _height];
+        _farmlandsSprites = new FarmlandSpriteObject[_width * _height];
         int length = _farmlands.Length;
         for (int i = 0; i < length; ++i)
         {

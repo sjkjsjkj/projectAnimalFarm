@@ -34,7 +34,7 @@ public class PlayerInventoryUI : InventoryUI
 
     public override void RefreshInventoryUI(int slotIdx, InventorySlot invenSlot)
     {
-        if(invenSlot == null || invenSlot.IsEmpty)
+        if( invenSlot.IsEmpty)
         {
             _inventorySlotUIs[slotIdx].SlotClear();
             return;

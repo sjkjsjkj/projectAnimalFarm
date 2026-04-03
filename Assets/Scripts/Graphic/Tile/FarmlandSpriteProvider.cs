@@ -22,7 +22,7 @@ public class FarmlandSpriteProvider : Singleton<FarmlandSpriteProvider>
     [SerializeField] private Sprite[] _blueBerrySprites;    
     [SerializeField] private Sprite[] _radishSprites;       
     [SerializeField] private Sprite[] _cabbageSprites;      
-    [SerializeField] private Sprite[] _whatSprites;         
+    [SerializeField] private Sprite[] _cauliFlowerSprites;         
     [SerializeField] private Sprite[] _riceSprites;         
     [SerializeField] private Sprite[] _broccoliSprites;     
     #endregion
@@ -74,17 +74,17 @@ public class FarmlandSpriteProvider : Singleton<FarmlandSpriteProvider>
     }
     private void SetDictionary()
     {
-        _seedSprites.Add(EHarvest.StrawBerry.ToSafeString(), _strawBerrySprites);
-        _seedSprites.Add(EHarvest.GreenOnion.ToSafeString(), _greendOnionSprites);
-        _seedSprites.Add(EHarvest.Potato.ToSafeString(), _potatoSprites);
-        _seedSprites.Add(EHarvest.Onion.ToSafeString(), _onionSprites);
-        _seedSprites.Add(EHarvest.Carrot.ToSafeString(), _carrotSprites);
-        _seedSprites.Add(EHarvest.BlueBerry.ToSafeString(), _blueBerrySprites);
-        _seedSprites.Add(EHarvest.Radish.ToSafeString(), _radishSprites);
-        _seedSprites.Add(EHarvest.Cabbage.ToSafeString(), _cabbageSprites);
-        _seedSprites.Add(EHarvest.Cauliflower.ToSafeString(), _whatSprites);
-        _seedSprites.Add(EHarvest.Rice.ToSafeString(), _riceSprites);
-        _seedSprites.Add(EHarvest.Broccoli.ToSafeString(), _broccoliSprites);
+        _seedSprites.Add(Id.Item_Seed_StrawBerry, _strawBerrySprites);
+        _seedSprites.Add(Id.Item_Seed_GreenOnion, _greendOnionSprites);
+        _seedSprites.Add(Id.Item_Seed_Potato,  _potatoSprites);
+        _seedSprites.Add(Id.Item_Seed_Onion, _onionSprites);
+        _seedSprites.Add(Id.Item_Seed_Carrot, _carrotSprites);
+        _seedSprites.Add(Id.Item_Seed_BlueBerry, _blueBerrySprites);
+        _seedSprites.Add(Id.Item_Seed_Radish, _radishSprites);
+        _seedSprites.Add(Id.Item_Seed_Cabbage,     _cabbageSprites);
+        _seedSprites.Add(Id.Item_Seed_Cauliflower,    _cauliFlowerSprites);
+        _seedSprites.Add(Id.Item_Seed_Rice,  _riceSprites);
+        _seedSprites.Add(Id.Item_Seed_Broccoli,_broccoliSprites);
     }
     #endregion
 }
