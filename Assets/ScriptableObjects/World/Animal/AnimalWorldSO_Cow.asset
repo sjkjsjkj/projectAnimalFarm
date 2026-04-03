@@ -17,16 +17,16 @@ MonoBehaviour:
   _name: "\uC18C"
   _description: "\uCEE4\uB2E4\uB780 \uB369\uCE58\uB9CC\uD07C\uC774\uB098 \uB290\uAE0B\uD558\uACE0
     \uC628\uC21C\uD55C \uC131\uACA9\uC758 \uC18C\uC720\uC790\uC785\uB2C8\uB2E4."
+  _rarity: 1
   _image: {fileID: -1604644640301926670, guid: b35488fecb3abbb43b482d1fcc46ae59, type: 3}
   _prefab: {fileID: 7868252610874373284, guid: 1c6426cb86c37b74b8efdf2dbc9409a0, type: 3}
-  _rarity: 1
   _size: {x: 1, y: 1}
   _animController: {fileID: 9100000, guid: 166dd3b64bf11f34a93abccac5e61d1b, type: 2}
   _needFood: 1
   _feedMinRarity: 1
   _tickFeedAmount: 0.1
   _maxFeedAmount: 5000
-  _productId: Item_Product_RawMilk
-  _productCountMin: 1
-  _productCountMax: 1
+  _productId: Item_Product_Milk
+  _productMinCount: 1
+  _productMaxCount: 1
   _productTime: 100

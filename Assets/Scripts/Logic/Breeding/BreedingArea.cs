@@ -32,32 +32,19 @@ public class BreedingArea : BaseMono, IFoodProvider
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
     // IFoodProvider 로 약속한 함수.
     // 동물에게 먹이통의 위치를 알려주는 함수이다.
-    public Transform GetFoodBoxPosition()
+    public Vector3 GetFoodBoxPosition()
     {
-        return _foodBoxTr;
+        return _foodBoxTr.localPosition;
     }
 
     //사육장을 만드는 기능.
     public void MakeBreedingArea()
     {
-        //for (int i = -_witdh/2; i < _witdh/2; i++)
-        //{
-        //    for (int j = -_height/2; j < _height/2; j++)
-        //    {
-        //        //울타리 세팅
-        //        if (i == -_witdh / 2 || i == _witdh / 2 - 1 || j == -_height / 2 || j == _height / 2 - 1)
-        //        {
-        //            GameObject tempGo = Instantiate(_cagePrefab);
-        //            tempGo.transform.SetParent(transform);
-        //            tempGo.transform.localPosition = new Vector3(i, j);
-        //        }
-        //    }
-        //}
         //먹이통 세팅
         GameObject tempGoFB = Instantiate(_foodBoxPrefab);
         _foodBoxTr = tempGoFB.transform;
         tempGoFB.transform.SetParent(transform);
-        tempGoFB.transform.localPosition = GetRandomPos();
+        tempGoFB.transform.localPosition = new Vector3(K.FOOD_BOX_POS_X, K.FOOD_BOX_POS_Y);
     }
 
     //동물의 ID를 입력하여 객체를 소환하는 기능
@@ -90,8 +77,8 @@ public class BreedingArea : BaseMono, IFoodProvider
     //소환되는 동물의 위치를 사육장 내 랜덤한 위치로 조정하기 위함.
     private Vector3 GetRandomPos()
     {
-        float posX = Random.Range(-_witdh / 2 + 1, _witdh / 2 - 1);
-        float posY = Random.Range(-_height / 2 + 1, _height / 2 - 1);
+        float posX = Random.Range(-_witdh / 2+2, _witdh / 2 - 2);
+        float posY = Random.Range(-_height / 2+2, _height / 2 - 2);
         return new Vector3(posX, posY);
     }
     #endregion

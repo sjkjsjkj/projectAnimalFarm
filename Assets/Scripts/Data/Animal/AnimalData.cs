@@ -9,18 +9,26 @@ using UnityEngine;
 public class AnimalData
 {
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
+    [SerializeField] private string _id;
     [SerializeField] private string _animalName;
     [SerializeField] private int _age;
                      
     [SerializeField] private bool _needFood;           // 음식을 먹어야 하는 동물인지
     [SerializeField] private float _hunger;            // 현재 허기짐 정도
     [SerializeField] private float _foodConsumeAmount; // 음식을 얼마나 섭취하는지 (1틱당 소모되는 허기짐)
+    [SerializeField] private int _productProgress;
+    [SerializeField] private Vector2 _size;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
+    public string Id => _id;
     public string Name => _animalName;
     public int Age => _age;
+    public Vector2 Size => _size;
+    public int ProductProgress => _productProgress;
+
     public event Action OnHungry;
+    public event Action OnProductFinish;
     #endregion
 
     #region ─────────────────────────▶ 생성자 ◀─────────────────────────
@@ -30,19 +38,23 @@ public class AnimalData
     }
     public AnimalData(AnimalWorldSO dataSO)
     {
+        _id = dataSO.Id;
         _animalName = dataSO.Name;
         _age = 0;
         _needFood = true;
         _foodConsumeAmount = dataSO.TickFeedAmount;
         _hunger = 40.0f;
+        _productProgress = 0;
     }
     public AnimalData(AnimalData data)
     {
+        _id = data.Id;
         _animalName = data.Name;
         _age = data.Age;
         _needFood = true;
         _foodConsumeAmount = data._foodConsumeAmount;
         _hunger = data._hunger;
+        _productProgress = data._productProgress;
     }
     #endregion
 
@@ -57,7 +69,7 @@ public class AnimalData
     // 오브젝트에서 특정 프레임마다 불러옴.
     public void Tick()
     {
-        if(_needFood)
+        if (_needFood)
         {
             UDebug.Print($"before hunger = {_hunger}");
             _hunger = MathF.Max(0, _hunger - _foodConsumeAmount);
@@ -68,14 +80,23 @@ public class AnimalData
                 Dead();
                 return;
             }
-            
-            if(_hunger <= K.ANIMAL_HUNGER_CONDITION)
+
+            if (_hunger <= K.ANIMAL_HUNGER_CONDITION)
             {
                 UDebug.Print($"{Name} is so Hungry");
                 OnHungry?.Invoke();
+                return;
             }
-           
+
+            if(++_productProgress == K.MAX_PRODUCT_PROGRESS)
+            {
+                OnProductFinish?.Invoke();
+            }
         }
+    }
+    public void ProductReset()
+    {
+        _productProgress = 0;
     }
     // 여러가지의 이유로 동물이 죽었을 때 호출되는 메서드
     public void Dead()
