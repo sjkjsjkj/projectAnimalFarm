@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// 클래스의 설계 의도입니다.
+/// 경작지 각각의 스프라이트를 관리하는 스크립트입니다.
 /// </summary>
-public class FarmlandSpriteObject : BaseMono
+public class FarmlandSpriteObject : BaseMono 
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("Sprite renderer")]
@@ -12,6 +12,10 @@ public class FarmlandSpriteObject : BaseMono
     [SerializeField] private SpriteRenderer _seedSprite;
     #endregion
 
+    #region  ─────────────────────────▶ 내부 변수 ◀─────────────────────────
+    private int _idx;
+    private string _currentSeededId;
+    #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
 

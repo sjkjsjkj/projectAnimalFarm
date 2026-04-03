@@ -23,8 +23,22 @@ public class FarmArea : Frameable
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private Farmland[] _farmlands;
     private GameObject[] _farmlandsSprites;
-      
+
     #endregion
+
+    #region ─────────────────────────▶ 공개 변수 ◀─────────────────────────
+    /// <summary>
+    /// 세이브 로드 시 해당 메서드 실행.
+    /// </summary>
+    public void OnLoadFarmArea()
+    {
+        for (int i = 0; i < _farmlands.Length; i++)
+        {
+            _farmlands[i].OnLoadFunction();
+        }
+    }
+    #endregion
+
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
     //경작지를 생성하는 메서드

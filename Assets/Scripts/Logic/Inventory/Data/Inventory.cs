@@ -56,10 +56,26 @@ public class Inventory
             OnChangeSlot?.Invoke(_inventoryType , _inventorySlots[itemInputSlot]);
             return true;
         }
-
         return false;
     }
-    public int CheckSlots(ItemSO itemData)
+    public bool TryGetItem(ItemSO itemData , int amount)
+    {
+        if (UDebug.IsNull(itemData))
+        {
+            UDebug.Print("아이템 데이터가 비어있습니다.");
+            return false;
+        }
+        int itemInputSlot = CheckSlots(itemData, amount);
+
+        if (itemInputSlot != -1)
+        {
+            UDebug.Print("인벤UI 최신화!");
+            OnChangeSlot?.Invoke(_inventoryType, _inventorySlots[itemInputSlot]);
+            return true;
+        }
+        return false;
+    }
+    public int CheckSlots(ItemSO itemData, int itemStack = 1)
     {
         //겹칠 수 없는 아이템이라면
         if (itemData.MaxStack == 1)
@@ -69,7 +85,7 @@ public class Inventory
                 //빈자리를 찾는 즉시 아이템 넣고 성공 반환
                 if (_inventorySlots[i].IsEmpty)
                 {
-                    _inventorySlots[i].SetItem(itemData);
+                    _inventorySlots[i].SetItem(itemData, itemStack);
                     return i;//성공시 해당 슬롯의 번호를 반환.
                 }
             }
