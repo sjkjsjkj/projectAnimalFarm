@@ -7,23 +7,12 @@ using UnityEngine;
 /// </summary>
 public class SpriteRegistry : BaseMono
 {
-    [System.Serializable]
-    public class SpriteEntry
-    {
-        public string Key;
-        public Sprite Icon;
-    }
-
-    #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [SerializeField] private List<SpriteEntry> _entries = new List<SpriteEntry>();
-    #endregion
 
-    #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private Dictionary<string, Sprite> _table;
-    #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
-    private void Awake()
+    protected override void Awake()
     {
         BuildTable();
     }
@@ -43,23 +32,23 @@ public class SpriteRegistry : BaseMono
                 continue;
             }
 
-            if (string.IsNullOrWhiteSpace(entry.Key))
+            if (string.IsNullOrWhiteSpace(entry.key))
             {
                 continue;
             }
 
-            if (entry.Icon == null)
+            if (entry.icon == null)
             {
                 continue;
             }
 
-            if (_table.ContainsKey(entry.Key))
+            if (_table.ContainsKey(entry.key))
             {
-                Debug.LogWarning($"[SpriteRegistry] 중복 Key: {entry.Key}");
+                Debug.LogWarning($"[SpriteRegistry] 중복 Key: {entry.key}");
                 continue;
             }
 
-            _table.Add(entry.Key, entry.Icon);
+            _table.Add(entry.key, entry.icon);
         }
     }
     #endregion
@@ -85,4 +74,11 @@ public class SpriteRegistry : BaseMono
         return null;
     }
     #endregion
+
+    [System.Serializable]
+    public class SpriteEntry
+    {
+        public string key;
+        public Sprite icon;
+    }
 }

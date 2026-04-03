@@ -31,7 +31,7 @@ public class InventorySlotUI : BaseMono
 
         if (_nameText != null)
         {
-            _nameText.text = row.Name;
+            _nameText.text = row.name;
         }
 
         if (_amountText != null)

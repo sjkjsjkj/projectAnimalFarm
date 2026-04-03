@@ -64,7 +64,7 @@ public class CContentTestInventory : BaseMono
 
             if (_database != null && _database.TryGetRow(itemId, out SheetItemRow itemRow))
             {
-                itemName = itemRow.Name;
+                itemName = itemRow.name;
             }
 
             Debug.Log($"[Inventory] {itemName}({itemId}) +{amount} / 현재 보유량: {_itemTable[itemId]}");

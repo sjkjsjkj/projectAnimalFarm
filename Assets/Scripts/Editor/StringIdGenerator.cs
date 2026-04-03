@@ -82,7 +82,9 @@ public class StringIdGenerator : EditorWindow
         for (int i = 0; i < length; ++i)
         {
             object id = idField.GetValue(soList[i]);
-            string safeId = id.ToString().Replace(" ", "_");
+            string safeId = id.ToString();
+            safeId = safeId.Replace(" ", "_");
+            safeId = safeId.Replace("-", "_");
             sb.AppendLine($"    public const string {safeId} = \"{id}\";");
         }
         // 상수 작성 끝
@@ -123,16 +125,22 @@ public class StringIdGenerator : EditorWindow
         Type soType = null;
         GUILayout.Label("▷ 아이템 SO ◁", EditorStyles.boldLabel);
         if (GUILayout.Button("미끼 ID")) soType = typeof(BaitItemSO);
-        if (GUILayout.Button("씨앗 ID")) soType = typeof(SeedItemSO);
         if (GUILayout.Button("먹이 ID")) soType = typeof(FeedItemSO);
+        if (GUILayout.Button("정적 ID")) soType = typeof(StaticItemSO);
+        if (GUILayout.Button("씨앗 ID")) soType = typeof(SeedItemSO);
         if (GUILayout.Button("특수 ID")) soType = typeof(SpecialItemSO);
         if (GUILayout.Button("도구 ID")) soType = typeof(ToolItemSO);
         GUILayout.Label("▷ 월드 SO ◁", EditorStyles.boldLabel);
         if (GUILayout.Button("동물 ID")) soType = typeof(AnimalWorldSO);
         if (GUILayout.Button("작물 ID")) soType = typeof(CropWorldSO);
+        if (GUILayout.Button("필드 ID")) soType = typeof(FieldWorldSO);
         if (GUILayout.Button("NPC ID")) soType = typeof(NpcWorldSO);
+        if (GUILayout.Button("플레이어 ID")) soType = typeof(PlayerWorldSO);
+        if (GUILayout.Button("정적 ID")) soType = typeof(StaticWorldSO);
         GUILayout.Label("▷ 사운드 SO ◁", EditorStyles.boldLabel);
         if (GUILayout.Button("오디오 ID")) soType = typeof(SoundSO);
+        GUILayout.Label("▷ 레시피 SO ◁", EditorStyles.boldLabel);
+        if (GUILayout.Button("레시피 ID")) soType = typeof(RequireItemSO);
         // 버튼을 누르지 않았음
         if (soType == null)
         {

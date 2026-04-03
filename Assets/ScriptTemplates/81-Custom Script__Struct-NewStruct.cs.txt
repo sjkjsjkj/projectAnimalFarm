@@ -2,7 +2,7 @@
 /// 구조체의 설계 의도입니다.
 /// </summary>
     #ROOTNAMESPACEBEGIN#
-public class #SCRIPTNAME#
+public struct #SCRIPTNAME#
 {
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
 

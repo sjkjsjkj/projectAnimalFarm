@@ -1,5 +1,4 @@
-﻿using Unity.VisualScripting;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// 경작지들 전체를 관리하는 클래스
@@ -198,7 +197,7 @@ public class FarmArea : Frameable
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
-    private void Awake()
+    protected override void Awake()
     {
         _farmlands = new Farmland[_width* _height];
         _farmlandsSprites = new GameObject[_width * _height];

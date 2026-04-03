@@ -7,6 +7,7 @@ public class DataManager : GlobalSingleton<DataManager>
     private bool _isInitialized = false;
     private OptionData _gameOption;
     private PlayerProvider _playerProvider;
+    private Farmland[] _farmlands;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -26,6 +27,11 @@ public class DataManager : GlobalSingleton<DataManager>
     /// 플레이어 런타임 데이터에 접근합니다.
     /// </summary>
     public PlayerProvider Player => _playerProvider;
+
+    /// <summary>
+    /// 경작지 배열을 가져옵니다. (세이브 로드 용도)
+    /// </summary>
+    public Farmland[] Farmlands => _farmlands;
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────

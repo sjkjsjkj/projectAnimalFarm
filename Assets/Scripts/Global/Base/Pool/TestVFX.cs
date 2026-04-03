@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-/// <summary>
+﻿/// <summary>
 /// 테스트용 객체의 컴포넌트
 /// </summary>
 public class TestVFX : BaseMono, IPoolable

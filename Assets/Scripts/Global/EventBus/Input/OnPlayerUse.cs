@@ -2,10 +2,10 @@
 /// 플레이어가 아이템(도구) 사용 키를 눌렀을 때
 /// 키를 눌렀을 때 1회 발행
 /// </summary>
-public readonly struct OnPlayerUse
+public readonly struct OnPlayerItemUse
 {
     public static void Publish()
     {
-        EventBus<OnPlayerUse>.Publish(new OnPlayerUse());
+        EventBus<OnPlayerItemUse>.Publish(new OnPlayerItemUse());
     }
 }

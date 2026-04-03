@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-/// <summary>
+﻿/// <summary>
 /// 필드에서 제작대와 인터랙션할 때 필요한 오브젝트입니다.
 /// </summary>
 public class WorkbenchIteractionObject : BaseMono

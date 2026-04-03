@@ -49,7 +49,7 @@ public class PictorialBookSystem : BaseMono
 
             if (_database != null && _database.TryGetRow(itemId, out SheetItemRow itemRow))
             {
-                itemName = itemRow.Name;
+                itemName = itemRow.name;
             }
 
             Debug.Log($"[PictorialBook] 새 도감 해금: {itemName} ({itemId})");

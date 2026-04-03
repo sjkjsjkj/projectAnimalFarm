@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-/// <summary>
+﻿/// <summary>
 /// 안움직이는 NPC 스크립트
 /// </summary>
 public class NpcMoveTypeDontMove : NpcMoveTypeBase

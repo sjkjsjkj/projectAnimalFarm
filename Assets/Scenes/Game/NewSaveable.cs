@@ -1,10 +1,9 @@
-using UnityEngine;
+﻿/*using UnityEngine;
 
 /// <summary>
 /// 클래스의 설계 의도입니다.
 /// </summary>
-    #ROOTNAMESPACEBEGIN#
-public class #SCRIPTNAME# : BaseMono, ISaveable
+public class NewSaveable : BaseMono, ISaveable
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     //[Header("주제")]
@@ -24,9 +23,11 @@ public class #SCRIPTNAME# : BaseMono, ISaveable
     {
         UnitSaveData data = new();
         data.health = this._health;
-        data.pos = this.transform.position;
-        data.rot = this.transform.rotation;
-        return JsonUtility.ToJson(data, true);
+        data.health1 = this._health1;
+        data.health2 = this._health2;
+        data.health3 = this._health3;
+        data.health4 = this._health4;
+        return JsonUtility.ToJson(data);
     }
 
     // 매니저에서 호출하는 데이터 복구 함수
@@ -34,27 +35,20 @@ public class #SCRIPTNAME# : BaseMono, ISaveable
     {
         UnitSaveData data = JsonUtility.FromJson<UnitSaveData>(dataJson);
         this._health = data.health;
-        this.transform.position = data.pos;
-        this.transform.rotation = data.rot;
+        this._health = data.health1;
+        this._health = data.health2;
+        this._health = data.health3;
+        this._health = data.health4;
     }
-    #endregion
 
-    #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-    
-    #endregion
-
-    #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
-
-    #endregion
-
-    #region ─────────────────────────▶ 중첩 타입 ◀─────────────────────────
     [System.Serializable]
     private struct UnitSaveData
     {
         public int health;
-        public Vector3 pos;
-        public Quaternion rot;
+        public int health1;
+        public int health2;
+        public int health3;
+        public int health4;
     }
-    #endregion
 }
-#ROOTNAMESPACEEND#
+*/

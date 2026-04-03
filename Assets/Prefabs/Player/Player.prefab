@@ -111,10 +111,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 387195de7b1cdd941a86187e6ac5049d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: 2c7cacaf-edf8-4d87-b195-f70d0a42a89a
-  _instanceId: -177586
+  _uniqueId: 
+  _instanceId: 0
   _animator: {fileID: 117403622075434568}
   _bodySr: {fileID: 1657772836616348313}
+  _tickThirstAmount: 0.1
 --- !u!114 &8935376429265878331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,9 +128,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62fb7f6f55734d24689023d46068e290, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _uniqueId: 
+  _instanceId: 0
   _collectKey: 101
   _collectionCoordinator: {fileID: 0}
   _interactionText: {fileID: 0}
+  _fishingController: {fileID: 0}
+  _interactionAnimator: {fileID: 0}
+  _busyBoolName: IsBusy
+  _gatherTriggerName: Gather
+  _fishingTriggerName: Fish
+  _disableTargetsWhileBusy: []
+  _playerWorldSo: {fileID: 0}
   _logEnabled: 1
 --- !u!114 &4946722572560577548
 MonoBehaviour:
@@ -143,8 +153,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7190ea4b9d29bcb41a229c5c7fce2e68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: 8f210f30-02fb-42cc-b644-d2aefefcca0c
-  _instanceId: -177590
+  _uniqueId: 
+  _instanceId: 0
 --- !u!1 &7311281874584277647
 GameObject:
   m_ObjectHideFlags: 0

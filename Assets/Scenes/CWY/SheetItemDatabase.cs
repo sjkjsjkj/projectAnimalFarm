@@ -29,19 +29,19 @@ public class SheetItemDatabase : BaseMono
             return false;
         }
 
-        if (string.IsNullOrWhiteSpace(row.Id))
+        if (string.IsNullOrWhiteSpace(row.id))
         {
             Debug.LogWarning("[SheetItemDatabase] row.Id가 비어 있습니다.");
             return false;
         }
 
-        if (_itemTable.ContainsKey(row.Id))
+        if (_itemTable.ContainsKey(row.id))
         {
-            Debug.LogWarning($"[SheetItemDatabase] 중복 ID 발견: {row.Id}");
+            Debug.LogWarning($"[SheetItemDatabase] 중복 ID 발견: {row.id}");
             return false;
         }
 
-        _itemTable.Add(row.Id, row);
+        _itemTable.Add(row.id, row);
         _allItems.Add(row);
         return true;
     }
@@ -74,7 +74,7 @@ public class SheetItemDatabase : BaseMono
 
         for (int i = 0; i < _allItems.Count; i++)
         {
-            if (_allItems[i] != null && _allItems[i].Category == category)
+            if (_allItems[i] != null && _allItems[i].category == category)
             {
                 result.Add(_allItems[i]);
             }
