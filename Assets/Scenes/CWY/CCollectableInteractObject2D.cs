@@ -642,9 +642,16 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         }
     }
 
-    public bool Interact(GameObject player) {
+    public void Interact(GameObject player) {
+
+    }
+    public bool CanInteract(GameObject player) {
 
         return false;
+    }
+    public string GetMessage() {
+
+        return string.Empty;
     }
     #endregion
 }

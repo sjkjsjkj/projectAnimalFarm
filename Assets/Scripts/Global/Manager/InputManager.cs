@@ -58,7 +58,7 @@ public sealed class InputManager : GlobalSingleton<InputManager>, InputDispatche
     {
         if (context.performed)
         {
-            OnPlayerUse.Publish();
+            OnPlayerItemUse.Publish();
         }
     }
     public void OnSelectSlot(InputAction.CallbackContext context)

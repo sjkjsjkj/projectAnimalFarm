@@ -5,8 +5,8 @@
 /// </summary>
 public abstract class BaseMono : MonoBehaviour
 {
-    [SerializeField] private string _uniqueId; // UUID
-    [SerializeField] private int _instanceId; // 유니티가 오브젝트에 부여하는 고유 ID
+    [HideInInspector][SerializeField] private string _uniqueId; // UUID
+    [HideInInspector][SerializeField] private int _instanceId; // 유니티가 오브젝트에 부여하는 고유 ID
 
     public string UniqueId { get => _uniqueId; set => _uniqueId = value; }
 
