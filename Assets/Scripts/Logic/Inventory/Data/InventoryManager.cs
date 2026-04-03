@@ -28,7 +28,7 @@ public class InventoryManager : Singleton<InventoryManager>
     private StorageUI _storageUI;
     private ShopUI _shopUI;
     
-    private Dictionary<int, Inventory> _inventoryList;
+    private List<Inventory> _inventoryList;
 
     private int _inventoryCount = 0;
     #endregion
@@ -36,7 +36,7 @@ public class InventoryManager : Singleton<InventoryManager>
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     public Inventory PlayerInventory => _inventoryList[0];
     public PlayerInventoryUI PlayerInvenUI => _playerInventoryUI;
-    public Dictionary<int, Inventory> Inventories => _inventoryList;
+    public List<Inventory> Inventories => _inventoryList;
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
@@ -45,7 +45,7 @@ public class InventoryManager : Singleton<InventoryManager>
         {
             return;
         }
-        _inventoryList = new Dictionary<int, Inventory>();
+        _inventoryList = new List<Inventory>();
 
         InitSetting();
 
@@ -130,13 +130,13 @@ public class InventoryManager : Singleton<InventoryManager>
                 
                 Inventory playerInventory = new Inventory(newInventorySize, EInventoryType.PlayerInventory, 0);
                 //리스트 0번에 플레이어 인벤토리 넣기.
-                _inventoryList.Add(_inventoryCount, playerInventory);
+                _inventoryList.Add(playerInventory);
                 Debug.Log($"플레이어 인벤토리 생성 | CurInvenCount : {_inventoryCount}");
                 //타입에 맞는 UI에 데이터 넣기.
                 //플레이어의 인벤토리는 세상에 단 한개임으로 바로 데이터를 집어 넣는 것이 관리하기 편할 것이라고 판단.
                 break;
             default:
-                _inventoryList.Add(_inventoryCount, new Inventory(newInventorySize, invenType, _inventoryCount));
+                _inventoryList.Add(new Inventory(newInventorySize, invenType, _inventoryCount));
                 break;
         }
         _inventoryList[_inventoryCount].OnChangeSlot -= NotifyRequestRefreshUISlot;

@@ -1,7 +1,7 @@
 ﻿/// <summary>
 /// 인벤토리의 각각의 슬롯의 속성들을 가진 구조체 입니다.
 /// </summary>
-public class InventorySlot
+public struct InventorySlot
 {
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private ItemSO _itemData;
@@ -73,6 +73,12 @@ public class InventorySlot
             return;
         }
         _stack -= amount;
+
+        if (_stack <= 0)
+        {
+            SlotClear();
+            return;
+        }
     }
     #endregion
 }

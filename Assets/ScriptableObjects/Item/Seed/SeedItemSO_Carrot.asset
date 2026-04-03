@@ -17,11 +17,12 @@ MonoBehaviour:
   _name: "\uB2F9\uADFC"
   _description: "\uB545\uC18D \uAE4A\uC774 \uC790\uB77C\uB294 \uC8FC\uD669\uC0C9
     \uBFCC\uB9AC\uCC44\uC18C\uC785\uB2C8\uB2E4."
+  _rarity: 1
   _image: {fileID: -2093901266, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
   _prefab: {fileID: 0}
-  _rarity: 1
   _sellPrice: 100
   _buyPrice: 200
   _maxStack: 64
-  _placeCropID: World_Crop_Carrot
+  _placeCropId: 
   _needFarmingLevel: 1
+  _harvestItemId: Carrot_0

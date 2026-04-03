@@ -17,11 +17,12 @@ MonoBehaviour:
   _name: "\uBE0C\uB85C\uCF5C\uB9AC"
   _description: "\uD48D\uC131\uD558\uACE0 \uC9D9\uC740 \uB179\uC0C9 \uAF43\uBD09\uC624\uB9AC\uAC00
     \uC790\uB77C\uB0A9\uB2C8\uB2E4."
+  _rarity: 1
   _image: {fileID: 1508155040, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
   _prefab: {fileID: 0}
-  _rarity: 1
   _sellPrice: 100
   _buyPrice: 200
   _maxStack: 64
-  _placeCropID: World_Crop_Broccoli
+  _placeCropId: 
   _needFarmingLevel: 1
+  _harvestItemId: Broccoli_0

@@ -17,11 +17,12 @@ MonoBehaviour:
   _name: "\uD30C"
   _description: "\uC131\uC7A5 \uC18D\uB3C4\uAC00 \uBE60\uB974\uACE0 \uC5B4\uB514\uC11C\uB4E0
     \uC798 \uC790\uB77C\uB294 \uD5A5\uC2E0 \uCC44\uC18C\uC785\uB2C8\uB2E4."
+  _rarity: 1
   _image: {fileID: 2136144850, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
   _prefab: {fileID: 0}
-  _rarity: 1
   _sellPrice: 100
   _buyPrice: 200
   _maxStack: 64
-  _placeCropID: World_Crop_GreenOnion
+  _placeCropId: 
   _needFarmingLevel: 1
+  _harvestItemId: LargeGgreenOnion_0

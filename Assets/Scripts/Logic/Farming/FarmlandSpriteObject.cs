@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 /// <summary>
 /// 경작지 각각의 스프라이트를 관리하는 스크립트입니다.
@@ -10,41 +11,56 @@ public class FarmlandSpriteObject : BaseMono , IAutoInteractable
     [SerializeField] private SpriteRenderer _soilSprite;
     [SerializeField] private SpriteRenderer _moistSprite;
     [SerializeField] private SpriteRenderer _seedSprite;
+    [SerializeField] private SpriteRenderer _harvestFinishIcon;
     #endregion
 
     #region  ─────────────────────────▶ 내부 변수 ◀─────────────────────────
+    private FarmArea _area;
     private int _idx;
-    private string _currentSeededId;
     private bool _isGrownUp;
-    private EFarmlandState _state;
     #endregion
 
-    #region  ─────────────────────────▶ 외부 메서드 ◀─────────────────────────
+
+    #region  ─────────────────────────▶외부 공개◀─────────────────────────
+    public SpriteRenderer FinishIcon => _harvestFinishIcon;
+
+    public event Action<int> OnInteract;
+
+
+    public void SetInfo(FarmArea area, int idx)
+    {
+        _harvestFinishIcon.enabled = false;
+        _area = area;
+        _idx = idx;
+    }
     public bool CanInteract(GameObject player)
     {
-        return true;
+        UDebug.Print("경작지 인터랙트 시도");
+        
+        return _area.ReturnFarmLandCanInteract(_idx);
     }
 
     public string GetMessage()
     {
-        UDebug.Print("생산 완료!");
-        return "생산 완료!";
+        UDebug.Print("경작지 인터랙트 확인.");
+        return "경작지 인터랙트 확인했습니다.";
     }
 
     public void Interact(GameObject player)
     {
-        _isGrownUp = false;
-
-        //ItemCollectionCoordinator.Ins.TryCollectItem(_productItemId, 1);
-
-        //_productFinishIcon.SetActive(false);
-        //_isProductFinish = false;
-        //_data.ProductReset();
+        OnInteract?.Invoke(_idx);
     }
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-
+    
+    public void ResetSprite()
+    {
+        _soilSprite.sprite = null;
+        _moistSprite.sprite = null;
+        _seedSprite.sprite = null;
+        _harvestFinishIcon.enabled = false;
+    }
     public void SetSoilSprite(uint connectDir)
     {
         _soilSprite.sprite = FarmlandSpriteProvider.Ins.GetSoilSprite(connectDir);

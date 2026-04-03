@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 
 /// <summary>
@@ -41,24 +40,8 @@ public class Inventory
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-    public bool TryGetItem(ItemSO itemData)
-    {
-        if(UDebug.IsNull(itemData))
-        {
-            UDebug.Print("아이템 데이터가 비어있습니다.");
-            return false;
-        }
-        int itemInputSlot = CheckSlots(itemData);
-
-        if (itemInputSlot != -1 )
-        {
-            UDebug.Print("인벤UI 최신화!");
-            OnChangeSlot?.Invoke(_inventoryType , _inventorySlots[itemInputSlot]);
-            return true;
-        }
-        return false;
-    }
-    public bool TryGetItem(ItemSO itemData , int amount)
+    
+    public bool TryGetItem(ItemSO itemData , int amount = 1)
     {
         if (UDebug.IsNull(itemData))
         {
@@ -209,10 +192,56 @@ public class Inventory
 
         return totalCount;
     }
+    //해당 타입의 아이템이 인벤토리에 있는지 (ex 먹이 / 씨앗 ) 확인
+    public int FindItemType(EType findType, int startSlotIdx = 0)
+    {
+        for(int i= startSlotIdx; i< _inventorySlots.Length; i++)
+        {
+            if (_inventorySlots[i].IsEmpty)
+            {
+                continue;
+            }
+            if (_inventorySlots[i].ItemSO.Type == findType)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+    //특정 아이템을 하나 받아옴 (인덱스 기준 가장 앞에 있는 녀석)
+    public ItemSO GetItemType(EType findType)
+    {
+        if(findType == EType.None)
+        {
+            UDebug.Print("돌아가세요 손님");
+            return null;
+        }
+
+        int slotIdx = FindItemType(findType);
+
+        if (slotIdx == -1)
+        {
+            UDebug.Print("해당 타입의 아이템이 없습니다.");
+            return null;
+        }
+
+        ItemSO tempItemSO = _inventorySlots[slotIdx].ItemSO;
+
+        if(tempItemSO == null)
+        {
+            UDebug.Print("그럴리가 없는데");
+            return null;
+        }
+        _inventorySlots[slotIdx].RemoveAmount(1);
+
+        OnChangeSlots?.Invoke(EInventoryType.PlayerInventory, this);
+
+        return tempItemSO;
+    }
 
 
     //아이템제거 시도
-    public bool TryRemoveItem(string itemId, int count =1)
+    public bool TryRemoveItem(string itemId, int amount =1)
     {
         int slotIdx = FindItemToSlot(itemId);
         
@@ -222,9 +251,9 @@ public class Inventory
             return false;
         }
         
-        if(CheckHasItem(itemId,count))
+        if(CheckHasItem(itemId,amount))
         {
-            RemoveItem(itemId, count);
+            RemoveItem(itemId, amount);
             return true;
         }
         else
@@ -233,8 +262,8 @@ public class Inventory
             return false;
         }
     }
-    //
-    private void RemoveItem(string itemId, int count =1)
+    //실제로 지우는 메서드
+    private void RemoveItem(string itemId, int amount =1)
     {
         for (int i = 0; i < _inventorySlots.Length; i++)
         {
@@ -246,19 +275,20 @@ public class Inventory
             //ㄴ같으면 들어오는것이 아니라, 다르면 컨티뉴로
             if (_inventorySlots[i].ItemSO.Id.CompareTo(itemId)==0)
             {
-                int removeValue = (int)MathF.Min(count, _inventorySlots[i].CurStack);
+                int removeValue = (int)MathF.Min(amount, _inventorySlots[i].CurStack);
 
                 _inventorySlots[i].RemoveAmount(removeValue);
-                count -= removeValue;
+                amount -= removeValue;
 
-                if (count <= 0) break;
+                if (amount <= 0) break;
             }
         }
         
         OnChangeSlots?.Invoke(EInventoryType.PlayerInventory, this);
     }
+
     //슬롯 전체 제거
-    public void RemoveItemSlot(int slotIdx)
+    public void ItemSlotClear(int slotIdx)
     {
         _inventorySlots[slotIdx].SlotClear();
 
