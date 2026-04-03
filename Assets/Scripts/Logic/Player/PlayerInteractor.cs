@@ -8,9 +8,10 @@ using UnityEngine;
 public class PlayerInteractor : Frameable
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
-    [Header("상호작용 대상")]
+    [Header("상호작용 설정")]
     [SerializeField] private float _interactRadius = 1f;
     [SerializeField] private LayerMask _interactableLayer;
+    [SerializeField] private float _autoInteractInterval = 0.1f;
     [SerializeField] private LayerMask _autoInteractableLayer;
 
     [Header("내부 변수")]
@@ -22,6 +23,7 @@ public class PlayerInteractor : Frameable
     private IInteractable _interactTarget; // 매 프레임 갱신
     private List<IAutoInteractable> _autoInteractableList = new(); // 매 프레임 갱신
     private Collider2D[] _overlapBuffer;
+    private float _nextAutoInteractTime;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -36,16 +38,9 @@ public class PlayerInteractor : Frameable
     public override void ExecuteFrame()
     {
         SearchInteractableObjects();
-        int length = _autoInteractableList.Count;
-        GameObject go = gameObject;
-        for (int i = 0; i < length; ++i)
+        if (UMath.TryCooldownEnd(Time.time, ref _nextAutoInteractTime, _autoInteractInterval))
         {
-            var val = _autoInteractableList[i];
-            if (val.CanInteract(go))
-            {
-                val.Interact(go);
-                return;
-            }
+            AutoInteractObject();
         }
     }
 
@@ -73,6 +68,22 @@ public class PlayerInteractor : Frameable
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
+    // 범위 내의 단일 대상 하나에게 자동으로 상호작용한다.
+    private void AutoInteractObject()
+    {
+        int length = _autoInteractableList.Count;
+        GameObject go = gameObject;
+        for (int i = 0; i < length; ++i)
+        {
+            var val = _autoInteractableList[i];
+            if (val.CanInteract(go))
+            {
+                val.Interact(go);
+                return;
+            }
+        }
+    }
+
     // 상호작용할 대상을 모두 수집한다.
     private void SearchInteractableObjects()
     {

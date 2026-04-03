@@ -7,7 +7,7 @@ public class DataManager : GlobalSingleton<DataManager>
     private bool _isInitialized = false;
     private OptionData _gameOption;
     private PlayerProvider _playerProvider;
-    private Farmland[] _farmlands;
+    private FarmlandSaveData _farmlands;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -31,7 +31,7 @@ public class DataManager : GlobalSingleton<DataManager>
     /// <summary>
     /// 경작지 배열을 가져옵니다. (세이브 로드 용도)
     /// </summary>
-    public Farmland[] Farmlands => _farmlands;
+    public FarmlandSaveData Farmlands => _farmlands;
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
@@ -42,9 +42,18 @@ public class DataManager : GlobalSingleton<DataManager>
         _gameOption = new();
         PlayerWorldSO playerSO = DatabaseManager.Ins.Player(Id.World_Player);
         _playerProvider = new(playerSO);
+        _farmlands = new();
         // 완료
         _isInitialized = true;
         UDebug.Print("데이터 매니저 초기화가 완료되었습니다.");
+    }
+    #endregion
+
+    #region ─────────────────────────▶ 중첩 타입 ◀─────────────────────────
+    [System.Serializable]
+    public class FarmlandSaveData
+    {
+        public Farmland[] farmlands;
     }
     #endregion
 }

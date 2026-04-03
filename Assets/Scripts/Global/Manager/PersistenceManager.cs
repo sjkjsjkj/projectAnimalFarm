@@ -42,10 +42,7 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         // 씬 로드 시작
         LoadDataManager(); // 글로벌 데이터
         EScene nextScene = dm.Player.CurScene;
-        if (prevScene != nextScene)
-        {
-            gm.LoadScene((int)nextScene); // 씬 동기로 전환한 후에
-        }
+        gm.LoadScene((int)nextScene); // 동기 전환 + 동일 씬이어도 무조건 전환
         ReadJsonAndLoadObjects(nextScene); // 씬 데이터
         // 씬 로드 종료
         sw.Stop();
@@ -204,11 +201,13 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
     // DataManager의 데이터 일괄 저장
     private void SaveDataManager()
     {
-        DataManager manager = DataManager.Ins;
-        var option = manager.Option;
+        DataManager m = DataManager.Ins;
+        var option = m.Option;
         SaveData(ref option);
-        var player = manager.Player;
+        var player = m.Player;
         SaveData(ref player);
+        var farmland = m.Farmlands;
+        SaveData(ref farmland);
     }
 
     // DataManager의 데이터 일괄 로드
@@ -219,6 +218,8 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         LoadData(ref option);
         var player = m.Player;
         LoadData(ref player);
+        var farmland = m.Farmlands;
+        LoadData(ref farmland);
         player.IsLoaded = true;
     }
     /*

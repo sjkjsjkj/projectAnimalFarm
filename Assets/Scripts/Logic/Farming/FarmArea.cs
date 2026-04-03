@@ -18,7 +18,7 @@ public class FarmArea : Frameable
 
     [Header("테스트")]
     [SerializeField] private int _grownTime = 3;
-#endregion
+    #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private Farmland[] _farmlands;
@@ -32,10 +32,20 @@ public class FarmArea : Frameable
     /// </summary>
     public void OnLoadFarmArea()
     {
+        var loadFarms = DataManager.Ins.Farmlands;
+        // 세이브 데이터가 없을 경우 
+        if (loadFarms == null || loadFarms.farmlands == null || loadFarms.farmlands.Length <= 0)
+        {
+            return;
+        }
+        // 
         for (int i = 0; i < _farmlands.Length; i++)
         {
+            Farmland savedData = loadFarms.farmlands[i];
+            _farmlands[i].Overwrite(savedData);
             _farmlands[i].OnLoadFunction();
         }
+        return;
     }
     #endregion
 
@@ -44,21 +54,22 @@ public class FarmArea : Frameable
     //경작지를 생성하는 메서드
     private void MakeFarmlands()
     {
-        for (int i=0; i< _height; i++)
+        for (int i = 0; i < _height; i++)
         {
-            for(int j=0; j<_width; j++)
+            for (int j = 0; j < _width; j++)
             {
-                _farmlands[i * _width + j] = new Farmland(i * _width + j);
+                // Awake쪽에서 처리해보도록 수정
+                //_farmlands[i * _width + j] = new Farmland(i * _width + j);
+                int index = i * _width + j;
+                _farmlands[index].OnFarmStateChange -= SetFarmLandState;
+                _farmlands[index].OnFarmStateChange += SetFarmLandState;
 
-                _farmlands[i * _width + j].OnFarmStateChange -= SetFarmLandState;
-                _farmlands[i * _width + j].OnFarmStateChange += SetFarmLandState;
+                _farmlands[index].OnFarmlandConnetionChange -= SetFarmLandSprite;
+                _farmlands[index].OnFarmlandConnetionChange += SetFarmLandSprite;
 
-                _farmlands[i * _width + j].OnFarmlandConnetionChange -= SetFarmLandSprite;
-                _farmlands[i * _width + j].OnFarmlandConnetionChange += SetFarmLandSprite;
-
-                _farmlandsSprites[i * _width + j] = Instantiate(_farmSpritePrefab);
-                _farmlandsSprites[i * _width + j].transform.SetParent(this.transform);
-                _farmlandsSprites[i * _width + j].transform.localPosition = new Vector3(j, i);
+                _farmlandsSprites[index] = Instantiate(_farmSpritePrefab);
+                _farmlandsSprites[index].transform.SetParent(this.transform);
+                _farmlandsSprites[index].transform.localPosition = new Vector3(j, i);
             }
         }
     }
@@ -71,6 +82,17 @@ public class FarmArea : Frameable
 
         context.ShowStruct();
         int pos = context.pos;
+        // 디버깅
+        if(pos < 0 || pos >= _farmlandsSprites.Length)
+        {
+            UDebug.Print($"{pos}는 존재할 수 없는 인덱스입니다.", LogType.Assert);
+            return;
+        }
+        if (_farmlandsSprites[pos] == null)
+        {
+            UDebug.Print($"{pos}에 스프라이트 프리팹이 존재하지 않습니다.", LogType.Assert);
+            return;
+        }
         //경작지의 상태마다 분기
         switch (state)
         {
@@ -81,14 +103,14 @@ public class FarmArea : Frameable
                 return;
             //현재 행동으로 땅을 일구었거나, 물을 주었다면 주변 타일과 비교하여 스프라이트 연결.
             case EFarmlandState.SoiledLand:
-                
+
                 _farmlands[pos].SetConnectSoil();
 
                 //그 후 주변 경작지 상태를 비교하며 스프라이트 변경
                 CheckConnectionDirNearFarmland(pos);
                 break;
             case EFarmlandState.MoistLand:
-                 
+
                 //가장 먼저 아무것도 연결되지 않은 상태의 스프라이트를 넣고
                 _farmlands[pos].SetConnectMoist();
 
@@ -99,7 +121,7 @@ public class FarmArea : Frameable
                 break;
             default:
                 return;
-        }    
+        }
     }
     //주변 경작지의 상태를 불러와 같은 상태인 스프라이트들을 연결시켜주는 로직
     private void CheckConnectionDirNearFarmland(int pos)
@@ -158,7 +180,7 @@ public class FarmArea : Frameable
         mask2 = 0xA;       //1010
 
         mask1 = mask1 & dir;
-        mask2 = mask2 & dir; 
+        mask2 = mask2 & dir;
 
         revDir = mask1 << 1 | mask2 >> 1;
 
@@ -167,13 +189,13 @@ public class FarmArea : Frameable
     //주변 경작지의 상태의 의해 스프라이트가 변경될 때 실행되는 이벤트 액션
     private void SetFarmLandSprite(FarmlandConnetionChangeStruct context)
     {
-        switch(context.state)
+        switch (context.state)
         {
-           
+
             case EFarmlandState.SoiledLand:
                 _farmlandsSprites[context.pos].GetComponent<FarmlandSpriteObject>().SetSoilSprite(context.connectionDir);
                 break;
-            
+
             case EFarmlandState.MoistLand:
                 _farmlandsSprites[context.pos].GetComponent<FarmlandSpriteObject>().SetMoistSprite(context.connectionDir);
                 break;
@@ -183,7 +205,7 @@ public class FarmArea : Frameable
                 break;
         }
         UDebug.Print($"Result State : {_farmlands[context.pos].State}");
-       
+
     }
     //경작지는 일반 클래스이기 때문에 Update가 불가능함.
     //그래서 경작지를 관리하는 이 클래스에서 모든 경작지의 성장? 타이머를 체크해준다고 생각하면 된다.
@@ -213,10 +235,27 @@ public class FarmArea : Frameable
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
     protected override void Awake()
     {
-        _farmlands = new Farmland[_width* _height];
+        // 빈 팜랜드 먼저 생성
+        _farmlands = new Farmland[_width * _height];
         _farmlandsSprites = new GameObject[_width * _height];
-
+        int length = _farmlands.Length;
+        for (int i = 0; i < length; ++i)
+        {
+            _farmlands[i] = new Farmland(i);
+        }
+        // 프리펩 생성 및 이벤트 연결
         MakeFarmlands();
+        // 데이터 로드
+        OnLoadFarmArea();
+        // 글로벌 매니저에 배열 등록
+        if (DataManager.Ins.Farmlands != null)
+        {
+            DataManager.Ins.Farmlands.farmlands = _farmlands;
+        }
+        else
+        {
+            UDebug.Print($"글로벌 매니저에 팜랜드를 등록하지 못했습니다.", LogType.Warning);
+        }
     }
     #endregion
 }

@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 3391262680044502054}
   - component: {fileID: 1531450353304382330}
   - component: {fileID: 6169756523104489479}
-  - component: {fileID: 8935376429265878331}
   - component: {fileID: 4946722572560577548}
+  - component: {fileID: 4684164263075834223}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -116,31 +116,6 @@ MonoBehaviour:
   _animator: {fileID: 117403622075434568}
   _bodySr: {fileID: 1657772836616348313}
   _tickThirstAmount: 0.1
---- !u!114 &8935376429265878331
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5251321745402914498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62fb7f6f55734d24689023d46068e290, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _uniqueId: 
-  _instanceId: 0
-  _collectKey: 101
-  _collectionCoordinator: {fileID: 0}
-  _interactionText: {fileID: 0}
-  _fishingController: {fileID: 0}
-  _interactionAnimator: {fileID: 0}
-  _busyBoolName: IsBusy
-  _gatherTriggerName: Gather
-  _fishingTriggerName: Fish
-  _disableTargetsWhileBusy: []
-  _playerWorldSo: {fileID: 0}
-  _logEnabled: 1
 --- !u!114 &4946722572560577548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,6 +130,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _uniqueId: 
   _instanceId: 0
+--- !u!114 &4684164263075834223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5251321745402914498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ca10447ac5039b4694a9218d517d399, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _uniqueId: 
+  _instanceId: 0
+  _interactRadius: 1
+  _interactableLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  _autoInteractInterval: 0.1
+  _autoInteractableLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  _overlapBufferSize: 225
+  _log: 0
 --- !u!1 &7311281874584277647
 GameObject:
   m_ObjectHideFlags: 0
