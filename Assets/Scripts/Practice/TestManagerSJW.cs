@@ -75,7 +75,7 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
 
     public void TestFarm()
     {
-        _farmArea.TestFunction(_pos, _itemId);
+        _farmArea.TestFunction(_pos, _seedId.ToString());
     }
 
     public void TestCheckRecipe()

@@ -4,7 +4,7 @@
 /// 데이터는 .Data로 접근할 수 있습니다.
 /// </summary>
  
-public class AnimalObject : InfoObject, ISaveable , IInteractable
+public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
 {
     #region ─────────────────────────▶ 인스 펙터 ◀─────────────────────────
     [Header("MonoBehaviour")]
@@ -81,26 +81,29 @@ public class AnimalObject : InfoObject, ISaveable , IInteractable
 
         this._productFinishIcon.gameObject.SetActive(data.data.ProductProgress >= K.MAX_PRODUCT_PROGRESS);
     }
-
-    public bool OnInteract() 
+    public bool CanInteract(GameObject player)
     {
-        if(!_isProductFinish)
-        {
-            return false;
-        }
+        // 조건 검사    
+        return _isProductFinish;
+    }
 
-        UDebug.Print("인터랙트!");
-        //여기서 직접 아이템을 건내줘도 되는건가?
+    public string GetMessage()
+    {
+        UDebug.Print("생산 완료!");
+        return "생산 완료!";
+    }
+
+    public void Interact(GameObject player)
+    {
+        _isProductFinish = false;
 
         ItemCollectionCoordinator.Ins.TryCollectItem(_productItemId, 1);
 
         _productFinishIcon.SetActive(false);
         _isProductFinish = false;
         _data.ProductReset();
-
-        return true;
     }
-
+    
     public override void SetInfo(UnitSO dataSO)
     {
         _spRenderer.sprite = dataSO.Image;
@@ -214,7 +217,8 @@ public class AnimalObject : InfoObject, ISaveable , IInteractable
     {
         _foodBoxPos = foodProvider.GetFoodBoxPosition();
     }
- 
+
+
     
     private void UpdateMoveToEat()
     {
