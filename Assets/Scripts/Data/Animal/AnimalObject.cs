@@ -47,6 +47,7 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
         data.moveDir = _moveDir;
 
         data.productItemId = _productItemId;
+        data.isProductFinish = _isProductFinish;
 
         data.pos = this.transform.position;
         data.rot = this.transform.rotation;
@@ -71,6 +72,7 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
         this._moveDir = data.moveDir;
 
         this._productItemId = data.productItemId;
+        this._isProductFinish = data.isProductFinish;
 
         this._actionInterval = K.ANIMAL_ACTION_INTERVAL;
         this._tickInterval = K.ANIMAL_TICK_INTERVAL;
@@ -322,6 +324,7 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
         public float tickInterval;
 
         public string productItemId;
+        public bool isProductFinish;
 
         public float actionTimer;
         public float actionInterval;
