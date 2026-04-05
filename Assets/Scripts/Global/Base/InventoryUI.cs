@@ -30,12 +30,10 @@ public abstract class InventoryUI : BaseMono
  
     public void ShowUI()
     {
-        UDebug.Print($"{gameObject.name}의 현재 활성화 상태는 {gameObject.activeSelf}입니다.", LogType.Assert);
         gameObject.SetActive(true);
     }
     public void CloseUI()
     {
-        UDebug.Print($"{gameObject.name}의 현재 활성화 상태는 {gameObject.activeSelf}입니다.", LogType.Assert);
         gameObject.SetActive(false);
     }
     /// <summary>

@@ -70,7 +70,7 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
         while (true)
         {
             yield return null;
-            GameObject tempCanvas = UObject.Find(K.NAME_UI_ROOT);
+            GameObject tempCanvas = UObject.Find(K.NAME_GLOBAL_CANVAS_ROOT);
             if (tempCanvas != null)
             {
                 _inventoriesCanvasTr = tempCanvas.transform;
