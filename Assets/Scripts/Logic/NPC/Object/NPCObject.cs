@@ -3,20 +3,17 @@
 /// <summary>
 /// NPC의 구조 전체를 담당하는 스크립트입니다.
 /// </summary>
-public class NPCObject : InfoObject
+public class NPCObject : Frameable
 {
     #region ─────────────────────────▶ 인스 펙터 ◀─────────────────────────
     [Header("MonoBehaviour")]
     [SerializeField] private SpriteRenderer _spRenderer;
+    [SerializeField] private NpcWorldSO _npcSO;
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private NPCData _data;
     private ENpcState _state;
-    private ENpcMoveType _moveType;
-
-    private float _tickTimer = 0;        // Data는 일반 클래스이기 때문에 Update를 사용할 수 없음. 
-    private float _tickInterval = 10.0f; // 그렇기 때문에 여기서 Update를 대신 돌아 줌. 
 
     private float _actionTimer = 0;       // Idle <> Move 상태를 자연스럽게 변경해줄 때 사용할 타이머
     private float _actionInterval = 3.0f; // 3초마다 한번씩 Move/Idle일 경우 랜덤하게 Move/Idle로 행동을 변경할 예정.
@@ -50,35 +47,43 @@ public class NPCObject : InfoObject
     }
 
     //껍데기 밖에 없던 animalObject에 스프라이트와 데이터, 애니메이터 컨트롤러를 넣어주는 작업.
-    public override void SetInfo(UnitSO dataSO)
+    private void SetInfo()
     {
-        _spRenderer.sprite = dataSO.Image;
-        if (!(dataSO as NpcWorldSO))
-        {
-            UDebug.Print("잘못된 데이터가 들어오고 있음. 이 부분에서는 AnimalWorldSO가 들어와야함.", LogType.Warning);
-            return;
-        }
-        NpcWorldSO tempSO = (NpcWorldSO)dataSO;
+        _spRenderer.sprite = _npcSO.Image;
+        
+        _data = new NPCData(_npcSO);
 
-        _data = new NPCData(tempSO);
-
-        switch(tempSO.NpcMoveType)
+        switch(_npcSO.NpcMoveType)
         {
             case ENpcMoveType.DontMove:
                 gameObject.AddComponent<NpcMoveTypeDontMove>();
                 break;
             case ENpcMoveType.AreaMove:
-                gameObject.AddComponent<NpcMoveTypeAreaMove>();
+                if (!(_npcSO is NpcWorldAreaMoveSO areaMoveSO))
+                {
+                    UDebug.Print("인스펙터 에러. 모드에 맞는 SO를 넣으세요.", LogType.Assert);
+                    return; 
+                }
+
+                gameObject.AddComponent<NpcMoveTypeAreaMove>().AreaRangeSetting(areaMoveSO.InitPosition, areaMoveSO.MinPos, areaMoveSO.MaxPos);
+
                 break;
             case ENpcMoveType.PatrolMove:
-                gameObject.AddComponent<NpcMoveTypePatrolMove>();
+                if (!(_npcSO is NpcWorldPatrolMoveSo patrolMoveSO))
+                {
+                    UDebug.Print("인스펙터 에러. 모드에 맞는 SO를 넣으세요.", LogType.Assert);
+                    return;
+                }
+
+                //gameObject.AddComponent<NpcMoveTypeAreaMove>().
+
                 break;
         }
 
         _moveMaster = GetComponent<NpcMoveTypeBase>();
         //TODO: 이벤트 연결
-
-        _animator.runtimeAnimatorController = tempSO.AnimController;
+        _animator.runtimeAnimatorController = _npcSO.AnimController;
+        SetState(ENpcState.Idle);
     }
    
     private void UpdateInteraction()
@@ -87,13 +92,13 @@ public class NPCObject : InfoObject
     }
     private void UpdateMove()
     {
-        _moveMaster.Move();
+        UDebug.Print("이동중");
+        //_moveMaster.Move();
     }
     private void UpdateIdle()
     {
-
+        UDebug.Print("멍때리는중");
     }
-    
     //Idle <> Move 상태를 자연스럽게 변경해주기 위해 다음 액션을 랜덤하게 선택
     private void RandomAction()
     {
@@ -101,15 +106,13 @@ public class NPCObject : InfoObject
         {
             return;
         }
-
         _actionInterval = Random.Range(2.0f, 4.0f);
         _actionTimer = 0;
 
         //랜덤 행동
-        //현재 Idle 애니메이션이 없는 동물이 많아서 이동의 비중을 높힘.
         float randomValue = Random.Range(0.0f, 1.0f);
-        //UDebug.Print($"RandomAction : {randomValue}");
-        if (randomValue >= 0.3f)
+       
+        if (randomValue >= 0.5f)
         {
             SetState(ENpcState.Move);
         }
@@ -118,27 +121,11 @@ public class NPCObject : InfoObject
             SetState(ENpcState.Idle);
         }
     }
-    //내가 바라보는 방향이 움직일 수 있는 곳인지 체크
-    private void MoveDirTileCheck()
-    {
-        //내 타일 위치 체크
-        //이동방향 (_moveDir) 에 있는 타일의 State 체크
-        //_moveDir  ETileState.Moveable 과 비트비교. 
-        //1이라면? true라면 냅둠.
-        //거짓이라면 즉시 RandomAction();
-        //예외처리 해야함. 먹이를 먹으러 가는데 가는 곳이 이동불가다? > RandomAction()으로 초기화도 안됨.
-    }
+    
     public override EPriority Priority => EPriority.Last;
     public override void ExecuteFrame()
     {
-        _tickTimer += Time.deltaTime;
         _actionTimer += Time.deltaTime;
-
-        if (_tickTimer >= _tickInterval)
-        {
-            _tickTimer = 0;
-            _data.Tick();
-        }
 
         if (_actionTimer >= _actionInterval)
         {
@@ -173,6 +160,8 @@ public class NPCObject : InfoObject
 
         UDebug.IsNull(_spRenderer, LogType.Warning);
         UDebug.IsNull(_animator, LogType.Warning);
+
+        SetInfo();
     }
     #endregion
 

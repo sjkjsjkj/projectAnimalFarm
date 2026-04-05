@@ -61,7 +61,10 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
     {
         _breedingArea.SpawnAnimal(_animalID);
     }
-
+    public void TestAllAnimalSpawn()
+    {
+        _breedingArea.TestFunction();
+    }
     public void TestGetItemInvenDir()
     {
         ItemSO tempItemSO = DatabaseManager.Ins.Item(_itemId);

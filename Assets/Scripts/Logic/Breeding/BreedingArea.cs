@@ -26,7 +26,17 @@ public class BreedingArea : BaseMono, IFoodProvider
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
-
+    public void TestFunction()
+    {
+        SpawnAnimal(Id.World_Animal_Cow);
+        SpawnAnimal(Id.World_Animal_Chicken);
+        SpawnAnimal(Id.World_Animal_Sheep);
+        SpawnAnimal(Id.World_Animal_Ostrich);
+        SpawnAnimal(Id.World_Animal_Horse);
+        SpawnAnimal(Id.World_Animal_Duck);
+        SpawnAnimal(Id.World_Animal_Pig);
+        SpawnAnimal(Id.World_Animal_Goat);
+    }
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────

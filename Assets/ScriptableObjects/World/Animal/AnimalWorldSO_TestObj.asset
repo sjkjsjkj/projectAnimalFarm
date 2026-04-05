@@ -13,19 +13,19 @@ MonoBehaviour:
   m_Name: AnimalWorldSO_TestObj
   m_EditorClassIdentifier: 
   _id: World_Animal_TestObj
-  _type: 11
-  _name: "\uD14C\uC2A4\uD2B8 \uC624\uBE0C\uC81D\uD2B8"
-  _description: "\uD15F\uD15F"
-  _rarity: 5
-  _image: {fileID: 992728304312703659, guid: 760baaed2cd83a24da00021f69ac80ca, type: 3}
-  _prefab: {fileID: 9017002183521073491, guid: 477e57e7d5da10941ad2114bd413cd32, type: 3}
+  _type: 0
+  _name: "\uC774\uB984"
+  _description: "\uC124\uBA85"
+  _rarity: 1
+  _image: {fileID: 0}
+  _prefab: {fileID: 0}
   _size: {x: 1, y: 1}
   _animController: {fileID: 0}
-  _needFood: 0
+  _needFood: 1
   _feedMinRarity: 1
   _tickFeedAmount: 0.1
   _maxFeedAmount: 5000
   _productId: 
-  _productMinCount: 0
-  _productMaxCount: 0
-  _productTime: 0
+  _productMinCount: 1
+  _productMaxCount: 1
+  _productTime: 100
