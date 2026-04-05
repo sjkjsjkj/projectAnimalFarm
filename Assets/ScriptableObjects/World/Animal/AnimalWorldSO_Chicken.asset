@@ -25,7 +25,7 @@ MonoBehaviour:
   _feedMinRarity: 1
   _tickFeedAmount: 0.1
   _maxFeedAmount: 5000
-  _productId: ITEM_PRODUCT_EGG
+  _productId: Item_Product_Egg
   _productMinCount: 1
   _productMaxCount: 1
   _productTime: 100

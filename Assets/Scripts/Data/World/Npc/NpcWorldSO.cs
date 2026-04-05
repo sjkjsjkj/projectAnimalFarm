@@ -3,7 +3,6 @@
 /// <summary>
 /// NPC가 월드에서 가지는 정적 데이터입니다.
 /// </summary>
-[CreateAssetMenu(fileName = "NpcWorldSO_", menuName = "ScriptableObjects/World/Npc", order = 1)]
 public class NpcWorldSO : WorldSO
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
@@ -14,6 +13,7 @@ public class NpcWorldSO : WorldSO
     [SerializeField, CsvIgnore] protected string[] _dialog;
 
     [Header("속성")]
+    [SerializeField] protected Vector2 _initPosition;
     [SerializeField, CsvIgnore] private float _moveSpeed;
     [SerializeField, CsvIgnore] private ENpcMoveType _eNpcMoveType;
     // NPC나 상점 / 맵에 종속된 컨텐츠의 경우, Map SO를 만들던지 해서 관리하는게 편하다고 판단.
@@ -26,6 +26,7 @@ public class NpcWorldSO : WorldSO
     public RuntimeAnimatorController AnimController => _animController;
     public string[] Dialog => _dialog;
     public float MoveSpeed => _moveSpeed;
+    public Vector2 InitPosition => _initPosition;
     public ENpcMoveType NpcMoveType => _eNpcMoveType;
     // 정상 값을 가지는지 검사
     public override bool IsValid()
