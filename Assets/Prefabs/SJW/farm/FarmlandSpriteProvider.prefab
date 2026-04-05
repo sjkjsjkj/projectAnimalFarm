@@ -44,6 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2753733f459b7884491e76a724326f4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _uniqueId: 
+  _instanceId: 0
   _soilSprites:
   - {fileID: -1028571424, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
   - {fileID: 812602053, guid: 44466a14870b4dc4c9e7a9227c4756a4, type: 3}
@@ -126,7 +128,7 @@ MonoBehaviour:
   - {fileID: -1485369359, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
   - {fileID: -1112672447, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
   - {fileID: -871369569, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
-  _whatSprites:
+  _cauliFlowerSprites:
   - {fileID: 783019644, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
   - {fileID: 1521338940, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
   - {fileID: 1829230452, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
