@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// 초기화 순서를 제어합니다.
@@ -28,6 +29,23 @@ public class BootManager : MonoBehaviour
         Object.DontDestroyOnLoad(prefabRoot);
         var globalPrefab = prefabRoot.AddComponent<GlobalPrefabLoader>();
         globalPrefab.Initialize(prefabRoot.transform);
+        // 글로벌 캔버스 생성 및 초기화
+        GameObject canvasRoot = new GameObject(K.NAME_GLOBAL_CANVAS_ROOT);
+        Object.DontDestroyOnLoad(canvasRoot);
+        Canvas canvas = UObject.AddComponent<Canvas>(canvasRoot);
+        CanvasScaler canvasScaler = UObject.AddComponent<CanvasScaler>(canvasRoot);
+        GraphicRaycaster graphicRaycaster = UObject.AddComponent<GraphicRaycaster>(canvasRoot);
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvas.pixelPerfect = false;
+        canvas.sortingOrder = 0;
+        canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        canvasScaler.referenceResolution = new Vector2(1920, 1080);
+        canvasScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+        canvasScaler.matchWidthOrHeight = 0.5f;
+        graphicRaycaster.ignoreReversedGraphics = true;
+        graphicRaycaster.blockingObjects = GraphicRaycaster.BlockingObjects.None;
+        graphicRaycaster.blockingMask = LayerMask.GetMask("Everything");
+        // 완료
         yield return null;
         UDebug.Print("▷ 부트 시퀀스가 완료되었습니다. ◁");
         _co = null;

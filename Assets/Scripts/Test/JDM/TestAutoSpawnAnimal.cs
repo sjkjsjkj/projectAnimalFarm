@@ -42,8 +42,9 @@ public class TestAutoSpawnAnimal : Frameable
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         _nextTime = Time.time;
     }
     #endregion

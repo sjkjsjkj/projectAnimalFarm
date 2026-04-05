@@ -103,7 +103,10 @@ public abstract class InventoryUI : BaseMono
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
-
+    private void OnDestroy()
+    {
+        UDebug.Print($"파괴되었습니다.. 난 Dontdestroy인데 {UnityEngine.StackTraceUtility.ExtractStackTrace()}", LogType.Assert);
+    }
     #endregion
 
     #region ─────────────────────────▶ 중첩 타입 ◀─────────────────────────

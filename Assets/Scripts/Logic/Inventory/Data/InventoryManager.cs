@@ -1,12 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 /// <summary>
 /// 모든 인벤토리들 (플레이어 인벤 / 창고 / 상점 등) 들을 관리하는 매니저 
 /// </summary>
-public class InventoryManager : Singleton<InventoryManager>
+public class InventoryManager : GlobalSingleton<InventoryManager>
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("프리팹")]
@@ -71,7 +70,7 @@ public class InventoryManager : Singleton<InventoryManager>
         while (true)
         {
             yield return null;
-            GameObject tempCanvas = UObject.Find(K.NAME_UI_ROOT);
+            GameObject tempCanvas = UObject.Find(K.NAME_GLOBAL_CANVAS_ROOT);
             if (tempCanvas != null)
             {
                 _inventoriesCanvasTr = tempCanvas.transform;

@@ -50,6 +50,7 @@ public class GlobalPrefabLoader : BaseMono
         }
         // 생성
         GameObject instance = Instantiate(prefab, root);
+        Object.DontDestroyOnLoad(instance);
         instance.name = prefab.name; // Clone 이름 제거
         UDebug.Print($"글로벌 프리펩({instance.name})을 생성했습니다.");
     }

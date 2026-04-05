@@ -320,7 +320,7 @@ public class UIInventory : BaseMono
                 continue;
             }
 
-            Destroy(child.gameObject);
+            UObject.Destroy(child.gameObject);
         }
     }
 

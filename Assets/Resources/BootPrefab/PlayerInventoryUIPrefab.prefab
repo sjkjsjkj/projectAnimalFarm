@@ -60,8 +60,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc14fbf363c21084f95b2174a8d4f1d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: 8d906156-2cce-4bb8-8bc9-2a95b8ec2c3d
-  _instanceId: -28192
+  _uniqueId: 
+  _instanceId: 0
   _inventorySlotUIPrefab: {fileID: 1310831404159261983, guid: 0da89e6cb2f3e4f488f2a1699ce8ad2f, type: 3}
   _dragIcon: {fileID: 3242638387530614949}
   _contentsArea: {fileID: 2960217912084221171}
@@ -146,8 +146,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 487ff338c530d0b47bd3a46d22bc25d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: b277a879-1ea9-4775-83ce-189e06ba9caa
-  _instanceId: -28228
+  _uniqueId: 
+  _instanceId: 0
   _icon: {fileID: 6569642875156807376}
 --- !u!222 &3542087026737069289
 CanvasRenderer:
