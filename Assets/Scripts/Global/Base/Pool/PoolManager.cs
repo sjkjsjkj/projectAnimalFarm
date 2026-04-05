@@ -48,7 +48,7 @@ public class PoolManager : GlobalSingleton<PoolManager>
         else
         {
             UDebug.Print($"유닛 ({id})에 해당하는 풀링 팩토리가 없으므로 인스턴스를 파괴합니다.", LogType.Assert);
-            Destroy(instance.gameObject);
+            UObject.Destroy(instance.gameObject);
         }
     }
 

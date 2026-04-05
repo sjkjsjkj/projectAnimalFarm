@@ -71,9 +71,9 @@ public class AnimalData
     {
         if (_needFood)
         {
-            UDebug.Print($"before hunger = {_hunger}");
+            //UDebug.Print($"before hunger = {_hunger}");
             _hunger = MathF.Max(0, _hunger - _foodConsumeAmount);
-            UDebug.Print($"after hunger = {_hunger}");
+            //UDebug.Print($"after hunger = {_hunger}");
 
             if (_hunger <= 0)
             {

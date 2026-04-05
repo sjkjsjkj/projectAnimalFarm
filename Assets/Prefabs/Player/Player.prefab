@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 6169756523104489479}
   - component: {fileID: 4946722572560577548}
   - component: {fileID: 4684164263075834223}
+  - component: {fileID: 8068329847883290657}
+  - component: {fileID: 4618466246278047088}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -154,6 +156,48 @@ MonoBehaviour:
     m_Bits: 64
   _overlapBufferSize: 225
   _log: 0
+--- !u!114 &8068329847883290657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5251321745402914498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5f50ffd51274e14fb820f8e308a10ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _uniqueId: 
+  _instanceId: 0
+  _consumeHungerInterval: 0.5
+  _consumeHungerAmount: 0.12
+  _consumeThirstInterval: 0.5
+  _consumeThirstAmount: 0.12
+--- !u!114 &4618466246278047088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5251321745402914498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ca10447ac5039b4694a9218d517d399, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _uniqueId: 
+  _instanceId: 0
+  _interactRadius: 3
+  _interactableLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  _autoInteractInterval: 0.1
+  _autoInteractableLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  _overlapBufferSize: 225
+  _log: 1
 --- !u!1 &7311281874584277647
 GameObject:
   m_ObjectHideFlags: 0
@@ -227,7 +271,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 51
+  m_SortingOrder: 0
   m_Sprite: {fileID: 4723107735738678597, guid: f146b4f6531d0674eb0e9ebcb53bb73b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-/// <summary>
+﻿/// <summary>
 /// 플레이어가 인벤토리를 인터랙션 할수 있게 매개체.
 /// </summary>
 public class InventoryInteractObject : BaseMono

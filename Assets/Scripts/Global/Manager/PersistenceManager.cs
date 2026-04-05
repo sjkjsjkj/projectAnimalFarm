@@ -10,6 +10,8 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
 {
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private bool _isInitialized = false;
+    private bool _isLoading = false;
+    private bool _isSaving = false;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -18,13 +20,26 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
     /// </summary>
     public void Save()
     {
+        if (_isSaving)
+        {
+            UDebug.Print($"저장 작업 도중 저장이 중복 실행되었으므로 무시합니다.", LogType.Warning);
+            return;
+        }
+        if (_isLoading)
+        {
+            UDebug.Print($"저장 작업 도중 로드가 실행되었으므로 무시합니다.", LogType.Warning);
+            return;
+        }
+        _isSaving = true;
         EScene curScene = GameManager.Ins.Scene;
         UDebug.Print($"씬 {curScene}에서 저장을 시작합니다.");
         Stopwatch sw = new();
         sw.Start();
         SaveDataManager();
+        SaveDynamicData(curScene);
         CollectObjectsAndSaveJson(curScene);
         sw.Stop();
+        _isSaving = false;
         UDebug.Print($"씬 {curScene}의 저장이 완료되었습니다. ({(sw.ElapsedMilliseconds * 0.001):F2}s)");
     }
 
@@ -33,6 +48,17 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
     /// </summary>
     public void Load()
     {
+        if (_isSaving)
+        {
+            UDebug.Print($"불러오기 작업 도중 저장이 실행되었으므로 무시합니다.", LogType.Warning);
+            return;
+        }
+        if (_isLoading)
+        {
+            UDebug.Print($"불러오기 작업 도중 로드가 중복 실행되었으므로 무시합니다.", LogType.Warning);
+            return;
+        }
+        _isLoading = true;
         var dm = DataManager.Ins;
         var gm = GameManager.Ins;
         EScene prevScene = gm.Scene;
@@ -40,12 +66,19 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         Stopwatch sw = new();
         sw.Start();
         // 씬 로드 시작
-        LoadDataManager(); // 글로벌 데이터
         EScene nextScene = dm.Player.CurScene;
-        gm.LoadScene((int)nextScene); // 동기 전환 + 동일 씬이어도 무조건 전환
-        ReadJsonAndLoadObjects(nextScene); // 씬 데이터
+        LoadDataManager(); // 글로벌 데이터
+        LoadDynamicData(nextScene);
+        //gm.LoadScene((int)nextScene); // 동기 전환 + 동일 씬이어도 무조건 전환
+        gm.LoadSceneAsync(
+            (int)nextScene,
+            () => { },
+            (float progress) => { },
+            0
+        );
         // 씬 로드 종료
         sw.Stop();
+        _isLoading = false;
         UDebug.Print($"씬 {nextScene}의 로드가 완료되었습니다. ({(sw.ElapsedMilliseconds * 0.001):F2}s)");
     }
 
@@ -69,11 +102,30 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
     // 씬 전환 핸들
     private void SceneChangeStartHandle(OnSceneLoadStart ctx)
     {
+        if (_isSaving)
+        {
+            UDebug.Print($"저장 작업 도중 저장이 중복 실행되었으므로 무시합니다.", LogType.Assert);
+            return;
+        }
+        if (_isLoading)
+        {
+            UDebug.Print($"저장 작업 도중 로드가 실행되었으므로 무시합니다.", LogType.Assert);
+            return;
+        }
+        _isSaving = true;
         CollectObjectsAndSaveJson(ctx.prevScene);
+        SaveDynamicData(ctx.prevScene);
+        _isSaving = false;
     }
     private void SceneChangeEndHandle(OnSceneLoadEnd ctx)
     {
+        if (_isSaving)
+        {
+            UDebug.Print($"불러오기 작업 도중 저장이 실행되었으므로 무시합니다.", LogType.Assert);
+            return;
+        }
         ReadJsonAndLoadObjects(ctx.nextScene);
+        LoadDynamicData(ctx.nextScene);
     }
     #endregion
 
@@ -99,6 +151,7 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         // 모든 BaseMono 순회
         int length = gos.Length;
         string basePath = $"{Application.persistentDataPath}/{K.PRESISTENT_OBJECT_PATH}/{prevScene}";
+        int success = 0;
         for (int i = 0; i < length; ++i)
         {
             // 저장 컴포넌트 가져오기 시도
@@ -119,7 +172,9 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
             {
                 sw.Write(json);
             }
+            success++;
         }
+        UDebug.Print($"오브젝트 {success}개를 저장했습니다.");
     }
 
     // 알맞은 폴더 경로에서 Json을 읽어서 오브젝트를 생성합니다.
@@ -129,6 +184,7 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         string dirPath = $"{Application.persistentDataPath}/{K.PRESISTENT_OBJECT_PATH}/{nextScene}";
         if (!Directory.Exists(dirPath))
         {
+            UDebug.Print($"{nextScene} 씬 폴더가 존재하지 않으므로 로드를 중단합니다.");
             return;
         }
         // 씬에 존재하는 모든 BaseMono 오브젝트 수집 및 딕셔너리 작성
@@ -152,12 +208,18 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         string[] files = Directory.GetFiles(dirPath, "*.json");
         // 모든 파일을 순회하여 오브젝트 로드
         int fileCount = files.Length;
+        if(fileCount <= 0)
+        {
+            UDebug.Print($"{nextScene} 씬에서 로드할 오브젝트 데이터가 존재하지 않습니다.");
+            return;
+        }
         var dm = DatabaseManager.Ins;
         for (int i = 0; i < fileCount; ++i)
         {
             string filePath = files[i];
             string fileName = Path.GetFileNameWithoutExtension(filePath); // 경로와 확장자 제거
             int index = fileName.IndexOf('@');
+            UDebug.Print($"여기 실행하고 있니? 1 {fileName}");
             // 잘못된 파일 형식
             if (index < 0)
             {
@@ -165,6 +227,7 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
             }
             string uniqueId = fileName.Substring(index + 1);
             string json = File.ReadAllText(filePath);
+            UDebug.Print($"여기 실행하고 있니? 2 {uniqueId}");
             // 씬에 존재하는 UUID
             if (saveableDict.TryGetValue(uniqueId, out ISaveable val))
             {
@@ -174,6 +237,7 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
             // 씬에 없으므로 생성하여 데이터 주입
             string unitId = fileName.Substring(0, index);
             GameObject prefab = dm.Unit(unitId)?.Prefab;
+            UDebug.Print($"여기 실행하고 있니? 3 {unitId}");
             if (prefab == null)
             {
                 UDebug.Print($"UnitSO에 {unitId} ID를 가진 프리펩이 존재하지 않습니다.", LogType.Warning);
@@ -206,11 +270,9 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         SaveData(ref option);
         var player = m.Player;
         SaveData(ref player);
-        var farmland = m.Farmlands;
-        SaveData(ref farmland);
     }
 
-    // DataManager의 데이터 일괄 로드
+    // DataManager의 글로벌 데이터 일괄 로드
     private void LoadDataManager()
     {
         DataManager m = DataManager.Ins;
@@ -221,6 +283,28 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         var farmland = m.Farmlands;
         LoadData(ref farmland);
         player.IsLoaded = true;
+    }
+
+    // DataManager의 씬 데이터 일괄 저장
+    private void SaveDynamicData(EScene prevScene)
+    {
+        DataManager m = DataManager.Ins;
+        if(prevScene == EScene.Main)
+        {
+            var farmland = m.Farmlands;
+            SaveData(ref farmland);
+        }
+    }
+
+    // DataManager의 씬 데이터 일괄 로드
+    private void LoadDynamicData(EScene nextScene)
+    {
+        DataManager m = DataManager.Ins;
+        if(nextScene == EScene.Main)
+        {
+            var farmland = m.Farmlands;
+            LoadData(ref farmland);
+        }
     }
     /*
         구조체 적용법

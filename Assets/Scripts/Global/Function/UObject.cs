@@ -82,6 +82,11 @@ public static class UObject
     {
         if (go != null)
         {
+            if (go.name.Contains("Inventory"))
+            {
+                UDebug.Print($"너가 범인이야?", LogType.Assert);
+                return;
+            }
             UnityEngine.Object.Destroy(go, delay);
         }
     }
@@ -95,7 +100,7 @@ public static class UObject
     {
         if (prefab != null)
         {
-            UnityEngine.Object.Destroy(prefab.gameObject, delay);
+            UObject.Destroy(prefab.gameObject, delay);
         }
     }
 
@@ -112,7 +117,7 @@ public static class UObject
         int length = parent.childCount;
         for (int i = length - 1; i >= 0; --i)
         {
-            Destroy(parent.GetChild(i).gameObject);
+            UObject.Destroy(parent.GetChild(i).gameObject);
         }
     }
 
@@ -215,7 +220,7 @@ public static class UObject
     {
         if (go != null && go.TryGetComponent(out T component))
         {
-            UnityEngine.Object.Destroy(component);
+            UObject.Destroy(component);
         }
     }
     #endregion

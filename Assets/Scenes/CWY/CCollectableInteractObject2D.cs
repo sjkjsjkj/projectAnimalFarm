@@ -428,7 +428,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         // 리스폰이 아니라면 기존 로직대로 파괴 / 비활성화
         if (_destroyOnCollected)
         {
-            Destroy(gameObject);
+            UObject.Destroy(gameObject);
             return;
         }
 

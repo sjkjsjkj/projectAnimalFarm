@@ -35,14 +35,14 @@ public class FarmlandSpriteObject : BaseMono , IAutoInteractable
     }
     public bool CanInteract(GameObject player)
     {
-        UDebug.Print("경작지 인터랙트 시도");
+        //UDebug.Print("경작지 인터랙트 시도");
         
         return _area.ReturnFarmLandCanInteract(_idx);
     }
 
     public string GetMessage()
     {
-        UDebug.Print("경작지 인터랙트 확인.");
+        //UDebug.Print("경작지 인터랙트 확인.");
         return "경작지 인터랙트 확인했습니다.";
     }
 

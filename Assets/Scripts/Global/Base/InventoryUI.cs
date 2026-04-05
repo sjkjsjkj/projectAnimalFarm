@@ -30,10 +30,12 @@ public abstract class InventoryUI : BaseMono
  
     public void ShowUI()
     {
+        UDebug.Print($"{gameObject.name}의 현재 활성화 상태는 {gameObject.activeSelf}입니다.", LogType.Assert);
         gameObject.SetActive(true);
     }
     public void CloseUI()
     {
+        UDebug.Print($"{gameObject.name}의 현재 활성화 상태는 {gameObject.activeSelf}입니다.", LogType.Assert);
         gameObject.SetActive(false);
     }
     /// <summary>
@@ -103,7 +105,10 @@ public abstract class InventoryUI : BaseMono
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
-
+    private void OnDestroy()
+    {
+        UDebug.Print($"파괴되었습니다.. 난 Dontdestroy인데 {UnityEngine.StackTraceUtility.ExtractStackTrace()}", LogType.Assert);
+    }
     #endregion
 
     #region ─────────────────────────▶ 중첩 타입 ◀─────────────────────────
