@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ead18204b0e9824888953c537aad3c3, type: 3}
+  m_Name: ToolItemSO_3_0
+  m_EditorClassIdentifier: 
+  _id: 3_0
+  _type: 20
+  _name: "\uC911\uAE09 \uBB3C\uBFCC\uB9AC\uAC1C"
+  _description: "\uBB3C \uC8FC\uAE30 \uD6A8\uC728\uC774 \uB354 \uC88B\uB2E4"
+  _rarity: 2
+  _image: {fileID: 21300000, guid: 23c331adf4c626d488234262d5da5aa1, type: 2}
+  _prefab: {fileID: 0}
+  _sellPrice: 370
+  _buyPrice: 0
+  _maxStack: 64
+  _maxDurability: 200
+  _currentLv: 1
+  _range: 1.5
+  _strength: 1.5

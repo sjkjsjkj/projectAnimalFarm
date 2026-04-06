@@ -1,14 +1,7 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// 플레이어 기준 낚시 처리 전용 컨트롤러
-/// 
-/// 주의
-/// - SheetItemRow는 소문자 필드(id, name, category, rarity, isWaterFish, isDeepWaterFish)를 사용한다.
-/// - 기존 대문자 프로퍼티(Id, Name, Category...)를 사용하면 컴파일 에러가 난다.
-/// </summary>
 public class CFishingController2D : BaseMono
 {
     private enum EFishingAreaType
@@ -21,7 +14,7 @@ public class CFishingController2D : BaseMono
     [Header("낚시 대상 DB")]
     [SerializeField] private SheetItemDatabase _database;
 
-    [Header("낚시 판정")]
+    [Header("기존 타일 기반 낚시 판정")]
     [SerializeField] private float _checkDistance = 0.9f;
     [SerializeField] private Vector2 _checkOffset = Vector2.zero;
     [SerializeField] private bool _allowSeaFishing = true;
@@ -55,30 +48,44 @@ public class CFishingController2D : BaseMono
     {
         if (_isFishing)
         {
+            if (_logEnabled) Debug.Log("[FishingController] 실패: 이미 낚시 중");
             return false;
         }
 
         if (collector == null)
         {
+            if (_logEnabled) Debug.Log("[FishingController] 실패: collector null");
             return false;
         }
 
         if (collector.IsBusy)
         {
+            if (_logEnabled) Debug.Log("[FishingController] 실패: collector Busy 상태");
             return false;
         }
 
         if (Time.time < _cooldownEndTime)
         {
+            if (_logEnabled) Debug.Log("[FishingController] 실패: 쿨타임 중");
             return false;
         }
 
         if (_database == null)
         {
+            if (_logEnabled) Debug.Log("[FishingController] 실패: SheetItemDatabase 연결 안 됨");
             return false;
         }
 
-        return TryGetFishingAreaType(collector, out _, out _);
+        bool canFish = TryGetFishingAreaType(collector, out EFishingAreaType areaType, out Vector2 checkPos);
+
+        if (_logEnabled)
+        {
+            Debug.Log("[FishingController] CanManualFish 판정 = " + canFish +
+                      " / areaType = " + areaType +
+                      " / checkPos = " + checkPos);
+        }
+
+        return canFish;
     }
 
     public string GetInteractionMessage(KeyCode key, CPlayerCollector2D collector)
@@ -96,9 +103,11 @@ public class CFishingController2D : BaseMono
         switch (areaType)
         {
             case EFishingAreaType.FreshWater:
-                return $"[{key}] {_freshWaterPromptText}";
+                return "[" + key + "] " + _freshWaterPromptText;
+
             case EFishingAreaType.SeaWater:
-                return $"[{key}] {_seaWaterPromptText}";
+                return "[" + key + "] " + _seaWaterPromptText;
+
             default:
                 return string.Empty;
         }
@@ -113,15 +122,90 @@ public class CFishingController2D : BaseMono
 
         if (!collector.CanStartInteraction())
         {
+            if (_logEnabled) Debug.Log("[FishingController] 실패: collector.CanStartInteraction() == false");
             return false;
         }
 
         if (!TryGetFishingAreaType(collector, out EFishingAreaType areaType, out Vector2 checkPos))
         {
+            if (_logEnabled) Debug.Log("[FishingController] 실패: TryGetFishingAreaType == false");
             return false;
         }
 
+        if (_logEnabled)
+        {
+            Debug.Log("[FishingController] 낚시 시작 / areaType = " + areaType + " / checkPos = " + checkPos);
+        }
+
         StartCoroutine(CoFishing(collector, areaType, checkPos));
+        return true;
+    }
+
+    public bool CanManualFishFromSpot(CPlayerCollector2D collector, bool useSeaFishing)
+    {
+        if (_isFishing)
+        {
+            if (_logEnabled) Debug.Log("[FishingController] 실패: 이미 낚시 중");
+            return false;
+        }
+
+        if (collector == null)
+        {
+            if (_logEnabled) Debug.Log("[FishingController] 실패: collector null");
+            return false;
+        }
+
+        if (collector.IsBusy)
+        {
+            if (_logEnabled) Debug.Log("[FishingController] 실패: collector Busy 상태");
+            return false;
+        }
+
+        if (Time.time < _cooldownEndTime)
+        {
+            if (_logEnabled) Debug.Log("[FishingController] 실패: 쿨타임 중");
+            return false;
+        }
+
+        if (_database == null)
+        {
+            if (_logEnabled) Debug.Log("[FishingController] 실패: SheetItemDatabase 연결 안 됨");
+            return false;
+        }
+
+        EFishingAreaType areaType = useSeaFishing ? EFishingAreaType.SeaWater : EFishingAreaType.FreshWater;
+        List<SheetItemRow> candidates = GetFishCandidates(areaType);
+
+        if (_logEnabled)
+        {
+            Debug.Log("[FishingController] FishingSpot 기준 낚시 가능 후보 수 = " + candidates.Count +
+                      " / areaType = " + areaType);
+        }
+
+        return candidates.Count > 0;
+    }
+
+    public bool TryFishFromSpot(CPlayerCollector2D collector, bool useSeaFishing)
+    {
+        if (!CanManualFishFromSpot(collector, useSeaFishing))
+        {
+            return false;
+        }
+
+        if (!collector.CanStartInteraction())
+        {
+            if (_logEnabled) Debug.Log("[FishingController] 실패: collector.CanStartInteraction() == false");
+            return false;
+        }
+
+        EFishingAreaType areaType = useSeaFishing ? EFishingAreaType.SeaWater : EFishingAreaType.FreshWater;
+
+        if (_logEnabled)
+        {
+            Debug.Log("[FishingController] FishingSpot 기준 낚시 시작 / areaType = " + areaType);
+        }
+
+        StartCoroutine(CoFishing(collector, areaType, collector.transform.position));
         return true;
     }
 
@@ -146,7 +230,7 @@ public class CFishingController2D : BaseMono
         {
             if (_logEnabled)
             {
-                Debug.LogWarning($"[CFishingController2D] 조건에 맞는 물고기를 찾지 못했습니다. areaType={areaType}, pos={checkPos}");
+                Debug.LogWarning("[FishingController] 조건에 맞는 물고기 없음 / areaType = " + areaType);
             }
         }
         else
@@ -162,12 +246,12 @@ public class CFishingController2D : BaseMono
 
                 if (_logEnabled)
                 {
-                    Debug.Log($"[CFishingController2D] 낚시 성공: {fishRow.name} ({fishRow.id}) x{_amount}");
+                    Debug.Log("[FishingController] 낚시 성공: " + fishRow.name + " (" + fishRow.id + ") x" + _amount);
                 }
             }
             else if (_logEnabled)
             {
-                Debug.LogWarning($"[CFishingController2D] 낚시 보상 지급 실패: {fishRow.id}");
+                Debug.LogWarning("[FishingController] 낚시 보상 지급 실패: " + fishRow.id);
             }
         }
 
@@ -188,26 +272,45 @@ public class CFishingController2D : BaseMono
 
         if (collector == null)
         {
+            if (_logEnabled) Debug.Log("[FishingController] TryGetFishingAreaType 실패: collector null");
             return false;
         }
 
-        if (TileManager.Ins == null || TileManager.Ins.Tile == null)
+        if (TileManager.Ins == null)
         {
+            if (_logEnabled) Debug.Log("[FishingController] TryGetFishingAreaType 실패: TileManager.Ins null");
+            return false;
+        }
+
+        if (TileManager.Ins.Tile == null)
+        {
+            if (_logEnabled) Debug.Log("[FishingController] TryGetFishingAreaType 실패: TileManager.Ins.Tile null");
             return false;
         }
 
         TileMap map = TileManager.Ins.Tile;
-
         Vector2 facingDir = GetCardinalFacingDirection();
         checkWorldPos = (Vector2)collector.transform.position + _checkOffset + facingDir * _checkDistance;
 
-        if (map.IsFishingable(checkWorldPos))
+        bool fresh = map.IsFishingable(checkWorldPos);
+        bool sea = _allowSeaFishing && map.IsSeaFishingable(checkWorldPos);
+
+        if (_logEnabled)
+        {
+            Debug.Log("[FishingController] 판정 위치 = " + checkWorldPos +
+                      " / facingDir = " + facingDir +
+                      " / fresh = " + fresh +
+                      " / sea = " + sea +
+                      " / playerPos = " + collector.transform.position);
+        }
+
+        if (fresh)
         {
             areaType = EFishingAreaType.FreshWater;
             return true;
         }
 
-        if (_allowSeaFishing && map.IsSeaFishingable(checkWorldPos))
+        if (sea)
         {
             areaType = EFishingAreaType.SeaWater;
             return true;
@@ -317,6 +420,11 @@ public class CFishingController2D : BaseMono
     private SheetItemRow GetRandomFishRow(EFishingAreaType areaType)
     {
         List<SheetItemRow> candidates = GetFishCandidates(areaType);
+
+        if (_logEnabled)
+        {
+            Debug.Log("[FishingController] 후보 물고기 수 = " + candidates.Count + " / areaType = " + areaType);
+        }
 
         if (candidates.Count == 0)
         {

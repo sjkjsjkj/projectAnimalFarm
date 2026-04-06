@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2c022c5127670c48a898afb5e92d602, type: 3}
+  m_Name: StaticItemSO_stone_with_minerals_25
+  m_EditorClassIdentifier: 
+  _id: stone with minerals_25
+  _type: 8
+  _name: "\uC740"
+  _description: "\uBE5B\uB098\uB294 \uAE08\uC18D \uC790\uC6D0"
+  _rarity: 1
+  _image: {fileID: 21300000, guid: 389776d60f1e01b459783b64481666be, type: 2}
+  _prefab: {fileID: 0}
+  _sellPrice: 100
+  _buyPrice: 0
+  _maxStack: 64
