@@ -9,7 +9,7 @@ public interface IStatusLogical
     string[] GetTools(EType toolType);
 
     /// <summary>
-    /// 아이템 판매 요청이 들어왔을 경우 처리하여 판매 성공 여부를 반환하는 함수
+    /// 플레이어가 특정 아이템을 손에 들도록 처리하고 성공 여부를 반환하는 함수
     /// </summary>
     bool TrySwapTool(string toolId, out string message);
 }
