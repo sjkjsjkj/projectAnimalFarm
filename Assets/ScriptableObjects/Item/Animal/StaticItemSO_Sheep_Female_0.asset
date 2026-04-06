@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2c022c5127670c48a898afb5e92d602, type: 3}
+  m_Name: StaticItemSO_Sheep_Female_0
+  m_EditorClassIdentifier: 
+  _id: Sheep Female_0
+  _type: 26
+  _name: "\uC591(\u2640)"
+  _description: "\uD48D\uC131\uD55C \uD138\uC744 \uAC00\uC9C4 \uC554\uCEF7 \uC591\uC774\uB2E4."
+  _rarity: 1
+  _image: {fileID: 21300000, guid: a3677fe3d3e69eb4fa7a35fdb69f52c1, type: 2}
+  _prefab: {fileID: 0}
+  _sellPrice: 480
+  _buyPrice: 600
+  _maxStack: 1

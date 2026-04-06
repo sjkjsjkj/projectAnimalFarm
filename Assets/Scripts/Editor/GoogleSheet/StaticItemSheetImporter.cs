@@ -401,6 +401,14 @@ public static class StaticItemSheetImporter
                     FilePrefix = "StaticItemSO"
                 };
 
+            case EType.AnimalItem:
+                return new AssetTarget
+                {
+                    AssetType = typeof(StaticItemSO),
+                    FolderName = "Animal",
+                    FilePrefix = "StaticItemSO"
+                };
+
             case EType.FeedItem:
                 return new AssetTarget
                 {
