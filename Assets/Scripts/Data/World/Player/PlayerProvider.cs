@@ -15,6 +15,7 @@ public class PlayerProvider
     // 상태 / 장비 / 재화
     [SerializeField] private EPlayerState _state;
     [SerializeField] private string _heldItemId;
+    [SerializeField] private int _curSlotIndex;
     [SerializeField] private int _money;
     // 스탯 최대치
     [SerializeField] private float _maxWalkSpeed; // 초당 움직이는 거리
@@ -49,7 +50,7 @@ public class PlayerProvider
     // 나중에 데이터 로드용으로 만들어둔 생성자
     public PlayerProvider(
         Vector2 position, Vector2 direction,
-        EPlayerState state, string heldItemId, int money,
+        EPlayerState state, string heldItemId, int curSlotIndex, int money,
         float maxWalkSpeed, float maxRunMultiplier, float maxStamina, float maxHunger, float maxThirst,
         float curWalkSpeed, float curRunMultiplier, float curStamina, float curHunger, float curThirst,
         int[] skillLevels, int[] skillExps)
@@ -58,6 +59,7 @@ public class PlayerProvider
         this._direction = direction;
         this._state = state;
         this._heldItemId = heldItemId;
+        this._curSlotIndex = curSlotIndex;
         this._money = money;
         this._maxWalkSpeed = maxWalkSpeed;
         this._maxRunMultiplier = maxRunMultiplier;
@@ -89,6 +91,7 @@ public class PlayerProvider
         // 상태 / 장비 / 재화
         _state = EPlayerState.Idle;
         _heldItemId = string.Empty;
+        _curSlotIndex = 0;
         _money = 0;
         // 현재 스탯
         _curWalkSpeed = so.WalkSpeed;
@@ -130,6 +133,7 @@ public class PlayerProvider
     public EScene CurScene => _curScene;
     public EPlayerState State => _state;
     public string HeldItemId => _heldItemId;
+    public int CurSlot => _curSlotIndex;
     public int Money => _money;
     public float MaxWalkSpeed => _maxWalkSpeed;
     public float MaxRunMultiplier => _maxRunMultiplier;
@@ -180,13 +184,28 @@ public class PlayerProvider
     }
 
     /// <summary>
-    /// 플레이어가 손에 든 아이템을 변경합니다.
+    /// 플레이어의 선택한 퀵슬롯을 변경합니다.
     /// </summary>
-    /// <param name="itemId">아이템 ID</param>
-    public void SetHeldItem(string itemId)
+    /// <param name="slotIndex">변경할 슬롯 번호</param>
+    public bool TrySetSlotIndex(int slotIndex, string itemId)
     {
+        int index = Mathf.Clamp(slotIndex, 0, 9);
+        // 동일한 슬롯일 경우 생략
+        if (_curSlotIndex == index)
+        {
+            return false;
+        }
+        _curSlotIndex = index;
+        OnPlayerSlotChanged.Publish(index);
+        // 동일한 아이템일 경우 생략
+        if (_heldItemId == itemId)
+        {
+            return false;
+        }
+        // 아이템 변경
         _heldItemId = itemId;
         OnPlayerHeldItemChanged.Publish(itemId);
+        return true;
     }
 
     /// <summary>

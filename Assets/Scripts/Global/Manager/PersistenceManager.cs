@@ -109,7 +109,7 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         }
         if (_isLoading)
         {
-            UDebug.Print($"저장 작업 도중 로드가 실행되었으므로 무시합니다.", LogType.Assert);
+            UDebug.Print($"저장 작업 도중 로드가 실행되었으므로 무시합니다.", LogType.Warning);
             return;
         }
         _isSaving = true;
