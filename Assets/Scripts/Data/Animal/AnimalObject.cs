@@ -85,8 +85,8 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
     }
     public bool CanInteract(GameObject player)
     {
-        // 조건 검사    
-        return _isProductFinish;
+        // 조건 검사
+        return InventoryManager.Ins.PlayerInventory.CheckSlots() && _isProductFinish;
     }
 
     public string GetMessage()

@@ -130,6 +130,10 @@ public class FarmArea : Frameable
         //경작지의 상태마다 분기
         switch (state)
         {
+            case EFarmlandState.IdleLand:
+                UDebug.Print("초기화.");
+                CheckConnectionDirNearFarmland(pos);
+                return;
             //현재 행동으로 씨를 뿌렸다면
             //타일 비교는 하지 않고 씨앗만 뿌리고 끝
             case EFarmlandState.SeededLand:
@@ -191,6 +195,8 @@ public class FarmArea : Frameable
         uint sameState = _farmlands[pos1].StateFlag & _farmlands[pos2].StateFlag;
         uint revDir = GetReverseDir((uint)dir);
 
+        UDebug.Print($"{pos1}번 경작지와 {pos2}번 경작지의 공통 플래그 : {sameState}");
+
         if ((sameState & (uint)EFarmlandState.SoiledLand) != 0)
         {
             _farmlands[pos1].SetConnectSoil((uint)dir);
@@ -202,6 +208,18 @@ public class FarmArea : Frameable
             _farmlands[pos2].SetConnectMoist(revDir);
             _farmlands[pos1].SetConnectMoist((uint)dir);
         }
+
+        if((sameState & (uint)EFarmlandState.SoiledLand) ==0 && (sameState & (uint)EFarmlandState.MoistLand) == 0)
+        {
+            UDebug.Print($"여긴가");
+            _farmlands[pos2].SetDisConnectMoist(revDir);
+            _farmlands[pos2].SetDisConnectSoil(revDir);
+        }
+    }
+    private void CheckDisConnectDir(int pos1, int pos2, EConnectionDir dir)
+    {
+        uint sameState = _farmlands[pos1].StateFlag & _farmlands[pos2].StateFlag;
+        uint revDir = GetReverseDir((uint)dir);
     }
 
     //방향의 반전 (좌<>우 // 상<>하) 
@@ -225,7 +243,9 @@ public class FarmArea : Frameable
     {
         switch (context.state)
         {
-
+            case EFarmlandState.IdleLand:
+                _farmlandsSprites[context.pos].GetComponent<FarmlandSpriteObject>().SetIdleLandSprite(context.connectionDir);
+                break;
             case EFarmlandState.SoiledLand:
                 _farmlandsSprites[context.pos].GetComponent<FarmlandSpriteObject>().SetSoilSprite(context.connectionDir);
                 break;
