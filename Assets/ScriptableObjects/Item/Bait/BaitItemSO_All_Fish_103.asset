@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1990e5ab030ea7f43a75bb0cf165363e, type: 3}
+  m_Name: BaitItemSO_All_Fish_103
+  m_EditorClassIdentifier: 
+  _id: All Fish_103
+  _type: 2
+  _name: "\uAE30\uBCF8 \uBBF8\uB07C"
+  _description: "\uB09A\uC2DC\uB97C \uB3D5\uB294 \uAE30\uBCF8 \uBBF8\uB07C"
+  _rarity: 1
+  _image: {fileID: 21300000, guid: 16d61af0806f22b41af9459cdc1f2e31, type: 2}
+  _prefab: {fileID: 0}
+  _sellPrice: 60
+  _buyPrice: 0
+  _maxStack: 64
+  _catchFishRarity: 01000000
+  _catchFishWeight:
+  - 100
+  _canUseSea: 0
+  _totalWeight: 0

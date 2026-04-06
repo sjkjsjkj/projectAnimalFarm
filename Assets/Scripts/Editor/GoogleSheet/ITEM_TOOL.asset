@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a8955d2b56131a848828985eb7c3fe06, type: 3}
-  m_Name: StaticItemSheetImportSettings
+  m_Name: ITEM_TOOL
   m_EditorClassIdentifier: 
-  _sheetName: ITEM_STATIC
-  _tsvUrl: https://docs.google.com/spreadsheets/d/1UtO-nEBDL64Yv6t33M3JRkg_MC8sGO3nAa50-MdfaMU/export?format=tsv&gid=0
+  _sheetName: ITEM_TOOL
+  _tsvUrl: https://docs.google.com/spreadsheets/d/1mIet7UQGplOORT3XG0QuNZDJus6u1mE589AHw1TPXmM/export?format=tsv&gid=0
   _outputFolder: Assets/ScriptableObjects/Item
   _overwriteImageWhenSpriteFound: 1
   _spriteSearchFolders:

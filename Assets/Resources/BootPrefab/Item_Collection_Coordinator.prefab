@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8531094876147535740}
   - component: {fileID: 6862909461004042623}
   - component: {fileID: 3741708259854580653}
+  - component: {fileID: -3586646994388270240}
   m_Layer: 0
   m_Name: Item_Collection_Coordinator
   m_TagString: Untagged
@@ -46,9 +47,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5a3172f5188d5e47bbc6465fc1298e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: 7ddd2bc9-8558-4583-8607-907540581fb3
-  _instanceId: -18166
-  _pictorialBook: {fileID: 6862909461004042623}
+  _uniqueId: 
+  _instanceId: 0
+  _pictorialBookSystem: {fileID: 0}
+  _useLog: 1
 --- !u!114 &6862909461004042623
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61,10 +63,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc66e5aa01b91a24ea6845923cbb2e3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: 2aff7d1f-ee02-4dda-909f-32155dc5cf48
-  _instanceId: -18168
-  _database: {fileID: 3741708259854580653}
-  _logOnUnlock: 1
+  _uniqueId: 
+  _instanceId: 0
+  _sheetItemDatabase: {fileID: 0}
+  _syncInventoryOnStart: 1
+  _useLog: 1
+  _inventoryWaitTimeout: 10
 --- !u!114 &3741708259854580653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77,5 +81,108 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b89ab06fb85945f4e8191664be7508af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: eb0ebaae-0ad0-493c-b56f-f54fd7055f41
-  _instanceId: -18170
+  _uniqueId: 
+  _instanceId: 0
+--- !u!114 &-3586646994388270240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5059007461852088965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c062dada2d4079d46923f67a702e58af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _uniqueId: 
+  _instanceId: 0
+  _tsvTextAsset: {fileID: 0}
+  _tsvRawText: "Fish\nID\tNAME\t\uB4F1\uAE09\t\uD310\uB9E4 \uAE08\uC561\t\uC124\uBA85\t\uBB3C\t\uAE4A\uC740\uBB3C\r\nAll
+    Fish_0\t\uBD95\uC5B4\tBasic\t90\t\uD754\uD788 \uB09A\uC774\uB294 \uB2F4\uC218\uC5B4\t1\t0\r\nAll
+    Fish_1\t\uBE14\uB8E8\uAE38\tBasic\t60\t\uC6B0\uB9AC\uB098\uB77C\uC5D0 \uB4E4\uC5B4\uC628
+    \uBAB9\uC4F8 \uC678\uB798\uC885 \t1\t0\r\nAll Fish_2\t\uC789\uC5B4\tBasic\t90\t\uCCB4\uAD6C\uAC00
+    \uD070 \uBBFC\uBB3C\uACE0\uAE30\t1\t0\r\nAll Fish_3\t\uB204\uCE58\tBasic\t90\t\uAC15\uAC00\uC5D0\uC11C
+    \uBCFC \uC218 \uC788\uB294 \uC5B4\uC885\t1\t0\r\nAll Fish_4\t\uBCA0\uC2A4\tBasic\t90\t\uC6B0\uB9AC\uB098\uB77C\uC5D0
+    \uB4E4\uC5B4\uC628 \uC678\uB798\uC885\t1\t0\r\nAll Fish_5\t\uBC84\uB4E4\uBD95\tBasic\t50\t\uC791\uACE0
+    \uC18C\uBC15\uD55C \uBBFC\uBB3C\uACE0\uAE30\t1\t0\r\nAll Fish_6\t\uBAA8\uB798\uBB34\uC9C0\tBasic\t60\t\uBAA8\uB798
+    \uBC14\uB2E5\uC5D0 \uC0AC\uB294 \uC5B4\uC885\t1\t0\r\nAll Fish_7\t\uB0A9\uC790\uB8E8\tBasic\t70\t\uC791\uACE0
+    \uBE60\uB978 \uBB3C\uACE0\uAE30\t1\t0\r\nAll Fish_8\t\uBC84\uB4E4\uBD95\uC5B4\tBasic\t70\t\uC794\uC794\uD55C
+    \uBB3C\uAC00\uC758 \uC18C\uD615\uC5B4\t1\t0\r\nAll Fish_9\t\uAC01\uC2DC\uBD95\uC5B4\tBasic\t70\t\uC0C9\uC774
+    \uC774\uC05C \uC791\uC740 \uBD95\uC5B4\uB958\t1\t0\r\nAll Fish_14\t\uAC15\uB3CC\uACE0\uAE30\tBasic\t110\t\uB3CC
+    \uD2C8\uC5D0\uC11C \uC0AC\uB294 \uBB3C\uACE0\uAE30\t1\t0\r\nAll Fish_16\t\uB3D9\uC790\uAC1C\tBasic\t110\t\uC218\uC5FC\uC774
+    \uD2B9\uC9D5\uC778 \uC5B4\uC885\t1\t0\r\nAll Fish_17\t\uBE59\uC5B4\tBasic\t90\t\uB9D1\uC740
+    \uBB3C\uC5D0\uC11C \uC7A1\uD788\uB294 \uC5B4\uC885\t1\t0\r\nAll Fish_18\t\uB3D9\uC0AC\uB9AC\tBasic\t110\t\uBC14\uB2E5
+    \uADFC\uCC98\uB97C \uB3C4\uB294 \uBB3C\uACE0\uAE30\t1\t0\r\nAll Fish_19\t\uAF2C\uCE58\uB3D9\uC790\uAC1C\tSolid\t230\t\uAE38\uCB49\uD55C
+    \uBAB8\uC758 \uBBFC\uBB3C\uACE0\uAE30\t1\t0\r\nAll Fish_20\t\uAC15\uC900\uCE58\tSolid\t230\t\uAC15\uC5D0\uC11C
+    \uC790\uB77C\uB294 \uD76C\uADC0 \uC5B4\uC885\t1\t0\r\nAll Fish_21\t\uBBF8\uC720\uAE30\tSolid\t260\t\uB9E4\uB048\uD55C
+    \uBAB8\uC758 \uC218\uC0B0\uBB3C\t1\t0\r\nAll Fish_22\t\uB18D\uAC31\uC774\tSolid\t260\t\uBB35\uC9C1\uD55C
+    \uB290\uB08C\uC758 \uBBFC\uBB3C\uACE0\uAE30\t1\t0\r\nAll Fish_23\t\uD241\uC0AC\uB9AC\tSolid\t260\t\uAC1C\uC131
+    \uC788\uB294 \uC678\uD615\uC758 \uC5B4\uC885\t1\t0\r\nAll Fish_24\t\uAC08\uACA8\uB2C8\tSolid\t200\t\uBE60\uB974\uAC8C
+    \uD5E4\uC5C4\uCE58\uB294 \uBB3C\uACE0\uAE30\t1\t0\r\nAll Fish_25\t\uC3D8\uAC00\uB9AC\tSolid\t260\t\uC778\uAE30
+    \uB9CE\uC740 \uACE0\uAE09 \uBBFC\uBB3C\uACE0\uAE30\t1\t0\r\nAll Fish_26\t\uCC38\uBD95\uC5B4\tSolid\t210\t\uC791\uC9C0\uB9CC
+    \uAC12\uC9C4 \uBD95\uC5B4\uB958\t1\t0\r\nAll Fish_27\t\uBC84\uB4E4\uB9E4\uCE58\tSolid\t220\t\uB9D1\uC740
+    \uBB3C\uC5D0 \uC0AC\uB294 \uC5B4\uC885\t1\t0\r\nAll Fish_28\t\uC65C\uB9E4\uCE58\tSolid\t260\t\uBBFC\uCCA9\uD55C
+    \uC6C0\uC9C1\uC784\uC758 \uC5B4\uC885\t1\t0\r\nAll Fish_29\t\uC904\uBAB0\uAC1C\tSolid\t210\t\uC904\uBB34\uB2AC\uAC00
+    \uB3CB\uBCF4\uC774\uB294 \uBB3C\uACE0\uAE30\t1\t0\r\nAll Fish_30\t\uAEBD\uC800\uAE30\tSolid\t200\t\uBC14\uC704
+    \uC8FC\uBCC0\uC5D0\uC11C \uBCF4\uC774\uB294 \uC5B4\uC885\t1\t0\r\nAll Fish_31\t\uC26C\uB9AC\tSolid\t240\t\uBE5B\uAE54\uC774
+    \uB9E4\uB825\uC801\uC778 \uBBFC\uBB3C\uACE0\uAE30\t1\t0\r\nAll Fish_32\t\uB3CC\uACE0\uAE30\tSolid\t240\t\uC790\uAC08
+    \uBC14\uB2E5\uC744 \uC88B\uC544\uD558\uB294 \uC5B4\uC885\t1\t0\r\nAll Fish_33\t\uCE58\uB9AC\tSolid\t240\t\uAC00\uBCCD\uAC8C
+    \uC7A1\uD788\uB294 \uC791\uC740 \uC5B4\uC885\t1\t0\r\nAll Fish_34\t\uD669\uC3D8\uAC00\uB9AC\tSolid\t210\t\uD76C\uADC0\uD55C
+    \uC0C9\uAC10\uC758 \uC3D8\uAC00\uB9AC\uB958\t1\t0\r\nAll Fish_35\t\uBC30\uAC00\uC0AC\uB9AC\tSolid\t210\t\uAC15\uC5D0\uC11C
+    \uBCF4\uAE30 \uB4DC\uBB38 \uC5B4\uC885\t1\t0\r\nAll Fish_36\t\uC0B0\uCC9C\uC5B4\tSolid\t200\t\uCC28\uAC00\uC6B4
+    \uBB3C\uC744 \uC88B\uC544\uD558\uB294 \uC5B4\uC885\t1\t0\r\nAll Fish_10\t\uAE4C\uCE58\uBCF5\tSuperior\t390\t\uD1B5\uD1B5\uD55C
+    \uBAB8\uC758 \uBCF5\uC5B4\uB958\t0\t1\r\nAll Fish_11\t\uBD80\uCC44\uBCF5\tSuperior\t390\t\uC9C0\uB290\uB7EC\uBBF8\uAC00
+    \uC778\uC0C1\uC801\uC778 \uBCF5\uC5B4\t0\t1\r\nAll Fish_12\t\uB208\uBCFC\uAC1C\uBCF5\tSuperior\t390\t\uB208\uC774
+    \uB3C4\uB4DC\uB77C\uC9C4 \uBCF5\uC5B4\uB958\t0\t1\r\nAll Fish_13\t\uC2E0\uC120\uBCF5\tSuperior\t400\t\uD76C\uADC0\uD55C
+    \uBCF5\uC5B4\uB958\t0\t1\r\nAll Fish_37\t\uAD11\uC5B4\tSuperior\t430\t\uB0A9\uC791\uD55C
+    \uBAB8\uC758 \uC778\uAE30 \uC5B4\uC885\t0\t1\r\nAll Fish_38\t\uC790\uBC14\uB9AC\tSuperior\t450\t\uACE0\uAE09\uC73C\uB85C
+    \uCDE8\uAE09\uB418\uB294 \uC5B4\uC885\t0\t1\r\nAll Fish_39\t\uB18D\uC5B4\tSuperior\t430\t\uB2F4\uBC31\uD55C
+    \uB9DB\uC774 \uC88B\uC740 \uC5B4\uC885\t0\t1\r\nAll Fish_40\t\uCC38\uB3D4\tSuperior\t400\t\uBD89\uC740\uBE5B\uC774
+    \uB3C4\uB294 \uACE0\uAE09 \uC5B4\uC885\t0\t1\r\nAll Fish_41\t\uB0A0\uCE58\tSuperior\t440\t\uBA40\uB9AC
+    \uD280\uC5B4 \uC624\uB974\uB294 \uBB3C\uACE0\uAE30\t0\t1\r\nAll Fish_42\t\uD070\uC804\uAC31\uC774\tSuperior\t410\t\uBAB8\uC9D1\uC774
+    \uD070 \uC5B4\uC885\t0\t1\r\nAll Fish_43\t\uC6A9\uCE58\uC5B4\uB7AD\uB180\uB798\uAE30\tSuperior\t400\t\uC774\uB984\uC774
+    \uB3C5\uD2B9\uD55C \uD76C\uADC0 \uC5B4\uC885\t0\t1\r\nAll Fish_44\t\uAC1C\uBCF5\uCE58\tPrime\t640\t\uAC70\uB300\uD55C
+    \uBAB8\uC9D1\uC758 \uC0DD\uBB3C\t0\t1\r\nAll Fish_45\t\uD22C\uCFE0\uC2DC\tPrime\t670\t\uC27D\uAC8C
+    \uBCF4\uAE30 \uD798\uB4E0 \uD2B9\uBCC4\uD55C \uC5B4\uC885\t0\t1\r\nAll Fish_46\t\uC778\uB3C4\uD0DC\uD3C9\uC591\uD639\uB4F1\uACE0\uB798\tPrime\t660\t\uB9E4\uC6B0
+    \uD76C\uADC0\uD55C \uB300\uD615 \uC0DD\uBB3C\t0\t1\r\nAll Fish_47\t\uB354\uC2A4\uD0A4\uB3CC\uACE0\uB798\tPrime\t710\t\uBBFC\uCCA9\uD55C
+    \uC6C0\uC9C1\uC784\uC758 \uB3CC\uACE0\uB798\uB958\t0\t1\r\nAll Fish_48\t\uC950\uB3CC\uACE0\uB798\tPrime\t670\t\uC791\uACE0
+    \uB0A0\uB79C \uC0DD\uBB3C\t0\t1\r\nAll Fish_49\t\uB3CC\uBB38\uC5B4\tPrime\t690\t\uD798\uC774
+    \uC88B\uC740 \uACE0\uAE09 \uBB38\uC5B4\uB958\t0\t1\r\nAll Fish_50\t\uD53C\uBB38\uC5B4\tPrime\t670\t\uBAB8\uC9D1\uC774
+    \uD070 \uD76C\uADC0 \uBB38\uC5B4\uB958\t0\t1\r\nAll Fish_51\t\uCC3D\uC624\uC9D5\uC5B4\tPrime\t650\t\uAE38\uCB49\uD55C
+    \uBAB8\uC758 \uC624\uC9D5\uC5B4\uB958\t0\t1\r\nAll Fish_52\t\uD654\uC0B4\uC624\uC9D5\uC5B4\tPrime\t680\t\uBE60\uB974\uAC8C
+    \uD5E4\uC5C4\uCE58\uB294 \uB450\uC871\uB958\t0\t1\r\nAll Fish_53\t\uC544\uBA54\uB9AC\uCE74\uAC00\uC7AC\tSuperior\t470\t\uC9D1\uAC8C\uAC00
+    \uD070 \uAC11\uAC01\uB958\t0\t1\r\nAll Fish_54\t\uC720\uB7FD\uAC00\uC7AC\tSuperior\t460\t\uAC00\uCE58
+    \uB192\uC740 \uAC00\uC7AC\t0\t1\r\nAll Fish_55\t\uB3C4\uD654\uC0C8\uC6B0\tSuperior\t410\t\uC0C9\uAC10\uC774
+    \uACE0\uC6B4 \uC0C8\uC6B0\uB958\t0\t1\r\nAll Fish_56\t\uBCF4\uB9AC\uC0C8\uC6B0\tSuperior\t470\t\uC2DD\uAC10\uC774
+    \uC88B\uC740 \uACE0\uAE09 \uC0C8\uC6B0\t0\t1\r\nAll Fish_57\t\uAF43\uAC8C\tSuperior\t410\t\uB300\uC911\uC801\uC778
+    \uC778\uAE30 \uAC8C\uB958\t0\t1\r\nAll Fish_58\t\uD138\uAC8C\tSuperior\t470\t\uD48D\uBBF8\uAC00
+    \uC9C4\uD55C \uAC11\uAC01\uB958\t0\t1\r\nAll Fish_59\t\uCC38\uC870\uAC1C\tSuperior\t400\t\uB2E4\uC591\uD558\uAC8C
+    \uC4F0\uC774\uB294 \uC870\uAC1C\uB958\t0\t1\r\nAll Fish_60\t\uBBFC\uB4E4\uC870\uAC1C\tSuperior\t450\t\uB2F4\uBC31\uD55C
+    \uB9DB\uC758 \uC870\uAC1C\uB958\t0\t1\r\nAll Fish_61\t\uC11D\uD654\tSuperior\t460\t\uD5A5\uC774
+    \uC9C4\uD55C \uD328\uB958\t0\t1\r\nAll Fish_62\t\uC554\uBAA8\uB098\uC774\uD2B8\tMasterwark\t890\t\uACE0\uB300\uC758
+    \uD754\uC801\uC774 \uB0A8\uC740 \uD654\uC11D\uB958\t0\t1\r\nAll Fish_63\t\uC384\uB77C\uD0C0\uC774\uD2B8\tMasterwark\t910\t\uC218\uC9D1
+    \uAC00\uCE58\uAC00 \uB192\uC740 \uD654\uC11D\uB958\t0\t1\r\nAll Fish_69\t\uB9CC\uD0C0\uAC00\uC624\uB9AC\tMasterwark\t920\t\uAC70\uB300\uD55C
+    \uC9C0\uB290\uB7EC\uBBF8\uC758 \uAC00\uC624\uB9AC\t0\t1\r\nAll Fish_70\t\uC950\uAC00\uC624\uB9AC\tMasterwark\t910\t\uB113\uAC8C
+    \uD3BC\uCCD0\uC9C4 \uBAB8\uC774 \uD2B9\uC9D5\uC774\uB2E4\t0\t1\r\nAll Fish_71\t\uB9E4\uAC00\uC624\uB9AC\tMasterwark\t860\t\uBE60\uB974\uAC8C
+    \uC6C0\uC9C1\uC774\uB294 \uAC00\uC624\uB9AC\uB958\t0\t1\r\nAll Fish_73\t\uB178\uBB34\uB77C\uC785\uAE43\uD574\uD30C\uB9AC\tPrime\t710\t\uBAB8\uC9D1\uC774
+    \uD070 \uD76C\uADC0 \uD574\uD30C\uB9AC\t0\t1\r\nAll Fish_74\t\uBB34\uD76C\uB098\uC120\uAF2C\uB9AC\uD574\uD30C\uB9AC\tPrime\t680\t\uD615\uD0DC\uAC00
+    \uB3C5\uD2B9\uD55C \uD574\uD30C\uB9AC\t0\t1\r\nAll Fish_75\t\uBCF4\uB984\uB2EC\uBB3C\uD574\uD30C\uB9AC\tPrime\t700\t\uB465\uADFC
+    \uBAA8\uC2B5\uC774 \uC778\uC0C1\uC801\uC778 \uD574\uD30C\uB9AC\t0\t1\r\nAll Fish_76\t\uB7EC\uADF8\tSuperior\t400\t\uC815\uCCB4\uAC00
+    \uB3C5\uD2B9\uD55C \uC790\uC6D0\t0\t1\r\nAll Fish_77\t\uB538\uAE30\uC18C\uB77C\uAC8C\tSuperior\t410\t\uC791\uACE0
+    \uADC0\uC5EC\uC6B4 \uC18C\uB77C\uAC8C\t0\t1\r\nAll Fish_78\t\uC778\uB3C4\uC18C\uB77C\uAC8C\tSuperior\t460\t\uC0C9\uAC10\uC774
+    \uB3C5\uD2B9\uD55C \uC18C\uB77C\uAC8C\t0\t1\r\nAll Fish_79\t\uBB3C\uBC40\tSuperior\t430\t\uBB3C\uAC00\uC5D0
+    \uC11C\uC2DD\uD558\uB294 \uBC40\t0\t1\r\nAll Fish_80\t\uCD09\uC218\uBC40\tSuperior\t390\t\uAE30\uBB18\uD55C
+    \uC678\uD615\uC758 \uBC40\uB958\t0\t1\r\nAll Fish_81\t\uC0C1\uC8FC\uBB3C\uBC40\tSuperior\t410\t\uC2B5\uC9C0\uC5D0\uC11C
+    \uC0AC\uB294 \uC218\uC0DD \uBC40\t0\t1\r\nAll Fish_82\t\uC904\uD310\uBE44\uB298\uBC40\tSuperior\t450\t\uBE44\uB298
+    \uBB34\uB2AC\uAC00 \uB69C\uB837\uD55C \uBC40\t0\t1\r\nAll Fish_83\t\uC7A5\uC5B4\tPrime\t660\t\uAE38\uACE0
+    \uC720\uC5F0\uD55C \uC5B4\uD68D \uC790\uC6D0\t0\t1\r\nAll Fish_84\t\uB0A0\uBD95\uC7A5\uC5B4\tPrime\t670\t\uAE4A\uC740
+    \uBB3C\uC18D\uC758 \uC7A5\uC5B4\uB958\t0\t1\r\nAll Fish_85\t\uBC40\uC7A5\uC5B4\tPrime\t630\t\uC601\uC591\uAC00
+    \uB192\uC740 \uC7A5\uC5B4\uB958\t0\t1\r\nAll Fish_86\t\uAC00\uC2DC\uD574\uB9C8\tPrime\t700\t\uAC00\uC2DC\uAC00
+    \uB3CB\uC740 \uD574\uB9C8\uB958\t0\t1\r\nAll Fish_87\t\uC0B0\uD638\uD574\uB9C8\tPrime\t690\t\uC0B0\uD638
+    \uC9C0\uB300\uC758 \uD76C\uADC0 \uD574\uB9C8\t0\t1\r\nAll Fish_88\t\uBCF5\uD574\uB9C8\tPrime\t700\t\uC791\uACE0
+    \uADC0\uD55C \uD574\uB9C8\uB958\t0\t1"
+  _database: {fileID: 0}
+  _loadOnAwake: 1
+  _clearBeforeLoad: 1
+  _logEnabled: 1

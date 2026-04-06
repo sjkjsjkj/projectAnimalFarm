@@ -1,14 +1,13 @@
-using System;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
 /// 도감 해금 상태를 관리하는 시스템.
 /// 
-/// 중요
-/// - InventorySlot을 null 비교하지 않는다.
-/// - 프로젝트에 따라 InventorySlot이 struct처럼 취급될 수 있어
-///   null 비교에서 컴파일 에러가 날 수 있기 때문이다.
+/// 핵심 수정
+/// - Start에서 바로 PlayerInventory를 읽지 않는다.
+/// - InventoryManager가 실제로 플레이어 인벤토리를 만든 뒤에만 동기화한다.
 /// </summary>
 public class PictorialBookSystem : BaseMono
 {
@@ -19,16 +18,20 @@ public class PictorialBookSystem : BaseMono
     [SerializeField] private bool _syncInventoryOnStart = true;
     [SerializeField] private bool _useLog = true;
 
+    [Header("초기화 대기 설정")]
+    [Tooltip("씬 시작 후 PlayerInventory가 준비될 때까지 기다릴 최대 시간(초)")]
+    [SerializeField] private float _inventoryWaitTimeout = 10f;
+
     private readonly HashSet<string> _discoveredItemIds = new HashSet<string>();
 
-    public event Action<string> OnDiscovered;
+    public event System.Action<string> OnDiscovered;
     public int DiscoveredCount => _discoveredItemIds.Count;
 
     private void Start()
     {
         if (_syncInventoryOnStart)
         {
-            SyncFromPlayerInventory();
+            StartCoroutine(CoSyncFromPlayerInventoryWhenReady());
         }
     }
 
@@ -76,27 +79,55 @@ public class PictorialBookSystem : BaseMono
         return _sheetItemDatabase.GetRowsByCategory(category);
     }
 
+    /// <summary>
+    /// PlayerInventory가 실제로 준비될 때까지 기다렸다가 동기화
+    /// </summary>
+    private IEnumerator CoSyncFromPlayerInventoryWhenReady()
+    {
+        float elapsed = 0f;
+
+        while (elapsed < _inventoryWaitTimeout)
+        {
+            if (TryGetPlayerInventorySafe(out Inventory playerInventory))
+            {
+                SyncFromInventory(playerInventory);
+                yield break;
+            }
+
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        if (_useLog)
+        {
+            Debug.LogWarning("[PictorialBookSystem] 제한 시간 내에 PlayerInventory가 준비되지 않아 초기 동기화를 건너뜁니다.");
+        }
+    }
+
+    /// <summary>
+    /// 외부에서 수동으로 다시 동기화할 때 사용
+    /// </summary>
     public void SyncFromPlayerInventory()
     {
-        if (InventoryManager.Ins == null)
+        if (!TryGetPlayerInventorySafe(out Inventory playerInventory))
         {
             if (_useLog)
             {
-                Debug.LogWarning("[PictorialBookSystem] InventoryManager.Ins가 null이라 초기 동기화를 건너뜁니다.");
+                Debug.LogWarning("[PictorialBookSystem] PlayerInventory를 찾지 못해 동기화를 건너뜁니다.");
             }
             return;
         }
 
-        if (InventoryManager.Ins.PlayerInventory == null)
+        SyncFromInventory(playerInventory);
+    }
+
+    private void SyncFromInventory(Inventory playerInventory)
+    {
+        if (playerInventory == null)
         {
-            if (_useLog)
-            {
-                Debug.LogWarning("[PictorialBookSystem] PlayerInventory가 null이라 초기 동기화를 건너뜁니다.");
-            }
             return;
         }
 
-        Inventory playerInventory = InventoryManager.Ins.PlayerInventory;
         if (playerInventory.InventorySlots == null)
         {
             return;
@@ -117,6 +148,38 @@ public class PictorialBookSystem : BaseMono
             }
 
             TryDiscover(slot.ItemSO.Id);
+        }
+    }
+
+    private bool TryGetPlayerInventorySafe(out Inventory playerInventory)
+    {
+        playerInventory = null;
+
+        if (InventoryManager.Ins == null)
+        {
+            return false;
+        }
+
+        try
+        {
+            playerInventory = InventoryManager.Ins.PlayerInventory;
+            return playerInventory != null;
+        }
+        catch (System.ArgumentOutOfRangeException)
+        {
+            return false;
+        }
+        catch (System.Collections.Generic.KeyNotFoundException)
+        {
+            return false;
+        }
+        catch (System.Exception ex)
+        {
+            if (_useLog)
+            {
+                Debug.LogWarning($"[PictorialBookSystem] PlayerInventory 접근 중 예외 발생: {ex.Message}");
+            }
+            return false;
         }
     }
 
