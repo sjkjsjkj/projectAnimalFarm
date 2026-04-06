@@ -553,6 +553,60 @@ public class TileMap
     }
 
     /// <summary>
+    /// 유닛이 이동 불가 타일에 같혔을 때 탈출하기 위한 변위 벡터를 계산합니다.
+    /// </summary>
+    /// <param name="curPos">현재 월드 좌표</param>
+    /// <param name="size">유닛 크기</param>
+    /// <param name="escapePos">탈출을 위해 적용할 변위 벡터</param>
+    /// <returns></returns>
+    public bool TryCalcEscapeVector(Vector2 curPos, Vector2 size, out Vector2 escapePos)
+    {
+        escapePos = Vector2.zero;
+        Vector2 sumDir = Vector2.zero;
+        int occupiedCount = 0;
+        // 점유한 타일 순회
+        var (startX, endX, startY, endY) = GetOccupiedGrid(curPos, size);
+        for (int y = startY; y <= endY; ++y)
+        {
+            for (int x = startX; x <= endX; ++x)
+            {
+                int index = GridToIndex(x, y);
+                if (IsValid(index) && IsMoveable(index))
+                {
+                    continue;
+                }
+                // 이동 불가 타일
+                Vector2 tileCenter = IndexToWorld(index);
+                Vector2 diff = curPos - tileCenter;
+                if (diff.sqrMagnitude < K.SMALL_DISTANCE)
+                {
+                    continue;
+                }
+                sumDir += diff.normalized;
+                occupiedCount++;
+            }
+        }
+        // 점유한 이동 불가 타일이 없음
+        if (occupiedCount <= 0)
+        {
+            return false;
+        }
+        // 방향 계산
+        Vector2 pushDir = sumDir.normalized;
+        if (pushDir == Vector2.zero)
+        {
+            pushDir = (curPos - Vector2.zero).normalized; // 맵 중심으로
+        }
+        // 밀어낼 거리
+        float halfSize = Mathf.Max(size.x, size.y) * 0.5f;
+        float pushDist = K.GRID_SIZE_HALF + halfSize + K.SMALL_DISTANCE; // + 여유값
+        // 변위 벡터 계산
+        escapePos = pushDir * pushDist;
+        escapePos /= 10f;
+        return true;
+    }
+
+    /// <summary>
     /// 유닛이 이번 프레임이 밟게 될 최종 좌표를 반환합니다.
     /// </summary>
     /// <param name="curPos">현재 좌표</param>
@@ -562,6 +616,11 @@ public class TileMap
     /// <returns></returns>
     public Vector2 GetValidPos(Vector2 curPos, Vector2 size, Vector2 dir, float speed)
     {
+        // 이동 불가 타일일 경우 중심에서 밀어내기
+        if (TryCalcEscapeVector(curPos, size, out Vector2 escapePos))
+        {
+            return curPos + escapePos;
+        }
         // 방향 또는 이동 속도에 의해 위치 변화 없음
         if (dir == Vector2.zero || speed <= 0f)
         {
@@ -598,6 +657,8 @@ public class TileMap
     /// <returns></returns>
     public Vector2 GetValidVelocity(Vector2 curPos, Vector2 size, Vector2 dir, float speed)
     {
+        // 이동 불가 타일일 경우 중심에서 밀어내기
+        
         // 방향 또는 이동 속도에 의해 위치 변화 없음
         if (dir == Vector2.zero || speed <= 0f)
         {
