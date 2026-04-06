@@ -106,7 +106,7 @@ public class ShopPresenter : BaseMono
         for (int i = 0; i < length; ++i)
         {
             BaseMono mono = monos[i];
-            if(_shopUiMono == null && mono is IShopUI)
+            if(_shopUiMono == null && mono is ICraftUI)
             {
                 UDebug.Print($"상점 UI 컴포넌트를 자동 탐색했습니다.");
                 _shopUiMono = mono;

@@ -59,7 +59,17 @@ public class FarmlandSpriteProvider : Singleton<FarmlandSpriteProvider>
             UDebug.Print($"{id}는 seedSprites에 존재하지 않습니다.", LogType.Assert);
             return null;
         }
-        int index = Mathf.Clamp(grownProgress, 0, _seedSprites[id].Length - 1);
+        var spriteArr = _seedSprites[id];
+        if (spriteArr == null) {
+            UDebug.Print($"딕셔너리의 {id} 키에 있는 배열이 존재하지 않습니다.", LogType.Assert);
+            return null;
+        }
+        if(spriteArr.Length <= 0)
+        {
+            UDebug.Print($"스프라이트의 길이가 0 이하입니다.", LogType.Assert);
+            return null;
+        }
+        int index = Mathf.Clamp(grownProgress, 0, spriteArr.Length - 1);
         /*if (grownProgress < 0 || _seedSprites[id].Length <= grownProgress)
         {
             UDebug.Print($"{grownProgress}는 {_seedSprites[id]}의 배열 크기를 벗어났습니다. (최대 {_seedSprites[id].Length})", LogType.Assert);
