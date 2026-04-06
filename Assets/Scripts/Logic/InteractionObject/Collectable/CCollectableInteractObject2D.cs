@@ -4,54 +4,80 @@ using UnityEngine;
 using UnityEngine.Events;
 
 /// <summary>
-/// 채집 가능한 오브젝트
-/// - 플레이어가 가까이 가면 자동 습득 가능
-/// - 버튼을 눌러서 습득 가능
-/// - 버튼 채집 시에는 모션 / 딜레이를 줄 수 있음
-/// - 획득 후 비활성화 / 파괴 / 리스폰 처리 가능
+/// 채집 가능한 오브젝트.
+/// 
+/// 이 스크립트의 역할
+/// 1. 팀 상호작용 시스템에서 호출할 수 있도록 IInteractable을 구현한다.
+/// 2. 플레이어가 상호작용하면 실제 채집을 진행한다.
+/// 3. 보상 아이템은 플레이어의 CPlayerCollector2D를 통해 지급한다.
+/// 4. 필요하면 자동 채집도 지원한다.
+/// 5. 획득 후 비활성화 / 파괴 / 리스폰을 처리할 수 있다.
+/// 
+/// 사용 예시
+/// - 약초
+/// - 광석
+/// - 나무
+/// - 열매 오브젝트
+/// - 채집 가능한 풀
+/// 
+/// 중요
+/// - 이 오브젝트는 Interact 레이어를 사용
+/// - Collider2D 필요
+/// - 팀 상호작용 시스템이 Interact(GameObject player)를 호출
 /// </summary>
-
 [RequireComponent(typeof(Collider2D))]
 public class CCollectableInteractObject2D : BaseMono, IInteractable
 {
     public enum ECollectMode
     {
-        AutoOnly = 0,     // 범위 안에 오면 자동 습득
-        ButtonOnly,       // 버튼 입력으로만 습득
-        AutoOrButton,     // 자동 습득도 가능, 버튼으로도 가능
+        AutoOnly = 0,     // 자동 채집만 가능
+        ButtonOnly,       // 버튼 상호작용으로만 채집 가능
+        AutoOrButton,     // 자동 / 버튼 둘 다 가능
     }
 
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("지급 아이템 정보")]
+    [Tooltip("실제로 플레이어 인벤토리에 들어갈 아이템 ID")]
     [SerializeField] private string _itemId;
+
+    [Tooltip("한 번 획득 시 지급할 수량")]
     [SerializeField] private int _amount = 1;
+
+    [Tooltip("UI에 보여줄 이름. 비어 있으면 itemId를 대신 사용")]
     [SerializeField] private string _displayName = "";
 
     [Header("획득 방식")]
+    [Tooltip("자동 / 수동 / 둘 다 가능한지 설정")]
     [SerializeField] private ECollectMode _collectMode = ECollectMode.ButtonOnly;
 
-    [Tooltip("AutoOnly / AutoOrButton에서 자동 습득까지 걸리는 시간")]
+    [Tooltip("AutoOnly / AutoOrButton일 때 자동 채집까지 걸리는 시간")]
     [SerializeField] private float _autoCollectDelay = 0.15f;
 
     [Header("수동 채집 연출")]
-    [Tooltip("버튼 채집 시 플레이어 모션 / 딜레이를 사용할지")]
+    [Tooltip("버튼 채집 시 채집 애니메이션 / 딜레이를 사용할지")]
     [SerializeField] private bool _useInteractionMotion = true;
 
-    [Tooltip("E키를 눌렀을 때 실제 보상을 주기까지 대기 시간")]
+    [Tooltip("버튼 채집 시 실제 보상 지급까지 대기 시간")]
     [SerializeField] private float _manualCollectDelay = 1.0f;
 
     [Tooltip("버튼 채집 중 플레이어를 Busy 상태로 묶을지")]
     [SerializeField] private bool _setPlayerBusyDuringManualCollect = true;
 
-    [Tooltip("채집 성공 시 지급할 채집 경험치")]
+    [Tooltip("채집 성공 시 지급할 생활 스킬 경험치")]
     [SerializeField] private int _gatherSkillExp = 0;
 
     [Header("획득 후 처리")]
+    [Tooltip("획득 즉시 이 오브젝트를 파괴할지")]
     [SerializeField] private bool _destroyOnCollected = false;
+
+    [Tooltip("획득 후 꺼둘 대상. 연결하면 이 오브젝트 대신 이 대상을 꺼줌")]
     [SerializeField] private GameObject _disableTargetAfterCollected;
 
     [Header("리스폰 설정")]
+    [Tooltip("일정 시간 후 다시 등장하게 할지")]
     [SerializeField] private bool _useRespawn = false;
+
+    [Tooltip("리스폰까지 대기 시간")]
     [SerializeField] private float _respawnDelay = 10f;
 
     [Header("이벤트")]
@@ -59,28 +85,30 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     [SerializeField] private UnityEvent _onCollected;
     [SerializeField] private UnityEvent _onRespawned;
 
-    [Header("로그 출력")]
+    [Header("로그")]
     [SerializeField] private bool _logEnabled = true;
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
-    // 범위 안에 들어와 있는 플레이어 수집기 목록
+    /// <summary>
+    /// 현재 범위 안에 들어와 있는 플레이어 수집기 목록
+    /// 자동 채집에 사용
+    /// </summary>
     private readonly List<CPlayerCollector2D> _nearCollectors = new List<CPlayerCollector2D>();
 
-    // 이미 획득되어 현재 사용할 수 없는 상태인지 여부
+    /// <summary>
+    /// 이미 획득된 상태인지
+    /// </summary>
     private bool _isCollected = false;
 
-    // 현재 처리 중인지 여부
-    // 수동 채집 코루틴이 도는 동안 true
+    /// <summary>
+    /// 현재 처리 중인지
+    /// 중복 채집 방지용
+    /// </summary>
     private bool _isProcessing = false;
 
-    // 자동 습득 코루틴 핸들
     private Coroutine _autoCollectRoutine = null;
-
-    // 리스폰 코루틴 핸들
     private Coroutine _respawnRoutine = null;
-
-    // 트리거 콜라이더 캐시
     private Collider2D _triggerCollider = null;
     #endregion
 
@@ -88,6 +116,69 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     public bool IsCollectableNow => !_isCollected && !_isProcessing;
     public bool CanManualCollect => _collectMode == ECollectMode.ButtonOnly || _collectMode == ECollectMode.AutoOrButton;
     public bool CanAutoCollect => _collectMode == ECollectMode.AutoOnly || _collectMode == ECollectMode.AutoOrButton;
+    #endregion
+
+    #region ─────────────────────────▶ IInteractable 구현 ◀─────────────────────────
+    /// <summary>
+    /// 팀 상호작용 시스템에서 먼저 호출하는 상호작용 가능 여부 검사
+    /// </summary>
+    public bool CanInteract(GameObject player)
+    {
+        if (!CanManualCollect)
+        {
+            return false;
+        }
+
+        if (player == null)
+        {
+            return false;
+        }
+
+        CPlayerCollector2D collector = player.GetComponentInParent<CPlayerCollector2D>();
+        if (collector == null)
+        {
+            collector = player.GetComponent<CPlayerCollector2D>();
+        }
+
+        return CanCollect(collector);
+    }
+
+    /// <summary>
+    /// 팀 상호작용 시스템에서 실제 상호작용 시 호출
+    /// </summary>
+    public void Interact(GameObject player)
+    {
+        if (player == null)
+        {
+            return;
+        }
+
+        CPlayerCollector2D collector = player.GetComponentInParent<CPlayerCollector2D>();
+        if (collector == null)
+        {
+            collector = player.GetComponent<CPlayerCollector2D>();
+        }
+
+        if (collector == null)
+        {
+            if (_logEnabled)
+            {
+                Debug.LogWarning($"[CCollectableInteractObject2D] player에서 CPlayerCollector2D를 찾지 못했습니다. object={name}");
+            }
+            return;
+        }
+
+        TryCollect(collector);
+    }
+
+    /// <summary>
+    /// 팀 상호작용 UI에 보여줄 문구
+    /// </summary>
+    public string GetMessage()
+    {
+        string targetName = string.IsNullOrWhiteSpace(_displayName) ? _itemId : _displayName;
+        return $"{targetName} 채집";
+    }
     #endregion
 
     #region ─────────────────────────▶ 외부 메서드 ◀─────────────────────────
@@ -98,9 +189,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     {
         if (_isCollected)
         {
-            //ItemSO a = DatabaseManager.Ins.("aa");
-
-            return false;     
+            return false;
         }
 
         if (_isProcessing)
@@ -109,6 +198,11 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         }
 
         if (collector == null)
+        {
+            return false;
+        }
+
+        if (collector.IsBusy)
         {
             return false;
         }
@@ -127,7 +221,8 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     }
 
     /// <summary>
-    /// 플레이어가 버튼 채집 시도할 때 호출
+    /// 수동 채집 시도
+    /// 팀 상호작용 시스템에서 최종적으로 여기까지 오게 된다.
     /// </summary>
     public bool TryCollect(CPlayerCollector2D collector)
     {
@@ -135,7 +230,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     }
 
     /// <summary>
-    /// 안내 문구 생성
+    /// 네가 별도 UI 문구를 띄우고 싶을 때 사용할 수 있는 보조 함수
     /// </summary>
     public string GetInteractionMessage(KeyCode key)
     {
@@ -146,8 +241,9 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
     /// <summary>
-    /// 실제 채집 시도 공통 처리
-    /// isManualRequest == true 이면 E키로 눌러서 채집한 경우
+    /// 실제 채집 공용 처리
+    /// isManualRequest가 true면 버튼 채집
+    /// false면 자동 채집
     /// </summary>
     private bool TryCollectInternal(CPlayerCollector2D collector, bool isManualRequest)
     {
@@ -166,8 +262,8 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             return false;
         }
 
-        // 버튼 채집인 경우
-        // 플레이어 모션을 쓰는 설정이면 코루틴으로 들어가서 딜레이 후 지급
+        // 수동 채집이고 모션을 쓰는 경우
+        // 즉시 지급하지 않고 코루틴으로 연출 후 지급
         if (isManualRequest && _useInteractionMotion)
         {
             if (!collector.CanStartInteraction())
@@ -202,11 +298,14 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     }
 
     /// <summary>
-    /// 버튼 채집 실제 처리
-    /// - 모션 재생
-    /// - 딜레이 대기
-    /// - 아이템 지급
-    /// - 성공 시 완료 처리
+    /// 수동 채집용 코루틴
+    /// - 시작 이벤트
+    /// - 플레이어 Busy
+    /// - 애니메이션
+    /// - 대기
+    /// - 보상 지급
+    /// - 경험치 지급
+    /// - 완료 처리
     /// </summary>
     private IEnumerator CoManualCollect(CPlayerCollector2D collector)
     {
@@ -254,8 +353,12 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     }
 
     /// <summary>
-    /// 실제 아이템 지급
-    /// 성공하면 true, 실패하면 false
+    /// 실제 아이템 지급 처리
+    /// 
+    /// 중요
+    /// - 여기서 직접 인벤토리를 건드리지 않음
+    /// - 플레이어의 CPlayerCollector2D를 통해
+    ///   ItemCollectionCoordinator로 넘겨서 처리
     /// </summary>
     private bool TryGiveReward(CPlayerCollector2D collector)
     {
@@ -277,7 +380,6 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             return false;
         }
 
-        // 플레이어에게 실제 아이템 지급
         bool received = collector.TryReceiveItem(_itemId, _amount);
 
         if (!received)
@@ -294,7 +396,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     }
 
     /// <summary>
-    /// 자동 습득 코루틴 시작
+    /// 자동 채집 시작
     /// </summary>
     private void StartAutoCollect()
     {
@@ -317,7 +419,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     }
 
     /// <summary>
-    /// 자동 습득 중지
+    /// 자동 채집 중지
     /// </summary>
     private void StopAutoCollect()
     {
@@ -331,8 +433,8 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     }
 
     /// <summary>
-    /// 자동 습득 실제 처리
-    /// 자동 습득은 버튼 모션 없이 바로 지급되도록 유지
+    /// 자동 채집 코루틴
+    /// 범위 안 플레이어가 있으면 잠깐 기다렸다가 지급 시도
     /// </summary>
     private IEnumerator CoAutoCollect()
     {
@@ -348,7 +450,6 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             yield break;
         }
 
-        // 범위 안에 남아있는 플레이어 중 첫 번째 유효한 플레이어에게 지급
         for (int i = 0; i < _nearCollectors.Count; i++)
         {
             CPlayerCollector2D collector = _nearCollectors[i];
@@ -366,11 +467,12 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     }
 
     /// <summary>
-    /// 실제 획득 완료 처리
-    /// - 플레이어 목록 정리
-    /// - 콜라이더 비활성화
+    /// 획득 완료 처리
+    /// - 상태 변경
+    /// - 범위 목록 정리
+    /// - 콜라이더 끄기
     /// - 이벤트 호출
-    /// - 비활성화 / 파괴 / 리스폰 분기
+    /// - 파괴 / 비활성화 / 리스폰 처리
     /// </summary>
     private void CompleteCollect()
     {
@@ -381,24 +483,9 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
         _isCollected = true;
 
-        // 범위에 등록된 플레이어들에게서 자신을 제거
-        for (int i = 0; i < _nearCollectors.Count; i++)
-        {
-            CPlayerCollector2D collector = _nearCollectors[i];
-
-            if (collector == null)
-            {
-                continue;
-            }
-
-            collector.UnregisterNearbyTarget(this);
-        }
-
         _nearCollectors.Clear();
-
         StopAutoCollect();
 
-        // 트리거 비활성화
         if (_triggerCollider != null)
         {
             _triggerCollider.enabled = false;
@@ -411,7 +498,6 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
         _onCollected?.Invoke();
 
-        // 리스폰 모드가 켜져 있으면 자기 자신은 살아 있어야 코루틴이 돈다.
         if (_useRespawn)
         {
             SetCollectedVisual(false);
@@ -425,7 +511,6 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             return;
         }
 
-        // 리스폰이 아니라면 기존 로직대로 파괴 / 비활성화
         if (_destroyOnCollected)
         {
             UObject.Destroy(gameObject);
@@ -443,8 +528,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     }
 
     /// <summary>
-    /// 리스폰 코루틴
-    /// 일정 시간 후 다시 채집 가능 상태로 복구
+    /// 리스폰 대기 후 복구
     /// </summary>
     private IEnumerator CoRespawn()
     {
@@ -458,7 +542,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     }
 
     /// <summary>
-    /// 리스폰 후 상태 초기화
+    /// 리스폰 시 상태 초기화
     /// </summary>
     private void ResetCollectState()
     {
@@ -487,9 +571,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     }
 
     /// <summary>
-    /// 획득 후 비주얼 On/Off
-    /// 리스폰 구조에서는 자기 자신을 꺼버리면 코루틴이 멈추므로
-    /// 가능하면 _disableTargetAfterCollected 에 비주얼 루트를 연결해서 쓰는 것이 좋다.
+    /// 획득 후 비주얼 On/Off 처리
     /// </summary>
     private void SetCollectedVisual(bool isVisible)
     {
@@ -506,7 +588,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     }
 
     /// <summary>
-    /// 플레이어 수집기 목록 정리
+    /// null collector 정리
     /// </summary>
     private void CleanupCollectors()
     {
@@ -520,7 +602,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     }
 
     /// <summary>
-    /// 현재 범위 안에 플레이어가 있는지 여부
+    /// 범위 안에 collector가 하나라도 있는지
     /// </summary>
     private bool HasAnyCollectorInRange()
     {
@@ -529,8 +611,8 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     }
 
     /// <summary>
-    /// 리스폰 직후 플레이어가 이미 범위 안에 서 있는 경우
-    /// OnTriggerEnter2D가 다시 안 들어올 수 있으므로 수동으로 재등록
+    /// 현재 콜라이더 범위를 다시 검사해서
+    /// 근처 플레이어 collector 목록 복구
     /// </summary>
     private void RebuildCollectorListInRange()
     {
@@ -540,7 +622,6 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         }
 
         Bounds bounds = _triggerCollider.bounds;
-
         Collider2D[] hits = Physics2D.OverlapBoxAll(bounds.center, bounds.size, 0f);
 
         if (hits == null || hits.Length == 0)
@@ -570,7 +651,6 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             }
 
             _nearCollectors.Add(collector);
-            collector.RegisterNearbyTarget(this);
         }
     }
     #endregion
@@ -579,8 +659,10 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     protected override void Awake()
     {
         base.Awake();
+
         _triggerCollider = GetComponent<Collider2D>();
 
+        // 트리거가 아니면 자동 감지가 안 될 수 있으니 경고 출력
         if (_triggerCollider != null && !_triggerCollider.isTrigger)
         {
             Debug.LogWarning($"[CCollectableInteractObject2D] {name}의 Collider2D가 Trigger가 아닙니다. 자동/버튼 채집 범위 감지가 안 될 수 있습니다.");
@@ -606,9 +688,6 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             _nearCollectors.Add(collector);
         }
 
-        collector.RegisterNearbyTarget(this);
-
-        // 자동 습득 가능 모드면 자동 채집 시작
         if (CanAutoCollect)
         {
             StartAutoCollect();
@@ -625,9 +704,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         }
 
         _nearCollectors.Remove(collector);
-        collector.UnregisterNearbyTarget(this);
 
-        // 범위 안 플레이어가 하나도 없으면 자동 습득 중단
         if (!HasAnyCollectorInRange())
         {
             StopAutoCollect();
@@ -643,18 +720,6 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             StopCoroutine(_respawnRoutine);
             _respawnRoutine = null;
         }
-    }
-
-    public void Interact(GameObject player) {
-
-    }
-    public bool CanInteract(GameObject player) {
-
-        return false;
-    }
-    public string GetMessage() {
-
-        return string.Empty;
     }
     #endregion
 }
