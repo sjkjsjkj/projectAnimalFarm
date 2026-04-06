@@ -92,12 +92,12 @@ public class NPCObject : Frameable
     }
     private void UpdateMove()
     {
-        UDebug.Print("이동중");
+        //UDebug.Print("이동중");
         //_moveMaster.Move();
     }
     private void UpdateIdle()
     {
-        UDebug.Print("멍때리는중");
+        //UDebug.Print("멍때리는중");
     }
     //Idle <> Move 상태를 자연스럽게 변경해주기 위해 다음 액션을 랜덤하게 선택
     private void RandomAction()

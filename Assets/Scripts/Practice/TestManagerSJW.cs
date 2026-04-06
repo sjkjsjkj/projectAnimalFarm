@@ -73,7 +73,21 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
     }
     public void TestGetItemInvenCoordinator()
     {
-        _itemCoordinatior.TryCollectItem(_itemId, 1);
+        _itemCoordinatior.TryCollectItem(Id.Item_Seed_BlueBerry, 1);
+        _itemCoordinatior.TryCollectItem(Id.Item_Seed_Broccoli, 1);
+        _itemCoordinatior.TryCollectItem(Id.Item_Seed_Cabbage, 1);
+        _itemCoordinatior.TryCollectItem(Id.Item_Seed_Carrot, 1);
+        _itemCoordinatior.TryCollectItem(Id.Item_Seed_Cauliflower, 1);
+        _itemCoordinatior.TryCollectItem(Id.Item_Seed_GreenOnion, 1);
+        _itemCoordinatior.TryCollectItem(Id.Item_Seed_Onion, 1);
+        _itemCoordinatior.TryCollectItem(Id.Item_Seed_Radish, 1);
+        _itemCoordinatior.TryCollectItem(Id.Item_Seed_Potato, 1);
+        _itemCoordinatior.TryCollectItem(Id.Item_Seed_Rice, 1);
+        _itemCoordinatior.TryCollectItem(Id.Strawberry_0, 1);
+        _itemCoordinatior.TryCollectItem(Id.Rice_0, 1);
+        _itemCoordinatior.TryCollectItem(Id.Onion_0, 1);
+        _itemCoordinatior.TryCollectItem(Id.Cabbage_0, 1);
+        _itemCoordinatior.TryCollectItem(Id.Blueberry_0, 1);
     }
 
     public void TestFarm()
@@ -112,12 +126,26 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
 
         Workbench.Ins.SetRecipe(_recipeSOs[_recipeIdx]);
     }
+    public void FlagTest()
+    {
+        uint flag1 = 0, flag2 = 0, flag3 = 0;
+        flag1 |= (uint)(EConnectionDir.Left | EConnectionDir.Right);
+        flag2 |= (uint)(EConnectionDir.Left | EConnectionDir.Right | EConnectionDir.Up);
+        flag3 |= (uint)EConnectionDir.Left;
+        UDebug.Print($"Flag 1 : LeftRight {flag1} | Flag 2 : LeftRightUp {flag2} | Flag 3 : None {flag3} ");
+        UDebug.Print($"Flag 1 & Flag 3 : { flag1 ^ flag3} ");
+    }
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
     private void Start()
     {
         _itemCoordinatior = GameObject.Find("Item_Collection_Coordinator").GetComponent<ItemCollectionCoordinator>();
+
+        FlagTest();
+        
+        
+
     }
     #endregion
 }

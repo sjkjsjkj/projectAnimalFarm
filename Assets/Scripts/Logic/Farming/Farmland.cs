@@ -30,6 +30,12 @@ public class Farmland
     public uint StateFlag => _stateFlag;
     public string UnitId { get; set; }
 
+    #region 테스트
+    public uint SoildConnectDir => _soiledConnectDir;
+    public uint MoistConnectDir => _moistConnectDir;
+    #endregion
+
+
     public event Action<FarmStateChangeStruct> OnFarmStateChange;
     public event Action<FarmlandConnetionChangeStruct> OnFarmlandConnetionChange;
     public event Action<int> OnGrownUp;
@@ -68,12 +74,14 @@ public class Farmland
     {
         _seededId = "";
         _harvestItemId = "";
-        _grownUpTick = K.FARMLAND_GROWNTIME;
+        _grownUpTick = 1; //K.FARMLAND_GROWNTIME;
         _currentTick = 0;
         _soiledConnectDir = 0;
         _moistConnectDir = 0;
-        SetState(EFarmlandState.IdleLand);
+        
         _stateFlag = (uint)EFarmlandState.IdleLand;
+        SetState(EFarmlandState.IdleLand);
+        UDebug.Print($"Clear된 경작지의 StateFlag = {_stateFlag}");
     }
     //인터랙트가 가능한지의 여부를 반환해줄 메서드
     public bool CanInteract()
@@ -207,7 +215,6 @@ public class Farmland
     }
     private void GrownUpInterInteract()
     {
-
         OnGetHarvest?.Invoke(_pos);
         //ItemSO tempItemSO = DatabaseManager.Ins.Item(_harvestItemId);
         ItemCollectionCoordinator.Ins.TryCollectItem(_harvestItemId, 1);
@@ -235,21 +242,39 @@ public class Farmland
     private void GrowUp()
     {
         _tickTimer = 0;
-        UDebug.Print($"PrevGrowProgress : {_currentTick} | Full Grown Count : {_grownUpTick} ");
-
 
         if ((_currentTick = (int)MathF.Min(_currentTick+1, K.FARMLAND_MAX_GROWNPROGRESS))  == K.FARMLAND_MAX_GROWNPROGRESS)
         {
-            UDebug.Print($"Full Grown Up Success");
             SetState(EFarmlandState.GrownUp);
             OnGrownUp?.Invoke(_pos);
             return;
         }
 
-        UDebug.Print($"CurGrowProgress : {_currentTick} | Full Grown Count : {_grownUpTick} ");
-
         OnFarmStateChange?.Invoke(new FarmStateChangeStruct(_state, _pos, _seededId, _currentTick));
     }
+    public void SetDisConnectSoil(uint connection)
+    {
+        if (_soiledConnectDir == 0)
+        {
+            return;
+        }
+        
+        _soiledConnectDir ^= connection;
+        
+        OnFarmlandConnetionChange?.Invoke(new FarmlandConnetionChangeStruct(_soiledConnectDir, EFarmlandState.SoiledLand, _pos));
+    }
+    public void SetDisConnectMoist(uint connection)
+    {
+        if (_moistConnectDir == 0)
+        {
+            return;
+        }
+        _moistConnectDir ^= connection;
+
+        OnFarmlandConnetionChange?.Invoke(new FarmlandConnetionChangeStruct(_moistConnectDir, EFarmlandState.MoistLand, _pos));
+    }
+
+
     public void SetConnectSoil()
     {
         OnFarmlandConnetionChange?.Invoke(new FarmlandConnetionChangeStruct(0, EFarmlandState.SoiledLand, _pos));

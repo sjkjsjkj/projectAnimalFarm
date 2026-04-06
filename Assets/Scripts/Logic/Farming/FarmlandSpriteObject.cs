@@ -12,12 +12,16 @@ public class FarmlandSpriteObject : BaseMono , IAutoInteractable
     [SerializeField] private SpriteRenderer _moistSprite;
     [SerializeField] private SpriteRenderer _seedSprite;
     [SerializeField] private SpriteRenderer _harvestFinishIcon;
+
+    [SerializeField] private int SoildConnectDir;
+    [SerializeField] private int MoistConnectDir;
     #endregion
 
     #region  ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private FarmArea _area;
     private int _idx;
     private bool _isGrownUp;
+
     #endregion
 
 
@@ -25,6 +29,12 @@ public class FarmlandSpriteObject : BaseMono , IAutoInteractable
     public SpriteRenderer FinishIcon => _harvestFinishIcon;
 
     public event Action<int> OnInteract;
+
+
+    #region 테스트
+    //public int SoiledConnectDir => (int)_area.Farmlands[_idx].SoildConnectDir;
+    //public int MoistConnectDir => (int)_area.Farmlands[_idx].MoistConnectDir;
+    #endregion
 
 
     public void SetInfo(FarmArea area, int idx)
@@ -61,13 +71,19 @@ public class FarmlandSpriteObject : BaseMono , IAutoInteractable
         _seedSprite.sprite = null;
         _harvestFinishIcon.enabled = false;
     }
+    public void SetIdleLandSprite(uint connectDir)
+    {
+        UDebug.Print($"스프라이트 초기화~  현재 연결 상태는~ {connectDir}");
+    }
     public void SetSoilSprite(uint connectDir)
     {
         _soilSprite.sprite = FarmlandSpriteProvider.Ins.GetSoilSprite(connectDir);
+        SoildConnectDir = (int)connectDir;
     }
     public void SetMoistSprite(uint connectDir)
     {
         _moistSprite.sprite = FarmlandSpriteProvider.Ins.GetMoistSprite(connectDir);
+        MoistConnectDir = (int)connectDir;
     }
     #endregion
     public void SetSeedSprite(string id, int grownProgress = 0)

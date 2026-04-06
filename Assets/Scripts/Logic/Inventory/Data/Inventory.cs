@@ -58,6 +58,17 @@ public class Inventory
         }
         return false;
     }
+    public bool CheckSlots()
+    {
+        for(int i=0; i < _inventorySlots.Length; i++)
+        {
+            if (_inventorySlots[i].IsEmpty)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
     public int CheckSlots(ItemSO itemData, int itemStack = 1)
     {
         //겹칠 수 없는 아이템이라면
