@@ -32,8 +32,19 @@ public class CameraFollowThePlayer : Frameable
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
     private void FollowPlayer()
     {
+        Vector3 cameraPos = _cameraTr.position;
         Vector3 desiredPos = _playerTr.position + _offset;
-        Vector3 nextPos = Vector3.SmoothDamp(_cameraTr.position, desiredPos, ref _velocity, _smoothTime);
+        Vector3 nextPos;
+        // 거리가 멀 경우 스냅
+        if ((desiredPos - cameraPos).sqrMagnitude > 15f)
+        {
+            nextPos = desiredPos;
+        }
+        // 화면 이내로 추정될 경우 보간
+        else
+        {
+            nextPos = Vector3.SmoothDamp(cameraPos, desiredPos, ref _velocity, _smoothTime);
+        }
         _cameraTr.position = nextPos;
     }
 

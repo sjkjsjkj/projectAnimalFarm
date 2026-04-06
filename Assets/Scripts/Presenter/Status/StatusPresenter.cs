@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// 상점 UI와 로직을 스스로 수집하여 중간 다리를 연결해주는 컴포넌트
+/// 플레이어 상태 UI와 로직을 스스로 수집하여 중간 다리를 연결해주는 컴포넌트
 /// </summary>
 public class StatusPresenter : BaseMono
 {
@@ -13,7 +13,7 @@ public class StatusPresenter : BaseMono
     private IStatusLogical _statusLogical;
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-    // 구매 버튼을 눌렀을 때
+    // 도구 슬롯을 클릭했을 때
     private void ToolSlotClickedHandle(EType toolType)
     {
         if(_statusUi == null || _statusLogical == null) return;
@@ -22,7 +22,7 @@ public class StatusPresenter : BaseMono
         _statusUi.ToolSlotClickedHandle(out tools);
     }
 
-    // 판매 버튼을 눌렀을 때
+    // 구체적인 도구를 선택했을 때
     private void ToolItemClickedHandle(string toolId)
     {
         if (_statusUi == null || _statusLogical == null) return;
