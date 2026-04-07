@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7777905436675403827}
   - component: {fileID: 8531094876147535740}
-  - component: {fileID: 6862909461004042623}
   - component: {fileID: 3741708259854580653}
   - component: {fileID: -3586646994388270240}
   m_Layer: 0
@@ -51,24 +50,6 @@ MonoBehaviour:
   _instanceId: 0
   _pictorialBookSystem: {fileID: 0}
   _useLog: 1
---- !u!114 &6862909461004042623
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5059007461852088965}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc66e5aa01b91a24ea6845923cbb2e3e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _uniqueId: 
-  _instanceId: 0
-  _sheetItemDatabase: {fileID: 0}
-  _syncInventoryOnStart: 1
-  _useLog: 1
-  _inventoryWaitTimeout: 10
 --- !u!114 &3741708259854580653
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,30 +1,32 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 도감 해금 상태를 관리하는 시스템.
+/// 도감 해금 상태 관리 시스템.
 /// 
-/// 핵심 수정
-/// - Start에서 바로 PlayerInventory를 읽지 않는다.
-/// - InventoryManager가 실제로 플레이어 인벤토리를 만든 뒤에만 동기화한다.
+/// 역할
+/// 1. 인벤토리에 들어간 itemId를 도감 해금 목록에 저장
+/// 2. 도감 DB에서 카테고리별 목록 반환
+/// 3. UI 갱신 이벤트 전달
 /// </summary>
 public class PictorialBookSystem : BaseMono
 {
-    [Header("도감 원본 데이터")]
-    [SerializeField] private SheetItemDatabase _sheetItemDatabase;
+    [Header("도감 데이터베이스")]
+    [SerializeField] private PictorialBookDatabaseSO _bookDatabase;
 
     [Header("옵션")]
     [SerializeField] private bool _syncInventoryOnStart = true;
     [SerializeField] private bool _useLog = true;
 
     [Header("초기화 대기 설정")]
-    [Tooltip("씬 시작 후 PlayerInventory가 준비될 때까지 기다릴 최대 시간(초)")]
     [SerializeField] private float _inventoryWaitTimeout = 10f;
 
-    private readonly HashSet<string> _discoveredItemIds = new HashSet<string>();
+    private readonly HashSet<string> _discoveredItemIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-    public event System.Action<string> OnDiscovered;
+    public event Action<string> OnDiscovered;
+
     public int DiscoveredCount => _discoveredItemIds.Count;
 
     private void Start()
@@ -37,51 +39,77 @@ public class PictorialBookSystem : BaseMono
 
     public bool TryDiscover(string itemId)
     {
-        if (string.IsNullOrWhiteSpace(itemId))
+        string normalizedItemId = NormalizeText(itemId);
+
+        if (string.IsNullOrWhiteSpace(normalizedItemId))
         {
             Debug.LogWarning("[PictorialBookSystem] itemId가 비어 있습니다.");
             return false;
         }
 
-        if (_discoveredItemIds.Contains(itemId))
+        if (_discoveredItemIds.Contains(normalizedItemId))
         {
             return false;
         }
 
-        _discoveredItemIds.Add(itemId);
+        _discoveredItemIds.Add(normalizedItemId);
 
         if (_useLog)
         {
-            Debug.Log($"[PictorialBookSystem] 도감 해금: {itemId}");
+            Debug.Log($"[PictorialBookSystem] 도감 해금: {normalizedItemId}");
         }
 
-        OnDiscovered?.Invoke(itemId);
+        OnDiscovered?.Invoke(normalizedItemId);
         return true;
     }
 
     public bool IsDiscovered(string itemId)
     {
-        if (string.IsNullOrWhiteSpace(itemId))
+        string normalizedItemId = NormalizeText(itemId);
+
+        if (string.IsNullOrWhiteSpace(normalizedItemId))
         {
             return false;
         }
 
-        return _discoveredItemIds.Contains(itemId);
+        return _discoveredItemIds.Contains(normalizedItemId);
     }
 
-    public List<SheetItemRow> GetRowsByCategory(string category)
+    public List<PictorialBookEntry> GetEntriesByCategory(string category)
     {
-        if (_sheetItemDatabase == null)
+        if (_bookDatabase == null)
         {
-            return new List<SheetItemRow>();
+            return new List<PictorialBookEntry>();
         }
 
-        return _sheetItemDatabase.GetRowsByCategory(category);
+        return _bookDatabase.GetEntriesByCategory(NormalizeText(category));
     }
 
-    /// <summary>
-    /// PlayerInventory가 실제로 준비될 때까지 기다렸다가 동기화
-    /// </summary>
+    public void SyncFromPlayerInventory()
+    {
+        if (!TryGetPlayerInventorySafe(out Inventory playerInventory))
+        {
+            if (_useLog)
+            {
+                Debug.LogWarning("[PictorialBookSystem] PlayerInventory를 찾지 못해 동기화를 건너뜁니다.");
+            }
+
+            return;
+        }
+
+        SyncFromInventory(playerInventory);
+    }
+
+    public void ClearDiscoveries()
+    {
+        _discoveredItemIds.Clear();
+
+        if (_useLog)
+        {
+            Debug.Log("[PictorialBookSystem] 도감 해금 상태를 초기화했습니다.");
+        }
+    }
+
     private IEnumerator CoSyncFromPlayerInventoryWhenReady()
     {
         float elapsed = 0f;
@@ -104,31 +132,9 @@ public class PictorialBookSystem : BaseMono
         }
     }
 
-    /// <summary>
-    /// 외부에서 수동으로 다시 동기화할 때 사용
-    /// </summary>
-    public void SyncFromPlayerInventory()
-    {
-        if (!TryGetPlayerInventorySafe(out Inventory playerInventory))
-        {
-            if (_useLog)
-            {
-                Debug.LogWarning("[PictorialBookSystem] PlayerInventory를 찾지 못해 동기화를 건너뜁니다.");
-            }
-            return;
-        }
-
-        SyncFromInventory(playerInventory);
-    }
-
     private void SyncFromInventory(Inventory playerInventory)
     {
-        if (playerInventory == null)
-        {
-            return;
-        }
-
-        if (playerInventory.InventorySlots == null)
+        if (playerInventory == null || playerInventory.InventorySlots == null)
         {
             return;
         }
@@ -143,6 +149,11 @@ public class PictorialBookSystem : BaseMono
             }
 
             if (slot.ItemSO == null)
+            {
+                continue;
+            }
+
+            if (string.IsNullOrWhiteSpace(slot.ItemSO.Id))
             {
                 continue;
             }
@@ -165,31 +176,24 @@ public class PictorialBookSystem : BaseMono
             playerInventory = InventoryManager.Ins.PlayerInventory;
             return playerInventory != null;
         }
-        catch (System.ArgumentOutOfRangeException)
-        {
-            return false;
-        }
-        catch (System.Collections.Generic.KeyNotFoundException)
-        {
-            return false;
-        }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             if (_useLog)
             {
                 Debug.LogWarning($"[PictorialBookSystem] PlayerInventory 접근 중 예외 발생: {ex.Message}");
             }
+
             return false;
         }
     }
 
-    public void ClearDiscoveries()
+    private string NormalizeText(string value)
     {
-        _discoveredItemIds.Clear();
-
-        if (_useLog)
+        if (string.IsNullOrWhiteSpace(value))
         {
-            Debug.Log("[PictorialBookSystem] 도감 해금 상태를 초기화했습니다.");
+            return string.Empty;
         }
+
+        return value.Trim();
     }
 }

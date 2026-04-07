@@ -1,112 +1,144 @@
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// 도감 슬롯 1칸 UI
-/// 
-/// 주의
-/// - SheetItemRow는 소문자 필드(id, name, iconKey)를 사용한다.
-/// - 기존 대문자 프로퍼티(Id, Name, IconKey)를 사용하면 컴파일 에러가 난다.
+/// 도감 슬롯 1칸 UI.
+/// 아이콘 하나만 사용해서 잠금 상태면 반투명, 해금 상태면 컬러로 표시한다.
 /// </summary>
 public class UIPictorialBookSlot : BaseMono
 {
+    [Header("UI 참조")]
     [SerializeField] private Image _iconImage;
-    [SerializeField] private GameObject _lockedOverlay;
     [SerializeField] private TMP_Text _nameText;
+
+    [Header("자동 연결")]
+    [SerializeField] private bool _autoBindReferences = true;
+    [SerializeField] private string _iconObjectName = "UnlockedIcon";
+    [SerializeField] private string _nameTextObjectName = "Text_Name";
+
+    [Header("잠금 상태 표시")]
     [SerializeField] private string _lockedNameText = "???";
     [SerializeField] private bool _hideNameWhenLocked = true;
-
-    private string _itemId;
-    private string _itemName;
-    private string _iconKey;
+    [SerializeField] private Color _lockedColor = new Color(1f, 1f, 1f, 0.45f);
+    [SerializeField] private Color _unlockedColor = Color.white;
 
     private PictorialBookSystem _bookSystem;
-    private SpriteRegistry _spriteRegistry;
+    private PictorialBookEntry _entry;
 
-    public void SetData(PictorialBookSystem bookSystem, SpriteRegistry spriteRegistry, SheetItemRow row)
+    private void Reset()
     {
+        TryAutoBindReferences();
+    }
+
+    private void OnValidate()
+    {
+        TryAutoBindReferences();
+    }
+
+    public void SetData(PictorialBookSystem bookSystem, PictorialBookEntry entry)
+    {
+        TryAutoBindReferences();
+
         _bookSystem = bookSystem;
-        _spriteRegistry = spriteRegistry;
-
-        if (row == null)
-        {
-            _itemId = string.Empty;
-            _itemName = string.Empty;
-            _iconKey = string.Empty;
-            Refresh();
-            return;
-        }
-
-        _itemId = row.id;
-        _itemName = row.name;
-        _iconKey = row.iconKey;
+        _entry = entry;
 
         Refresh();
     }
 
     public void Refresh()
     {
-        bool unlocked = _bookSystem != null && _bookSystem.IsDiscovered(_itemId);
+        TryAutoBindReferences();
 
-        if (_lockedOverlay != null)
-        {
-            _lockedOverlay.SetActive(!unlocked);
-        }
+        string itemId = _entry != null ? NormalizeText(_entry.itemId) : string.Empty;
+        string displayName = _entry != null ? NormalizeText(_entry.displayName) : string.Empty;
+        Sprite icon = _entry != null ? _entry.icon : null;
+
+        bool unlocked = _bookSystem != null && _bookSystem.IsDiscovered(itemId);
 
         if (_nameText != null)
         {
             if (unlocked)
             {
-                _nameText.text = _itemName;
+                _nameText.text = displayName;
             }
             else
             {
-                _nameText.text = _hideNameWhenLocked ? _lockedNameText : (string.IsNullOrWhiteSpace(_itemName) ? _lockedNameText : _itemName);
+                _nameText.text = _hideNameWhenLocked
+                    ? _lockedNameText
+                    : (string.IsNullOrWhiteSpace(displayName) ? _lockedNameText : displayName);
             }
         }
 
         if (_iconImage != null)
         {
-            Sprite icon = GetBestSprite();
             _iconImage.sprite = icon;
             _iconImage.enabled = icon != null;
-            _iconImage.color = unlocked ? Color.white : new Color(1f, 1f, 1f, 0.45f);
+            _iconImage.color = unlocked ? _unlockedColor : _lockedColor;
+        }
+
+        Debug.Log($"[UIPictorialBookSlot] id={itemId}, unlocked={unlocked}");
+    }
+
+    private void TryAutoBindReferences()
+    {
+        if (_autoBindReferences == false)
+        {
+            return;
+        }
+
+        if (_iconImage == null)
+        {
+            Transform iconTransform = FindDeepChildByName(transform, _iconObjectName);
+            if (iconTransform != null)
+            {
+                _iconImage = iconTransform.GetComponent<Image>();
+            }
+        }
+
+        if (_nameText == null)
+        {
+            Transform nameTextTransform = FindDeepChildByName(transform, _nameTextObjectName);
+            if (nameTextTransform != null)
+            {
+                _nameText = nameTextTransform.GetComponent<TMP_Text>();
+            }
         }
     }
 
-    private Sprite GetBestSprite()
+    private Transform FindDeepChildByName(Transform parent, string targetName)
     {
-        if (DatabaseManager.Ins != null && string.IsNullOrWhiteSpace(_itemId) == false)
+        if (parent == null || string.IsNullOrWhiteSpace(targetName))
         {
-            UnitSO unit = DatabaseManager.Ins.Unit(_itemId);
-            if (unit != null && unit.Image != null)
-            {
-                return unit.Image;
-            }
+            return null;
         }
 
-        if (_spriteRegistry != null)
+        for (int i = 0; i < parent.childCount; i++)
         {
-            if (string.IsNullOrWhiteSpace(_iconKey) == false)
+            Transform child = parent.GetChild(i);
+
+            if (child.name == targetName)
             {
-                Sprite iconByKey = _spriteRegistry.GetSprite(_iconKey);
-                if (iconByKey != null)
-                {
-                    return iconByKey;
-                }
+                return child;
             }
 
-            if (string.IsNullOrWhiteSpace(_itemId) == false)
+            Transform found = FindDeepChildByName(child, targetName);
+            if (found != null)
             {
-                Sprite iconById = _spriteRegistry.GetSprite(_itemId);
-                if (iconById != null)
-                {
-                    return iconById;
-                }
+                return found;
             }
         }
 
         return null;
+    }
+
+    private string NormalizeText(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return string.Empty;
+        }
+
+        return value.Trim();
     }
 }

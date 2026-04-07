@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2c022c5127670c48a898afb5e92d602, type: 3}
+  m_Name: StaticItemSO_Chicken_Black_1
+  m_EditorClassIdentifier: 
+  _id: Chicken Black_1
+  _type: 26
+  _name: "\uAC80\uC815 \uB2ED"
+  _description: "\uC9D9\uC740 \uAE43\uD138\uC0C9\uC774 \uB3CB\uBCF4\uC774\uB294 \uB2ED\uC774\uB2E4."
+  _rarity: 1
+  _image: {fileID: 21300000, guid: 4153d72013b94fa4f923eec78cf20049, type: 2}
+  _prefab: {fileID: 0}
+  _sellPrice: 160
+  _buyPrice: 200
+  _maxStack: 1
