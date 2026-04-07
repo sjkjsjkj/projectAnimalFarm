@@ -1,0 +1,1185 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b554a87fb683c444ebf39bbc72d6365f, type: 3}
+  m_Name: PictorialBookDatabase_Main
+  m_EditorClassIdentifier: 
+  _animalSourceFolders:
+  - Assets/ScriptableObjects/Item/Animal
+  _fishSourceFolders:
+  - Assets/ScriptableObjects/Item/Fish
+  _gatherSourceFolders:
+  - Assets/ScriptableObjects/Item/Feed
+  - Assets/ScriptableObjects/Item/Harvest
+  - Assets/ScriptableObjects/Item/Ore
+  - Assets/ScriptableObjects/Item/Product
+  - Assets/ScriptableObjects/Item/Seed
+  _entries:
+  - itemId: Baby Chicken Black_0
+    displayName: "\uAC80\uC815 \uBCD1\uC544\uB9AC"
+    icon: {fileID: 21300000, guid: af4a7650ee798fb458884381f04a8edb, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Baby_Chicken_Black_0.asset
+  - itemId: Baby Chicken Blonde_0
+    displayName: "\uAE08\uC0C9 \uBCD1\uC544\uB9AC"
+    icon: {fileID: 21300000, guid: c0d02c31607f701469d59484fac80d91, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Baby_Chicken_Blonde_0.asset
+  - itemId: Baby Chicken Brown_0
+    displayName: "\uAC08\uC0C9 \uBCD1\uC544\uB9AC"
+    icon: {fileID: 21300000, guid: 85f2b744455767740bba14291bdcfa7a, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Baby_Chicken_Brown_0.asset
+  - itemId: Baby Chicken Evil_0
+    displayName: "\uC545\uB9C8 \uBCD1\uC544\uB9AC"
+    icon: {fileID: 21300000, guid: d6db2e94686e1654291c71b305610b57, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Baby_Chicken_Evil_0.asset
+  - itemId: Baby Chicken Green_0
+    displayName: "\uB179\uC0C9 \uBCD1\uC544\uB9AC"
+    icon: {fileID: 21300000, guid: d747e0cfc4b063f43ac66540fec44718, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Baby_Chicken_Green_0.asset
+  - itemId: Baby Chicken Pink_0
+    displayName: "\uD551\uD06C \uBCD1\uC544\uB9AC"
+    icon: {fileID: 21300000, guid: 910629e2e53e1424baaba26812a87c15, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Baby_Chicken_Pink_0.asset
+  - itemId: Baby Chicken Red_0
+    displayName: "\uBE68\uAC15 \uBCD1\uC544\uB9AC"
+    icon: {fileID: 21300000, guid: 81e2dc0c55f9e3042ac8ecd4bf580697, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Baby_Chicken_Red_0.asset
+  - itemId: Baby Chicken Universe_0
+    displayName: "\uC6B0\uC8FC \uBCD1\uC544\uB9AC"
+    icon: {fileID: 21300000, guid: 1bb73eb330841544882460aa698c3146, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Baby_Chicken_Universe_0.asset
+  - itemId: Baby Chicken White_0
+    displayName: "\uD770 \uBCD1\uC544\uB9AC"
+    icon: {fileID: 21300000, guid: ebf5df500a6fc8241aa950bd74c476c0, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Baby_Chicken_White_0.asset
+  - itemId: Baby Chicken Yellow_0
+    displayName: "\uB178\uB791 \uBCD1\uC544\uB9AC"
+    icon: {fileID: 21300000, guid: 6f5544a8cc3fa244a9f69023e1b354d4, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Baby_Chicken_Yellow_0.asset
+  - itemId: Baby Cow Black_0
+    displayName: "\uAC80\uC740 \uC813\uC18C"
+    icon: {fileID: 21300000, guid: d88b6b7d38f500e49ad5ba3a896c74c7, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Baby_Cow_Black_0.asset
+  - itemId: Baby Cow Blonde_0
+    displayName: "\uAE08\uC0C9 \uC813\uC18C"
+    icon: {fileID: 21300000, guid: 914f34c12a6c1fe4ab087a71617e3553, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Baby_Cow_Blonde_0.asset
+  - itemId: Baby Cow Brown_0
+    displayName: "\uAC08\uC0C9 \uC813\uC18C"
+    icon: {fileID: 21300000, guid: 41e7d013c9df702488f336993f50faac, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Baby_Cow_Brown_0.asset
+  - itemId: Baby Cow Pink_0
+    displayName: "\uD551\uD06C \uC813\uC18C"
+    icon: {fileID: 21300000, guid: 12657ba61d73b644cb87184790ffc5df, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Baby_Cow_Pink_0.asset
+  - itemId: Baby Duck Black_0
+    displayName: "\uAC80\uC815 \uC624\uB9AC"
+    icon: {fileID: 21300000, guid: bfd513b2bc426ae42ba4edcab4659f92, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Baby_Duck_Black_0.asset
+  - itemId: Baby Duck Brown_0
+    displayName: "\uAC08\uC0C9 \uC624\uB9AC"
+    icon: {fileID: 21300000, guid: 12ac6be6871201c48a48c48912896687, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Baby_Duck_Brown_0.asset
+  - itemId: Baby Duck Green_0
+    displayName: "\uB179\uC0C9 \uC624\uB9AC"
+    icon: {fileID: 21300000, guid: cf93b34d0dffba94a9a47f3358751b65, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Baby_Duck_Green_0.asset
+  - itemId: Baby Duck Pink_0
+    displayName: "\uD551\uD06C \uC624\uB9AC"
+    icon: {fileID: 21300000, guid: ab281521f8304844e926fe35b4244e27, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Baby_Duck_Pink_0.asset
+  - itemId: Baby Duck White_0
+    displayName: "\uD770 \uC624\uB9AC"
+    icon: {fileID: 21300000, guid: c5b792e20ad6b0f43a7d20a15db5136f, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Baby_Duck_White_0.asset
+  - itemId: Baby Duck Yellow_0
+    displayName: "\uB178\uB791 \uC624\uB9AC"
+    icon: {fileID: 21300000, guid: 54eab97280e628e4f808db6cfb6af1b2, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Baby_Duck_Yellow_0.asset
+  - itemId: Baby highlighter Black_0
+    displayName: "\uAC80\uC815 \uC18C"
+    icon: {fileID: 21300000, guid: e15d71095377009499c1db5bebf8b72d, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Baby_highlighter_Black_0.asset
+  - itemId: Baby highlighter Brown_0
+    displayName: "\uAC08\uC0C9 \uC18C"
+    icon: {fileID: 21300000, guid: 6f70ab3572125a94c97bf1a78649449c, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Baby_highlighter_Brown_0.asset
+  - itemId: Brown Capybara_0
+    displayName: "\uCE74\uD53C\uBC14\uB77C"
+    icon: {fileID: 21300000, guid: 23d8af6bf2fff1648bb1e793c874a5fb, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Brown_Capybara_0.asset
+  - itemId: Brown Idle_0
+    displayName: "\uAC08\uC0C9 \uACF0"
+    icon: {fileID: 21300000, guid: 3d461d0060f4bd841bba29341cec283c, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Brown_Idle_0.asset
+  - itemId: Chicken Black_1
+    displayName: "\uAC80\uC815 \uB2ED"
+    icon: {fileID: 21300000, guid: 4153d72013b94fa4f923eec78cf20049, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Chicken_Black_1.asset
+  - itemId: Chicken Black White_1
+    displayName: "\uAC80\uD770 \uB2ED"
+    icon: {fileID: 21300000, guid: 09968f1efaaefa444a6d96cd6328b768, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Chicken_Black_White_1.asset
+  - itemId: Chicken Blonde_0
+    displayName: "\uAE08\uC0C9 \uB2ED"
+    icon: {fileID: 21300000, guid: f906dc86290a1c6478785b3cb355f7ff, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Chicken_Blonde_0.asset
+  - itemId: Chicken Blonde  Green_1
+    displayName: "\uD770\uAC08\uC0C9 \uB2ED"
+    icon: {fileID: 21300000, guid: 0e09da5598128c74eb23f1b15758648e, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Chicken_Blonde__Green_1.asset
+  - itemId: Chicken Brown Black_1
+    displayName: "\uAC80\uAC08\uC0C9 \uB2ED"
+    icon: {fileID: 21300000, guid: 6916bec7b71536446ac1fa7af13b5dd9, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Chicken_Brown_Black_1.asset
+  - itemId: Chicken Brown White_1
+    displayName: "\uD770\uAC08\uC0C9 \uB2ED"
+    icon: {fileID: 21300000, guid: c960afaa5ac4bc641a29e27521e79f8e, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Chicken_Brown_White_1.asset
+  - itemId: Chicken Evil_1
+    displayName: "\uC545\uB9C8 \uB2ED"
+    icon: {fileID: 21300000, guid: 64860ecca186e6346b880e5980fb9571, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Chicken_Evil_1.asset
+  - itemId: Chicken Full_1
+    displayName: "\uBD89\uC740 \uB2ED"
+    icon: {fileID: 21300000, guid: ccaab66d39544cb4aac276d7ec9efc38, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Chicken_Full_1.asset
+  - itemId: Chicken Green_1
+    displayName: "\uB179\uC0C9 \uB2ED"
+    icon: {fileID: 21300000, guid: 5bf24a48752461a48a2b200351933da0, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Chicken_Green_1.asset
+  - itemId: Chicken Pink_1
+    displayName: "\uD551\uD06C \uB2ED"
+    icon: {fileID: 21300000, guid: b7963c37d31ae6f4d8b361f3a1391023, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Chicken_Pink_1.asset
+  - itemId: Chicken Red_1
+    displayName: "\uBE68\uAC15 \uB2ED"
+    icon: {fileID: 21300000, guid: 16d0347b13bea644db71781d99145152, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Chicken_Red_1.asset
+  - itemId: Chicken Universe_1
+    displayName: "\uC6B0\uC8FC \uB2ED"
+    icon: {fileID: 21300000, guid: 0e95cf05cd68486429e76ca7f6364d02, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Chicken_Universe_1.asset
+  - itemId: Chicken White_0
+    displayName: "\uD770 \uB2ED"
+    icon: {fileID: 21300000, guid: abed79bf698dbf84a812084028ed447f, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Chicken_White_0.asset
+  - itemId: deer Idle_0
+    displayName: "\uC0AC\uC2B4"
+    icon: {fileID: 21300000, guid: 79ddc3a7c23976a4aba9bc6343e7aead, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_deer_Idle_0.asset
+  - itemId: Duck Mallad_0
+    displayName: "\uCC9C\uB465 \uC624\uB9AC"
+    icon: {fileID: 21300000, guid: abd1c827977f8e54baacddd824a4b446, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Duck_Mallad_0.asset
+  - itemId: Duck White 2_0
+    displayName: "\uD770 \uC624\uB9AC"
+    icon: {fileID: 21300000, guid: 329f66ee34378794fbec09417ff96a89, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Duck_White_2_0.asset
+  - itemId: Goat Baby Black_0
+    displayName: "\uAC80\uC815 \uC5FC\uC18C(\u2640)"
+    icon: {fileID: 21300000, guid: 8c634eb6e7fb6fb40a4782130e53bf5a, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Goat_Baby_Black_0.asset
+  - itemId: Goat Baby Blonde_0
+    displayName: "\uAE08\uC0C9 \uC5FC\uC18C(\u2640)"
+    icon: {fileID: 21300000, guid: 5b0934f48fb6e134db05f4ec2f7c023b, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Goat_Baby_Blonde_0.asset
+  - itemId: Goat Baby Brown_0
+    displayName: "\uAC08\uC0C9 \uC5FC\uC18C(\u2640)"
+    icon: {fileID: 21300000, guid: 6550bf13f1327ac47aec4f5e849b9888, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Goat_Baby_Brown_0.asset
+  - itemId: Goat Baby Pink_0
+    displayName: "\uD551\uD06C \uC5FC\uC18C(\u2640)"
+    icon: {fileID: 21300000, guid: 1b64a29fde6e6444ab7a6bb90dc076be, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Goat_Baby_Pink_0.asset
+  - itemId: Goat Male Black_0
+    displayName: "\uAC80\uC815 \uC5FC\uC18C(\u2642)"
+    icon: {fileID: 21300000, guid: 049f823e3a6294a4688986fe2e27c7a7, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Goat_Male_Black_0.asset
+  - itemId: Goat Male Blonde_0
+    displayName: "\uAE08\uC0C9 \uC5FC\uC18C(\u2642)"
+    icon: {fileID: 21300000, guid: b9623c2628e13184482348e316dc5837, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Goat_Male_Blonde_0.asset
+  - itemId: Goat Male Brown_0
+    displayName: "\uAC08\uC0C9 \uC5FC\uC18C(\u2642)"
+    icon: {fileID: 21300000, guid: c60009ff40f99f44ea39a7bf5bb0f20a, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Goat_Male_Brown_0.asset
+  - itemId: Goat Male Pink_0
+    displayName: "\uD551\uD06C \uC5FC\uC18C(\u2642)"
+    icon: {fileID: 21300000, guid: 78c4b0d0f73fcaa45924af5651938643, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Goat_Male_Pink_0.asset
+  - itemId: Golden Capybara_0
+    displayName: "\uD669\uAE08 \uCE74\uD53C\uBC14\uB77C"
+    icon: {fileID: 21300000, guid: ef316927cb8d55d439094ac8d2fcdf60, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Golden_Capybara_0.asset
+  - itemId: Hippo_0
+    displayName: "\uD558\uB9C8"
+    icon: {fileID: 21300000, guid: 477d5ae820d0a034aaf20b604ad67f98, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Hippo_0.asset
+  - itemId: Horse Black_0
+    displayName: "\uAC80\uC815 \uB9D0"
+    icon: {fileID: 21300000, guid: 88c4df3508f4a144b915cb8137febc1e, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Horse_Black_0.asset
+  - itemId: Horse Blonde_0
+    displayName: "\uAE08\uC0C9 \uB9D0"
+    icon: {fileID: 21300000, guid: 26aa7c27c37ff2e41b6a734cd4d014bb, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Horse_Blonde_0.asset
+  - itemId: Horse Brown_0
+    displayName: "\uAC08\uC0C9 \uB9D0"
+    icon: {fileID: 21300000, guid: 217c215cf4c5c094f92ee04036de0e44, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Horse_Brown_0.asset
+  - itemId: Ostrich Black_0
+    displayName: "\uAC80\uC815 \uD0C0\uC870"
+    icon: {fileID: 21300000, guid: 46e874e7cd15beb46a12cb27f5b8fcd1, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Ostrich_Black_0.asset
+  - itemId: Ostrich Blue_0
+    displayName: "\uD30C\uB791 \uD0C0\uC870"
+    icon: {fileID: 21300000, guid: 1390dd6f2fb44154f9a9e1df2627862f, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Ostrich_Blue_0.asset
+  - itemId: Ostrich Brown_0
+    displayName: "\uAC08\uC0C9 \uD0C0\uC870"
+    icon: {fileID: 21300000, guid: 4702af5b72bf45e468f021e8391be901, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Ostrich_Brown_0.asset
+  - itemId: Panda Idel_0
+    displayName: "\uD310\uB2E4"
+    icon: {fileID: 0}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Panda_Idel_0.asset
+  - itemId: Penguin_0
+    displayName: "\uD33D\uADC4"
+    icon: {fileID: 21300000, guid: 659f729c893671e459e245a12696ec7d, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Penguin_0.asset
+  - itemId: Pig Mud Pink_0
+    displayName: "\uC5BC\uB8E9 \uB3FC\uC9C0"
+    icon: {fileID: 21300000, guid: 7d7ecf3521a2b4d4bbb2189df9c420c7, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Pig_Mud_Pink_0.asset
+  - itemId: Pig Pink_0
+    displayName: "\uD551\uD06C \uB3FC\uC9C0"
+    icon: {fileID: 21300000, guid: 9712e30661a024d4aa596cd4fc54b7d5, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Pig_Pink_0.asset
+  - itemId: Pink Capybara_0
+    displayName: "\uD551\uD06C \uCE74\uD53C\uBC14\uB77C"
+    icon: {fileID: 21300000, guid: 67a0c8b5e7e12dc4ba67baeacbece0cd, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Pink_Capybara_0.asset
+  - itemId: Rabbit Blonde_0
+    displayName: "\uD1A0\uB07C"
+    icon: {fileID: 21300000, guid: 20178045dd15632488c0f43bd6a2155c, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Rabbit_Blonde_0.asset
+  - itemId: Rabbit Brown_0
+    displayName: "\uAC08\uC0C9 \uD1A0\uB07C"
+    icon: {fileID: 21300000, guid: e392aaa22b7960049bcc2d31cbf6fba3, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Rabbit_Brown_0.asset
+  - itemId: Rabbit Full Black_0
+    displayName: "\uAC80\uC815 \uD1A0\uB07C"
+    icon: {fileID: 21300000, guid: 070a9c5df05e67b47a83dd93f48a8c5b, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Rabbit_Full_Black_0.asset
+  - itemId: Rabbit Full Pink_0
+    displayName: "\uD551\uD06C \uD1A0\uB07C"
+    icon: {fileID: 21300000, guid: aaf47b4ca80efc6408c49f8adfee574a, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Rabbit_Full_Pink_0.asset
+  - itemId: Rabbit Full White_0
+    displayName: "\uD770 \uD1A0\uB07C"
+    icon: {fileID: 21300000, guid: c7030156dde128e4f9e27ab8b29f02bc, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Rabbit_Full_White_0.asset
+  - itemId: Rabbit Pink_0
+    displayName: "\uD770\uD551 \uD1A0\uB07C"
+    icon: {fileID: 21300000, guid: 38fe0021f3cf8ea4a9bd987348ea55d7, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Rabbit_Pink_0.asset
+  - itemId: Red Fox_0
+    displayName: "\uC5EC\uC6B0"
+    icon: {fileID: 21300000, guid: f0f7434f9b01870488fa06d2f605bfb8, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Red_Fox_0.asset
+  - itemId: Sheep Female_0
+    displayName: "\uC591(\u2640)"
+    icon: {fileID: 21300000, guid: a3677fe3d3e69eb4fa7a35fdb69f52c1, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Sheep_Female_0.asset
+  - itemId: Sheep Male_0
+    displayName: "\uC591(\u2642)"
+    icon: {fileID: 21300000, guid: 68f281ffeab51494982a715b25115f26, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Sheep_Male_0.asset
+  - itemId: Turttle Idle_0
+    displayName: "\uAC70\uBD81\uC774"
+    icon: {fileID: 21300000, guid: 6dfda7dfa42d9c54ebdcf79fa71c45aa, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Turttle_Idle_0.asset
+  - itemId: White Fox_0
+    displayName: "\uBD81\uADF9 \uC5EC\uC6B0"
+    icon: {fileID: 21300000, guid: ec7ed087bb6b5134b82c6be2d1c191bf, type: 2}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_White_Fox_0.asset
+  - itemId: White Idel_0
+    displayName: "\uBD81\uADF9 \uACF0"
+    icon: {fileID: 0}
+    category: Animal
+    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_White_Idel_0.asset
+  - itemId: All Fish_0
+    displayName: "\uBD95\uC5B4"
+    icon: {fileID: 21300000, guid: e38e3f12834be0b498097bf526f187a8, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_0.asset
+  - itemId: All Fish_1
+    displayName: "\uBE14\uB8E8\uAE38"
+    icon: {fileID: 21300000, guid: cad7a5f6b9fa389419d59bba4aec0357, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_1.asset
+  - itemId: All Fish_2
+    displayName: "\uC789\uC5B4"
+    icon: {fileID: 21300000, guid: d0852bc09326baf489939a3e9bfbcc39, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_2.asset
+  - itemId: All Fish_3
+    displayName: "\uB204\uCE58"
+    icon: {fileID: 21300000, guid: d04ca6b900fa21549a6f6580082a42a5, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_3.asset
+  - itemId: All Fish_4
+    displayName: "\uBCA0\uC2A4"
+    icon: {fileID: 21300000, guid: 47772f06a447a4e4e9c3481cc173fa23, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_4.asset
+  - itemId: All Fish_5
+    displayName: "\uBC84\uB4E4\uBD95"
+    icon: {fileID: 21300000, guid: 97ebf90addc372342a88383678925d4d, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_5.asset
+  - itemId: All Fish_6
+    displayName: "\uBAA8\uB798\uBB34\uC9C0"
+    icon: {fileID: 21300000, guid: 8498ebaa1fc2a2b4bb1db5a49e5c7405, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_6.asset
+  - itemId: All Fish_7
+    displayName: "\uB0A9\uC790\uB8E8"
+    icon: {fileID: 21300000, guid: 34cb95a17c67d524a8be140e7391a951, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_7.asset
+  - itemId: All Fish_8
+    displayName: "\uBC84\uB4E4\uBD95\uC5B4"
+    icon: {fileID: 21300000, guid: 86829f58d6122124dbdf1f6335cbe85b, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_8.asset
+  - itemId: All Fish_9
+    displayName: "\uAC01\uC2DC\uBD95\uC5B4"
+    icon: {fileID: 21300000, guid: 7287dd6cf7f88354e974cf5764aa750b, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_9.asset
+  - itemId: All Fish_10
+    displayName: "\uAE4C\uCE58\uBCF5"
+    icon: {fileID: 21300000, guid: d9cd49f436acd0141b4b89d69fd8d502, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_10.asset
+  - itemId: All Fish_11
+    displayName: "\uBD80\uCC44\uBCF5"
+    icon: {fileID: 21300000, guid: 07bbcbd51423db54893d4dbd09e373a4, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_11.asset
+  - itemId: All Fish_12
+    displayName: "\uB208\uBCFC\uAC1C\uBCF5"
+    icon: {fileID: 21300000, guid: 331c4eb671c86b84ba6c62208c169a14, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_12.asset
+  - itemId: All Fish_13
+    displayName: "\uC2E0\uC120\uBCF5"
+    icon: {fileID: 21300000, guid: a4dde9d15eb28944a9c3bc990bcde876, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_13.asset
+  - itemId: All Fish_14
+    displayName: "\uAC15\uB3CC\uACE0\uAE30"
+    icon: {fileID: 21300000, guid: 929b514b0e3a4ff4d9df7dff609103df, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_14.asset
+  - itemId: All Fish_16
+    displayName: "\uB3D9\uC790\uAC1C"
+    icon: {fileID: 21300000, guid: 225dcbd126447c94c9cdded81a9e70b7, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_16.asset
+  - itemId: All Fish_17
+    displayName: "\uBE59\uC5B4"
+    icon: {fileID: 21300000, guid: c3335dd8a2d92574eb5b1232012109aa, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_17.asset
+  - itemId: All Fish_18
+    displayName: "\uB3D9\uC0AC\uB9AC"
+    icon: {fileID: 21300000, guid: 6cd58adbaa1ac4346baad612e3a07c27, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_18.asset
+  - itemId: All Fish_19
+    displayName: "\uAF2C\uCE58\uB3D9\uC790\uAC1C"
+    icon: {fileID: 21300000, guid: 5ee1c6df280a28b4cb3839c6cca21307, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_19.asset
+  - itemId: All Fish_20
+    displayName: "\uAC15\uC900\uCE58"
+    icon: {fileID: 21300000, guid: 59304af1e658cfb48b4cdb6741cf9386, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_20.asset
+  - itemId: All Fish_21
+    displayName: "\uBBF8\uC720\uAE30"
+    icon: {fileID: 21300000, guid: ad36b16d842d1c04c8edef47378dee46, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_21.asset
+  - itemId: All Fish_22
+    displayName: "\uB18D\uAC31\uC774"
+    icon: {fileID: 21300000, guid: 5d8f35301a9e08f48969bc3df99584b9, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_22.asset
+  - itemId: All Fish_23
+    displayName: "\uD241\uC0AC\uB9AC"
+    icon: {fileID: 21300000, guid: 0c435fc4567dbb44684b3407f646daff, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_23.asset
+  - itemId: All Fish_24
+    displayName: "\uAC08\uACA8\uB2C8"
+    icon: {fileID: 21300000, guid: 6882e0d62c2e5cb458fc517f66921d8a, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_24.asset
+  - itemId: All Fish_25
+    displayName: "\uC3D8\uAC00\uB9AC"
+    icon: {fileID: 21300000, guid: 1f8368305adadd34d83fab7e7727d6e5, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_25.asset
+  - itemId: All Fish_26
+    displayName: "\uCC38\uBD95\uC5B4"
+    icon: {fileID: 21300000, guid: bda9acdfec6fc6e41af831600d378ec0, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_26.asset
+  - itemId: All Fish_27
+    displayName: "\uBC84\uB4E4\uB9E4\uCE58"
+    icon: {fileID: 21300000, guid: 70535ac92d5e2794e919a1452ede53fb, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_27.asset
+  - itemId: All Fish_28
+    displayName: "\uC65C\uB9E4\uCE58"
+    icon: {fileID: 21300000, guid: ac9c9a6ca72d70f43bd4229dd0051804, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_28.asset
+  - itemId: All Fish_29
+    displayName: "\uC904\uBAB0\uAC1C"
+    icon: {fileID: 21300000, guid: e1461adef5ea2614ba8080b2dcd9794d, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_29.asset
+  - itemId: All Fish_30
+    displayName: "\uAEBD\uC800\uAE30"
+    icon: {fileID: 21300000, guid: f152d45a34f666548bf7e80d2d8cdfa5, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_30.asset
+  - itemId: All Fish_31
+    displayName: "\uC26C\uB9AC"
+    icon: {fileID: 21300000, guid: 17a4987cfb167fa46a00795bc3ef7bbc, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_31.asset
+  - itemId: All Fish_32
+    displayName: "\uB3CC\uACE0\uAE30"
+    icon: {fileID: 21300000, guid: d4e9591bb13f1d649835f904ce32d4d3, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_32.asset
+  - itemId: All Fish_33
+    displayName: "\uCE58\uB9AC"
+    icon: {fileID: 21300000, guid: 609cddcae92bdf24b90577348777b067, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_33.asset
+  - itemId: All Fish_34
+    displayName: "\uD669\uC3D8\uAC00\uB9AC"
+    icon: {fileID: 21300000, guid: 6a84dec97c30e6447b16696f8633b397, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_34.asset
+  - itemId: All Fish_35
+    displayName: "\uBC30\uAC00\uC0AC\uB9AC"
+    icon: {fileID: 21300000, guid: a76880c18d601264cbcfaf6c9565378a, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_35.asset
+  - itemId: All Fish_36
+    displayName: "\uC0B0\uCC9C\uC5B4"
+    icon: {fileID: 21300000, guid: 121883f5dd6095a4d97783756391f31c, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_36.asset
+  - itemId: All Fish_37
+    displayName: "\uAD11\uC5B4"
+    icon: {fileID: 21300000, guid: 01c2d16f0dd8cc64a9b124d1523c0c44, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_37.asset
+  - itemId: All Fish_38
+    displayName: "\uC790\uBC14\uB9AC"
+    icon: {fileID: 21300000, guid: 655077162e5170546950711383f2447e, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_38.asset
+  - itemId: All Fish_39
+    displayName: "\uB18D\uC5B4"
+    icon: {fileID: 21300000, guid: e349612d058e69e4e872c2708909e206, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_39.asset
+  - itemId: All Fish_40
+    displayName: "\uCC38\uB3D4"
+    icon: {fileID: 21300000, guid: b9d812de93a66914a9d4bfeb7db16995, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_40.asset
+  - itemId: All Fish_41
+    displayName: "\uB0A0\uCE58"
+    icon: {fileID: 21300000, guid: c5f45c57513f3f74688d4ce2da7ee6b3, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_41.asset
+  - itemId: All Fish_42
+    displayName: "\uD070\uC804\uAC31\uC774"
+    icon: {fileID: 21300000, guid: abba925aa8fc84c4cb3c14e40391981b, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_42.asset
+  - itemId: All Fish_43
+    displayName: "\uC6A9\uCE58\uC5B4\uB7AD\uB180\uB798\uAE30"
+    icon: {fileID: 21300000, guid: 162e87e7ba001274dae96ff4fabc7783, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_43.asset
+  - itemId: All Fish_44
+    displayName: "\uAC1C\uBCF5\uCE58"
+    icon: {fileID: 21300000, guid: 02e7bc991564cfb4a84d34eeeaf5d7ad, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_44.asset
+  - itemId: All Fish_45
+    displayName: "\uD22C\uCFE0\uC2DC"
+    icon: {fileID: 21300000, guid: e4848223338992542949640a0b262ce5, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_45.asset
+  - itemId: All Fish_46
+    displayName: "\uC778\uB3C4\uD0DC\uD3C9\uC591\uD639\uB4F1\uACE0\uB798"
+    icon: {fileID: 21300000, guid: 7f33123d7ceb05d44bb4c7ec452e383c, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_46.asset
+  - itemId: All Fish_47
+    displayName: "\uB354\uC2A4\uD0A4\uB3CC\uACE0\uB798"
+    icon: {fileID: 21300000, guid: 440b4105a5379dd4283f50919b531cce, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_47.asset
+  - itemId: All Fish_48
+    displayName: "\uC950\uB3CC\uACE0\uB798"
+    icon: {fileID: 21300000, guid: de82e0358567aef419925a7765e1433d, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_48.asset
+  - itemId: All Fish_49
+    displayName: "\uB3CC\uBB38\uC5B4"
+    icon: {fileID: 21300000, guid: f116dafa356c53b459a5afef8d317d1e, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_49.asset
+  - itemId: All Fish_50
+    displayName: "\uD53C\uBB38\uC5B4"
+    icon: {fileID: 21300000, guid: ea70633d365a56945b65fec08da803b5, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_50.asset
+  - itemId: All Fish_51
+    displayName: "\uCC3D\uC624\uC9D5\uC5B4"
+    icon: {fileID: 21300000, guid: f14dba52ad29d0a4a86350a3e64d19d7, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_51.asset
+  - itemId: All Fish_52
+    displayName: "\uD654\uC0B4\uC624\uC9D5\uC5B4"
+    icon: {fileID: 21300000, guid: 0513d84c405205440ad7689f537dedc1, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_52.asset
+  - itemId: All Fish_53
+    displayName: "\uC544\uBA54\uB9AC\uCE74\uAC00\uC7AC"
+    icon: {fileID: 21300000, guid: 0317aa5c5bdddac409e2f6a78bc267cf, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_53.asset
+  - itemId: All Fish_54
+    displayName: "\uC720\uB7FD\uAC00\uC7AC"
+    icon: {fileID: 21300000, guid: e5ec88757df1dd64fb1c8653e44b30ed, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_54.asset
+  - itemId: All Fish_55
+    displayName: "\uB3C4\uD654\uC0C8\uC6B0"
+    icon: {fileID: 21300000, guid: aee324433cbbe7e47933707df258feeb, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_55.asset
+  - itemId: All Fish_56
+    displayName: "\uBCF4\uB9AC\uC0C8\uC6B0"
+    icon: {fileID: 21300000, guid: 1161936913e3842408d8fe58c33d1521, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_56.asset
+  - itemId: All Fish_57
+    displayName: "\uAF43\uAC8C"
+    icon: {fileID: 21300000, guid: 9beef22e4fb7eec4d92e1c4014da9083, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_57.asset
+  - itemId: All Fish_58
+    displayName: "\uD138\uAC8C"
+    icon: {fileID: 21300000, guid: 19fa10030707ddc469a14ae33ce7a946, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_58.asset
+  - itemId: All Fish_59
+    displayName: "\uCC38\uC870\uAC1C"
+    icon: {fileID: 21300000, guid: 410231c763c0bf04f9c5c1139859489c, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_59.asset
+  - itemId: All Fish_60
+    displayName: "\uBBFC\uB4E4\uC870\uAC1C"
+    icon: {fileID: 21300000, guid: bca0c1624757fce4db6faf3f5a2e428d, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_60.asset
+  - itemId: All Fish_61
+    displayName: "\uC11D\uD654"
+    icon: {fileID: 21300000, guid: 55af5d80e2731f9438ab52c53cc65b69, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_61.asset
+  - itemId: All Fish_62
+    displayName: "\uC554\uBAA8\uB098\uC774\uD2B8"
+    icon: {fileID: 21300000, guid: b9eb98afe676fb74d939c0dd487e69d9, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_62.asset
+  - itemId: All Fish_63
+    displayName: "\uC384\uB77C\uD0C0\uC774\uD2B8"
+    icon: {fileID: 21300000, guid: f339ed7bc05399544867edaf1acc5a96, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_63.asset
+  - itemId: All Fish_69
+    displayName: "\uB9CC\uD0C0\uAC00\uC624\uB9AC"
+    icon: {fileID: 21300000, guid: 8849ad3d70996f24499f1c85ac271105, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_69.asset
+  - itemId: All Fish_70
+    displayName: "\uC950\uAC00\uC624\uB9AC"
+    icon: {fileID: 21300000, guid: bdd4e482251c941499237c5b44a3c592, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_70.asset
+  - itemId: All Fish_71
+    displayName: "\uB9E4\uAC00\uC624\uB9AC"
+    icon: {fileID: 21300000, guid: e1a870faf46495445b387cb23c2db17d, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_71.asset
+  - itemId: All Fish_73
+    displayName: "\uB178\uBB34\uB77C\uC785\uAE43\uD574\uD30C\uB9AC"
+    icon: {fileID: 21300000, guid: 4f023769305b5ca4992cf4d4e2fa9279, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_73.asset
+  - itemId: All Fish_74
+    displayName: "\uBB34\uD76C\uB098\uC120\uAF2C\uB9AC\uD574\uD30C\uB9AC"
+    icon: {fileID: 21300000, guid: f91f1d0bee84be141b9b584397c1e401, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_74.asset
+  - itemId: All Fish_75
+    displayName: "\uBCF4\uB984\uB2EC\uBB3C\uD574\uD30C\uB9AC"
+    icon: {fileID: 21300000, guid: 3ced238855810d54d8d857dde3e48b4a, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_75.asset
+  - itemId: All Fish_76
+    displayName: "\uB7EC\uADF8"
+    icon: {fileID: 21300000, guid: e84380fb4c9683c49983f4ccc3819a90, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_76.asset
+  - itemId: All Fish_77
+    displayName: "\uB538\uAE30\uC18C\uB77C\uAC8C"
+    icon: {fileID: 21300000, guid: 514711f167eb13145b8cb58f1d62369f, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_77.asset
+  - itemId: All Fish_78
+    displayName: "\uC778\uB3C4\uC18C\uB77C\uAC8C"
+    icon: {fileID: 21300000, guid: b2765d0e729fbb44b80a86a192058934, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_78.asset
+  - itemId: All Fish_79
+    displayName: "\uBB3C\uBC40"
+    icon: {fileID: 21300000, guid: 29a1dbe3d4a3a6c4cb9a5c06f50e0c61, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_79.asset
+  - itemId: All Fish_80
+    displayName: "\uCD09\uC218\uBC40"
+    icon: {fileID: 21300000, guid: 6e3bedde55e3303498515475c5fcd09f, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_80.asset
+  - itemId: All Fish_81
+    displayName: "\uC0C1\uC8FC\uBB3C\uBC40"
+    icon: {fileID: 21300000, guid: df95fd1d9c0ce364380552aa529482ee, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_81.asset
+  - itemId: All Fish_82
+    displayName: "\uC904\uD310\uBE44\uB298\uBC40"
+    icon: {fileID: 21300000, guid: c60e8b4e1e458d442b792865b2d3d2d5, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_82.asset
+  - itemId: All Fish_83
+    displayName: "\uC7A5\uC5B4"
+    icon: {fileID: 21300000, guid: 0b48d190c7d4eb2458264ea659f8fe9e, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_83.asset
+  - itemId: All Fish_84
+    displayName: "\uB0A0\uBD95\uC7A5\uC5B4"
+    icon: {fileID: 21300000, guid: 5991132bece15ec4ead045000ecaacfe, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_84.asset
+  - itemId: All Fish_85
+    displayName: "\uBC40\uC7A5\uC5B4"
+    icon: {fileID: 21300000, guid: 9ab09c99b0fc0fd4880d6e0f59f02b65, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_85.asset
+  - itemId: All Fish_86
+    displayName: "\uAC00\uC2DC\uD574\uB9C8"
+    icon: {fileID: 21300000, guid: c0772b018b056af4490bda06ae49cc37, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_86.asset
+  - itemId: All Fish_87
+    displayName: "\uC0B0\uD638\uD574\uB9C8"
+    icon: {fileID: 21300000, guid: 381fa5c12f10a0141ab9263c657edcdf, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_87.asset
+  - itemId: All Fish_88
+    displayName: "\uBCF5\uD574\uB9C8"
+    icon: {fileID: 21300000, guid: 1253080e92717e144b8dfe93f86a4b32, type: 2}
+    category: Fish
+    assetPath: Assets/ScriptableObjects/Item/Fish/StaticItemSO_All_Fish_88.asset
+  - itemId: ALL props seasons_13
+    displayName: "\uC18C \uBA39\uC774"
+    icon: {fileID: 21300000, guid: 56c17fd90dc6c664ba9d4e7f1149719a, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Feed/FeedItemSO_ALL_props_seasons_13.asset
+  - itemId: ALL props seasons_19
+    displayName: "\uD1A0\uB07C \uBA39\uC774"
+    icon: {fileID: 21300000, guid: 9bd0d5a6d1d4b3844839935ffc8bd544, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Feed/FeedItemSO_ALL_props_seasons_19.asset
+  - itemId: ALL props seasons_34
+    displayName: "\uB9D0 \uBA39\uC774"
+    icon: {fileID: 21300000, guid: 8e59141ae85af5c4492887a14255778f, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Feed/FeedItemSO_ALL_props_seasons_34.asset
+  - itemId: ALL props seasons_38
+    displayName: "\uC591, \uC5FC\uC18C \uBA39\uC774"
+    icon: {fileID: 21300000, guid: 9bd0d5a6d1d4b3844839935ffc8bd544, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Feed/FeedItemSO_ALL_props_seasons_38.asset
+  - itemId: ALL props seasons_69
+    displayName: "\uB2ED, \uCE74\uD53C\uBC14\uB77C \uBA39\uC774"
+    icon: {fileID: 21300000, guid: 7b86406668f21984da7ea2441fe83ab6, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Feed/FeedItemSO_ALL_props_seasons_69.asset
+  - itemId: Apple_0
+    displayName: "\uC0AC\uACFC"
+    icon: {fileID: 21300000, guid: c2e54124480550e40ba2a488a31965c5, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Apple_0.asset
+  - itemId: Apricot_0
+    displayName: "\uC0B4\uAD6C"
+    icon: {fileID: 21300000, guid: 71fe061986d8f43449b1311d4edb43cf, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Apricot_0.asset
+  - itemId: Banana_0
+    displayName: "\uBC14\uB098\uB098"
+    icon: {fileID: 21300000, guid: e3bb446441ae0f846b8473a0b97e566d, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Banana_0.asset
+  - itemId: Barley_0
+    displayName: "\uBCF4\uB9AC"
+    icon: {fileID: 21300000, guid: 169781bae2738a64fab1f4d365ab3abd, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Barley_0.asset
+  - itemId: Beet_0
+    displayName: "\uBE44\uD2B8"
+    icon: {fileID: 21300000, guid: 6783f0b2b1521a244b1146f2c6fb1153, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Beet_0.asset
+  - itemId: Blueberry_0
+    displayName: "\uBE14\uB8E8\uBCA0\uB9AC"
+    icon: {fileID: 21300000, guid: 4e98f698f032b6345a7ccf28d1441670, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Blueberry_0.asset
+  - itemId: Broccoli_0
+    displayName: "\uBE0C\uB85C\uCF5C\uB9AC"
+    icon: {fileID: 21300000, guid: 2094d515b9cb2034c86e2c10b8d0522e, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Broccoli_0.asset
+  - itemId: Cabbage_0
+    displayName: "\uC591\uBC30\uCD94"
+    icon: {fileID: 21300000, guid: 015b543b2933fe444ba44f281f7873b6, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Cabbage_0.asset
+  - itemId: Carrot_0
+    displayName: "\uB2F9\uADFC"
+    icon: {fileID: 21300000, guid: b1012af61881b774db6d252412879839, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Carrot_0.asset
+  - itemId: Cauliflower_0
+    displayName: "\uCF5C\uB9AC\uD50C\uB77C\uC6CC"
+    icon: {fileID: 21300000, guid: e7bfb9c78ec3fb34e8322c8da57abc07, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Cauliflower_0.asset
+  - itemId: Cherry_0
+    displayName: "\uCCB4\uB9AC"
+    icon: {fileID: 21300000, guid: f0ad0a2f53396f043817e785db5d7c9f, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Cherry_0.asset
+  - itemId: Chili_0
+    displayName: "\uACE0\uCD94"
+    icon: {fileID: 21300000, guid: d8c908ac571c2b44a815f79e0c7fa48e, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Chili_0.asset
+  - itemId: Coconut_0
+    displayName: "\uCF54\uCF54\uB11B"
+    icon: {fileID: 21300000, guid: e289a00760ac3684990ed10d93e27e56, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Coconut_0.asset
+  - itemId: Corn_0
+    displayName: "\uC625\uC218\uC218"
+    icon: {fileID: 21300000, guid: 0e26a2b0f4349914b923c762e70d13d8, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Corn_0.asset
+  - itemId: Cucumber_0
+    displayName: "\uC624\uC774"
+    icon: {fileID: 21300000, guid: d8ab9e8354086604988162b6d05a36dd, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Cucumber_0.asset
+  - itemId: Daikon_0
+    displayName: "\uC870\uC120\uBB34"
+    icon: {fileID: 21300000, guid: 8835cc3eb9245824ea8f24989dd4569b, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Daikon_0.asset
+  - itemId: Eggplant_0
+    displayName: "\uAC00\uC9C0"
+    icon: {fileID: 21300000, guid: 6fbbe0235533fc04da469def45aa7f64, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Eggplant_0.asset
+  - itemId: Fantasy Mushroom_0
+    displayName: "\uB290\uD0C0\uB9AC\uBC84\uC12F"
+    icon: {fileID: 21300000, guid: d2e73709c3d475241ac25233965e63a6, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Fantasy_Mushroom_0.asset
+  - itemId: Fantasy Mushroom_3
+    displayName: "\uC0C8\uC1A1\uC774\uBC84\uC12F"
+    icon: {fileID: 21300000, guid: 02de500a711329b4a80d85059b960e4b, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Fantasy_Mushroom_3.asset
+  - itemId: Fantasy Mushroom_6
+    displayName: "\uC591\uC1A1\uC774\uBC84\uC12F"
+    icon: {fileID: 21300000, guid: 2b3f81804a1b7bb4ca316a18d2a1af5c, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Fantasy_Mushroom_6.asset
+  - itemId: Fantasy Mushroom_9
+    displayName: "\uC11D\uC774\uBC84\uC12F"
+    icon: {fileID: 21300000, guid: 2da962ef3f372414ab6b0b19fa45d8b3, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Fantasy_Mushroom_9.asset
+  - itemId: Fantasy Mushroom_12
+    displayName: "\uB178\uB8E8\uAD81\uB385\uC774\uBC84\uC12F"
+    icon: {fileID: 21300000, guid: 6b2cd95e2ed230b479e8c671a29da283, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Fantasy_Mushroom_12.asset
+  - itemId: Fantasy Mushroom_15
+    displayName: "\uC1A1\uC774\uBC84\uC12F"
+    icon: {fileID: 21300000, guid: dbd54e790e6b9df4ead2c13e0ef3a8c2, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Fantasy_Mushroom_15.asset
+  - itemId: Grape_0
+    displayName: "\uD3EC\uB3C4"
+    icon: {fileID: 21300000, guid: 088c24cdcaa7592488939d618a41f364, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Grape_0.asset
+  - itemId: LargeGgreenOnion_0
+    displayName: "\uB300\uD30C"
+    icon: {fileID: 21300000, guid: 576a252aaa033aa41890dcf337a78428, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_LargeGgreenOnion_0.asset
+  - itemId: Mango_0
+    displayName: "\uB9DD\uACE0"
+    icon: {fileID: 21300000, guid: 13f0a16d43f149141acd786727e19de7, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Mango_0.asset
+  - itemId: Mulberry_0
+    displayName: "\uC624\uB514"
+    icon: {fileID: 21300000, guid: 720e59e59a3cc6446a4ddd92f7db94bf, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Mulberry_0.asset
+  - itemId: Onion_0
+    displayName: "\uC591\uD30C"
+    icon: {fileID: 21300000, guid: b7f69d07ea3b7be46af406a089b9d237, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Onion_0.asset
+  - itemId: Orange_0
+    displayName: "\uC624\uB80C\uC9C0"
+    icon: {fileID: 21300000, guid: b030e6e911322664e92aaae4588d34bd, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Orange_0.asset
+  - itemId: Paprika_5-1
+    displayName: "\uD30C\uD504\uB9AC\uCE74(\uB178\uB791)"
+    icon: {fileID: 21300000, guid: f1451a7119aa45140af463877b3f0fe5, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Paprika_5-1.asset
+  - itemId: Paprika_5-2
+    displayName: "\uD30C\uD504\uB9AC\uCE74(\uBE68\uAC15)"
+    icon: {fileID: 21300000, guid: 71c9ed50740a87c458f036c1a2ed92dc, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Paprika_5-2.asset
+  - itemId: Paprika_5-3
+    displayName: "\uD30C\uD504\uB9AC\uCE74(\uCD08\uB85D)"
+    icon: {fileID: 21300000, guid: 49dc8ff6e5b406c49af69f3221eb7e49, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Paprika_5-3.asset
+  - itemId: Pea_0
+    displayName: "\uC644\uB450\uCF69"
+    icon: {fileID: 21300000, guid: 04f42b45608cbb3449ba5b61ec2811cd, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Pea_0.asset
+  - itemId: Peach_0
+    displayName: "\uBCF5\uC22D\uC544"
+    icon: {fileID: 21300000, guid: b29e057104949f3468dbf8e252b2e20b, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Peach_0.asset
+  - itemId: Pineapple_0
+    displayName: "\uD30C\uC778\uC560\uD50C"
+    icon: {fileID: 21300000, guid: 20b7a429d460a9548ad503364aaa2afc, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Pineapple_0.asset
+  - itemId: Pomegranate_0
+    displayName: "\uC11D\uB958"
+    icon: {fileID: 21300000, guid: 19ec9f390fe96ae4697e63e97a253ebe, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Pomegranate_0.asset
+  - itemId: Potato_0
+    displayName: "\uAC10\uC790"
+    icon: {fileID: 21300000, guid: a83b43eafa08aa8428de28693efd6773, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Potato_0.asset
+  - itemId: Pumpkin_0
+    displayName: "\uD638\uBC15"
+    icon: {fileID: 21300000, guid: 07f6ab802fa3ac84f8b2123c1e8b7621, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Pumpkin_0.asset
+  - itemId: Rice_0
+    displayName: "\uBCBC"
+    icon: {fileID: 21300000, guid: 361e2747018ca034dad6c27f87ad9072, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Rice_0.asset
+  - itemId: stone with minerals_22
+    displayName: "\uC2A4\uB9D0\uD0C0\uC774\uD2B8"
+    icon: {fileID: 21300000, guid: 4c8075285b6231e4e80ae2a4cd97ff16, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_stone_with_minerals_22.asset
+  - itemId: stone with minerals_24
+    displayName: "\uAE08"
+    icon: {fileID: 21300000, guid: 28e222694582bc940b4087defec0d506, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_stone_with_minerals_24.asset
+  - itemId: stone with minerals_25
+    displayName: "\uC740"
+    icon: {fileID: 21300000, guid: 389776d60f1e01b459783b64481666be, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_stone_with_minerals_25.asset
+  - itemId: stone with minerals_26
+    displayName: "\uBE44\uCDE8"
+    icon: {fileID: 21300000, guid: 524d8bcc02ba3fd478088325392d0866, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_stone_with_minerals_26.asset
+  - itemId: stone with minerals_27
+    displayName: "\uB8E8\uBE44"
+    icon: {fileID: 21300000, guid: c7450c89b0e186c4a9dddaa18042422e, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_stone_with_minerals_27.asset
+  - itemId: stone with minerals_28
+    displayName: "\uC624\uB9AC\uD558\uB974\uCF58"
+    icon: {fileID: 21300000, guid: ae5a53ad91e6d9f419f38f4e64dd9516, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_stone_with_minerals_28.asset
+  - itemId: stone with minerals_29
+    displayName: "\uB85C\uC988\uCFFC\uCE20"
+    icon: {fileID: 21300000, guid: 31ead5e8a54a69f4fad27e8ad4da9835, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_stone_with_minerals_29.asset
+  - itemId: stone with minerals_30
+    displayName: "\uD751\uC694\uC11D"
+    icon: {fileID: 21300000, guid: 67317d36cc24dcd408c5466a73e38824, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_stone_with_minerals_30.asset
+  - itemId: stone with minerals_31
+    displayName: "\uBBF8\uC2A4\uB9B4"
+    icon: {fileID: 21300000, guid: 86b9a53fc6b5db94e94f57cbcb944223, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_stone_with_minerals_31.asset
+  - itemId: stone with minerals_45
+    displayName: "\uB3CC"
+    icon: {fileID: 21300000, guid: caf69745c77b7c049b1390ede81efa40, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_stone_with_minerals_45.asset
+  - itemId: Strawberry_0
+    displayName: "\uB538\uAE30"
+    icon: {fileID: 21300000, guid: c2930877ea65f8847b32ddec46999266, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Strawberry_0.asset
+  - itemId: Sunflower_0
+    displayName: "\uD574\uBC14\uB77C\uAE30"
+    icon: {fileID: 21300000, guid: b55239ddf8f875849a1347d0e8c6e1db, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Sunflower_0.asset
+  - itemId: Tomato_0
+    displayName: "\uD1A0\uB9C8\uD1A0"
+    icon: {fileID: 21300000, guid: 30d7b5a0c9a4d4a409538e3b47031c36, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Tomato_0.asset
+  - itemId: Watermelon_0
+    displayName: "\uC218\uBC15"
+    icon: {fileID: 21300000, guid: b3430d2001a195148afcbea876cfd4c9, type: 2}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Watermelon_0.asset
+  - itemId: Item_Product_DuckEgg
+    displayName: "\uC624\uB9AC\uC54C"
+    icon: {fileID: -8915498124248130892, guid: 08dea8c965289a44494aeffda61216d8, type: 3}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Product/ProductSO_DuckEgg.asset
+  - itemId: Item_Product_Egg
+    displayName: "\uB2EC\uAC40"
+    icon: {fileID: 3343607977148753158, guid: 08dea8c965289a44494aeffda61216d8, type: 3}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Product/ProductSO_Egg.asset
+  - itemId: Item_Product_GoatMilk
+    displayName: "\uC5FC\uC18C\uC6B0\uC720"
+    icon: {fileID: 4351594519713862397, guid: 08dea8c965289a44494aeffda61216d8, type: 3}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Product/ProductSO_GoatMilk.asset
+  - itemId: Item_Product_HorseMane
+    displayName: "\uB9D0 \uAC08\uAE30"
+    icon: {fileID: -1958491205247580314, guid: 08dea8c965289a44494aeffda61216d8, type: 3}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Product/ProductSO_HorseMane.asset
+  - itemId: Item_Product_Milk
+    displayName: "\uC6B0\uC720"
+    icon: {fileID: 4257372581223106476, guid: 08dea8c965289a44494aeffda61216d8, type: 3}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Product/ProductSO_Milk.asset
+  - itemId: Item_Product_OstrichEgg
+    displayName: "\uD0C0\uC870"
+    icon: {fileID: -3752483312421523534, guid: 08dea8c965289a44494aeffda61216d8, type: 3}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Product/ProductSO_OstrichEgg.asset
+  - itemId: Item_Product_PigPoop
+    displayName: "\uB3FC\uC9C0\uB625"
+    icon: {fileID: -1522405050911971166, guid: 08dea8c965289a44494aeffda61216d8, type: 3}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Product/ProductSO_PigPoop.asset
+  - itemId: Item_Product_Wool
+    displayName: "\uC591\uD138"
+    icon: {fileID: -473895828499156271, guid: 08dea8c965289a44494aeffda61216d8, type: 3}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Product/ProductSO_Wool.asset
+  - itemId: Item_Seed_BlueBerry
+    displayName: "\uBE14\uB8E8\uBCA0\uB9AC"
+    icon: {fileID: -1100569605, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Seed/SeedItemSO_BlueBerry.asset
+  - itemId: Item_Seed_Broccoli
+    displayName: "\uBE0C\uB85C\uCF5C\uB9AC"
+    icon: {fileID: 1508155040, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Seed/SeedItemSO_Broccoli.asset
+  - itemId: Item_Seed_Cabbage
+    displayName: "\uC591\uBC30\uCD94"
+    icon: {fileID: 1748012614, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Seed/SeedItemSO_Cabbage.asset
+  - itemId: Item_Seed_Carrot
+    displayName: "\uB2F9\uADFC"
+    icon: {fileID: -2093901266, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Seed/SeedItemSO_Carrot.asset
+  - itemId: Item_Seed_Cauliflower
+    displayName: "\uCF5C\uB9AC\uD50C\uB77C\uC6CC"
+    icon: {fileID: 783019644, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Seed/SeedItemSO_Cauliflower.asset
+  - itemId: Item_Seed_GreenOnion
+    displayName: "\uD30C"
+    icon: {fileID: 2136144850, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Seed/SeedItemSO_GreenOnion.asset
+  - itemId: Item_Seed_Onion
+    displayName: "\uC591\uD30C"
+    icon: {fileID: -724628908, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Seed/SeedItemSO_Onion.asset
+  - itemId: Item_Seed_Potato
+    displayName: "\uAC10\uC790"
+    icon: {fileID: 564560217, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Seed/SeedItemSO_Potato.asset
+  - itemId: Item_Seed_Radish
+    displayName: "\uBB34"
+    icon: {fileID: -1033185740, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Seed/SeedItemSO_Radish.asset
+  - itemId: Item_Seed_Rice
+    displayName: "\uBCBC"
+    icon: {fileID: -795079669, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Seed/SeedItemSO_Rice.asset
+  - itemId: Item_Seed_StrawBerry
+    displayName: "\uB538\uAE30"
+    icon: {fileID: -795079669, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+    category: Gather
+    assetPath: Assets/ScriptableObjects/Item/Seed/SeedItemSO_StrawBerry.asset

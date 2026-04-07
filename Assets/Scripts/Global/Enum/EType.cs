@@ -23,6 +23,7 @@ public enum EType
     FishItem = 7, // 생선
     OreItem = 8, // 광물
     ProductItem = 25, // 동물 생산품
+    AnimalItem = 26, // 동물 도감용
     #endregion
 
     #region ─────────────────────────▶ 월드 ◀─────────────────────────
