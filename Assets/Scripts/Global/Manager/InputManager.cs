@@ -43,6 +43,13 @@ public sealed class InputManager : GlobalSingleton<InputManager>, InputDispatche
             OnPlayerInventory.Publish();
         }
     }
+    public void OnPictorial(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            OnPlayerInventory.Publish();
+        }
+    }
     public void OnRun(InputAction.CallbackContext context)
     {
         if (context.started || context.performed)
