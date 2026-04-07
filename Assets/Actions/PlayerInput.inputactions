@@ -43,6 +43,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Pictorial",
+                    "type": "Button",
+                    "id": "639fd23a-3f16-4607-8728-2adda3bfe568",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Run",
                     "type": "Button",
                     "id": "7dc9b76b-01ec-4d39-a62c-36d4ff4f6538",
@@ -242,6 +251,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "47450a73-cc8f-46e8-9e85-fa598210e409",
+                    "path": "<Keyboard>/o",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pictorial",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
