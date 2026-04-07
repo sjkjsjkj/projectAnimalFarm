@@ -1,12 +1,16 @@
-﻿using TMPro;
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 /// <summary>
 /// 도감 슬롯 1칸 UI.
 /// 아이콘 하나만 사용해서 잠금 상태면 반투명, 해금 상태면 컬러로 표시한다.
+/// 
+/// 추가 기능
+/// - 해금된 슬롯을 클릭하면 상세 정보 패널을 연다.
 /// </summary>
-public class UIPictorialBookSlot : BaseMono
+public class UIPictorialBookSlot : BaseMono, IPointerClickHandler
 {
     [Header("UI 참조")]
     [SerializeField] private Image _iconImage;
@@ -23,6 +27,10 @@ public class UIPictorialBookSlot : BaseMono
     [SerializeField] private Color _lockedColor = new Color(1f, 1f, 1f, 0.45f);
     [SerializeField] private Color _unlockedColor = Color.white;
 
+    [Header("상세 정보")]
+    [SerializeField] private UIPictorialBookDetailPanel _detailPanel;
+    [SerializeField] private bool _showDetailOnlyUnlocked = true;
+
     private PictorialBookSystem _bookSystem;
     private PictorialBookEntry _entry;
 
@@ -38,10 +46,20 @@ public class UIPictorialBookSlot : BaseMono
 
     public void SetData(PictorialBookSystem bookSystem, PictorialBookEntry entry)
     {
+        SetData(bookSystem, entry, _detailPanel);
+    }
+
+    public void SetData(PictorialBookSystem bookSystem, PictorialBookEntry entry, UIPictorialBookDetailPanel detailPanel)
+    {
         TryAutoBindReferences();
 
         _bookSystem = bookSystem;
         _entry = entry;
+
+        if (detailPanel != null)
+        {
+            _detailPanel = detailPanel;
+        }
 
         Refresh();
     }
@@ -78,6 +96,53 @@ public class UIPictorialBookSlot : BaseMono
         }
 
         Debug.Log($"[UIPictorialBookSlot] id={itemId}, unlocked={unlocked}");
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData == null)
+        {
+            return;
+        }
+
+        if (eventData.button != PointerEventData.InputButton.Left)
+        {
+            return;
+        }
+
+        if (!CanOpenDetail())
+        {
+            return;
+        }
+
+        if (_detailPanel == null)
+        {
+            Debug.LogWarning("[UIPictorialBookSlot] DetailPanel이 연결되지 않았습니다.");
+            return;
+        }
+
+        _detailPanel.Show(_entry);
+    }
+
+    private bool CanOpenDetail()
+    {
+        if (_entry == null)
+        {
+            return false;
+        }
+
+        if (_showDetailOnlyUnlocked == false)
+        {
+            return true;
+        }
+
+        if (_bookSystem == null)
+        {
+            return false;
+        }
+
+        string itemId = NormalizeText(_entry.itemId);
+        return _bookSystem.IsDiscovered(itemId);
     }
 
     private void TryAutoBindReferences()
