@@ -35,16 +35,27 @@ public class SoundSO : BaseSO
         userVolume = Mathf.Clamp01(userVolume);
         return Mathf.Min(_volume * userVolume, 1f);
     }
+
+    /// <summary>
+    /// 에디터 스크립트에서 SoundSO를 생성할 때 사용할 함수
+    /// </summary>
+    public void InitSO(string name, AudioClip clip, float volume = 0.5f)
+    {
+        _type = EType.Audio;
+        _id = name;
+        _clip = clip;
+        _volume = volume;
+    }
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
     private void AutomaticallyId()
     {
         // 클립 없거나 이름 이미 설정했으면 건드리지 않기
-        if (_clip == null || _id.HasValue())
+        /*if (_clip == null || _id.HasValue())
         {
             return;
-        }
+        }*/
         // 클립 이름 가져와서 Id에 넣기
         _id = _clip.name;
     }

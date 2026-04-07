@@ -602,7 +602,6 @@ public class TileMap
         float pushDist = K.GRID_SIZE_HALF + halfSize + K.SMALL_DISTANCE; // + 여유값
         // 변위 벡터 계산
         escapePos = pushDir * pushDist;
-        escapePos /= 10f;
         return true;
     }
 
@@ -658,7 +657,10 @@ public class TileMap
     public Vector2 GetValidVelocity(Vector2 curPos, Vector2 size, Vector2 dir, float speed)
     {
         // 이동 불가 타일일 경우 중심에서 밀어내기
-        
+        if (TryCalcEscapeVector(curPos, size, out Vector2 escapeVel))
+        {
+            return escapeVel;
+        }
         // 방향 또는 이동 속도에 의해 위치 변화 없음
         if (dir == Vector2.zero || speed <= 0f)
         {
