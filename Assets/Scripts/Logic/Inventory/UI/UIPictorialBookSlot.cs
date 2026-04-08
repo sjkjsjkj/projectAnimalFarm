@@ -5,10 +5,11 @@ using UnityEngine.UI;
 
 /// <summary>
 /// 도감 슬롯 1칸 UI.
-/// 아이콘 하나만 사용해서 잠금 상태면 반투명, 해금 상태면 컬러로 표시한다.
-/// 
-/// 추가 기능
-/// - 해금된 슬롯을 클릭하면 상세 정보 패널을 연다.
+///
+/// 수정 내용
+/// 1. entry가 null이면 빈 슬롯으로 표시
+/// 2. 빈 슬롯은 아이콘 / 이름을 비우고 클릭도 무시
+/// 3. 배경은 프리팹 원본 그대로 두어 빈 칸 테두리는 유지
 /// </summary>
 public class UIPictorialBookSlot : BaseMono, IPointerClickHandler
 {
@@ -30,6 +31,9 @@ public class UIPictorialBookSlot : BaseMono, IPointerClickHandler
     [Header("상세 정보")]
     [SerializeField] private UIPictorialBookDetailPanel _detailPanel;
     [SerializeField] private bool _showDetailOnlyUnlocked = true;
+
+    [Header("로그")]
+    [SerializeField] private bool _logEnabled = false;
 
     private PictorialBookSystem _bookSystem;
     private PictorialBookEntry _entry;
@@ -68,9 +72,27 @@ public class UIPictorialBookSlot : BaseMono, IPointerClickHandler
     {
         TryAutoBindReferences();
 
-        string itemId = _entry != null ? NormalizeText(_entry.itemId) : string.Empty;
-        string displayName = _entry != null ? NormalizeText(_entry.displayName) : string.Empty;
-        Sprite icon = _entry != null ? _entry.icon : null;
+        // 빈 슬롯 처리
+        if (_entry == null)
+        {
+            if (_nameText != null)
+            {
+                _nameText.text = string.Empty;
+            }
+
+            if (_iconImage != null)
+            {
+                _iconImage.sprite = null;
+                _iconImage.enabled = false;
+                _iconImage.color = _unlockedColor;
+            }
+
+            return;
+        }
+
+        string itemId = NormalizeText(_entry.itemId);
+        string displayName = NormalizeText(_entry.displayName);
+        Sprite icon = _entry.icon;
 
         bool unlocked = _bookSystem != null && _bookSystem.IsDiscovered(itemId);
 
@@ -95,7 +117,10 @@ public class UIPictorialBookSlot : BaseMono, IPointerClickHandler
             _iconImage.color = unlocked ? _unlockedColor : _lockedColor;
         }
 
-        Debug.Log($"[UIPictorialBookSlot] id={itemId}, unlocked={unlocked}");
+        if (_logEnabled)
+        {
+            Debug.Log($"[UIPictorialBookSlot] id={itemId}, unlocked={unlocked}");
+        }
     }
 
     public void OnPointerClick(PointerEventData eventData)

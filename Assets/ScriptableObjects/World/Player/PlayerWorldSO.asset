@@ -27,4 +27,6 @@ MonoBehaviour:
   _maxHunger: 100
   _maxThirst: 100
   _maxMoney: 2147483647
-  _skillExpTables: []
+  _skillExpTables:
+  - skillType: 4
+    expTable: 0a000000

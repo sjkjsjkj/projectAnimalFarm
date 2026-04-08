@@ -18,7 +18,7 @@ MonoBehaviour:
   _description: "\uAC80\uC740\uC0C9\uACFC \uD770\uC0C9\uC774 \uC5B4\uC6B0\uB7EC\uC9C4
     \uD310\uB2E4\uB2E4."
   _rarity: 1
-  _image: {fileID: 0}
+  _image: {fileID: 21300000, guid: cb52314365d6f0e4184236e188a9c166, type: 2}
   _prefab: {fileID: 0}
   _sellPrice: 800
   _buyPrice: 0
