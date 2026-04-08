@@ -5,8 +5,11 @@ public enum EPlayerState : byte
 {
     None = 0,
     Idle = 1,
-    Move = 2,
-    Interact = 3,
-    ToolAction = 4,
-    Dead = 5
+    Walk = 2,
+    Run = 3,
+    Fishing = 4,
+    Mining = 5,
+    Logging = 6,
+    Drinking = 7,
+    Eating = 8,
 }

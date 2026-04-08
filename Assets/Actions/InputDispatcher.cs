@@ -298,17 +298,6 @@ public partial class @InputDispatcher: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""f203add1-a5ca-4793-904e-6c27ffd01f2a"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Interact"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""0b6599ec-698d-48d2-bc42-cb1bfe4ac08d"",
                     ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
@@ -331,6 +320,17 @@ public partial class @InputDispatcher: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""6528c71e-14df-4232-9088-96849f51b9ae"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Inventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""760ffa12-ab22-4bc7-95e1-243997ba5bea"",
                     ""path"": ""<Keyboard>/i"",
                     ""interactions"": """",
@@ -343,6 +343,17 @@ public partial class @InputDispatcher: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""47450a73-cc8f-46e8-9e85-fa598210e409"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pictorial"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6f5caeaf-b272-43be-923a-20f71d27867d"",
                     ""path"": ""<Keyboard>/o"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -364,8 +375,8 @@ public partial class @InputDispatcher: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""6528c71e-14df-4232-9088-96849f51b9ae"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""id"": ""f203add1-a5ca-4793-904e-6c27ffd01f2a"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
