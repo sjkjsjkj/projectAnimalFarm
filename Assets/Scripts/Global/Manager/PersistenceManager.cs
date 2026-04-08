@@ -219,7 +219,6 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
             string filePath = files[i];
             string fileName = Path.GetFileNameWithoutExtension(filePath); // 경로와 확장자 제거
             int index = fileName.IndexOf('@');
-            UDebug.Print($"여기 실행하고 있니? 1 {fileName}");
             // 잘못된 파일 형식
             if (index < 0)
             {
@@ -227,7 +226,6 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
             }
             string uniqueId = fileName.Substring(index + 1);
             string json = File.ReadAllText(filePath);
-            UDebug.Print($"여기 실행하고 있니? 2 {uniqueId}");
             // 씬에 존재하는 UUID
             if (saveableDict.TryGetValue(uniqueId, out ISaveable val))
             {
@@ -237,14 +235,13 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
             // 씬에 없으므로 생성하여 데이터 주입
             string unitId = fileName.Substring(0, index);
             GameObject prefab = dm.Unit(unitId)?.Prefab;
-            UDebug.Print($"여기 실행하고 있니? 3 {unitId}");
             if (prefab == null)
             {
                 UDebug.Print($"UnitSO에 {unitId} ID를 가진 프리펩이 존재하지 않습니다.", LogType.Warning);
                 continue;
             }
             // 생성 및 데이터 주입
-            GameObject instance = UObject.Spawn(prefab, GameManager.ObjectRoot);
+            GameObject instance = UObject.Spawn(prefab, GameManager.ObjectRoot, true);
             if (instance.TryGetComponent(out ISaveable saveable))
             {
                 saveable.UniqueId = uniqueId;

@@ -114,6 +114,13 @@ public sealed class InputManager : GlobalSingleton<InputManager>, InputDispatche
             ChangeSlot(slot);
         }
     }
+    public void OnMenu(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            OnPlayerEsc.Publish();
+        }
+    }
     // Awake 대용
     public override void Initialize()
     {
