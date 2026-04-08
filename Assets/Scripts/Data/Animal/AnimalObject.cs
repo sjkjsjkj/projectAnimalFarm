@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 /// <summary>
 /// 동물의 MonoBehaivour를 관리하는 객체입니다.
 /// 데이터는 .Data로 접근할 수 있습니다.
@@ -27,6 +28,8 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
 
     private string _productItemId;
     private bool _isProductFinish;
+
+    private FoodBox _foodBox;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -118,7 +121,7 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
 
         _data = new AnimalData(tempSO);
 
-        UDebug.Print($"생산된 {tempSO.Name} 의 생산품은 {tempSO.ProductId} 입니다.");
+        //UDebug.Print($"생산된 {tempSO.Name} 의 생산품은 {tempSO.ProductId} 입니다.");
         _productItemId = tempSO.ProductId;
 
         ConnectionEvent();
@@ -134,6 +137,7 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
 
         if (_tickTimer >= _tickInterval)
         {
+            UDebug.Print($"Current State : {_state.ToString()}");
             _tickTimer = 0;
             _data.Tick();
         }
@@ -164,10 +168,44 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
         }
 
     }
-
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
+    private IEnumerator CoEatFoodCoroutine()
+    {
+        while(true)
+        {
+            //먹이통에 먹이가 있을 때 까지 반복
+            yield return StartCoroutine(CoWaitFoodBoxInFeed());
+
+            FeedItemSO tempFeedItemSO = _foodBox.ReturnFeed();
+
+            _data.EatFood(tempFeedItemSO.Amount);
+
+            _animator.SetBool("Eat", true);
+            //먹는중
+            yield return new WaitForSeconds(2.0f);
+
+            //먹고 나서도 배고픈지 확인
+            if (!(_data.IsHungry))
+            {
+                break;
+            }
+        }
+        _animator.SetBool("Eat", false);
+        SetState(EAnimalState.Idle);
+    }
+    private IEnumerator CoWaitFoodBoxInFeed()
+    {
+        while(true)
+        {
+            yield return null;
+            if(_foodBox.TryFindFeed())
+            {
+                break;
+            }
+        }
+    }
     private void SetState(EAnimalState nextState)
     {
         EAnimalState prevState = _state;
@@ -184,9 +222,11 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
             case EAnimalState.Sleep:
                 break;
             case EAnimalState.Eat:
+                //_animator.SetBool("Eat", true);
+                StartCoroutine(CoEatFoodCoroutine());
                 break;
             case EAnimalState.MoveToEat:
-                _moveDir = (_foodBoxPos - transform.localPosition).normalized;
+                _moveDir = (_foodBoxPos-transform.position).normalized;
                 break;
             case EAnimalState.MoveToBed:
                 break;
@@ -203,11 +243,18 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
         _data.OnProductFinish += SetProductFinish;
     }
     //껍데기 밖에 없던 animalObject에 스프라이트와 데이터, 애니메이터 컨트롤러를 넣어주는 작업.
-    
+    //Data에서 배가고파지면 실행되는 이벤트를 구독하고 있는 메서드
     private void SetHungry()
     {
         SetState(EAnimalState.MoveToEat);
     }
+    //밥을 먹고 난 후에도 여전히 배가 고픈지 확인하는 메서드
+    private bool CheckHungry()
+    {
+        return _data.IsHungry;
+    }
+
+    //생산완료
     private void SetProductFinish()
     {
         _isProductFinish = true;
@@ -218,9 +265,8 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
     public void SetFoodProvider(IFoodProvider foodProvider)
     {
         _foodBoxPos = foodProvider.GetFoodBoxPosition();
+        _foodBox = foodProvider.GetFoodBox();
     }
-
-
     
     private void UpdateMoveToEat()
     {
@@ -244,6 +290,16 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
         if (tile != null)
         {
             transform.position = tile.GetValidPos(transform.position, _data.Size, dir, Time.deltaTime);
+        }
+        if(!(_state == EAnimalState.MoveToEat))
+        {
+            return;
+        }
+        float dis = Vector3.Distance(transform.position, _foodBoxPos);
+        if (dis <= 0.1f)
+        {
+            UDebug.Print("멈춰");
+            SetState(EAnimalState.Eat);
         }
     }
     private Vector3 RandomDirSetting()
@@ -297,7 +353,20 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
             SetState(EAnimalState.Idle);
         }
     }
-    
+
+    private IEnumerator CoWaitPrefabLoad()
+    {
+        while (true)
+        {
+            
+            yield return null;
+
+            if (InventoryManager.Ins.IsSettingFinish)
+            {
+                break;
+            }
+        }
+    }
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────

@@ -298,17 +298,6 @@ public partial class @InputDispatcherP: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""f203add1-a5ca-4793-904e-6c27ffd01f2a"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Interact"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""0b6599ec-698d-48d2-bc42-cb1bfe4ac08d"",
                     ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",

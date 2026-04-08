@@ -347,7 +347,7 @@ public class UIInventory : BaseMono
         {
             UISlot slot = Instantiate(_slotPrefab, _slotContainer);
             slot.gameObject.name = $"UISlot_{i:D2}";
-            slot.Initialize(this, i);
+            //slot.Initialize(this, i);
             slot.ClearView();
             slot.SetSelected(false);
             _slotList.Add(slot);
@@ -465,7 +465,7 @@ public class UIInventory : BaseMono
 
         if (_actionPopup != null)
         {
-            _actionPopup.Initialize(this);
+            //_actionPopup.Initialize(this);
         }
 
         gameObject.SetActive(false);

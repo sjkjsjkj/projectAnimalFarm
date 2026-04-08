@@ -27,6 +27,8 @@ public class AnimalData
     public Vector2 Size => _size;
     public int ProductProgress => _productProgress;
 
+    public bool IsHungry => _hunger <= K.ANIMAL_HUNGER_CONDITION;
+
     public event Action OnHungry;
     public event Action OnProductFinish;
     #endregion
@@ -43,7 +45,7 @@ public class AnimalData
         _age = 0;
         _needFood = true;
         _foodConsumeAmount = dataSO.TickFeedAmount;
-        _hunger = 40.0f;
+        _hunger = 29.0f;
         _productProgress = 0;
     }
     public AnimalData(AnimalData data)
@@ -61,14 +63,24 @@ public class AnimalData
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
     public void EatFood(float hunger)
     {
-        UDebug.IsTrue(hunger == 0);
+        if(UDebug.IsTrue(hunger <= 0))
+        {
+            UDebug.Print("섭취한 음식의 회복량이 0이하 입니다.");
+            return;
+        }
 
-        _hunger += hunger;
+        _hunger = Mathf.Min(100, _hunger+hunger);
     }
     // 틱당 처리되는 데이터
     // 오브젝트에서 특정 프레임마다 불러옴.
     public void Tick()
     {
+        UDebug.Print($"current Animal Hunger : {_hunger}");
+        if(_productProgress == K.MAX_PRODUCT_PROGRESS)
+        {
+            return;
+        }
+
         if (_needFood)
         {
             //UDebug.Print($"before hunger = {_hunger}");
