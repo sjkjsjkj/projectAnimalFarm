@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// 일정구역을 배회하는? NPC의 스크립트
@@ -7,57 +6,45 @@ using UnityEngine;
 public class NpcMoveTypeAreaMove : NpcMoveTypeBase
 {
     //private float _minX, _minY, _maxX, _maxY;
-    [SerializeField] private Vector2 _minPos, _maxPos;
-    [SerializeField] private Vector3 _nextMoveTarget;
-
-    private float _moveSpeed;
-
-    public event Action OnNextMove;
-
+    private Vector2 _minPos, _maxPos;
+  
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-    public void InitSetting(Vector2 initPos, Vector2 minPos, Vector2 maxPos, float moveSpeed)
+    public override void Move()
+    {
+        RandomDirSetting();
+    }
+    public void AreaRangeSetting(Vector2 initPos, Vector2 minPos, Vector2 maxPos)
     {
         _minPos = new Vector2(minPos.x + initPos.x, minPos.y + initPos.y);
         _maxPos = new Vector2(maxPos.x + initPos.x, maxPos.y + initPos.y);
-        _moveSpeed = moveSpeed;
     }
-
-
-    public override void Move()
+    private Vector3 RandomDirSetting()
     {
-        if (Vector3.Distance(transform.position, _nextMoveTarget) <= 0.1f)
-        {
-            OnNextMove?.Invoke();
-            return;
-        }
+        float dirX, dirY;
+        int resultDir;  // 1 : (동)서 / 2 : 남 / 3 : 북
 
-        transform.position += (_nextMoveTarget - transform.position).normalized*Time.deltaTime* _moveSpeed;
-    }
-    
-    public override int NextTargetFind()
-    {
-        //UDebug.Print("AreaMoveNPC : NextTargetFind");
-        _nextMoveTarget = new Vector3(UnityEngine.Random.Range(_minPos.x, _maxPos.x), UnityEngine.Random.Range(_minPos.y, _maxPos.y));
+        dirX = Random.Range(transform.localPosition.x > _minPos.x ? -1 : 0, transform.localPosition.x < _maxPos.x ? 0 : 1);
+        dirY = Random.Range(transform.localPosition.y > _minPos.y ? -1 : 0, transform.localPosition.y < _maxPos.y ? 0 : 1);
 
-        int resultDir;
-        int diffX, diffY;
-        diffX = (int)(Mathf.Abs(transform.position.x)-Mathf.Abs(_nextMoveTarget.x));
-        diffY = (int)(Mathf.Abs(transform.position.y) - Mathf.Abs(_nextMoveTarget.y));
-
-        if (Mathf.Abs(diffX) >= Mathf.Abs(diffY))
+        if (Mathf.Abs(dirX) >= Mathf.Abs(dirY))
         {
             resultDir = 1;
-            if (_nextMoveTarget.x >= 0.0f)
+            if (dirX >= 0.0f)
             {
-                resultDir = 0;// _spRenderer.flipX = true;
+                _npc.SpRenderer.flipX = true;
+            }
+            else
+            {
+                _npc.SpRenderer.flipX = false;
             }
         }
         else
         {
-            resultDir = _nextMoveTarget.y >= 0.0f ? 3 : 2;
+            resultDir = dirY >= 0.0f ? 3 : 2;
         }
-        //UDebug.Print($"NextFaceDir : {resultDir}");
-        return resultDir;
+        _npc.Animator.SetInteger("FaceDir", resultDir);
+
+        return new Vector3(dirX, dirY).normalized;
     }
     #endregion
 }

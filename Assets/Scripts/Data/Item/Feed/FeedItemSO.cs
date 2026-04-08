@@ -6,9 +6,6 @@
 [CreateAssetMenu(fileName = "FeedItemSO_", menuName = "ScriptableObjects/Item/Feed", order = 1)]
 public class FeedItemSO : ItemSO
 {
-    [SerializeField] private float _amount;
-
-    public float Amount => _amount;
     // 정상 값을 가지는지 검사
     public override bool IsValid()
     {

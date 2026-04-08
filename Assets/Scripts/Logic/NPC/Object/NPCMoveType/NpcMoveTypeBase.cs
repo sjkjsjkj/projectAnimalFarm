@@ -6,7 +6,6 @@ public abstract class NpcMoveTypeBase : BaseMono
     protected NPCObject _npc;
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
     public abstract void Move();
-    public abstract int NextTargetFind();
     public void SetNpc(NPCObject npc)
     {
         _npc = npc;

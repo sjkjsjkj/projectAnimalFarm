@@ -27,7 +27,7 @@ public class UISlot : BaseMono, IBeginDragHandler, IDragHandler, IEndDragHandler
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
-    private InventoryUI _owner;
+    private UIInventory _owner;
     private RectTransform _rectTr;
     private int _index = -1;
     private bool _isEmpty = true;
@@ -66,7 +66,7 @@ public class UISlot : BaseMono, IBeginDragHandler, IDragHandler, IEndDragHandler
     /// <summary>
     /// 슬롯의 초기 참조를 연결합니다.
     /// </summary>
-    public void Initialize(InventoryUI owner, int index)
+    public void Initialize(UIInventory owner, int index)
     {
         _owner = owner;
         _index = index;
@@ -123,30 +123,6 @@ public class UISlot : BaseMono, IBeginDragHandler, IDragHandler, IEndDragHandler
             _countText.text = isShowCount ? slotData.Count.ToString() : string.Empty;
         }
     }
-    public void SetView(InventorySlot slotData)
-    {
-        if (slotData.IsEmpty)
-        {
-            ClearView();
-            return;
-        }
-
-        _isEmpty = false;
-
-        if (_icon != null)
-        {
-            _icon.sprite = slotData.ItemSO.Image;
-            _icon.enabled = slotData.ItemSO.Image != null;
-        }
-
-        if (_countText != null)
-        {
-            bool isShowCount = slotData.CurStack > 1;
-            _countText.gameObject.SetActive(isShowCount);
-            _countText.text = isShowCount ? slotData.CurStack.ToString() : string.Empty;
-        }
-    }
-
 
     /// <summary>
     /// 선택 여부를 갱신합니다.
@@ -161,69 +137,41 @@ public class UISlot : BaseMono, IBeginDragHandler, IDragHandler, IEndDragHandler
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
-    //public void OnBeginDrag(PointerEventData eventData)
-    //{
-    //    if (_owner == null)
-    //    {
-    //        return;
-    //    }
-
-    //    _owner.BeginDragSlot(_index);
-    //}
-
-    //public void OnDrag(PointerEventData eventData)
-    //{
-    //    // 드래그 이벤트 유지용
-    //}
-
-    //public void OnEndDrag(PointerEventData eventData)
-    //{
-    //    if (_owner == null)
-    //    {
-    //        return;
-    //    }
-
-    //    _owner.EndDragSlot();
-    //}
-
-    //public void OnDrop(PointerEventData eventData)
-    //{
-    //    if (_owner == null)
-    //    {
-    //        return;
-    //    }
-
-    //    _owner.DropSlot(_index);
-    //}
     public void OnBeginDrag(PointerEventData eventData)
     {
-        //eventData.useDragThreshold = false;
-        //UDebug.Print($"DragNDrop : StartDrag");
-        _owner.BeginDrag(_index);
+        if (_owner == null)
+        {
+            return;
+        }
+
+        _owner.BeginDragSlot(_index);
     }
+
     public void OnDrag(PointerEventData eventData)
     {
-        //UDebug.Print($"DragNDrop : OnDrag");
-        _owner.DragIng();
+        // 드래그 이벤트 유지용
     }
+
     public void OnEndDrag(PointerEventData eventData)
     {
-        //UDebug.Print($"DragNDrop : EndDrag");
-        _owner.EndDrag();
+        if (_owner == null)
+        {
+            return;
+        }
+
+        _owner.EndDragSlot();
     }
+
     public void OnDrop(PointerEventData eventData)
     {
-        UISlot fromSlot = eventData.pointerDrag.GetComponent<UISlot>();
-
-        if(fromSlot != this)
+        if (_owner == null)
         {
-            int fromIndex = fromSlot.Index;
-            InventoryManager.Ins.ChangeItemInvenNStorage(fromSlot._owner.InventoryIdx, fromIndex, this._owner.InventoryIdx, this.Index);
+            return;
         }
-        //UDebug.Print($"fromSlot : {fromSlot._owner.InventoryIdx}.{fromIndex} | toSlot : {this._owner.InventoryIdx}.{toIndex}");
 
-        _owner.DragDrop(_index);
+        _owner.DropSlot(_index);
     }
+
     private void Reset()
     {
         _button = GetComponent<Button>();

@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 729023b480859c8409b1b43d501c8d63, type: 3}
-  m_Name: NpcWorldSO_Josh_Area
+  m_Name: NpcWorldSO_Josh
   m_EditorClassIdentifier: 
-  _id: World_Npc_JoshAreaMove
+  _id: World_Npc_Josh
   _type: 10
   _name: Josh
   _description: "\uD14C\uC2A4\uD2B8\uC6A9 Npc Josh"
@@ -20,12 +20,11 @@ MonoBehaviour:
   _image: {fileID: 4723107735738678597, guid: 5256893308734c94aa117ffe8c12c92c, type: 3}
   _prefab: {fileID: 0}
   _size: {x: 1, y: 1}
-  _animController: {fileID: 9100000, guid: 53129049357d9aa4a99dfe89c3897e02, type: 2}
+  _animController: {fileID: 9100000, guid: 0d0ff5abed05e004cace1c06e011b793, type: 2}
   _dialog:
   - 111111111111
   - 2222222222
-  _initPosition: {x: 0, y: 0}
-  _moveSpeed: 3
-  _eNpcMoveType: 2
+  _moveSpeed: 1
+  _eNpcMoveType: 0
   _minPos: {x: -2, y: -2}
   _maxPos: {x: 2, y: 2}

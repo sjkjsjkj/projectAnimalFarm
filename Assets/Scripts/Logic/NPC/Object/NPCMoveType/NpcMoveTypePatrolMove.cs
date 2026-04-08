@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -8,53 +8,33 @@ public class NpcMoveTypePatrolMove : NpcMoveTypeBase
 {
     private Vector3[] _patrolTarget;
     private int _currentPatrolIndex;
-
-    private float _moveSpeed;
-
-    public event Action OnNextMove;
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-    public void InitSetting(Vector3[] patrolTargets, float moveSpeed)
-    {
-        _patrolTarget = patrolTargets;
-        _moveSpeed = moveSpeed;
-    }
     public override void Move()
     {
-        if (Vector3.Distance(transform.position, _patrolTarget[_currentPatrolIndex]) <= 0.1f)
-        {
-            OnNextMove?.Invoke();
-            return;
-        }
-
-        transform.position += (_patrolTarget[_currentPatrolIndex] - transform.position).normalized * Time.deltaTime * _moveSpeed;
+        NextTarget();
+        UDebug.Print($"현재 타겟 : {_currentPatrolIndex} ");
+    }
+    private void NextTarget()
+    {
+        _currentPatrolIndex = _currentPatrolIndex -1 == _patrolTarget.Length?0:_currentPatrolIndex+1;
     }
 
-    public override int NextTargetFind()
+    private IEnumerator PatrolCoroutine()
     {
-        //UDebug.Print("AreaMoveNPC : NextTargetFind");
-        _currentPatrolIndex = _currentPatrolIndex - 1 == _patrolTarget.Length ? 0 : _currentPatrolIndex + 1;
-
-        int resultDir;
-        int diffX, diffY;
-        diffX = (int)(Mathf.Abs(transform.position.x) - Mathf.Abs(_patrolTarget[_currentPatrolIndex].x));
-        diffY = (int)(Mathf.Abs(transform.position.y) - Mathf.Abs(_patrolTarget[_currentPatrolIndex].y));
-
-        if (Mathf.Abs(diffX) >= Mathf.Abs(diffY))
+        while(true)
         {
-            resultDir = 1;
-            if (_patrolTarget[_currentPatrolIndex].x >= 0.0f)
+            
+            yield return null;
+
+            float distance = Vector3.Distance(transform.position , _patrolTarget[0]);
+
+            if(distance <= 0.1f)
             {
-                resultDir = 0;// _spRenderer.flipX = true;
+                break;
             }
+            //Todo : npc의 위치와 patrolTarget 의 위치가 비슷하다면 
         }
-        else
-        {
-            resultDir = _patrolTarget[_currentPatrolIndex].y >= 0.0f ? 3 : 2;
-        }
-        //UDebug.Print($"현재 타겟 : {_currentPatrolIndex} | NextFaceDir : {resultDir}");
-
-        return resultDir;
+        
     }
     #endregion
 }
-

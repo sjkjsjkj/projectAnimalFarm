@@ -1,16 +1,15 @@
-﻿using UnityEngine;
-
-/// <summary>
-/// 상점의 UI 입니다.
+﻿/// <summary>
+/// 창고의 UI 입니다.
 /// </summary>
-public class ShopUI : InventoryUI
+public class StorageUI : InventoryUI
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
-    [SerializeField] private GameObject _itemInfoFiledPrefab;
+    //[Header("주제")]
+    //[SerializeField] private Class _class;
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
-    private GameObject[] _itemInfoFileds;
+
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -18,13 +17,10 @@ public class ShopUI : InventoryUI
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-    //public override void SetInfo(int invenSize)
-    //{
-    //    for(int i=0; i< _inventorySize; i++)
-    //    {
-    //        _itemInfoFileds[i] = Instantiate(_itemInfoFiledPrefab);
-    //    }
-    //}
+    public override void SetInfo(int invenSize)
+    {
+        throw new System.NotImplementedException();
+    }
     //public override void ShowUI()
     //{
     //    throw new System.NotImplementedException();
@@ -34,11 +30,6 @@ public class ShopUI : InventoryUI
         _inventorySlotUIs[slotIdx].SetInfo(invenSlot.ItemSO.Image, invenSlot.CurStack);
     }
     public override void RefreshInventoryUI(Inventory inventory)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void SelectSlot(int slotIdx)
     {
         throw new System.NotImplementedException();
     }

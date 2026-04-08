@@ -77,11 +77,17 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
         _itemCoordinatior.TryCollectItem(Id.Item_Seed_Broccoli, 1);
         _itemCoordinatior.TryCollectItem(Id.Item_Seed_Cabbage, 1);
         _itemCoordinatior.TryCollectItem(Id.Item_Seed_Carrot, 1);
-        _itemCoordinatior.TryCollectItem("ALL props seasons_69", 1);
-        _itemCoordinatior.TryCollectItem("ALL props seasons_13", 1);
-        _itemCoordinatior.TryCollectItem("ALL props seasons_19", 1);
-        _itemCoordinatior.TryCollectItem("ALL props seasons_34", 1);
-        _itemCoordinatior.TryCollectItem("ALL props seasons_38", 1);
+        _itemCoordinatior.TryCollectItem(Id.Item_Seed_Cauliflower, 1);
+        _itemCoordinatior.TryCollectItem(Id.Item_Seed_GreenOnion, 1);
+        _itemCoordinatior.TryCollectItem(Id.Item_Seed_Onion, 1);
+        _itemCoordinatior.TryCollectItem(Id.Item_Seed_Radish, 1);
+        _itemCoordinatior.TryCollectItem(Id.Item_Seed_Potato, 1);
+        _itemCoordinatior.TryCollectItem(Id.Item_Seed_Rice, 1);
+        _itemCoordinatior.TryCollectItem(Id.Strawberry_0, 1);
+        _itemCoordinatior.TryCollectItem(Id.Rice_0, 1);
+        _itemCoordinatior.TryCollectItem(Id.Onion_0, 1);
+        _itemCoordinatior.TryCollectItem(Id.Cabbage_0, 1);
+        _itemCoordinatior.TryCollectItem(Id.Blueberry_0, 1);
     }
 
     public void TestFarm()

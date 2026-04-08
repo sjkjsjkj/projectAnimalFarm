@@ -6,6 +6,6 @@ public enum EInventoryType
     None = 0,
     PlayerInventory = 1,
     Storage = 2,
-    FoodBox = 3,
+    Shop = 3,
     ETC=999
 }

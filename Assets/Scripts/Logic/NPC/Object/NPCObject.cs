@@ -18,7 +18,7 @@ public class NPCObject : Frameable
     private float _actionTimer = 0;       // Idle <> Move 상태를 자연스럽게 변경해줄 때 사용할 타이머
     private float _actionInterval = 3.0f; // 3초마다 한번씩 Move/Idle일 경우 랜덤하게 Move/Idle로 행동을 변경할 예정.
 
-    [SerializeField] private Animator _animator;
+    private Animator _animator;
     private NpcMoveTypeBase _moveMaster;
     #endregion
 
@@ -64,12 +64,9 @@ public class NPCObject : Frameable
                     UDebug.Print("인스펙터 에러. 모드에 맞는 SO를 넣으세요.", LogType.Assert);
                     return; 
                 }
-                UDebug.Print("AreaMove Mode Npc 생성");
-                NpcMoveTypeAreaMove tempAreaMoveMode = gameObject.AddComponent<NpcMoveTypeAreaMove>();
-                tempAreaMoveMode.InitSetting(areaMoveSO.InitPosition, areaMoveSO.MinPos, areaMoveSO.MaxPos,areaMoveSO.MoveSpeed);
 
-                tempAreaMoveMode.GetComponent<NpcMoveTypeAreaMove>().OnNextMove -= Reorganize;
-                tempAreaMoveMode.GetComponent<NpcMoveTypeAreaMove>().OnNextMove += Reorganize;
+                gameObject.AddComponent<NpcMoveTypeAreaMove>().AreaRangeSetting(areaMoveSO.InitPosition, areaMoveSO.MinPos, areaMoveSO.MaxPos);
+
                 break;
             case ENpcMoveType.PatrolMove:
                 if (!(_npcSO is NpcWorldPatrolMoveSo patrolMoveSO))
@@ -77,11 +74,9 @@ public class NPCObject : Frameable
                     UDebug.Print("인스펙터 에러. 모드에 맞는 SO를 넣으세요.", LogType.Assert);
                     return;
                 }
-                NpcMoveTypePatrolMove tempPatrolMode = gameObject.AddComponent<NpcMoveTypePatrolMove>();
-                tempPatrolMode.InitSetting(patrolMoveSO.PatrolPoints, patrolMoveSO.MoveSpeed);
 
-                tempPatrolMode.GetComponent<NpcMoveTypePatrolMove>().OnNextMove -= Reorganize;
-                tempPatrolMode.GetComponent<NpcMoveTypePatrolMove>().OnNextMove += Reorganize;
+                //gameObject.AddComponent<NpcMoveTypeAreaMove>().
+
                 break;
         }
 
@@ -90,10 +85,7 @@ public class NPCObject : Frameable
         _animator.runtimeAnimatorController = _npcSO.AnimController;
         SetState(ENpcState.Idle);
     }
-    private void Reorganize()
-    {
-        SetState(ENpcState.Idle);
-    }
+   
     private void UpdateInteraction()
     {
         
@@ -101,7 +93,7 @@ public class NPCObject : Frameable
     private void UpdateMove()
     {
         //UDebug.Print("이동중");
-        _moveMaster.Move();
+        //_moveMaster.Move();
     }
     private void UpdateIdle()
     {
@@ -123,29 +115,13 @@ public class NPCObject : Frameable
         if (randomValue >= 0.5f)
         {
             SetState(ENpcState.Move);
-            //UDebug.Print("이제부터 움직여라");
-            FaceDirCheck(_moveMaster.NextTargetFind());
         }
         else
         {
             SetState(ENpcState.Idle);
         }
     }
-
-    private void FaceDirCheck(int resultFaceDir)
-    {
-        if(resultFaceDir == 1)
-        {
-            _spRenderer.flipX = true;
-        }
-        else
-        {
-            _spRenderer.flipX = false;
-        }
-        _animator.SetInteger("FaceDir", resultFaceDir);
-    }
-
-
+    
     public override EPriority Priority => EPriority.Last;
     public override void ExecuteFrame()
     {

@@ -14,7 +14,7 @@ public class AnimalWorldSO : WorldSO
     [SerializeField] protected bool _needFood = true; // 밥이 필요한 동물?
     [SerializeField] protected ERarity _feedMinRarity = ERarity.Basic; // 먹는 밥의 등급
     [SerializeField] protected float _tickFeedAmount = 0.1f; // 1틱당 소모하는 만복도
-    [SerializeField] protected float _maxFeedAmount = 100; // 최대 만복도
+    [SerializeField] protected float _maxFeedAmount = 5000; // 최대 만복도
 
     [Header("생산품 정보")]
     [SerializeField] protected string _productId = null; // 생산하는 아이템 ID

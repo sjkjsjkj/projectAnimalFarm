@@ -6,5 +6,4 @@
 public interface IFoodProvider
 {
     Vector3 GetFoodBoxPosition();
-    FoodBox GetFoodBox();
 }

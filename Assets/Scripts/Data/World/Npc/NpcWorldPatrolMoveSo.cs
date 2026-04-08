@@ -9,11 +9,11 @@ public class NpcWorldPatrolMoveSo : NpcWorldSO
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("이동 경로 (0번째 값은 첫 위치의 값)")]
-    [SerializeField] protected Vector3[] _patrolPoints;
+    [SerializeField] protected Vector2[] _patrolPoints;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
-    public Vector3[] PatrolPoints => _patrolPoints;
+    public Vector2[] PatrolPoints => _patrolPoints;
     
     // 값 유효성 검사
     public override bool IsValid()
