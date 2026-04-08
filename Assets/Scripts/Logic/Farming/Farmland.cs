@@ -81,7 +81,7 @@ public class Farmland
         
         _stateFlag = (uint)EFarmlandState.IdleLand;
         SetState(EFarmlandState.IdleLand);
-        UDebug.Print($"Clear된 경작지의 StateFlag = {_stateFlag}");
+        //UDebug.Print($"Clear된 경작지의 StateFlag = {_stateFlag}");
     }
     //인터랙트가 가능한지의 여부를 반환해줄 메서드
     public bool CanInteract()

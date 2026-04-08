@@ -22,3 +22,4 @@ MonoBehaviour:
   _sellPrice: 70
   _buyPrice: 0
   _maxStack: 64
+  _amount: 50

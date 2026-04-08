@@ -52,12 +52,12 @@ public class FenceObject : BaseMono , IInteractable
     }
     private IEnumerator CoDoorCoroutine()
     {
-        UDebug.Print("문 열렸다.");
+        //UDebug.Print("문 열렸다.");
         DoorSetting(true);
 
         yield return new WaitForSeconds(0.5f);
 
-        UDebug.Print("문 닫혔다.");
+        //UDebug.Print("문 닫혔다.");
         DoorSetting(false);
     }
     #endregion

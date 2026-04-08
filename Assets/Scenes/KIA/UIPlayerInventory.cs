@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -9,32 +7,24 @@ using UnityEngine;
 /// 실제 아이템 데이터는 외부 시스템이 들고 있고,
 /// 이 클래스는 외부에서 받은 표시 정보만 화면에 반영합니다.
 /// </summary>
-public class UIInventory : BaseMono
+public class UIPlayerInventory : InventoryUI
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
-    [Header("슬롯")]
-    [SerializeField] private Transform _slotContainer;
-    [SerializeField] private UISlot _slotPrefab;
-    [SerializeField] private int _defaultSlotCount = 15;
-    [SerializeField] private List<UISlot> _slotList = new();
-
     [Header("팝업")]
-    [SerializeField] private RectTransform _popupRoot;
-    [SerializeField] private UIItemActionPopup _actionPopup;
+    [SerializeField] protected RectTransform _popupRoot;
+    [SerializeField] protected UIItemActionPopup _actionPopup;
 
     [Header("팝업 위치")]
-    [SerializeField] private float _popupOffsetX = 10f;
-    [SerializeField] private float _popupOffsetY = 0f;
+    [SerializeField] protected float _popupOffsetX = 10f;
+    [SerializeField] protected float _popupOffsetY = 0f;
     #endregion
 
     #region ─────────────────────────▶ 접근자 ◀─────────────────────────
     public int SelectedIndex => _selectedIndex;
-    public int SlotCount => _slotList.Count;
-    public bool IsOpen => gameObject.activeSelf;
+    public int SlotCount => _slotList.Length;
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
-    private int _selectedIndex = -1;
     private int _dragBeginIndex = -1;
     private bool _isDragging = false;
     private bool _isDropHandled = false;
@@ -62,7 +52,7 @@ public class UIInventory : BaseMono
     /// <summary>
     /// 특정 슬롯 하나를 갱신합니다.
     /// </summary>
-    public void RefreshInventoryUI(int slotIndex, InventorySlotData slotData)
+    public override void RefreshInventoryUI(int slotIndex, InventorySlot slotData)
     {
         if (IsValidSlotIndex(slotIndex) == false)
         {
@@ -82,42 +72,32 @@ public class UIInventory : BaseMono
     /// <summary>
     /// 전체 슬롯을 한 번에 갱신합니다.
     /// </summary>
-    public void RefreshInventoryUI(IReadOnlyList<InventorySlotData> slotDatas)
+    public override void RefreshInventoryUI(Inventory inventory)
     {
-        int slotCount = _slotList.Count;
-
-        for (int i = 0; i < slotCount; ++i)
+        InventorySlot[] invenSlots = inventory.InventorySlots;
+        for (int i = 0; i < _inventorySize; ++i)
         {
-            InventorySlotData slotData = InventorySlotData.CreateEmpty();
-
-            if (slotDatas != null && i < slotDatas.Count)
+            if (invenSlots[i].IsEmpty)
             {
-                slotData = slotDatas[i];
+                _slotList[i].ClearView();
             }
-
-            _slotList[i].SetView(slotData);
+            else
+            {
+                _slotList[i].SetView(invenSlots[i]);
+            }
         }
 
         if (IsValidSlotIndex(_selectedIndex) == false)
         {
             _selectedIndex = -1;
         }
-
         RefreshSelectionView();
-    }
-
-    /// <summary>
-    /// 패널을 엽니다.
-    /// </summary>
-    public void OpenUI()
-    {
-        gameObject.SetActive(true);
     }
 
     /// <summary>
     /// 패널을 닫습니다.
     /// </summary>
-    public void CloseUI()
+    public override void CloseUI()
     {
         _selectedIndex = -1;
         _dragBeginIndex = -1;
@@ -128,25 +108,12 @@ public class UIInventory : BaseMono
         gameObject.SetActive(false);
     }
 
-    /// <summary>
-    /// 패널 활성 상태를 토글합니다.
-    /// </summary>
-    public void ToggleUI()
-    {
-        if (IsOpen)
-        {
-            CloseUI();
-            return;
-        }
-
-        OpenUI();
-    }
 
     /// <summary>
     /// 슬롯 클릭 시 선택 상태를 갱신합니다.
     /// 빈 슬롯은 아무 반응 없이 무시합니다.
     /// </summary>
-    public void SelectSlot(int slotIndex)
+    public override void SelectSlot(int slotIndex)
     {
         if (IsValidSlotIndex(slotIndex) == false)
         {
@@ -171,80 +138,6 @@ public class UIInventory : BaseMono
         _actionPopup.Show(popupLocalPos);
     }
 
-    /// <summary>
-    /// 슬롯 드래그 시작을 패널에 알립니다.
-    /// 시작 슬롯이 빈 슬롯이면 드래그를 무시합니다.
-    /// </summary>
-    public void BeginDragSlot(int slotIndex)
-    {
-        if (IsValidSlotIndex(slotIndex) == false)
-        {
-            _dragBeginIndex = -1;
-            _isDragging = false;
-            _isDropHandled = false;
-            return;
-        }
-
-        if (_slotList[slotIndex].IsEmpty)
-        {
-            _dragBeginIndex = -1;
-            _isDragging = false;
-            _isDropHandled = false;
-            return;
-        }
-
-        _dragBeginIndex = slotIndex;
-        _selectedIndex = slotIndex;
-        _isDragging = true;
-        _isDropHandled = false;
-
-        RefreshSelectionView();
-        CloseActionPopup();
-    }
-
-    /// <summary>
-    /// 드래그 종료 알림입니다.
-    /// Drop에서 실제 처리가 끝나므로 여기서는 유지합니다.
-    /// </summary>
-    public void EndDragSlot()
-    {
-        StartCoroutine(CoEndDragCleanup());
-    }
-
-    /// <summary>
-    /// 슬롯 드롭을 패널에 알립니다.
-    /// 같은 슬롯이면 무시하고, 다른 슬롯이면 외부 시스템에 스왑 요청을 전달합니다.
-    /// </summary>
-    public void DropSlot(int targetSlotIndex)
-    {
-        if (IsValidSlotIndex(_dragBeginIndex) == false)
-        {
-            return;
-        }
-
-        if (IsValidSlotIndex(targetSlotIndex) == false)
-        {
-            _isDragging = false;
-            _dragBeginIndex = -1;
-            ClearSelection();
-            return;
-        }
-
-        if (_dragBeginIndex == targetSlotIndex)
-        {
-            _isDragging = false;
-            _dragBeginIndex = -1;
-            ClearSelection();
-            return;
-        }
-
-        _isDropHandled = true;
-        OnRequestSwapSlot?.Invoke(_dragBeginIndex, targetSlotIndex);
-
-        _isDragging = false;
-        _dragBeginIndex = -1;
-        ClearSelection();
-    }
 
     /// <summary>
     /// 액션 팝업을 닫습니다.
@@ -299,60 +192,11 @@ public class UIInventory : BaseMono
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-    /// <summary>
-    /// 기존 슬롯 오브젝트를 모두 제거합니다.
-    /// </summary>
-    private void ClearSlots()
-    {
-        _slotList.Clear();
-
-        if (_slotContainer == null)
-        {
-            return;
-        }
-
-        int childCount = _slotContainer.childCount;
-        for (int i = childCount - 1; i >= 0; --i)
-        {
-            Transform child = _slotContainer.GetChild(i);
-            if (child == null)
-            {
-                continue;
-            }
-
-            UObject.Destroy(child.gameObject);
-        }
-    }
-
+    
     /// <summary>
     /// 슬롯 프리팹을 기본 개수만큼 자동 생성합니다.
     /// </summary>
-    private void CreateSlots()
-    {
-        if (_slotContainer == null)
-        {
-            UDebug.Print("SlotContainer가 연결되지 않았습니다.", LogType.Warning);
-            return;
-        }
-
-        if (_slotPrefab == null)
-        {
-            UDebug.Print("Slot 프리팹이 연결되지 않았습니다.", LogType.Warning);
-            return;
-        }
-
-        ClearSlots();
-
-        for (int i = 0; i < _defaultSlotCount; ++i)
-        {
-            UISlot slot = Instantiate(_slotPrefab, _slotContainer);
-            slot.gameObject.name = $"UISlot_{i:D2}";
-            slot.Initialize(this, i);
-            slot.ClearView();
-            slot.SetSelected(false);
-            _slotList.Add(slot);
-        }
-    }
+    
 
     /// <summary>
     /// 선택 슬롯 기준으로 팝업 위치를 계산합니다.
@@ -407,25 +251,7 @@ public class UIInventory : BaseMono
         return localPos;
     }
 
-    /// <summary>
-    /// 모든 슬롯의 선택 표시를 갱신합니다.
-    /// </summary>
-    private void RefreshSelectionView()
-    {
-        for (int i = 0; i < _slotList.Count; ++i)
-        {
-            _slotList[i].SetSelected(i == _selectedIndex);
-        }
-    }
-
-    /// <summary>
-    /// 인덱스가 슬롯 범위 안에 있는지 확인합니다.
-    /// </summary>
-    private bool IsValidSlotIndex(int index)
-    {
-        return index >= 0 && index < _slotList.Count;
-    }
-
+    
     public void ClearSelection()
     {
         _selectedIndex = -1;
@@ -433,35 +259,12 @@ public class UIInventory : BaseMono
         CloseActionPopup();
     }
 
-    /// <summary>
-    /// 드래그 종료 후 한 프레임 뒤에 드롭 처리 여부를 보고 선택 상태를 정리합니다.
-    /// </summary>
-    private IEnumerator CoEndDragCleanup()
-    {
-        yield return null;
-
-        if (_isDragging == false)
-        {
-            yield break;
-        }
-
-        if (_isDropHandled)
-        {
-            yield break;
-        }
-
-        _isDragging = false;
-        _dragBeginIndex = -1;
-        ClearSelection();
-    }
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
     protected override void Awake()
     {
         base.Awake();
-
-        CreateSlots();
 
         if (_actionPopup != null)
         {

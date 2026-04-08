@@ -20,7 +20,7 @@ public class UIItemActionPopup : BaseMono
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
-    private UIInventory _owner;
+    private UIPlayerInventory _owner;
     private RectTransform _rectTr;
     #endregion
 
@@ -81,7 +81,7 @@ public class UIItemActionPopup : BaseMono
     /// <summary>
     /// 팝업의 초기 참조를 연결합니다.
     /// </summary>
-    public void Initialize(UIInventory owner)
+    public void Initialize(UIPlayerInventory owner)
     {
         _owner = owner;
         _rectTr = transform as RectTransform;

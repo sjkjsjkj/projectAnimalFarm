@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e389963a1676b53488c0c702eb8b9d44, type: 3}
+  m_Name: NpcWorldSO_Josh_Shop
+  m_EditorClassIdentifier: 
+  _id: World_Npc_JoshShop
+  _type: 10
+  _name: Josh
+  _description: "\uD14C\uC2A4\uD2B8\uC6A9 \uC0C1\uC810 Npc josh \uC785\uB2C8\uB2E4."
+  _rarity: 1
+  _image: {fileID: 4723107735738678597, guid: 5256893308734c94aa117ffe8c12c92c, type: 3}
+  _prefab: {fileID: 0}
+  _size: {x: 1, y: 1}
+  _animController: {fileID: 9100000, guid: 53129049357d9aa4a99dfe89c3897e02, type: 2}
+  _dialog: []
+  _initPosition: {x: 9, y: 9}
+  _moveSpeed: 3
+  _eNpcMoveType: 1
