@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -7,12 +7,11 @@ using UnityEngine.UI;
 /// <summary>
 /// 도감 페이지 빌더.
 ///
-/// 핵심
-/// 1. 카테고리별 도감 엔트리 생성
-/// 2. 해금 이벤트가 오면 강제로 다시 빌드
-/// 3. 도감 열기 / 탭 전환 때도 강제로 인벤토리 동기화 후 재빌드 가능
-/// 4. 슬롯 클릭 시 상세 패널과 연결되도록 슬롯 생성 시 패널 참조를 함께 주입
-/// 5. Prev / Next 버튼으로 여러 페이지를 넘길 수 있음
+/// 수정 내용
+/// 1. 엔트리 개수와 상관없이 페이지 슬롯 수만큼 항상 슬롯을 생성한다.
+///    -> 물고기처럼 엔트리가 적은 카테고리도 빈 슬롯이 같이 보이게 함
+/// 2. 페이지가 비어 있어도 1페이지는 유지해서 책 UI가 비어 보이지 않게 함
+/// 3. 슬롯 클릭 / 페이지 이동 로직은 기존 방식 유지
 /// </summary>
 public class UIPictorialBookPage : BaseMono
 {
@@ -193,48 +192,30 @@ public class UIPictorialBookPage : BaseMono
         _cachedEntries = entries ?? new List<PictorialBookEntry>();
 
         int totalPageCount = GetTotalPageCount(_cachedEntries.Count);
-        if (totalPageCount <= 0)
-        {
-            _currentPageIndex = 0;
-            RefreshNavigationState();
-
-            if (_logEnabled)
-            {
-                Debug.Log($"[UIPictorialBookPage] Rebuild category={_category}, entries=0");
-            }
-
-            return;
-        }
-
         _currentPageIndex = Mathf.Clamp(_currentPageIndex, 0, totalPageCount - 1);
 
         int startIndex = _currentPageIndex * pageCapacity;
-        int endExclusive = Mathf.Min(startIndex + pageCapacity, _cachedEntries.Count);
+        int leftCapacity = Mathf.Max(0, _leftPageCapacity);
+        int rightCapacity = Mathf.Max(0, _rightPageCapacity);
 
         if (_logEnabled)
         {
             Debug.Log(
                 $"[UIPictorialBookPage] Rebuild category={_category}, totalEntries={_cachedEntries.Count}, " +
-                $"page={CurrentPageNumber}/{totalPageCount}, startIndex={startIndex}, endExclusive={endExclusive}");
+                $"page={CurrentPageNumber}/{totalPageCount}, startIndex={startIndex}, pageCapacity={pageCapacity}");
         }
 
-        int leftCapacity = Mathf.Max(0, _leftPageCapacity);
-        int rightCapacity = Mathf.Max(0, _rightPageCapacity);
-
-        for (int i = startIndex; i < endExclusive; i++)
+        // 엔트리 수와 상관없이 페이지 슬롯 수만큼 항상 생성
+        for (int localIndex = 0; localIndex < pageCapacity; localIndex++)
         {
-            PictorialBookEntry entry = _cachedEntries[i];
-            if (entry == null)
-            {
-                continue;
-            }
-
-            int localIndex = i - startIndex;
             Transform parent = GetParentByIndex(localIndex, leftCapacity, rightCapacity);
             if (parent == null)
             {
                 continue;
             }
+
+            int entryIndex = startIndex + localIndex;
+            PictorialBookEntry entry = entryIndex < _cachedEntries.Count ? _cachedEntries[entryIndex] : null;
 
             UIPictorialBookSlot slot = Instantiate(_slotPrefab, parent);
             slot.SetData(_bookSystem, entry, _detailPanel);
@@ -285,15 +266,8 @@ public class UIPictorialBookPage : BaseMono
     public void GoToPage(int pageIndex)
     {
         int totalPageCount = GetTotalPageCount(_cachedEntries != null ? _cachedEntries.Count : 0);
-
-        if (totalPageCount <= 0)
-        {
-            _currentPageIndex = 0;
-            Rebuild();
-            return;
-        }
-
         int clampedPageIndex = Mathf.Clamp(pageIndex, 0, totalPageCount - 1);
+
         if (_currentPageIndex == clampedPageIndex && _isBuilt)
         {
             RefreshNavigationState();
@@ -370,14 +344,7 @@ public class UIPictorialBookPage : BaseMono
 
         if (_pageIndexText != null)
         {
-            if (totalPageCount <= 0)
-            {
-                _pageIndexText.text = string.Format(_pageTextFormat, 0, 0);
-            }
-            else
-            {
-                _pageIndexText.text = string.Format(_pageTextFormat, _currentPageIndex + 1, totalPageCount);
-            }
+            _pageIndexText.text = string.Format(_pageTextFormat, _currentPageIndex + 1, totalPageCount);
         }
     }
 
@@ -389,9 +356,15 @@ public class UIPictorialBookPage : BaseMono
     private int GetTotalPageCount(int totalEntryCount)
     {
         int pageCapacity = GetPageCapacity();
-        if (pageCapacity <= 0 || totalEntryCount <= 0)
+        if (pageCapacity <= 0)
         {
             return 0;
+        }
+
+        // 엔트리가 0개여도 빈 슬롯 페이지 1장은 유지
+        if (totalEntryCount <= 0)
+        {
+            return 1;
         }
 
         return Mathf.CeilToInt((float)totalEntryCount / pageCapacity);
