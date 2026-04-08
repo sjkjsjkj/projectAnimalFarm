@@ -5,14 +5,11 @@ using UnityEngine;
 /// <summary>
 /// 플레이어가 채집 / 낚시 / 수확 등의 보상을 실제로 받는 창구.
 /// 
-/// 핵심 수정
-/// - Collection Coordinator를 수동 연결에만 의존하지 않음
-/// - 플레이 시작 시점에 런타임 오브젝트가 아직 없을 수 있으므로 코루틴으로 재탐색
-/// - TryReceiveItem 호출 시점에도 한 번 더 안전하게 재탐색
-/// 
-/// 이걸로 해결하려는 문제
-/// - 플레이 시작하면 Inspector에 Collection Coordinator가 Missing 으로 바뀌는 현상
-/// - 런타임에 생성된 플레이어 / 씬 오브젝트 타이밍 차이 때문에 참조가 끊기는 현상
+/// 이번 단계 추가 내용
+/// 1. 임시 피드백 문구 출력 메서드 추가
+///    - 지금은 interactionText를 임시 피드백 창구로 사용
+///    - 나중에 전용 UI가 생기면 이 메서드 내부만 교체하면 됨
+/// 2. 낚시 / 채집 취소 시 같은 창구로 문구를 보여줄 수 있게 함
 /// </summary>
 public class CPlayerCollector2D : BaseMono
 {
@@ -35,6 +32,10 @@ public class CPlayerCollector2D : BaseMono
     [Header("선택 UI")]
     [SerializeField] private TMP_Text _interactionText;
 
+    [Header("임시 피드백 표시")]
+    [Tooltip("전용 피드백 UI가 없을 때 interactionText로 잠깐 보여줄 시간")]
+    [SerializeField] private float _feedbackMessageDuration = 1.2f;
+
     [Header("자동 탐색 옵션")]
     [SerializeField] private bool _autoFindCollectionCoordinator = true;
     [SerializeField] private float _collectionCoordinatorFindTimeout = 10f;
@@ -43,6 +44,7 @@ public class CPlayerCollector2D : BaseMono
     [SerializeField] private bool _logEnabled = true;
 
     private bool _isBusy = false;
+    private Coroutine _feedbackRoutine = null;
 
     public bool IsBusy => _isBusy;
     public CFishingController2D FishingController => _fishingController;
@@ -206,6 +208,61 @@ public class CPlayerCollector2D : BaseMono
         return _fishingController.TryFish(this);
     }
 
+    /// <summary>
+    /// 임시 피드백 출력 메서드
+    /// 지금은 interactionText를 사용하고,
+    /// 나중에 전용 피드백 UI가 생기면 이 내부만 교체하면 됨
+    /// </summary>
+    public void ShowInteractionFeedback(string message)
+    {
+        if (string.IsNullOrWhiteSpace(message))
+        {
+            return;
+        }
+
+        if (_logEnabled)
+        {
+            Debug.Log("[CPlayerCollector2D] 피드백 문구: " + message);
+        }
+
+        if (_interactionText == null)
+        {
+            return;
+        }
+
+        if (_feedbackRoutine != null)
+        {
+            StopCoroutine(_feedbackRoutine);
+            _feedbackRoutine = null;
+        }
+
+        _feedbackRoutine = StartCoroutine(CoShowInteractionFeedback(message));
+    }
+
+    private IEnumerator CoShowInteractionFeedback(string message)
+    {
+        if (_interactionText == null)
+        {
+            yield break;
+        }
+
+        _interactionText.text = message;
+        _interactionText.gameObject.SetActive(true);
+
+        if (_feedbackMessageDuration > 0f)
+        {
+            yield return new WaitForSeconds(_feedbackMessageDuration);
+        }
+
+        // 다른 문구로 이미 바뀐 경우에는 지우지 않음
+        if (_interactionText != null && _interactionText.text == message)
+        {
+            ClearInteractionText();
+        }
+
+        _feedbackRoutine = null;
+    }
+
     public void SetInteractionText(string message)
     {
         if (_interactionText == null)
@@ -309,6 +366,12 @@ public class CPlayerCollector2D : BaseMono
 
     private void OnDisable()
     {
+        if (_feedbackRoutine != null)
+        {
+            StopCoroutine(_feedbackRoutine);
+            _feedbackRoutine = null;
+        }
+
         ClearInteractionText();
 
         _isBusy = false;

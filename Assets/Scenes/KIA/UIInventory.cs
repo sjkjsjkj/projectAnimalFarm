@@ -24,7 +24,7 @@ public class UIInventory : BaseMono
 
     [Header("팝업 위치")]
     [SerializeField] private float _popupOffsetX = 10f;
-    [SerializeField] private float _popupOffsetY = 0f;
+    [SerializeField] private float _popupOffsetY = -10f;
     #endregion
 
     #region ─────────────────────────▶ 접근자 ◀─────────────────────────

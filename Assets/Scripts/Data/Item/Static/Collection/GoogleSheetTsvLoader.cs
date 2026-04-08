@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -7,28 +8,25 @@ using UnityEngine;
 /// 이 스크립트의 역할
 /// 1. TextAsset 또는 문자열(TextArea)로 받은 TSV 원본을 읽는다.
 /// 2. Animal / Fish / Gather 섹션을 구분한다.
-/// 3. 각 행을 SheetItemRow로 변환한다.
-/// 4. SheetItemDatabase에 등록한다.
+/// 3. 각 섹션의 헤더를 읽고 컬럼 위치를 자동으로 매핑한다.
+/// 4. 각 행을 SheetItemRow로 변환한다.
+/// 5. SheetItemDatabase에 등록한다.
 /// 
-/// 현재 지원하는 기본 구조
-/// 
-/// Animal
-/// ID	NAME	등급	판매 금액	설명
-/// ...
-/// 
-/// Fish
-/// ID	NAME	등급	판매 금액	설명	물	깊은물
-/// ...
-/// 
-/// Gather
-/// ID	NAME	등급	판매 금액	설명
-/// ...
+/// 지원 컬럼 예시
+/// - ID
+/// - NAME
+/// - 등급
+/// - 판매 금액 / 판매금액
+/// - 구매 금액 / 구매금액
+/// - 설명
+/// - 물
+/// - 깊은물
 /// 
 /// 중요
 /// - category는 Animal / Fish / Gather 로 저장된다.
 /// - Fish는 물 / 깊은물 컬럼까지 읽어서 isWaterFish / isDeepWaterFish에 저장한다.
+/// - 헤더 기반 파싱이므로 컬럼 순서가 바뀌어도 비교적 안전하다.
 /// - 이 스크립트는 데이터 적재만 담당한다.
-/// - 실제 낚시 / 도감 / UI는 SheetItemDatabase를 참조해서 사용한다.
 /// </summary>
 public class GoogleSheetTsvLoader : BaseMono
 {
@@ -61,8 +59,6 @@ public class GoogleSheetTsvLoader : BaseMono
     {
         base.Awake();
 
-        // [수정 포인트 1]
-        // 인스펙터에서 DB를 연결하지 않았으면 같은 오브젝트에서 자동 탐색
         if (_database == null)
         {
             _database = GetComponent<SheetItemDatabase>();
@@ -149,7 +145,7 @@ public class GoogleSheetTsvLoader : BaseMono
         string[] lines = normalized.Split('\n');
 
         string currentCategory = string.Empty;
-        bool waitHeaderLine = false;
+        Dictionary<string, int> currentHeaderMap = null;
 
         for (int i = 0; i < lines.Length; i++)
         {
@@ -162,40 +158,75 @@ public class GoogleSheetTsvLoader : BaseMono
 
             string trimmed = line.Trim();
 
-            // [수정 포인트 2]
-            // 섹션 헤더 감지
             if (IsCategoryHeader(trimmed))
             {
                 currentCategory = trimmed;
-                waitHeaderLine = true;
+                currentHeaderMap = null;
                 continue;
             }
 
-            // 섹션 바로 아래의 헤더 줄(ID, NAME, 등급...)은 건너뜀
-            if (waitHeaderLine)
-            {
-                waitHeaderLine = false;
-                continue;
-            }
-
-            // category를 아직 못 찾았으면 데이터로 보지 않음
             if (string.IsNullOrWhiteSpace(currentCategory))
             {
                 continue;
             }
 
-            ParseDataLine(currentCategory, line, i + 1);
+            if (currentHeaderMap == null)
+            {
+                currentHeaderMap = BuildHeaderMap(line);
+
+                if (_logEnabled)
+                {
+                    Debug.Log($"[GoogleSheetTsvLoader] 헤더 감지. category={currentCategory}, headerCount={currentHeaderMap.Count}");
+                }
+
+                continue;
+            }
+
+            ParseDataLine(currentCategory, line, currentHeaderMap, i + 1);
         }
+    }
+
+    /// <summary>
+    /// 헤더 한 줄을 읽어서 컬럼명 -> 인덱스 맵을 만든다.
+    /// </summary>
+    private Dictionary<string, int> BuildHeaderMap(string headerLine)
+    {
+        Dictionary<string, int> result = new Dictionary<string, int>();
+
+        if (string.IsNullOrWhiteSpace(headerLine))
+        {
+            return result;
+        }
+
+        string[] cols = headerLine.Split('\t');
+
+        for (int i = 0; i < cols.Length; i++)
+        {
+            string normalizedHeader = NormalizeHeader(cols[i]);
+
+            if (string.IsNullOrWhiteSpace(normalizedHeader))
+            {
+                continue;
+            }
+
+            if (result.ContainsKey(normalizedHeader))
+            {
+                continue;
+            }
+
+            result.Add(normalizedHeader, i);
+        }
+
+        return result;
     }
 
     /// <summary>
     /// 한 줄의 데이터 행을 파싱해서 SheetItemDatabase에 등록
     /// </summary>
-    private void ParseDataLine(string category, string line, int lineNumber)
+    private void ParseDataLine(string category, string line, Dictionary<string, int> headerMap, int lineNumber)
     {
         string[] cols = line.Split('\t');
 
-        // 최소 ID, NAME은 있어야 의미 있는 데이터로 본다.
         if (cols == null || cols.Length < 2)
         {
             if (_logEnabled)
@@ -205,12 +236,31 @@ public class GoogleSheetTsvLoader : BaseMono
             return;
         }
 
-        string id = SafeGet(cols, 0);
-        string name = SafeGet(cols, 1);
-        string rarity = SafeGet(cols, 2);
+        string id = FirstNonEmpty(
+            GetByHeaders(cols, headerMap, "ID", "ItemID"),
+            SafeGet(cols, 0));
 
-        // iconKey는 우선 itemId와 동일하게 사용
-        string iconKey = id;
+        string name = FirstNonEmpty(
+            GetByHeaders(cols, headerMap, "NAME", "이름"),
+            SafeGet(cols, 1));
+
+        string rarity = FirstNonEmpty(
+            GetByHeaders(cols, headerMap, "등급", "Rarity"),
+            SafeGet(cols, 2));
+
+        string description = FirstNonEmpty(
+            GetByHeaders(cols, headerMap, "설명", "Description", "Desc"),
+            SafeGet(cols, 4));
+
+        string sellPriceRaw = FirstNonEmpty(
+            GetByHeaders(cols, headerMap, "판매 금액", "판매금액", "SellPrice", "Sell"),
+            SafeGet(cols, 3));
+
+        string buyPriceRaw = GetByHeaders(cols, headerMap, "구매 금액", "구매금액", "BuyPrice", "Buy");
+
+        string iconKey = FirstNonEmpty(
+            GetByHeaders(cols, headerMap, "아이콘", "IconKey", "Icon"),
+            id);
 
         if (string.IsNullOrWhiteSpace(id))
         {
@@ -221,15 +271,24 @@ public class GoogleSheetTsvLoader : BaseMono
             return;
         }
 
+        int sellPrice = ParseIntSafe(sellPriceRaw, -1);
+        int buyPrice = ParseIntSafe(buyPriceRaw, -1);
+
         bool isWaterFish = false;
         bool isDeepWaterFish = false;
 
-        // [수정 포인트 3]
-        // Fish 카테고리일 때만 물 / 깊은물 컬럼 읽기
-        if (string.Equals(category, "Fish", StringComparison.Ordinal))
+        if (string.Equals(category, "Fish", StringComparison.OrdinalIgnoreCase))
         {
-            isWaterFish = ParseBool01(SafeGet(cols, 5));
-            isDeepWaterFish = ParseBool01(SafeGet(cols, 6));
+            string waterRaw = FirstNonEmpty(
+                GetByHeaders(cols, headerMap, "물", "담수", "Water"),
+                SafeGet(cols, 5));
+
+            string deepWaterRaw = FirstNonEmpty(
+                GetByHeaders(cols, headerMap, "깊은물", "바다", "Sea", "DeepWater"),
+                SafeGet(cols, 6));
+
+            isWaterFish = ParseBoolFlexible(waterRaw);
+            isDeepWaterFish = ParseBoolFlexible(deepWaterRaw);
         }
 
         SheetItemRow row = new SheetItemRow(
@@ -237,10 +296,12 @@ public class GoogleSheetTsvLoader : BaseMono
             name,
             category,
             rarity,
+            description,
+            sellPrice,
+            buyPrice,
             iconKey,
             isWaterFish,
-            isDeepWaterFish
-        );
+            isDeepWaterFish);
 
         bool added = _database.AddRow(row);
 
@@ -258,6 +319,73 @@ public class GoogleSheetTsvLoader : BaseMono
         return value == "Animal" ||
                value == "Fish" ||
                value == "Gather";
+    }
+
+    /// <summary>
+    /// 후보 헤더명을 순서대로 검사해서 첫 번째 값을 반환한다.
+    /// </summary>
+    private string GetByHeaders(string[] cols, Dictionary<string, int> headerMap, params string[] headerCandidates)
+    {
+        if (cols == null || headerMap == null || headerCandidates == null)
+        {
+            return string.Empty;
+        }
+
+        for (int i = 0; i < headerCandidates.Length; i++)
+        {
+            string key = NormalizeHeader(headerCandidates[i]);
+
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                continue;
+            }
+
+            if (headerMap.TryGetValue(key, out int index))
+            {
+                return SafeGet(cols, index);
+            }
+        }
+
+        return string.Empty;
+    }
+
+    /// <summary>
+    /// 컬럼명을 비교하기 좋은 형태로 정규화
+    /// </summary>
+    private string NormalizeHeader(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return string.Empty;
+        }
+
+        string normalized = value.Trim();
+        normalized = normalized.Replace(" ", string.Empty);
+        normalized = normalized.Replace("_", string.Empty);
+        normalized = normalized.Replace("-", string.Empty);
+        normalized = normalized.Replace("\uFEFF", string.Empty);
+        return normalized.ToLowerInvariant();
+    }
+
+    /// <summary>
+    /// 여러 값 중 첫 번째 유효한 문자열을 반환
+    /// </summary>
+    private string FirstNonEmpty(params string[] values)
+    {
+        if (values == null)
+        {
+            return string.Empty;
+        }
+
+        for (int i = 0; i < values.Length; i++)
+        {
+            if (string.IsNullOrWhiteSpace(values[i]) == false)
+            {
+                return values[i].Trim();
+            }
+        }
+
+        return string.Empty;
     }
 
     /// <summary>
@@ -279,12 +407,40 @@ public class GoogleSheetTsvLoader : BaseMono
     }
 
     /// <summary>
-    /// "1" 이면 true, 나머지는 false
-    /// Fish 시트의 물 / 깊은물 플래그용
+    /// 정수 파싱
+    /// 실패 시 defaultValue 반환
     /// </summary>
-    private bool ParseBool01(string value)
+    private int ParseIntSafe(string value, int defaultValue)
     {
-        return value == "1";
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return defaultValue;
+        }
+
+        if (int.TryParse(value.Trim(), out int result))
+        {
+            return result;
+        }
+
+        return defaultValue;
+    }
+
+    /// <summary>
+    /// 1 / true / y / yes 를 true 로 처리
+    /// </summary>
+    private bool ParseBoolFlexible(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return false;
+        }
+
+        string normalized = value.Trim().ToLowerInvariant();
+
+        return normalized == "1" ||
+               normalized == "true" ||
+               normalized == "y" ||
+               normalized == "yes";
     }
     #endregion
 }

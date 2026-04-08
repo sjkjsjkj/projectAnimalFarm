@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 /// <summary>
 /// Input System으로 키 입력을 받아 이벤트를 뿌립니다.
 /// </summary>
-public sealed class InputManager : GlobalSingleton<InputManager>, InputDispatcher.IMainActionMapActions
+public sealed class InputManager : GlobalSingleton<InputManager>, InputDispatcherP.IMainActionMapActions
 {
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private bool _isInitialized = false;
@@ -126,7 +126,7 @@ public sealed class InputManager : GlobalSingleton<InputManager>, InputDispatche
     {
         if (_isInitialized) return;
 
-        _input = new InputDispatcher();
+        _input = new InputDispatcherP();
         _input.MainActionMap.SetCallbacks(this);
         _input.Enable();
         _isInitialized = true;

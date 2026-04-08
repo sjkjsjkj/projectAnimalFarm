@@ -1,38 +1,30 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 /// <summary>
-/// 채집 가능한 오브젝트.
-/// 
-/// 이 스크립트의 역할
-/// 1. 팀 상호작용 시스템에서 호출할 수 있도록 IInteractable을 구현한다.
-/// 2. 플레이어가 상호작용하면 실제 채집을 진행한다.
-/// 3. 보상 아이템은 플레이어의 CPlayerCollector2D를 통해 지급한다.
-/// 4. 필요하면 자동 채집도 지원한다.
-/// 5. 획득 후 비활성화 / 파괴 / 리스폰을 처리할 수 있다.
-/// 
-/// 사용 예시
-/// - 약초
-/// - 광석
-/// - 나무
-/// - 열매 오브젝트
-/// - 채집 가능한 풀
-/// 
-/// 중요
-/// - 이 오브젝트는 Interact 레이어를 사용
-/// - Collider2D 필요
-/// - 팀 상호작용 시스템이 Interact(GameObject player)를 호출
+/// 채집 가능한 오브젝트
+///
+/// 이번 수정 핵심
+/// 1. 버튼 채집은 "가까운 거리" 안에서만 가능
+/// 2. ButtonOnly일 때 자동 채집이 절대 발생하지 않도록 보강
+/// 3. AutoOnly / AutoOrButton도 자동 채집 거리 제한 추가
+/// 4. 수동 채집 도중 이동 시 취소
+/// 5. 피드백 UI / 사운드는 나중에 Inspector 이벤트로 연결 가능
 /// </summary>
 [RequireComponent(typeof(Collider2D))]
 public class CCollectableInteractObject2D : BaseMono, IInteractable
 {
+    [Serializable]
+    public class StringEvent : UnityEvent<string> { }
+
     public enum ECollectMode
     {
-        AutoOnly = 0,     // 자동 채집만 가능
-        ButtonOnly,       // 버튼 상호작용으로만 채집 가능
-        AutoOrButton,     // 자동 / 버튼 둘 다 가능
+        AutoOnly = 0,
+        ButtonOnly = 1,
+        AutoOrButton = 2,
     }
 
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
@@ -53,6 +45,13 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     [Tooltip("AutoOnly / AutoOrButton일 때 자동 채집까지 걸리는 시간")]
     [SerializeField] private float _autoCollectDelay = 0.15f;
 
+    [Header("거리 제한")]
+    [Tooltip("버튼 채집 가능 최대 거리. 이 거리보다 멀면 버튼을 눌러도 채집 불가")]
+    [SerializeField] private float _manualCollectMaxDistance = 1.0f;
+
+    [Tooltip("자동 채집 가능 최대 거리. 이 거리보다 멀면 자동 채집 불가")]
+    [SerializeField] private float _autoCollectMaxDistance = 0.8f;
+
     [Header("수동 채집 연출")]
     [Tooltip("버튼 채집 시 채집 애니메이션 / 딜레이를 사용할지")]
     [SerializeField] private bool _useInteractionMotion = true;
@@ -65,6 +64,15 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
     [Tooltip("채집 성공 시 지급할 생활 스킬 경험치")]
     [SerializeField] private int _gatherSkillExp = 0;
+
+    [Header("이동 취소 설정")]
+    [Tooltip("이동 입력의 sqrMagnitude가 이 값보다 크면 취소")]
+    [SerializeField] private float _moveCancelInputThreshold = 0.0001f;
+
+    [Tooltip("시작 위치와 현재 위치 차이의 sqrMagnitude가 이 값보다 크면 취소")]
+    [SerializeField] private float _moveCancelPositionThreshold = 0.0001f;
+
+    [SerializeField] private string _manualCollectCancelMessage = "이동하여 채집이 취소되었습니다.";
 
     [Header("획득 후 처리")]
     [Tooltip("획득 즉시 이 오브젝트를 파괴할지")]
@@ -85,31 +93,34 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     [SerializeField] private UnityEvent _onCollected;
     [SerializeField] private UnityEvent _onRespawned;
 
+    [Header("나중에 연결할 이벤트")]
+    [Tooltip("피드백 UI를 나중에 연결할 때 사용. string 메시지를 받는 함수 연결")]
+    [SerializeField] private StringEvent _onFeedbackMessage;
+
+    [Tooltip("채집 실패 시 호출. 나중에 사운드/VFX 연결 가능")]
+    [SerializeField] private UnityEvent _onCollectFailed;
+
+    [Tooltip("채집 취소 시 호출. 나중에 사운드/VFX 연결 가능")]
+    [SerializeField] private UnityEvent _onCollectCanceled;
+
     [Header("로그")]
     [SerializeField] private bool _logEnabled = true;
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
-    /// <summary>
-    /// 현재 범위 안에 들어와 있는 플레이어 수집기 목록
-    /// 자동 채집에 사용
-    /// </summary>
     private readonly List<CPlayerCollector2D> _nearCollectors = new List<CPlayerCollector2D>();
 
-    /// <summary>
-    /// 이미 획득된 상태인지
-    /// </summary>
     private bool _isCollected = false;
-
-    /// <summary>
-    /// 현재 처리 중인지
-    /// 중복 채집 방지용
-    /// </summary>
     private bool _isProcessing = false;
 
     private Coroutine _autoCollectRoutine = null;
     private Coroutine _respawnRoutine = null;
+    private Coroutine _manualCollectRoutine = null;
     private Collider2D _triggerCollider = null;
+
+    private CPlayerCollector2D _manualCollectCollector = null;
+    private Vector2 _manualCollectStartPosition = Vector2.zero;
+    private bool _isMoveCancelSubscribed = false;
     #endregion
 
     #region ─────────────────────────▶ 접근자 ◀─────────────────────────
@@ -119,9 +130,6 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     #endregion
 
     #region ─────────────────────────▶ IInteractable 구현 ◀─────────────────────────
-    /// <summary>
-    /// 팀 상호작용 시스템에서 먼저 호출하는 상호작용 가능 여부 검사
-    /// </summary>
     public bool CanInteract(GameObject player)
     {
         if (!CanManualCollect)
@@ -140,12 +148,9 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             collector = player.GetComponent<CPlayerCollector2D>();
         }
 
-        return CanCollect(collector);
+        return CanCollect(collector, true);
     }
 
-    /// <summary>
-    /// 팀 상호작용 시스템에서 실제 상호작용 시 호출
-    /// </summary>
     public void Interact(GameObject player)
     {
         if (player == null)
@@ -171,9 +176,6 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         TryCollect(collector);
     }
 
-    /// <summary>
-    /// 팀 상호작용 UI에 보여줄 문구
-    /// </summary>
     public string GetMessage()
     {
         string targetName = string.IsNullOrWhiteSpace(_displayName) ? _itemId : _displayName;
@@ -182,10 +184,28 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     #endregion
 
     #region ─────────────────────────▶ 외부 메서드 ◀─────────────────────────
-    /// <summary>
-    /// 현재 이 오브젝트가 해당 플레이어 기준으로 채집 가능한지 검사
-    /// </summary>
     public bool CanCollect(CPlayerCollector2D collector)
+    {
+        return CanCollect(collector, true);
+    }
+
+    public bool TryCollect(CPlayerCollector2D collector)
+    {
+        return TryCollectInternal(collector, true);
+    }
+
+    public string GetInteractionMessage(KeyCode key)
+    {
+        string targetName = string.IsNullOrWhiteSpace(_displayName) ? _itemId : _displayName;
+        return $"[{key}] {targetName} 채집";
+    }
+    #endregion
+
+    #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
+    /// <summary>
+    /// 수동/자동 여부에 따라 거리 제한을 다르게 적용
+    /// </summary>
+    private bool CanCollect(CPlayerCollector2D collector, bool isManual)
     {
         if (_isCollected)
         {
@@ -217,53 +237,54 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             return false;
         }
 
+        if (isManual)
+        {
+            if (!IsCollectorWithinDistance(collector, _manualCollectMaxDistance))
+            {
+                return false;
+            }
+        }
+        else
+        {
+            if (!IsCollectorWithinDistance(collector, _autoCollectMaxDistance))
+            {
+                return false;
+            }
+        }
+
         return true;
     }
 
-    /// <summary>
-    /// 수동 채집 시도
-    /// 팀 상호작용 시스템에서 최종적으로 여기까지 오게 된다.
-    /// </summary>
-    public bool TryCollect(CPlayerCollector2D collector)
-    {
-        return TryCollectInternal(collector, true);
-    }
-
-    /// <summary>
-    /// 네가 별도 UI 문구를 띄우고 싶을 때 사용할 수 있는 보조 함수
-    /// </summary>
-    public string GetInteractionMessage(KeyCode key)
-    {
-        string targetName = string.IsNullOrWhiteSpace(_displayName) ? _itemId : _displayName;
-        return $"[{key}] {targetName} 채집";
-    }
-    #endregion
-
-    #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-    /// <summary>
-    /// 실제 채집 공용 처리
-    /// isManualRequest가 true면 버튼 채집
-    /// false면 자동 채집
-    /// </summary>
     private bool TryCollectInternal(CPlayerCollector2D collector, bool isManualRequest)
     {
-        if (!CanCollect(collector))
+        if (collector == null)
         {
             return false;
         }
 
+        // 버튼 채집은 버튼 가능한 모드에서만
         if (isManualRequest && !CanManualCollect)
         {
             return false;
         }
 
+        // 자동 채집은 자동 가능한 모드에서만
         if (!isManualRequest && !CanAutoCollect)
         {
             return false;
         }
 
-        // 수동 채집이고 모션을 쓰는 경우
-        // 즉시 지급하지 않고 코루틴으로 연출 후 지급
+        if (!CanCollect(collector, isManualRequest))
+        {
+            if (_logEnabled)
+            {
+                Debug.Log($"[CCollectableInteractObject2D] 거리 또는 상태 조건 미충족. object={name}, manual={isManualRequest}");
+            }
+
+            return false;
+        }
+
+        // 수동 채집 + 모션 사용이면 딜레이 동안 이동 취소 가능하게 코루틴 처리
         if (isManualRequest && _useInteractionMotion)
         {
             if (!collector.CanStartInteraction())
@@ -276,15 +297,17 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
                 return false;
             }
 
-            StartCoroutine(CoManualCollect(collector));
+            StartManualCollectRoutine(collector);
             return true;
         }
 
-        // 자동 채집 또는 모션 없는 즉시 채집
+        // 자동 채집 또는 즉시 채집
         bool received = TryGiveReward(collector);
 
         if (!received)
         {
+            ShowReservedFeedback("아이템을 획득하지 못했습니다.");
+            _onCollectFailed?.Invoke();
             return false;
         }
 
@@ -297,16 +320,31 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         return true;
     }
 
-    /// <summary>
-    /// 수동 채집용 코루틴
-    /// - 시작 이벤트
-    /// - 플레이어 Busy
-    /// - 애니메이션
-    /// - 대기
-    /// - 보상 지급
-    /// - 경험치 지급
-    /// - 완료 처리
-    /// </summary>
+    private void StartManualCollectRoutine(CPlayerCollector2D collector)
+    {
+        if (_manualCollectRoutine != null)
+        {
+            return;
+        }
+
+        if (!IsCollectorWithinDistance(collector, _manualCollectMaxDistance))
+        {
+            if (_logEnabled)
+            {
+                Debug.Log($"[CCollectableInteractObject2D] 수동 채집 시작 실패: 너무 멀리 있음. object={name}");
+            }
+            return;
+        }
+
+        _manualCollectCollector = collector;
+        _manualCollectStartPosition = collector != null ? (Vector2)collector.transform.position : Vector2.zero;
+
+        SubscribeMoveCancel();
+        _onCollectStarted?.Invoke();
+
+        _manualCollectRoutine = StartCoroutine(CoManualCollect(collector));
+    }
+
     private IEnumerator CoManualCollect(CPlayerCollector2D collector)
     {
         if (_isProcessing)
@@ -315,7 +353,6 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         }
 
         _isProcessing = true;
-        _onCollectStarted?.Invoke();
 
         if (_setPlayerBusyDuringManualCollect && collector != null)
         {
@@ -328,38 +365,177 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             yield return new WaitForSeconds(_manualCollectDelay);
         }
 
+        // 이동 이벤트를 놓친 경우를 대비한 마지막 안전 검사
+        if (HasCollectorMovedSinceStart(collector))
+        {
+            CancelManualCollectInternal(_manualCollectCancelMessage, true);
+            yield break;
+        }
+
+        // 딜레이가 끝난 시점에도 가까운 거리 유지 중인지 다시 검사
+        if (!IsCollectorWithinDistance(collector, _manualCollectMaxDistance))
+        {
+            CancelManualCollectInternal("채집 범위를 벗어나 채집이 취소되었습니다.", true);
+            yield break;
+        }
+
         bool received = TryGiveReward(collector);
 
-        if (received && collector != null && _gatherSkillExp > 0)
+        // 보상 처리 전에 상태부터 풀어줘야 비활성화/파괴돼도 Busy가 남지 않음
+        ReleaseManualCollectState(collector);
+
+        if (!received)
+        {
+            if (_logEnabled)
+            {
+                Debug.LogWarning($"[CCollectableInteractObject2D] 수동 채집 실패. itemId={_itemId}, object={name}");
+            }
+
+            ShowReservedFeedback("아이템을 획득하지 못했습니다.");
+            _onCollectFailed?.Invoke();
+            yield break;
+        }
+
+        if (collector != null && _gatherSkillExp > 0)
         {
             collector.TryAddLifeSkillExp(ELifeSkill.Gathering, _gatherSkillExp);
         }
 
-        if (received)
-        {
-            CompleteCollect();
-        }
-        else if (_logEnabled)
-        {
-            Debug.LogWarning($"[CCollectableInteractObject2D] 수동 채집 실패. itemId={_itemId}, object={name}");
-        }
+        CompleteCollect();
+    }
 
+    private void ReleaseManualCollectState(CPlayerCollector2D collector)
+    {
         _isProcessing = false;
 
         if (_setPlayerBusyDuringManualCollect && collector != null)
         {
             collector.SetInteractionBusy(false);
         }
+
+        UnsubscribeMoveCancel();
+
+        _manualCollectRoutine = null;
+        _manualCollectCollector = null;
+        _manualCollectStartPosition = Vector2.zero;
+    }
+
+    private void CancelManualCollectInternal(string message, bool showFeedback)
+    {
+        if (_manualCollectRoutine == null)
+        {
+            return;
+        }
+
+        CPlayerCollector2D collector = _manualCollectCollector;
+
+        if (_manualCollectRoutine != null)
+        {
+            StopCoroutine(_manualCollectRoutine);
+            _manualCollectRoutine = null;
+        }
+
+        if (_logEnabled)
+        {
+            Debug.Log($"[CCollectableInteractObject2D] 수동 채집 취소. object={name}, message={message}");
+        }
+
+        if (_setPlayerBusyDuringManualCollect && collector != null)
+        {
+            collector.SetInteractionBusy(false);
+        }
+
+        _isProcessing = false;
+        _manualCollectCollector = null;
+        _manualCollectStartPosition = Vector2.zero;
+
+        UnsubscribeMoveCancel();
+
+        if (showFeedback)
+        {
+            ShowReservedFeedback(message);
+        }
+
+        _onCollectCanceled?.Invoke();
+    }
+
+    private void OnPlayerMoveEvent(OnPlayerMove eventData)
+    {
+        if (_manualCollectRoutine == null)
+        {
+            return;
+        }
+
+        if (eventData.moved.sqrMagnitude <= _moveCancelInputThreshold)
+        {
+            return;
+        }
+
+        CancelManualCollectInternal(_manualCollectCancelMessage, true);
+    }
+
+    private void SubscribeMoveCancel()
+    {
+        if (_isMoveCancelSubscribed)
+        {
+            return;
+        }
+
+        EventBus<OnPlayerMove>.Subscribe(OnPlayerMoveEvent);
+        _isMoveCancelSubscribed = true;
+    }
+
+    private void UnsubscribeMoveCancel()
+    {
+        if (!_isMoveCancelSubscribed)
+        {
+            return;
+        }
+
+        EventBus<OnPlayerMove>.Unsubscribe(OnPlayerMoveEvent);
+        _isMoveCancelSubscribed = false;
+    }
+
+    private bool HasCollectorMovedSinceStart(CPlayerCollector2D collector)
+    {
+        if (collector == null)
+        {
+            return false;
+        }
+
+        Vector2 currentPos = collector.transform.position;
+        float movedSqrDistance = (currentPos - _manualCollectStartPosition).sqrMagnitude;
+        return movedSqrDistance > _moveCancelPositionThreshold;
     }
 
     /// <summary>
-    /// 실제 아이템 지급 처리
-    /// 
-    /// 중요
-    /// - 여기서 직접 인벤토리를 건드리지 않음
-    /// - 플레이어의 CPlayerCollector2D를 통해
-    ///   ItemCollectionCoordinator로 넘겨서 처리
+    /// 콜라이더 기준 실제 가까운 거리 계산
+    /// 오브젝트 중심이 아니라 가장 가까운 콜라이더 표면 기준이라 더 정확함
     /// </summary>
+    private bool IsCollectorWithinDistance(CPlayerCollector2D collector, float maxDistance)
+    {
+        if (collector == null)
+        {
+            return false;
+        }
+
+        if (_triggerCollider == null)
+        {
+            return false;
+        }
+
+        if (maxDistance <= 0f)
+        {
+            return false;
+        }
+
+        Vector2 collectorPos = collector.transform.position;
+        Vector2 closestPoint = _triggerCollider.ClosestPoint(collectorPos);
+        float sqrDistance = (collectorPos - closestPoint).sqrMagnitude;
+
+        return sqrDistance <= maxDistance * maxDistance;
+    }
+
     private bool TryGiveReward(CPlayerCollector2D collector)
     {
         if (collector == null)
@@ -395,11 +571,14 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         return true;
     }
 
-    /// <summary>
-    /// 자동 채집 시작
-    /// </summary>
     private void StartAutoCollect()
     {
+        // ButtonOnly면 자동 채집 절대 금지
+        if (_collectMode == ECollectMode.ButtonOnly)
+        {
+            return;
+        }
+
         if (!CanAutoCollect)
         {
             return;
@@ -418,9 +597,6 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         _autoCollectRoutine = StartCoroutine(CoAutoCollect());
     }
 
-    /// <summary>
-    /// 자동 채집 중지
-    /// </summary>
     private void StopAutoCollect()
     {
         if (_autoCollectRoutine == null)
@@ -432,10 +608,6 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         _autoCollectRoutine = null;
     }
 
-    /// <summary>
-    /// 자동 채집 코루틴
-    /// 범위 안 플레이어가 있으면 잠깐 기다렸다가 지급 시도
-    /// </summary>
     private IEnumerator CoAutoCollect()
     {
         if (_autoCollectDelay > 0f)
@@ -444,6 +616,12 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         }
 
         _autoCollectRoutine = null;
+
+        // ButtonOnly면 자동 채집 절대 금지
+        if (_collectMode == ECollectMode.ButtonOnly)
+        {
+            yield break;
+        }
 
         if (_isCollected || _isProcessing)
         {
@@ -459,6 +637,12 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
                 continue;
             }
 
+            // 자동 채집도 거리 제한을 다시 걸어준다
+            if (!IsCollectorWithinDistance(collector, _autoCollectMaxDistance))
+            {
+                continue;
+            }
+
             if (TryCollectInternal(collector, false))
             {
                 yield break;
@@ -466,14 +650,6 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         }
     }
 
-    /// <summary>
-    /// 획득 완료 처리
-    /// - 상태 변경
-    /// - 범위 목록 정리
-    /// - 콜라이더 끄기
-    /// - 이벤트 호출
-    /// - 파괴 / 비활성화 / 리스폰 처리
-    /// </summary>
     private void CompleteCollect()
     {
         if (_isCollected)
@@ -527,9 +703,6 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         }
     }
 
-    /// <summary>
-    /// 리스폰 대기 후 복구
-    /// </summary>
     private IEnumerator CoRespawn()
     {
         if (_respawnDelay > 0f)
@@ -541,9 +714,6 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         ResetCollectState();
     }
 
-    /// <summary>
-    /// 리스폰 시 상태 초기화
-    /// </summary>
     private void ResetCollectState()
     {
         _isCollected = false;
@@ -570,9 +740,6 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         }
     }
 
-    /// <summary>
-    /// 획득 후 비주얼 On/Off 처리
-    /// </summary>
     private void SetCollectedVisual(bool isVisible)
     {
         if (_disableTargetAfterCollected != null)
@@ -587,9 +754,6 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         }
     }
 
-    /// <summary>
-    /// null collector 정리
-    /// </summary>
     private void CleanupCollectors()
     {
         for (int i = _nearCollectors.Count - 1; i >= 0; --i)
@@ -601,19 +765,12 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         }
     }
 
-    /// <summary>
-    /// 범위 안에 collector가 하나라도 있는지
-    /// </summary>
     private bool HasAnyCollectorInRange()
     {
         CleanupCollectors();
         return _nearCollectors.Count > 0;
     }
 
-    /// <summary>
-    /// 현재 콜라이더 범위를 다시 검사해서
-    /// 근처 플레이어 collector 목록 복구
-    /// </summary>
     private void RebuildCollectorListInRange()
     {
         if (_triggerCollider == null)
@@ -653,6 +810,25 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             _nearCollectors.Add(collector);
         }
     }
+
+    /// <summary>
+    /// 지금은 로그 + 이벤트만 호출
+    /// 나중에 UI 스크립트가 생기면 Inspector에서 바로 연결 가능
+    /// </summary>
+    private void ShowReservedFeedback(string message)
+    {
+        if (string.IsNullOrWhiteSpace(message))
+        {
+            return;
+        }
+
+        if (_logEnabled)
+        {
+            Debug.Log("[Collectable][Feedback] " + message);
+        }
+
+        _onFeedbackMessage?.Invoke(message);
+    }
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
@@ -662,7 +838,6 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
         _triggerCollider = GetComponent<Collider2D>();
 
-        // 트리거가 아니면 자동 감지가 안 될 수 있으니 경고 출력
         if (_triggerCollider != null && !_triggerCollider.isTrigger)
         {
             Debug.LogWarning($"[CCollectableInteractObject2D] {name}의 Collider2D가 Trigger가 아닙니다. 자동/버튼 채집 범위 감지가 안 될 수 있습니다.");
@@ -688,6 +863,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             _nearCollectors.Add(collector);
         }
 
+        // ButtonOnly면 자동 채집 시작 금지
         if (CanAutoCollect)
         {
             StartAutoCollect();
@@ -713,6 +889,8 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
     private void OnDisable()
     {
+        CancelManualCollectInternal(string.Empty, false);
+
         StopAutoCollect();
 
         if (_respawnRoutine != null)

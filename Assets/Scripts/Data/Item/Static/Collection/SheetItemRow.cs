@@ -1,4 +1,4 @@
-﻿/// <summary>
+/// <summary>
 /// 구글 시트의 한 줄 데이터를 런타임에서 담아두는 클래스.
 /// 
 /// 이 클래스의 역할
@@ -11,6 +11,9 @@
 /// - name             : 표시 이름
 /// - category         : Animal / Fish / Gather
 /// - rarity           : Basic / Prime / Rare / Legendary 등
+/// - description      : 설명
+/// - sellPrice        : 판매 금액
+/// - buyPrice         : 구매 금액
 /// - iconKey          : 아이콘 스프라이트를 찾을 때 쓸 키
 /// - isWaterFish      : 담수 낚시 가능 여부
 /// - isDeepWaterFish  : 깊은물 / 바다 낚시 가능 여부
@@ -18,6 +21,7 @@
 /// 중요
 /// - Fish가 아닌 데이터는 isWaterFish / isDeepWaterFish가 false여도 상관없다.
 /// - 이 클래스는 데이터 보관용이므로 로직은 최대한 넣지 않는다.
+/// - sellPrice / buyPrice는 값이 없으면 -1 로 저장한다.
 /// </summary>
 public class SheetItemRow
 {
@@ -44,6 +48,23 @@ public class SheetItemRow
     /// 예: Basic / Prime / Rare / Legendary
     /// </summary>
     public string rarity;
+
+    /// <summary>
+    /// 아이템 설명
+    /// </summary>
+    public string description;
+
+    /// <summary>
+    /// 판매 금액
+    /// 값이 없으면 -1
+    /// </summary>
+    public int sellPrice;
+
+    /// <summary>
+    /// 구매 금액
+    /// 값이 없으면 -1
+    /// </summary>
+    public int buyPrice;
 
     /// <summary>
     /// 아이콘 키
@@ -73,6 +94,9 @@ public class SheetItemRow
         string name,
         string category,
         string rarity,
+        string description,
+        int sellPrice,
+        int buyPrice,
         string iconKey,
         bool isWaterFish = false,
         bool isDeepWaterFish = false)
@@ -81,6 +105,9 @@ public class SheetItemRow
         this.name = name;
         this.category = category;
         this.rarity = rarity;
+        this.description = description;
+        this.sellPrice = sellPrice;
+        this.buyPrice = buyPrice;
         this.iconKey = iconKey;
         this.isWaterFish = isWaterFish;
         this.isDeepWaterFish = isDeepWaterFish;

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2c022c5127670c48a898afb5e92d602, type: 3}
   m_Name: StaticItemSO_LargeGgreenOnion_0
   m_EditorClassIdentifier: 
-  _id: LargeGgreenOnion_0
+  _id: "\u314A"
   _type: 5
   _name: "\uB300\uD30C"
   _description: "\uD5A5\uC774 \uAC15\uD55C \uCC44\uC18C"
