@@ -373,7 +373,7 @@ GameObject:
   - component: {fileID: 8775709780734684913}
   - component: {fileID: 4219333007891134671}
   m_Layer: 5
-  m_Name: UISlot
+  m_Name: StorageUISlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -452,8 +452,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad68b82534dd6048a65b90e77566d10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: 
-  _instanceId: 0
+  _uniqueId: c9005488-9c07-4e9c-9aa2-03d7e9936e8a
+  _instanceId: -14572
   _icon: {fileID: 5056831475699382632}
   _countText: {fileID: 3682329663954140380}
   _selectedFrame: {fileID: 6110546832517328454}
