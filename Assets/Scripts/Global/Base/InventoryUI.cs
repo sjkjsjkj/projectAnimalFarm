@@ -27,6 +27,9 @@ public abstract class InventoryUI : BaseMono
 
     protected int _curDragIndex;
     protected int _selectedIndex;
+
+    protected string _sfxId_InventoryOpen;
+    protected string _sfxId_InventoryClose;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -120,16 +123,17 @@ public abstract class InventoryUI : BaseMono
         }
     }
 
-    public void SetToggleUI()
+    public virtual void SetToggleUI()
     {
-        //UDebug.Print($"current Stats : {_isOpen}");
         _isOpen = !_isOpen;
         if (_isOpen)
         {
+            USound.PlaySfx(_sfxId_InventoryOpen);
             ShowUI();
         }
         else
         {
+            USound.PlaySfx(_sfxId_InventoryClose);
             CloseUI();
         }
         //UDebug.Print($"current Stats : {_isOpen}");

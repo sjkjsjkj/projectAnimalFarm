@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: SoundSO_Sfx_Creature_Panda_Eat_03
   m_EditorClassIdentifier: 
   _id: Sfx_Creature_Panda_Eat_03
-  _type: 0
+  _type: 22
   _clip: {fileID: 8300000, guid: 3ba6358499cf32e44be96fdb7590fab4, type: 3}
-  _volume: 0.5
+  _volume: 1

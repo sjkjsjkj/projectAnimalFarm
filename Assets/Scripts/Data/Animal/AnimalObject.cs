@@ -30,6 +30,11 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
     private bool _isProductFinish;
 
     private FoodBox _foodBox;
+
+    //효과음들
+    private string _sfxId_Cry;
+    private string _sfxId_Eat;
+    private string _sfxId_ProductFinish;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -83,7 +88,7 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
         this.transform.rotation = data.rot;
 
         ConnectionEvent();
-
+        SetSfxIdSetting();
         this._productFinishIcon.gameObject.SetActive(data.data.ProductProgress >= K.MAX_PRODUCT_PROGRESS);
     }
     public bool CanInteract(GameObject player)
@@ -125,8 +130,49 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
         _productItemId = tempSO.ProductId;
 
         ConnectionEvent();
-        
+        SetSfxIdSetting();
         _animator.runtimeAnimatorController = tempSO.AnimController;
+    }
+    //효과음을 미리 캐싱해두는 메서드
+    private void SetSfxIdSetting()
+    {
+        switch(ID)
+        {
+            case Id.World_Animal_Chicken:
+                _sfxId_Cry = Id.Sfx_Creature_Chicken_Cries_1;
+                _sfxId_Eat = Id.Sfx_Creature_Llama_Eat_1;
+                break;
+            case Id.World_Animal_Cow:
+                _sfxId_Cry = Id.Sfx_Creature_Cow_Cries_1;
+                _sfxId_Eat = Id.Sfx_Creature_Panda_Eat_03;
+                break;
+            case Id.World_Animal_Duck:
+                _sfxId_Cry = Id.Sfx_Creature_Duck_Cries;
+                _sfxId_Eat = Id.Sfx_Creature_Llama_Eat_1;
+                break;
+            case Id.World_Animal_Goat:
+                _sfxId_Cry = Id.Sfx_Creature_Goat_Cries_1;
+                _sfxId_Eat = Id.Sfx_Creature_Llama_Eat_1;
+                break;
+            case Id.World_Animal_Horse:
+                _sfxId_Cry = Id.Sfx_Creature_Horse_Cries_1;
+                _sfxId_Eat = Id.Sfx_Creature_Llama_Eat_1;
+                break;
+            case Id.World_Animal_Ostrich:
+                _sfxId_Cry = Id.Sfx_Creature_Tiger_Cries_1;
+                _sfxId_Eat = Id.Sfx_Creature_Llama_Eat_1;
+                break;
+            case Id.World_Animal_Pig:
+                _sfxId_Cry = Id.Sfx_Creature_Pig_Cries_1;
+                _sfxId_Eat = Id.Sfx_Creature_Llama_Eat_1;
+                break;
+            case Id.World_Animal_Sheep:
+                _sfxId_Cry = Id.Sfx_Creature_SheepCries_1;
+                _sfxId_Eat = Id.Sfx_Creature_Llama_Eat_1;
+                break;
+        }
+
+        _sfxId_ProductFinish = Id.Sfx_Other_Alert_2;
     }
     //내가 바라보는 방향이 움직일 수 있는 곳인지 체크
     public override EPriority Priority => EPriority.Last;
@@ -183,6 +229,7 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
             _data.EatFood(tempFeedItemSO.Amount);
 
             _animator.SetBool("Eat", true);
+            USound.PlaySfx(_sfxId_Eat,transform);
             //먹는중
             yield return new WaitForSeconds(2.0f);
 
@@ -222,10 +269,12 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
             case EAnimalState.Sleep:
                 break;
             case EAnimalState.Eat:
-                //_animator.SetBool("Eat", true);
+                _animator.SetBool("Move", false);
+                _animator.SetBool("Eat", true);
                 StartCoroutine(CoEatFoodCoroutine());
                 break;
             case EAnimalState.MoveToEat:
+                _animator.SetBool("Move", true);
                 _moveDir = (_foodBoxPos-transform.position).normalized;
                 break;
             case EAnimalState.MoveToBed:
@@ -259,6 +308,7 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
     {
         _isProductFinish = true;
         _productFinishIcon.gameObject.SetActive(true);
+        USound.PlaySfx(_sfxId_ProductFinish, transform);
     }
     //먹이통의 위치를 알려주는 인터페이스를 건내받고 먹이통의 위치를 기억해주는 메서드.
     //BreedingArea에서 List에 AnimalObject를 추가하며 자동으로 먹이통의 위치를 알려준다고 생각하면 됩니다.
@@ -351,6 +401,12 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
         else
         {
             SetState(EAnimalState.Idle);
+        }
+
+        randomValue *= 10;
+        if((int)(randomValue)%2==0)
+        {
+            USound.PlaySfx(_sfxId_Cry, transform);
         }
     }
 

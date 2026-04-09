@@ -27,6 +27,8 @@ MonoBehaviour:
   _initPosition: {x: 3, y: 3}
   _moveSpeed: 3
   _eNpcMoveType: 3
+  _sfxId_footStepSound: Sfx_Environment_StepStone_1
+  _sfxId_buzzing: Sfx_Creature_Human_Idle_02
   _patrolPoints:
   - {x: 3, y: 3, z: 0}
   - {x: -3, y: 3, z: 0}

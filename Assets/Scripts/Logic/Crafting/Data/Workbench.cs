@@ -1,11 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 
 /// <summary>
 /// 제작대 클래스 입니다.
 /// </summary>
-public class Workbench : Singleton<Workbench>
+public class Workbench : Singleton<Workbench>, ICraftLogical
 {
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
+
+    //작업대 전체를 위한 내부변수
+    private Dictionary<EType, RecipeSO[]> _recipies;
+
+    //각각의 작업을 할 때 사용할 내부변수
     private RecipeSO _recipe;
     private RequireItemSO[] _requiredItems;
     private WorkbenchReturnStruct[] _curHasItemConditions;
@@ -116,6 +122,18 @@ public class Workbench : Singleton<Workbench>
         _playerInventory = InventoryManager.Ins.PlayerInventory;
         // ↑ 필요한 초기화 로직 / 부모 클래스에서 자동 실행
         _isInitialized = true;
+    }
+
+    public WorkbenchReturnStruct[] GetMaterials(string recipeId)
+    {
+        throw new NotImplementedException();
+        //RecipeSO tempRecipe = DatabaseManager.In
+        //return FindItem()
+    }
+
+    public bool TryCraftItem(string recipeId, out string message)
+    {
+        throw new NotImplementedException();
     }
     #endregion
 }

@@ -31,12 +31,6 @@ public class FarmlandSpriteObject : BaseMono , IAutoInteractable
     public event Action<int> OnInteract;
 
 
-    #region 테스트
-    //public int SoiledConnectDir => (int)_area.Farmlands[_idx].SoildConnectDir;
-    //public int MoistConnectDir => (int)_area.Farmlands[_idx].MoistConnectDir;
-    #endregion
-
-
     public void SetInfo(FarmArea area, int idx)
     {
         _harvestFinishIcon.enabled = false;
@@ -46,7 +40,6 @@ public class FarmlandSpriteObject : BaseMono , IAutoInteractable
     public bool CanInteract(GameObject player)
     {
         //UDebug.Print("경작지 인터랙트 시도");
-        
         return _area.ReturnFarmLandCanInteract(_idx);
     }
 

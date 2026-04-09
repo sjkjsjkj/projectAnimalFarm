@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 /// <summary>
 /// NPC의 구조 전체를 담당하는 스크립트입니다.
@@ -20,6 +21,9 @@ public class NPCObject : Frameable
 
     [SerializeField] private Animator _animator;
     private NpcMoveTypeBase _moveMaster;
+
+    private string _sfxId_footStepSound;
+    private string _stxId_buzzingSound;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -40,12 +44,22 @@ public class NPCObject : Frameable
                 break;
             case ENpcState.Move:
                 _animator.SetBool("Move", true);
+                StartCoroutine(CoFootStepSoundCoroutine());
                 break;
             case ENpcState.Interaction:
                 break;
         }
     }
-
+    private IEnumerator CoFootStepSoundCoroutine()
+    {
+        while(_state == ENpcState.Move)
+        {
+            //int random = UnityEngine.Random.Range(1,5);
+            USound.PlaySfx(_sfxId_footStepSound, transform);
+          
+            yield return new WaitForSeconds(0.7f);
+        }
+    }
     //껍데기 밖에 없던 animalObject에 스프라이트와 데이터, 애니메이터 컨트롤러를 넣어주는 작업.
     private void SetInfo()
     {
@@ -88,6 +102,10 @@ public class NPCObject : Frameable
         _moveMaster = GetComponent<NpcMoveTypeBase>();
         //TODO: 이벤트 연결
         _animator.runtimeAnimatorController = _npcSO.AnimController;
+
+        _sfxId_footStepSound = _npcSO.FootStepSoundId;
+        _stxId_buzzingSound = _npcSO.BuzzingSoundId;
+
         SetState(ENpcState.Idle);
     }
     private void Reorganize()
@@ -154,6 +172,11 @@ public class NPCObject : Frameable
         if (_actionTimer >= _actionInterval)
         {
             RandomAction();
+            float tempRandNum = Random.Range(0.0f, 1.0f)*10;
+            if ((int)(tempRandNum) % 2 == 0)
+            {
+                USound.PlaySfx(_stxId_buzzingSound,transform);
+            }
         }
 
         switch (_state)
