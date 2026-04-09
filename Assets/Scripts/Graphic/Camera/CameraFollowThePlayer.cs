@@ -7,8 +7,9 @@ public class CameraFollowThePlayer : Frameable
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("카메라 설정")]
-    [SerializeField] private Transform _playerTr = null;
-    [SerializeField] private Transform _cameraTr = null;
+    [SerializeField] private Transform _playerTr;
+    [SerializeField] private Transform _cameraTr;
+    [SerializeField] private Camera _cam;
     [SerializeField] private float _smoothTime = 0.1f; // 낮을수록 목표까지 가는 시간이 빠르다.
     [SerializeField] private Vector3 _offset = new Vector3(0, 0, -10f);
     [SerializeField] private Vector3 _velocity = Vector3.zero;
@@ -30,10 +31,32 @@ public class CameraFollowThePlayer : Frameable
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
+    // Clamp한 목표 좌표를 반환합니다.
+    private Vector3 BuildDesiredPos()
+    {
+        Vector3 desiredPos = _playerTr.position + _offset;
+        // 맵 테두리
+        float startX, endX, startY, endY;
+        (startX, endX, startY, endY) = TileManager.Ins.Tile.MapOutline();
+        // 카메라 크기 적용
+        float camW = _cam.orthographicSize * _cam.aspect;
+        float camH = _cam.orthographicSize;
+        startX += camW + 1f;
+        endX -= camW - 1f;
+        startY+= camH + 1f;
+        endY -= camH - 1f;
+
+        // 클램프 적용
+        desiredPos.x = Mathf.Clamp(desiredPos.x, startX, endX);
+        desiredPos.y = Mathf.Clamp(desiredPos.y, startY, endY);
+
+        return desiredPos;
+    }
+
     private void FollowPlayer()
     {
         Vector3 cameraPos = _cameraTr.position;
-        Vector3 desiredPos = _playerTr.position + _offset;
+        Vector3 desiredPos = BuildDesiredPos();
         Vector3 nextPos;
         // 거리가 멀 경우 스냅
         if ((desiredPos - cameraPos).sqrMagnitude > 15f)
@@ -50,7 +73,7 @@ public class CameraFollowThePlayer : Frameable
 
     private bool TryGetEssentials()
     {
-        if( _playerTr == null)
+        if (_playerTr == null)
         {
             var component = GameObject.FindAnyObjectByType<PlayerController>();
             if (component == null)
@@ -60,15 +83,15 @@ public class CameraFollowThePlayer : Frameable
             }
             _playerTr = component.transform;
         }
-        if( _cameraTr == null)
+        if (_cam == null)
         {
-            GameObject go = UObject.Find(K.NAME_MAIN_CAMERA);
-            if (go == null)
+            _cam = UCamera.MainCamera;
+            if (_cam == null)
             {
                 UDebug.PrintOnce($"사용할 카메라가 존재하지 않습니다.", LogType.Warning);
                 return false;
             }
-            _cameraTr = go.transform;
+            _cameraTr = _cam.transform;
         }
         return true;
     }

@@ -111,14 +111,15 @@ public static class USound
         }
         if (_curBgmId.IsEmpty())
         {
-
+            return;
         }
         if (!TryGetSoundSO(_curBgmId, out SoundSO so))
         {
             UDebug.Print($"ID와 일치하는 SoundSO 데이터가 존재하지 않습니다.", LogType.Assert);
             return;
         }
-        _bgmSource.volume = so.Volume * DataManager.Ins.Volume.Bgm;
+        var volume = DataManager.Ins.Volume;
+        _bgmSource.volume = so.Volume * volume.Master * volume.Bgm;
     }
     #endregion
 
@@ -175,14 +176,16 @@ public static class USound
     // 효과음 재생
     private static void PlayOneSfx(AudioSource source, SoundSO so)
     {
-        source.volume = so.Volume * DataManager.Ins.Volume.Sfx;
+        var volume = DataManager.Ins.Volume;
+        source.volume = so.Volume * volume.Master * volume.Sfx;
         source.PlayOneShot(so.Clip);
     }
 
     // 효과음 재생
     private static void PlaySfx(AudioSource source, SoundSO so)
     {
-        source.volume = so.Volume * DataManager.Ins.Volume.Sfx;
+        var volume = DataManager.Ins.Volume;
+        source.volume = so.Volume * volume.Master * volume.Sfx;
         source.clip = so.Clip;
         source.Play();
     }
@@ -226,9 +229,9 @@ public static class USound
             return;
         }
         // BGM 재생하기
-        float volume = DataManager.Ins.Volume.Bgm;
+        var volume = DataManager.Ins.Volume;
         source.clip = so.Clip;
-        source.volume = so.Volume * volume;
+        source.volume = so.Volume * volume.Bgm * volume.Sfx;
         source.Play();
         _curBgmId = id;
     }

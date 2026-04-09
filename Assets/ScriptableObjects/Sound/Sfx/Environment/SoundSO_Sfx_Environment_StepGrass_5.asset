@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: SoundSO_Sfx_Environment_StepGrass_5
   m_EditorClassIdentifier: 
   _id: Sfx_Environment_StepGrass_5
-  _type: 0
+  _type: 22
   _clip: {fileID: 8300000, guid: 18e54d2dcf2474c45b34b79f9302de53, type: 3}
-  _volume: 0.5
+  _volume: 1

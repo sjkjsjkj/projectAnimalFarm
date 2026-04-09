@@ -428,6 +428,15 @@ public class TileMap
         return InMap(pos.x, pos.y);
     }
 
+    public (float startX, float endX, float startY, float endY) MapOutline()
+    {
+        float startX = (float)_startX + K.SMALL_DISTANCE;
+        float endX = (float)(_startX + _width) - K.SMALL_DISTANCE;
+        float startY = (float)_startY + K.SMALL_DISTANCE;
+        float endY = (float)(_startY + _height) - K.SMALL_DISTANCE;
+        return (startX, endX, startY, endY);
+    }
+
     /// <summary>
     /// 월드 좌표를 맵 범위 안으로 클램프합니다.
     /// </summary>
@@ -436,12 +445,10 @@ public class TileMap
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Vector2 ClampMap(Vector2 pos)
     {
-        float startX = (float)_startX + K.SMALL_DISTANCE;
-        float endX = (float)(_startX + _width) - K.SMALL_DISTANCE;
-        float startY = (float)_startY + K.SMALL_DISTANCE;
-        float endY = (float)(_startY + _height) - K.SMALL_DISTANCE;
+        float startX, endX, startY, endY;
+        (startX, endX, startY, endY) = MapOutline();
         pos.x = Mathf.Clamp(pos.x, startX, endX);
-        pos.y = Mathf.Clamp(pos.y, startX, endX);
+        pos.y = Mathf.Clamp(pos.y, startY, endY);
         return pos;
     }
 
@@ -454,10 +461,8 @@ public class TileMap
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public (float x, float y) ClampMap(float x, float y)
     {
-        float startX = (float)_startX + K.SMALL_DISTANCE;
-        float endX = (float)(_startX + _width) - K.SMALL_DISTANCE;
-        float startY = (float)_startY + K.SMALL_DISTANCE;
-        float endY = (float)(_startY + _height) - K.SMALL_DISTANCE;
+        float startX, endX, startY, endY;
+        (startX, endX, startY, endY) = MapOutline();
         x = Mathf.Clamp(x, startX, endX);
         y = Mathf.Clamp(y, startY, endY);
         return (x, y);

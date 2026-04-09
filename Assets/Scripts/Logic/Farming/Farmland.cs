@@ -299,7 +299,13 @@ public class Farmland
     /// </summary>
     public void OnLoadFunction()
     {
-
+        // 다 자란 작물 말풍선 표시 용도
+        if(_currentTick >= K.FARMLAND_MAX_GROWNPROGRESS)
+        {
+            SetState(EFarmlandState.GrownUp);
+            OnGrownUp?.Invoke(_pos);
+        }
+        //
         if ((StateFlag & (int)EFarmlandState.SoiledLand) == 0)
         {
             return;

@@ -36,19 +36,11 @@ public class TestSceneMover : Frameable
             return; // 키 입력 없음
         }
         UDebug.Print($"이동할 씬 인덱스 : {_curSceneIndex}");
-        GameManager.Ins.LoadSceneAsync(_curSceneIndex, SceneCallbackHandle, SceneProgressHandle);
+        GameManager.Ins.LoadSceneAsyncWithFade(_curSceneIndex);
     }
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-    private void SceneProgressHandle(float progress)
-    {
-        UDebug.Print($"씬 프로세스 핸들을 실행합니다. ({progress}%)");
-    }
-    private void SceneCallbackHandle()
-    {
-        UDebug.Print($"씬 콜백 핸들을 실행합니다.");
-    }
     private void SceneLoadEndHandle(OnSceneLoadEnd ctx)
     {
         _curSceneIndex = (int)ctx.nextScene;

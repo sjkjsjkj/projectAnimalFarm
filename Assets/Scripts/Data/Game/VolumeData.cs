@@ -35,11 +35,11 @@ public class VolumeData
         set
         {
             float newVolume = Mathf.Clamp01(value);
-            if (_master == newVolume)
+            if (_bgm == newVolume)
             {
                 return;
             }
-            _master = newVolume;
+            _bgm = newVolume;
             USound.UpdateBgmVolume();
         }
     }

@@ -4,12 +4,11 @@ using UnityEngine.InputSystem;
 /// <summary>
 /// Input System으로 키 입력을 받아 이벤트를 뿌립니다.
 /// </summary>
-public sealed class InputManager : GlobalSingleton<InputManager>, InputDispatcherP.IMainActionMapActions
+public sealed class InputManager : GlobalSingleton<InputManager>, InputDispatcher.IMainActionMapActions
 {
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private bool _isInitialized = false;
-    private InputDispatcherP _input; // 디스페처 주소
-    private Vector2 _moveInput; // WASD 이동 변수
+    private InputDispatcher _input; // 디스페처 주소
     private int _curSlot; // 현재 슬롯 변수
     private float _nextSlotChangeTime;
     private const float SCROLL_INTERVAL = 0.01f;
@@ -19,9 +18,12 @@ public sealed class InputManager : GlobalSingleton<InputManager>, InputDispatche
     // 공개 멤버 함수 모두 외부 호출 용도가 아닙니다.
     public void OnMove(InputAction.CallbackContext context)
     {
-        _moveInput = context.ReadValue<Vector2>();
+        Vector2 moveInput = context.ReadValue<Vector2>();
+        if (context.performed || context.canceled)
+        {
+            OnPlayerMove.Publish(moveInput);
+        }
     }
-
     public void OnJump(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -112,12 +114,19 @@ public sealed class InputManager : GlobalSingleton<InputManager>, InputDispatche
             ChangeSlot(slot);
         }
     }
+    public void OnMenu(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            OnPlayerEsc.Publish();
+        }
+    }
     // Awake 대용
     public override void Initialize()
     {
         if (_isInitialized) return;
 
-        _input = new InputDispatcherP();
+        _input = new InputDispatcher();
         _input.MainActionMap.SetCallbacks(this);
         _input.Enable();
         _isInitialized = true;
@@ -134,11 +143,6 @@ public sealed class InputManager : GlobalSingleton<InputManager>, InputDispatche
     #endregion
 
     #region ─────────────────────────▶ 메세지 함수 ◀─────────────────────────
-    private void Update()
-    {
-        OnPlayerMove.Publish(_moveInput);
-    }
-
     // ↓ 외부에서 호출해도 OK
     public void OnEnable()
     {

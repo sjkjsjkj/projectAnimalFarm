@@ -15,8 +15,9 @@ public class ProductSO : ItemSO
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
-    protected virtual void OnValidate()
+    protected override void OnValidate()
     {
+        base.OnValidate();
         if (!IsValid())
         {
             UDebug.PrintOnce($"SO 인스턴스({this.name})의 값이 올바르지 않습니다. (ID = {_id}, Type = {this.GetType().Name})", LogType.Warning);
