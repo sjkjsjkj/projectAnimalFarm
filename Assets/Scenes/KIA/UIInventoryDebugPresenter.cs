@@ -21,7 +21,7 @@ public class UIInventoryDebugPresenter : BaseMono
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("대상 UI")]
-    [SerializeField] private UIInventory _uiInventory;
+    [SerializeField] private UIPlayerInventory _uiInventory;
 
     [Header("테스트 아이템 목록")]
     [SerializeField] private InventoryDebugItemData _debugItem1;
@@ -200,7 +200,7 @@ public class UIInventoryDebugPresenter : BaseMono
             return;
         }
 
-        _uiInventory.RefreshInventoryUI(BuildViewData());
+        //_uiInventory.RefreshInventoryUI(BuildViewData());
     }
 
     /// <summary>

@@ -7,10 +7,10 @@
 public class Inventory
 {
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
-    private int _inventoryIdx;
-    private int _inventorySize;
-    private InventorySlot[] _inventorySlots;
-    private EInventoryType _inventoryType;
+    protected int _inventoryIdx;
+    protected int _inventorySize;
+    protected InventorySlot[] _inventorySlots;
+    protected EInventoryType _inventoryType;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -39,9 +39,18 @@ public class Inventory
     }
     #endregion
 
-    #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-    
-    public bool TryGetItem(ItemSO itemData , int amount = 1)
+    #region 내부
+
+    protected virtual void OnChangeSlotEvent(EInventoryType invenType, InventorySlot slot )
+    {
+        OnChangeSlot?.Invoke(invenType, slot);
+    }
+
+    #endregion
+
+    #region ─────────────────────────▶ 외부 공개 ◀─────────────────────────
+
+    public virtual bool TryGetItem(ItemSO itemData , int amount = 1)
     {
         if (UDebug.IsNull(itemData))
         {
@@ -245,11 +254,26 @@ public class Inventory
         }
         _inventorySlots[slotIdx].RemoveAmount(1);
 
-        OnChangeSlots?.Invoke(EInventoryType.PlayerInventory, this);
+        OnChangeSlots?.Invoke(_inventoryType, this);
 
         return tempItemSO;
     }
-
+    public void SetItemSlot(InventorySlot invenSlot, int slotIdx)
+    {
+        if(invenSlot.IsEmpty)
+        {
+            return;
+        }
+        ItemSlotClear(slotIdx);
+        _inventorySlots[slotIdx] = invenSlot;
+        if (_inventorySlots[slotIdx].IsEmpty)
+        {
+            return;
+        }
+        UDebug.Print($"{slotIdx} 번째 슬롯의 현재 데이터 : {_inventorySlots[slotIdx].ItemSO.Name}");
+        //OnChangeSlot?.Invoke(EInventoryType.PlayerInventory, _inventorySlots[slotIdx]);
+        OnChangeSlots?.Invoke(_inventoryType, this);
+    }
 
     //아이템제거 시도
     public bool TryRemoveItem(string itemId, int amount =1)
@@ -295,7 +319,7 @@ public class Inventory
             }
         }
         
-        OnChangeSlots?.Invoke(EInventoryType.PlayerInventory, this);
+        OnChangeSlots?.Invoke(_inventoryType, this);
     }
 
     //슬롯 전체 제거
@@ -303,7 +327,8 @@ public class Inventory
     {
         _inventorySlots[slotIdx].SlotClear();
 
-        OnChangeSlot?.Invoke(EInventoryType.PlayerInventory, _inventorySlots[slotIdx]);
+        // OnChangeSlot?.Invoke(EInventoryType.PlayerInventory, _inventorySlots[slotIdx]);
+        OnChangeSlots?.Invoke(_inventoryType, this);
     }
     //해당 아이템이 인벤토리에 충분하게 있는지 체크
     public bool CheckHasItem(string itemId, int count)

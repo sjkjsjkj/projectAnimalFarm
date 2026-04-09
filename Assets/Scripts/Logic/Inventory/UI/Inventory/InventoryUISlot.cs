@@ -20,7 +20,7 @@ public class InventoryUISlot : BaseMono, IBeginDragHandler, IDragHandler ,IEndDr
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
-
+    public int Index => _thisSlotIdx;
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
@@ -52,7 +52,7 @@ public class InventoryUISlot : BaseMono, IBeginDragHandler, IDragHandler ,IEndDr
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
-    
+
     public void OnBeginDrag(PointerEventData eventData)
     {
         //eventData.useDragThreshold = false;
@@ -68,6 +68,8 @@ public class InventoryUISlot : BaseMono, IBeginDragHandler, IDragHandler ,IEndDr
     }
     public void OnDrop(PointerEventData eventData)
     {
+        
+
         _inventoryUI.DragDrop(_thisSlotIdx);
     }
     #endregion

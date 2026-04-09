@@ -9,9 +9,11 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("프리팹")]
-    [SerializeField] private PlayerInventoryUI _playerInventoryPrefab;
+    //[SerializeField] private PlayerInventoryUI _playerInventoryPrefab;
+    //[SerializeField] private PlayerInventoryUI _playerInventoryPrefab_;
+    [SerializeField] private UIPlayerInventory _playerInventoryPrefab;
     [SerializeField] private StorageUI _storagePrefab;
-    [SerializeField] private ShopUI _shopPrefab;
+    [SerializeField] private FoodBoxUI _foodBoxPrefab;
     [SerializeField] private Transform _inventoriesCanvasTr;
 
     [Header("테스트")]
@@ -22,20 +24,32 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private bool _isInitialized = false;
     private bool _isPlayerInvenInit = false;
+    private bool _isSettingFinish;
 
-    private PlayerInventoryUI _playerInventoryUI;
+    protected float _reUseTimer = 0.2f;
+
+    private UIPlayerInventory _playerInventoryUI;
     private StorageUI _storageUI;
-    private ShopUI _shopUI;
-    
+    private FoodBoxUI _foodBoxUI;
+
     private List<Inventory> _inventoryList;
 
     private int _inventoryCount = 0;
+
+    private int _currentOtherInventoryeId=-1;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     public Inventory PlayerInventory => _inventoryList[0];
-    public PlayerInventoryUI PlayerInvenUI => _playerInventoryUI;
+    public UIPlayerInventory PlayerInvenUI => _playerInventoryUI;
+    public StorageUI StorageUI => _storageUI;
+    public FoodBoxUI FoodBoxUI => _foodBoxUI;
+
     public List<Inventory> Inventories => _inventoryList;
+
+    public bool CanReUse => _reUseTimer >= 0.5f;
+    public bool IsSettingFinish => _isSettingFinish;
+    public Transform GlobalCanvas => _inventoriesCanvasTr;
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
@@ -61,7 +75,11 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
     //Resources 안의 Prefab들을 수집하는 메서드.
     private void CollectPrefab()
     {
-        _playerInventoryPrefab = Resources.Load<PlayerInventoryUI>("BootPrefab/PlayerInventoryUIPrefab");
+        //_playerInventoryPrefab = Resources.Load<PlayerInventoryUI>("BootPrefab/PlayerInventoryUIPrefab");
+        _playerInventoryPrefab = Resources.Load<UIPlayerInventory>("BootPrefab/UIInventory");
+        _storagePrefab = Resources.Load<StorageUI>("BootPrefab/UIStorage");
+        _foodBoxPrefab = Resources.Load<FoodBoxUI>("BootPrefab/UIFoodBox");
+
         StartCoroutine(SceneLoadWaitCoroutine());
     }
 
@@ -80,43 +98,58 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
         MakeInventoryUIs();//인벤토리 UI들 생성 (인벤 / 창고 / 상점 각각 하나씩)
 
         MakeNewInventory(_inventorySize, EInventoryType.PlayerInventory); // 가장 먼저 플레이어의 인벤토리 생성.
+
+        _isSettingFinish = true;
     }
 
     //각 UI들을 생성하는 메서드.
     //이곳에서 생성된 UI로 각종 창고와 상점 / 플레이어의 인벤토리 UI를 보여 줌.
     private void MakeInventoryUIs()
     {
-        //추 후 UI가 생기면 활성화
-        //if(_playerInventoryPrefab == null || _shopPrefab == null || _storagePrefab == null)
-        //{
-        //    UDebug.Print("인벤토리 UI 찾을 수 없음. 확인", LogType.Warning);
-        //    return;
-        //}
+        if(_playerInventoryPrefab == null)
+        {
+            UDebug.Print("Global Prefab : PlayerInvenUI 찾을 수 없음. 확인", LogType.Assert);
+            return;
+        }
+        if (_storagePrefab == null)
+        {
+            UDebug.Print("Global Prefab : StorageUI 찾을 수 없음. 확인", LogType.Assert);
+            return;
+        }
+        if (_foodBoxPrefab == null) 
+        {
+            UDebug.Print("Global Prefab : FoodBoxUI 찾을 수 없음. 확인", LogType.Assert);
+            return;
+        }
 
-        //플레이어 인벤토리 UI 세팅
+        //인벤토리 UI 활성화
         _playerInventoryUI = Instantiate(_playerInventoryPrefab);
-        _playerInventoryUI.SetInfo(_inventorySize);
+        _playerInventoryUI.SetSize(K.PLAYER_INVENTORY_SIZE);
         _playerInventoryUI.transform.SetParent(_inventoriesCanvasTr);
-        _playerInventoryUI.transform.localPosition = new Vector3(-300, 0);
+        _playerInventoryUI.transform.localPosition = new Vector3(-450, 0);
         _playerInventoryUI.gameObject.SetActive(false);
 
-        //추 후 UI가 생기면 활성화
-        ////창고 UI 세팅
-        //_storageUI = Instantiate(_storagePrefab);
-        //_storageUI.SetInfo(_storageInventoryUISize);
-        //_storageUI.transform.SetParent(_inventoriesCanvasTr);
-        //_storageUI.transform.localPosition = new Vector3(300, 0);
-        //_storageUI.gameObject.SetActive(false);
+        //창고 UI 활성화
+        _storageUI = Instantiate(_storagePrefab);
+        _storageUI.SetSize(K.STORAGE_INVENTORY_SIZE);
+        _storageUI.transform.SetParent(_inventoriesCanvasTr);
+        _storageUI.transform.localPosition = new Vector3(450, 0);
+        _storageUI.gameObject.SetActive(false);
 
-        //추 후 UI가 생기면 활성화
-        ////상점 UI 세팅
-        //_shopUI = Instantiate(_shopPrefab);
-        //_shopUI.SetInfo(_shopInventoryUISize);
-        //_shopUI.transform.SetParent(_inventoriesCanvasTr);
-        //_shopUI.transform.localPosition = new Vector3(300, 0);
-        //_shopUI.gameObject.SetActive(false);
+        //먹이통 UI 활성화
+        _foodBoxUI = Instantiate(_foodBoxPrefab);
+        _foodBoxUI.SetSize(K.FOODBOX_INVENTORY_SIZE);
+        _foodBoxUI.transform.SetParent(_inventoriesCanvasTr);
+        _foodBoxUI.transform.localPosition = new Vector3(450, 0);
+        _foodBoxUI.gameObject.SetActive(false);
     }
-
+    //각종 InteractObject에서 새로운 인벤토리 생성요청이 들어오면 이것을 실행하여 새로운 인벤토리를 생성함.
+    public int RequestNewInventory(int newInventorySize, EInventoryType newInventoryType)
+    {
+        MakeNewInventory(newInventorySize, newInventoryType);
+        UDebug.Print($"current InventoryManager's Size : {_inventoryList.Count}");
+        return _inventoryList.Count-1;
+    }
     // 새로운 인벤토리를 만드는 메서드 (새로운 창고나 저장공간이 생길 때 마다 이것으로 추가)
     private void MakeNewInventory(int newInventorySize, EInventoryType invenType)
     {
@@ -134,18 +167,29 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
                 //타입에 맞는 UI에 데이터 넣기.
                 //플레이어의 인벤토리는 세상에 단 한개임으로 바로 데이터를 집어 넣는 것이 관리하기 편할 것이라고 판단.
                 break;
+            case EInventoryType.Storage:
+
+                Inventory storageInventory = new Inventory(newInventorySize, EInventoryType.Storage, _inventoryList.Count);
+                _inventoryList.Add(storageInventory);
+                Debug.Log($"플레이어 창고 생성 | : {_inventoryList .Count-1+ "번째 인벤토리"}");
+                break;
+            case EInventoryType.FoodBox:
+                FoodBox foodBoxInventory = new FoodBox(newInventorySize, EInventoryType.FoodBox, _inventoryList.Count);
+                _inventoryList.Add(foodBoxInventory);
+                Debug.Log($"플레이어 창고 생성 | : {_inventoryList.Count - 1 + "번째 인벤토리"}");
+                break;
             default:
-                _inventoryList.Add(new Inventory(newInventorySize, invenType, _inventoryCount));
+                _inventoryList.Add(new Inventory(newInventorySize, invenType, _inventoryList.Count));
                 break;
         }
-        _inventoryList[_inventoryCount].OnChangeSlot -= NotifyRequestRefreshUISlot;
-        _inventoryList[_inventoryCount].OnChangeSlot += NotifyRequestRefreshUISlot;
+        _inventoryList[_inventoryList.Count - 1].OnChangeSlot -= NotifyRequestRefreshUISlot;
+        _inventoryList[_inventoryList.Count - 1].OnChangeSlot += NotifyRequestRefreshUISlot;
 
-        _inventoryList[_inventoryCount].OnChangeSlots -= NotiftyRequestRefreshUI;
-        _inventoryList[_inventoryCount].OnChangeSlots += NotiftyRequestRefreshUI;
-
-        _inventoryCount++;
+        _inventoryList[_inventoryList.Count - 1].OnChangeSlots -= NotiftyRequestRefreshUI;
+        _inventoryList[_inventoryList.Count - 1].OnChangeSlots += NotiftyRequestRefreshUI;
     }
+
+
     /// <summary>
     /// 인벤토리에서 특정 슬롯의 변화가 일어났을 때 UI에게 알리기 위한 중간 함수.
     /// </summary>
@@ -160,8 +204,10 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
                 _playerInventoryUI.RefreshInventoryUI(invenSlot.SlotIdx, invenSlot);
                 break;
             case EInventoryType.Storage:
+                _storageUI.RefreshInventoryUI(invenSlot.SlotIdx, invenSlot);
                 break;
-            case EInventoryType.Shop:
+            case EInventoryType.FoodBox:
+                _foodBoxUI.RefreshInventoryUI(invenSlot.SlotIdx, invenSlot);
                 break;
         }
     }
@@ -173,9 +219,11 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
                 _playerInventoryUI.RefreshInventoryUI(inventory);
                 break;
             case EInventoryType.Storage:
+                _storageUI.RefreshInventoryUI(inventory);
                 break;
-            case EInventoryType.Shop:
-                break;
+            case EInventoryType.FoodBox:
+                _foodBoxUI.RefreshInventoryUI(inventory);
+                break;  
         }
     }
 
@@ -187,26 +235,62 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
     /// </summary>
     public void InventoryUIToggle(int id, EInventoryType invenType) 
     {
-        if(_inventoriesCanvasTr == null)
+        _reUseTimer = 0;
+        if (_inventoriesCanvasTr == null)
         {
             _inventoriesCanvasTr = UObject.Find("Canvas").transform;
         }
         switch(invenType)
         {
             case EInventoryType.PlayerInventory:
-                PlayerInvenUI.SetToggleUI();
+                //PlayerInvenUI.SetToggleUI();
+                //PlayerInvenUI_.OpenUI();
+                _playerInventoryUI.SetToggleUI();
                 break;
             case EInventoryType.Storage:
+                _currentOtherInventoryeId = id;
+                _storageUI.SetCurrentOpenInventoryId(id);
                 _storageUI.RefreshInventoryUI(_inventoryList[id]);
                 _storageUI.SetToggleUI();
                 break;
-            case EInventoryType.Shop:
-                _shopUI.RefreshInventoryUI(_inventoryList[id]);
-                _shopUI.SetToggleUI();
+            case EInventoryType.FoodBox:
+                _currentOtherInventoryeId = id;
+                _foodBoxUI.SetCurrentOpenInventoryId(id);
+                _foodBoxUI.RefreshInventoryUI(_inventoryList[id]);
+                _foodBoxUI.SetToggleUI();
                 break;
         }
     }
-    
+    public void ChangeItemInvenNStorage(int fromInvenIdx, int fromSlotIdx, int toInvenIdx, int toSlotIdx)
+    {
+        if(fromInvenIdx == fromSlotIdx && toInvenIdx == toSlotIdx)
+        {
+            return;
+        }
+        //UDebug.Print($"현재 옮기려고 하는 인벤토리의 타입은 : {_inventoryList[toInvenIdx].InvenType}");
+        if (_inventoryList[toInvenIdx] is FoodBox foodBoxInven)
+        {
+            //UDebug.Print("지금 먹이통으로 아이템을 이동하려 합니다.");
+            if (!foodBoxInven.CheckItemType(_inventoryList[fromInvenIdx].InventorySlots[fromSlotIdx].ItemSO))
+            {
+                return;
+            }
+        }
+        //Inventory Slot이 구조체라 받는 대상은 항상 호출해야하기 때문에 의미 없을 것 같아서 캐싱은 하지 않겠음.
+        if (_inventoryList[toInvenIdx].InventorySlots[toSlotIdx].IsEmpty)
+        {
+            //UDebug.Print("빈 곳으로 이동");
+            _inventoryList[toInvenIdx].SetItemSlot(_inventoryList[fromInvenIdx].InventorySlots[fromSlotIdx], toSlotIdx);
+            _inventoryList[fromInvenIdx].ItemSlotClear(fromSlotIdx);
+
+            return;
+        }
+        //UDebug.Print("서로 교환");
+        InventorySlot tempInvenslot = _inventoryList[fromInvenIdx].InventorySlots[fromSlotIdx];
+
+        _inventoryList[fromInvenIdx].SetItemSlot(_inventoryList[toInvenIdx].InventorySlots[toSlotIdx], fromSlotIdx);
+        _inventoryList[toInvenIdx].SetItemSlot(tempInvenslot,toSlotIdx);
+    }
     //테스트 용 메서드
     //UI On 키를 입력했는지 확인하는 메서드
     private void UIKeyInputHandle()
@@ -221,5 +305,6 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
     private void Update()
     {
         UIKeyInputHandle();
+        _reUseTimer += Time.deltaTime;
     }
 }

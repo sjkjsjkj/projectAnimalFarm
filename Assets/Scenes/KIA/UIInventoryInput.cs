@@ -10,7 +10,7 @@ public class UIInventoryInput : BaseMono
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("대상 UI")]
-    [SerializeField] private UIInventory _uiInventory;
+    [SerializeField] private UIPlayerInventory _uiInventory;
 
     [Header("입력 액션")]
     [SerializeField] private InputActionReference _inventoryAction;
@@ -27,7 +27,7 @@ public class UIInventoryInput : BaseMono
             return;
         }
 
-        _uiInventory.ToggleUI();
+        _uiInventory.SetToggleUI();
     }
 
     /// <summary>
