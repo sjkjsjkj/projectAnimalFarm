@@ -78,6 +78,7 @@ public static class UFade
         }
         // 페이드 완료
         _canvasGroup.alpha = targetAlpha;
+        _canvasGroup.blocksRaycasts = false;
         IsFading = false; // 대기 플래그 OFF
     }
 
