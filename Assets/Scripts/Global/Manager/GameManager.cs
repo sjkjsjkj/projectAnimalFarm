@@ -90,7 +90,7 @@ public class GameManager : GlobalSingleton<GameManager>
     /// <param name="delay">씬 로드 시작 전에 대기할 시간(초)</param>
     /// <param name="loadSceneMode">씬 로드 모드</param>
     public void LoadSceneAsync(
-        int index, Action callback, Action<float> onProgress, float delay = 0f,
+        int index, Action callback = null, Action<float> onProgress = null, float delay = 0f,
         LoadSceneMode loadSceneMode = LoadSceneMode.Single)
     {
         if (!IsValidScene(index))
@@ -110,7 +110,7 @@ public class GameManager : GlobalSingleton<GameManager>
     /// <param name="delay">씬 로드 시작 전에 대기할 시간(초)</param>
     /// <param name="loadSceneMode">씬 로드 모드</param>
     public void LoadSceneAsync(
-        string name, Action callback, Action<float> onProgress, float delay = 0f,
+        string name, Action callback = null, Action<float> onProgress = null, float delay = 0f,
         LoadSceneMode loadSceneMode = LoadSceneMode.Single)
     {
         if (!IsValidScene(name))
@@ -119,6 +119,50 @@ public class GameManager : GlobalSingleton<GameManager>
         }
         PreProcessing(_curScene, name);
         StartCoroutine(DoLoadSceneAsync(name, callback, onProgress, delay, loadSceneMode));
+    }
+
+    /// <summary>
+    /// 해당 씬을 페이드 효과로 비동기 로드합니다.
+    /// 동일한 이름을 가지는 씬도 있을 수 있기 때문에 표준적으로는 인덱스 사용이 권장됩니다.
+    /// </summary>
+    /// <param name="index">씬 인덱스</param>
+    /// <param name="callback">씬 로드 완료 시 호출할 메서드</param>
+    /// <param name="onProgress">씬 로드 진행율을 받을 메서드</param>
+    /// <param name="delay">씬 로드 시작 전에 대기할 시간(초)</param>
+    /// <param name="loadSceneMode">씬 로드 모드</param>
+    public void LoadSceneAsyncWithFade(
+        int index, float delay = 0f, float fadeOutTime = 0.2f, float fadeInTime = 0.2f,
+        Action callback = null, Action<float> onProgress = null, 
+        LoadSceneMode loadSceneMode = LoadSceneMode.Single)
+    {
+        if (!IsValidScene(index))
+        {
+            return;
+        }
+        string scenePath = SceneUtility.GetScenePathByBuildIndex(index); // 경로를 넣어도 씬 매니저에서 알아서 해준다.
+        LoadSceneAsyncWithFade(scenePath, delay, fadeOutTime, fadeInTime, callback, onProgress, loadSceneMode);
+    }
+
+    /// <summary>
+    /// 해당 씬을 페이드 효과로 비동기 로드합니다.
+    /// </summary>
+    /// <param name="name">씬 이름</param>
+    /// <param name="callback">씬 로드 완료 시 호출할 메서드</param>
+    /// <param name="onProgress">씬 로드 진행율을 받을 메서드</param>
+    /// <param name="delay">씬 로드 시작 전에 대기할 시간(초)</param>
+    /// <param name="loadSceneMode">씬 로드 모드</param>
+    public void LoadSceneAsyncWithFade(
+        string name, float delay = 0f, float fadeOutTime = 0.2f, float fadeInTime = 0.2f,
+        Action callback = null, Action<float> onProgress = null, 
+        LoadSceneMode loadSceneMode = LoadSceneMode.Single)
+    {
+        if (!IsValidScene(name))
+        {
+            return;
+        }
+        PreProcessing(_curScene, name);
+        StartCoroutine(DoLoadSceneAsyncWithFade
+            (name, delay, fadeOutTime, fadeInTime, callback, onProgress, loadSceneMode));
     }
     #endregion
 
@@ -209,6 +253,40 @@ public class GameManager : GlobalSingleton<GameManager>
         // 씬 로드 완료 → 콜백 호출
         callback?.Invoke();
         PostProcessing(_curScene, name);
+    }
+
+    // 비동기 페이드 코루틴
+    private IEnumerator DoLoadSceneAsyncWithFade(
+        string name, float delay, float fadeOutTime, float fadeInTime,
+        Action callback, Action<float> onProgress, LoadSceneMode loadSceneMode)
+    {
+        if (delay > 0f)
+        {
+            yield return UCoroutine.GetWait(delay);
+        }
+        // 유니티 기본 로드 함수 (비동기 대기)
+        var asyncOperation = SceneManager.LoadSceneAsync(name, loadSceneMode);
+        asyncOperation.allowSceneActivation = false; // 씬 로드가 완료되어도 대기
+        // 페이드 시작
+        UFade.FadeOut(fadeOutTime, true);
+        // 모두 완료될때까지 대기
+        while(asyncOperation.progress < 0.9f || UFade.IsFading)
+        {
+            onProgress?.Invoke(asyncOperation.progress);
+            yield return null;
+        }
+        asyncOperation.allowSceneActivation = true;
+        onProgress?.Invoke(1f);
+        // 씬 전환이 완전히 종료될때까지 대기
+        while (!asyncOperation.isDone)
+        {
+            yield return null;
+        }
+        // 씬 전환 완료
+        callback?.Invoke();
+        PostProcessing(_curScene, name);
+        // 새로운 씬에서 페이드 인
+        UFade.FadeIn(fadeInTime, true);
     }
 
     private void PublishLoadEnd(EScene prevScene, EScene nextScene)

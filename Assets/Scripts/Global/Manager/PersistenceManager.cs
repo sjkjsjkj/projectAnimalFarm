@@ -70,12 +70,7 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         LoadDataManager(); // 글로벌 데이터
         LoadDynamicData(nextScene);
         //gm.LoadScene((int)nextScene); // 동기 전환 + 동일 씬이어도 무조건 전환
-        gm.LoadSceneAsync(
-            (int)nextScene,
-            () => { },
-            (float progress) => { },
-            0
-        );
+        gm.LoadSceneAsyncWithFade((int)nextScene);
         // 씬 로드 종료
         sw.Stop();
         _isLoading = false;
@@ -267,6 +262,8 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         SaveData(ref option);
         var player = m.Player;
         SaveData(ref player);
+        var im = InventoryManager.Ins.Inventories;
+        SaveData(ref im);
     }
 
     // DataManager의 글로벌 데이터 일괄 로드
@@ -279,6 +276,8 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         LoadData(ref player);
         var farmland = m.Farmlands;
         LoadData(ref farmland);
+        var im = InventoryManager.Ins.Inventories;
+        LoadData(ref im);
         player.IsLoaded = true;
     }
 

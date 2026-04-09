@@ -72,7 +72,7 @@ using UnityEngine.InputSystem.Utilities;
 /// }
 /// </code>
 /// </example>
-public partial class @InputDispatcherP: IInputActionCollection2, IDisposable
+public partial class @InputDispatcher: IInputActionCollection2, IDisposable
 {
     /// <summary>
     /// Provides access to the underlying asset instance.
@@ -82,7 +82,7 @@ public partial class @InputDispatcherP: IInputActionCollection2, IDisposable
     /// <summary>
     /// Constructs a new instance.
     /// </summary>
-    public @InputDispatcherP()
+    public @InputDispatcher()
     {
         asset = InputActionAsset.FromJson(@"{
     ""version"": 1,
@@ -544,9 +544,9 @@ public partial class @InputDispatcherP: IInputActionCollection2, IDisposable
         m_MainActionMap_Menu = m_MainActionMap.FindAction("Menu", throwIfNotFound: true);
     }
 
-    ~@InputDispatcherP()
+    ~@InputDispatcher()
     {
-        UnityEngine.Debug.Assert(!m_MainActionMap.enabled, "This will cause a leak and performance issues, InputDispatcherP.MainActionMap.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_MainActionMap.enabled, "This will cause a leak and performance issues, InputDispatcher.MainActionMap.Disable() has not been called.");
     }
 
     /// <summary>
@@ -637,12 +637,12 @@ public partial class @InputDispatcherP: IInputActionCollection2, IDisposable
     /// </summary>
     public struct MainActionMapActions
     {
-        private @InputDispatcherP m_Wrapper;
+        private @InputDispatcher m_Wrapper;
 
         /// <summary>
         /// Construct a new instance of the input action map wrapper class.
         /// </summary>
-        public MainActionMapActions(@InputDispatcherP wrapper) { m_Wrapper = wrapper; }
+        public MainActionMapActions(@InputDispatcher wrapper) { m_Wrapper = wrapper; }
         /// <summary>
         /// Provides access to the underlying input action "MainActionMap/Move".
         /// </summary>

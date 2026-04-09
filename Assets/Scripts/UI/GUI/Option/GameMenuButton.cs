@@ -27,7 +27,7 @@ public class GameMenuButton : BaseMono, IEscClosable
     public void TitleButton()
     {
         UDebug.Print($"타이틀 버튼 클릭");
-        GameManager.Ins.LoadSceneAsync((int)EScene.Title, CallbackHandle, ProgressHandle);
+        GameManager.Ins.LoadSceneAsyncWithFade((int)EScene.Title);
     }
 
     public void ExitButton()
@@ -43,18 +43,6 @@ public class GameMenuButton : BaseMono, IEscClosable
     public void CloseUi()
     {
         UObject.SetActive(gameObject, false);
-    }
-    #endregion
-
-    #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-    private void CallbackHandle()
-    {
-
-    }
-
-    private void ProgressHandle(float onProgress)
-    {
-
     }
     #endregion
 

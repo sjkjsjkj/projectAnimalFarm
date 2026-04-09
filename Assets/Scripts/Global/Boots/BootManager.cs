@@ -60,6 +60,8 @@ public class BootManager : MonoBehaviour
         tileIdToState.Initialize();
         var databaseManager = UObject.AddComponent<DatabaseManager>(root); // 리소스 폴더의 테이블 SO를 읽음
         databaseManager.Initialize();
+        var inventoryManager = UObject.AddComponent<InventoryManager>(root); // 리소스 폴더를 읽고 씬 오브젝트를 코루틴으로 탐색
+        inventoryManager.Initialize();
         // DatabaseManager 이후 실행 ↓
         var dataManager = UObject.AddComponent<DataManager>(root);
         dataManager.Initialize();
@@ -77,8 +79,6 @@ public class BootManager : MonoBehaviour
         // 다른 매니저들을 위해 마지막에 실행 ↓
         var frameManager = UObject.AddComponent<FrameManager>(root);
         frameManager.Initialize();
-        var inventoryManager = UObject.AddComponent<InventoryManager>(root);
-        inventoryManager.Initialize();
         // 검증
         if (root == null)
         {
