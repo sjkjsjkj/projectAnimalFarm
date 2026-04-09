@@ -5,9 +5,10 @@
 /// </summary>
 public class TestMovedGlobalCanvas : BaseMono
 {
+    [SerializeField] private bool _rectReset = true;
+
     private void Start()
     {
-        DontDestroyOnLoad(gameObject);
         GameObject globalCanvas = UObject.Find(K.NAME_GLOBAL_CANVAS_ROOT);
         if(globalCanvas != null)
         {
@@ -15,7 +16,7 @@ public class TestMovedGlobalCanvas : BaseMono
         }
         //
         var rect = GetComponent<RectTransform>();
-        if (rect != null)
+        if (_rectReset && rect != null)
         {
             rect.localScale = Vector3.one;
             rect.offsetMin = Vector3.zero;

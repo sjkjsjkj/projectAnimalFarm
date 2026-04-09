@@ -28,13 +28,13 @@ public static class UObject
     /// <param name="prefab">프리펩 게임 오브젝트</param>
     /// <param name="parent">부모 오브젝트</param>
     /// <returns></returns>
-    public static GameObject Spawn(GameObject prefab, Transform parent = null)
+    public static GameObject Spawn(GameObject prefab, Transform parent = null, bool useLocal = false)
     {
         if (prefab == null)
         {
             return null;
         }
-        return UnityEngine.Object.Instantiate(prefab, parent);
+        return UnityEngine.Object.Instantiate(prefab, parent, useLocal);
     }
 
     /// <summary>

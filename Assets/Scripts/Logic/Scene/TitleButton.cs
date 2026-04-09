@@ -6,17 +6,8 @@ public class TitleButton : BaseMono
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     public void GameStart()
     {
-        GameManager.Ins.LoadSceneAsync((int)EScene.Main, OnLoadComplete, OnProgress);
+        UDebug.Print($"게임 스타트 버튼을 클릭했습니다.");
+        GameManager.Ins.LoadSceneAsyncWithFade((int)EScene.Main);
     }
     #endregion
-
-    private void OnProgress(float progress)
-    {
-        UDebug.Print($"로딩 중입니다. {progress * 100}%");
-    }
-
-    private void OnLoadComplete()
-    {
-        UDebug.Print($"씬 로드 완료!");
-    }
 }

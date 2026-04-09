@@ -86,6 +86,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Menu",
+                    "type": "Button",
+                    "id": "70490e72-61a3-49c9-a31d-8029a3b8c966",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -234,6 +243,17 @@
                 },
                 {
                     "name": "",
+                    "id": "6528c71e-14df-4232-9088-96849f51b9ae",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "760ffa12-ab22-4bc7-95e1-243997ba5bea",
                     "path": "<Keyboard>/i",
                     "interactions": "",
@@ -246,6 +266,17 @@
                 {
                     "name": "",
                     "id": "47450a73-cc8f-46e8-9e85-fa598210e409",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pictorial",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6f5caeaf-b272-43be-923a-20f71d27867d",
                     "path": "<Keyboard>/o",
                     "interactions": "",
                     "processors": "",
@@ -262,17 +293,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Run",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "6528c71e-14df-4232-9088-96849f51b9ae",
-                    "path": "<Keyboard>/e",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Use",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -405,6 +425,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "ScrollSlot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7701daca-6a29-440a-ba66-324912a01371",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Menu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

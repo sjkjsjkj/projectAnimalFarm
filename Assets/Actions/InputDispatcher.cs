@@ -72,7 +72,7 @@ using UnityEngine.InputSystem.Utilities;
 /// }
 /// </code>
 /// </example>
-public partial class @InputDispatcherP: IInputActionCollection2, IDisposable
+public partial class @InputDispatcher: IInputActionCollection2, IDisposable
 {
     /// <summary>
     /// Provides access to the underlying asset instance.
@@ -82,7 +82,7 @@ public partial class @InputDispatcherP: IInputActionCollection2, IDisposable
     /// <summary>
     /// Constructs a new instance.
     /// </summary>
-    public @InputDispatcherP()
+    public @InputDispatcher()
     {
         asset = InputActionAsset.FromJson(@"{
     ""version"": 1,
@@ -169,6 +169,15 @@ public partial class @InputDispatcherP: IInputActionCollection2, IDisposable
                     ""type"": ""PassThrough"",
                     ""id"": ""49c84697-f51a-4a08-93e3-9a70a7a63601"",
                     ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Menu"",
+                    ""type"": ""Button"",
+                    ""id"": ""70490e72-61a3-49c9-a31d-8029a3b8c966"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -320,6 +329,17 @@ public partial class @InputDispatcherP: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""6528c71e-14df-4232-9088-96849f51b9ae"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Inventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""760ffa12-ab22-4bc7-95e1-243997ba5bea"",
                     ""path"": ""<Keyboard>/i"",
                     ""interactions"": """",
@@ -332,6 +352,17 @@ public partial class @InputDispatcherP: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""47450a73-cc8f-46e8-9e85-fa598210e409"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pictorial"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6f5caeaf-b272-43be-923a-20f71d27867d"",
                     ""path"": ""<Keyboard>/o"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -348,17 +379,6 @@ public partial class @InputDispatcherP: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Run"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""6528c71e-14df-4232-9088-96849f51b9ae"",
-                    ""path"": ""<Keyboard>/e"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Use"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -493,6 +513,17 @@ public partial class @InputDispatcherP: IInputActionCollection2, IDisposable
                     ""action"": ""ScrollSlot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7701daca-6a29-440a-ba66-324912a01371"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -510,11 +541,12 @@ public partial class @InputDispatcherP: IInputActionCollection2, IDisposable
         m_MainActionMap_Use = m_MainActionMap.FindAction("Use", throwIfNotFound: true);
         m_MainActionMap_SelectSlot = m_MainActionMap.FindAction("SelectSlot", throwIfNotFound: true);
         m_MainActionMap_ScrollSlot = m_MainActionMap.FindAction("ScrollSlot", throwIfNotFound: true);
+        m_MainActionMap_Menu = m_MainActionMap.FindAction("Menu", throwIfNotFound: true);
     }
 
-    ~@InputDispatcherP()
+    ~@InputDispatcher()
     {
-        UnityEngine.Debug.Assert(!m_MainActionMap.enabled, "This will cause a leak and performance issues, InputDispatcherP.MainActionMap.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_MainActionMap.enabled, "This will cause a leak and performance issues, InputDispatcher.MainActionMap.Disable() has not been called.");
     }
 
     /// <summary>
@@ -599,17 +631,18 @@ public partial class @InputDispatcherP: IInputActionCollection2, IDisposable
     private readonly InputAction m_MainActionMap_Use;
     private readonly InputAction m_MainActionMap_SelectSlot;
     private readonly InputAction m_MainActionMap_ScrollSlot;
+    private readonly InputAction m_MainActionMap_Menu;
     /// <summary>
     /// Provides access to input actions defined in input action map "MainActionMap".
     /// </summary>
     public struct MainActionMapActions
     {
-        private @InputDispatcherP m_Wrapper;
+        private @InputDispatcher m_Wrapper;
 
         /// <summary>
         /// Construct a new instance of the input action map wrapper class.
         /// </summary>
-        public MainActionMapActions(@InputDispatcherP wrapper) { m_Wrapper = wrapper; }
+        public MainActionMapActions(@InputDispatcher wrapper) { m_Wrapper = wrapper; }
         /// <summary>
         /// Provides access to the underlying input action "MainActionMap/Move".
         /// </summary>
@@ -646,6 +679,10 @@ public partial class @InputDispatcherP: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "MainActionMap/ScrollSlot".
         /// </summary>
         public InputAction @ScrollSlot => m_Wrapper.m_MainActionMap_ScrollSlot;
+        /// <summary>
+        /// Provides access to the underlying input action "MainActionMap/Menu".
+        /// </summary>
+        public InputAction @Menu => m_Wrapper.m_MainActionMap_Menu;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -699,6 +736,9 @@ public partial class @InputDispatcherP: IInputActionCollection2, IDisposable
             @ScrollSlot.started += instance.OnScrollSlot;
             @ScrollSlot.performed += instance.OnScrollSlot;
             @ScrollSlot.canceled += instance.OnScrollSlot;
+            @Menu.started += instance.OnMenu;
+            @Menu.performed += instance.OnMenu;
+            @Menu.canceled += instance.OnMenu;
         }
 
         /// <summary>
@@ -737,6 +777,9 @@ public partial class @InputDispatcherP: IInputActionCollection2, IDisposable
             @ScrollSlot.started -= instance.OnScrollSlot;
             @ScrollSlot.performed -= instance.OnScrollSlot;
             @ScrollSlot.canceled -= instance.OnScrollSlot;
+            @Menu.started -= instance.OnMenu;
+            @Menu.performed -= instance.OnMenu;
+            @Menu.canceled -= instance.OnMenu;
         }
 
         /// <summary>
@@ -840,5 +883,12 @@ public partial class @InputDispatcherP: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnScrollSlot(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Menu" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnMenu(InputAction.CallbackContext context);
     }
 }
