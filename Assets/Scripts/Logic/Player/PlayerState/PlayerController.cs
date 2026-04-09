@@ -20,6 +20,8 @@ public class PlayerController : BaseMono
     private bool _inputDrinking;
     private bool _inputEating;
     private Vector2 _targetPos;
+    private float _duration;
+    private bool _isCanceled;
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
@@ -31,30 +33,34 @@ public class PlayerController : BaseMono
     {
         _inputRun = ctx.isRun;
     }
-    private void PlayerFishingHandle(Vector2 taregtPos)
+    private void PlayerFishingHandle(OnPlayerFishing ctx)
     {
         _inputFishing = true;
-        _targetPos = taregtPos;
+        _targetPos = ctx.fishingPointPos;
     }
-    private void PlayerMiningHandle(Vector2 taregtPos)
+    private void PlayerMiningHandle(OnPlayerMining ctx)
     {
         _inputMining = true;
-        _targetPos = taregtPos;
+        _targetPos = ctx.orePos;
     }
-    private void PlayerLoggingHandle(Vector2 taregtPos)
+    private void PlayerLoggingHandle(OnPlayerLogging ctx)
     {
         _inputLogging = true;
-        _targetPos = taregtPos;
+        _targetPos = ctx.woodPos;
     }
-    private void PlayerDrinkingHandle(Vector2 taregtPos)
+    private void PlayerDrinkingHandle(OnPlayerDrinking ctx)
     {
         _inputDrinking = true;
-        _targetPos = taregtPos;
+        _duration = ctx.drinkingTime;
     }
-    private void PlayerEatingHandle(Vector2 taregtPos)
+    private void PlayerEatingHandle(OnPlayerEating ctx)
     {
         _inputEating = true;
-        _targetPos = taregtPos;
+        _duration = ctx.eatingTime;
+    }
+    private void PlayerCanceledHandle(OnPlayerCanceled ctx)
+    {
+        _isCanceled = true;
     }
     private void ClearInput()
     {
@@ -63,14 +69,16 @@ public class PlayerController : BaseMono
         _inputLogging = false;
         _inputDrinking = false;
         _inputEating = false;
+        _isCanceled = false;
     }
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
     private void FixedUpdate() // 구조체를 작성하여 상태 머신에 전달
     {
-        PlayerContext context = new(_rb, transform, _sprite, _anim, _inputMove, _inputRun,
-            _inputFishing, _inputMining, _inputLogging, _inputEating, _inputDrinking, _targetPos);
+        PlayerContext context = new(_rb, transform, _sprite, _anim,
+            _inputMove, _inputRun, _inputFishing, _inputMining, _inputLogging,
+            _inputEating, _inputDrinking, _targetPos, _duration, _isCanceled);
         _fsm.UpdateState(in context);
         ClearInput();
     }
@@ -105,12 +113,24 @@ public class PlayerController : BaseMono
     {
         EventBus<OnPlayerMove>.Subscribe(PlayerMoveHandle);
         EventBus<OnPlayerRun>.Subscribe(PlayerRunHandle);
+        EventBus<OnPlayerFishing>.Subscribe(PlayerFishingHandle);
+        EventBus<OnPlayerMining>.Subscribe(PlayerMiningHandle);
+        EventBus<OnPlayerLogging>.Subscribe(PlayerLoggingHandle);
+        EventBus<OnPlayerDrinking>.Subscribe(PlayerDrinkingHandle);
+        EventBus<OnPlayerEating>.Subscribe(PlayerEatingHandle);
+        EventBus<OnPlayerCanceled>.Subscribe(PlayerCanceledHandle);
     }
 
     private void OnDisable()
     {
         EventBus<OnPlayerMove>.Unsubscribe(PlayerMoveHandle);
         EventBus<OnPlayerRun>.Unsubscribe(PlayerRunHandle);
+        EventBus<OnPlayerFishing>.Unsubscribe(PlayerFishingHandle);
+        EventBus<OnPlayerMining>.Unsubscribe(PlayerMiningHandle);
+        EventBus<OnPlayerLogging>.Unsubscribe(PlayerLoggingHandle);
+        EventBus<OnPlayerDrinking>.Unsubscribe(PlayerDrinkingHandle);
+        EventBus<OnPlayerEating>.Unsubscribe(PlayerEatingHandle);
+        EventBus<OnPlayerCanceled>.Unsubscribe(PlayerCanceledHandle);
     }
     #endregion
 }

@@ -355,11 +355,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7256681154865669857, guid: 01cc4e0e79fd9974a877204e73f3d5fb, type: 3}
       propertyPath: _uniqueId
-      value: 8fe30649-b1ff-48f2-814e-38f12ca4d311
+      value: 3051703b-6b79-43cf-8380-74dfb1fd5ef4
       objectReference: {fileID: 0}
     - target: {fileID: 7256681154865669857, guid: 01cc4e0e79fd9974a877204e73f3d5fb, type: 3}
       propertyPath: _instanceId
-      value: -4608
+      value: -1686430
       objectReference: {fileID: 0}
     - target: {fileID: 8445878064488992250, guid: 01cc4e0e79fd9974a877204e73f3d5fb, type: 3}
       propertyPath: m_LocalPosition.x
@@ -404,7 +404,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3341833630886760413, guid: 01cc4e0e79fd9974a877204e73f3d5fb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 589347510}
   m_SourcePrefab: {fileID: 100100000, guid: 01cc4e0e79fd9974a877204e73f3d5fb, type: 3}
 --- !u!1 &108687070
 GameObject:
@@ -1150,8 +1153,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16a0f1108b1a542428cb3162d1f28a48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: 23dc324d-f654-48f2-9991-1b34cd6d4a25
-  _instanceId: 207260
+  _uniqueId: dc9bdc6f-ef53-4ae9-bda3-8fe993ebd968
+  _instanceId: 375348
   _textUi: {fileID: 1267111589}
 --- !u!114 &411097214
 MonoBehaviour:
@@ -1428,6 +1431,25 @@ MonoBehaviour:
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
   m_ScrollDeltaPerTick: 6
+--- !u!1 &589347505 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3341833630886760413, guid: 01cc4e0e79fd9974a877204e73f3d5fb, type: 3}
+  m_PrefabInstance: {fileID: 76858584}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &589347510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 589347505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86f8157470a048b4fa447783a2e8ff86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _uniqueId: 36c03cbf-1934-43e7-97ba-c778931541dd
+  _instanceId: -1742160
 --- !u!1 &678458647
 GameObject:
   m_ObjectHideFlags: 0
@@ -2060,8 +2082,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7116f37a184de894bbf48bc13d0bdd00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: dc44813c-9ddb-4146-99df-72d57688b0b9
-  _instanceId: 207326
+  _uniqueId: 7e688ff2-a62f-463f-a60c-bb2e0d550ec3
+  _instanceId: 375410
   _testTileID: 10000
   _animalID: World_Animal_Cow
   _breedingArea: {fileID: 1729574747}
@@ -2090,8 +2112,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3d637a0af3f6dd42855b5bf6243446d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: 2e97391e-9d77-4ebf-a173-c78577552242
-  _instanceId: 207328
+  _uniqueId: d16d56e3-7b47-4789-a207-304f2343b783
+  _instanceId: 375412
   _itemCoordinatior: {fileID: 0}
   _breedingArea: {fileID: 1729574747}
 --- !u!1 &1359072175
@@ -2837,8 +2859,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6523a6c44eb39d64b9982b95ce4230ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: 42686155-a81e-4e91-be95-da91fc870b83
-  _instanceId: 207378
+  _uniqueId: fcb2934e-54cf-4d4d-a709-cd271088f812
+  _instanceId: 375466
   _rectReset: 1
 --- !u!114 &1729574747 stripped
 MonoBehaviour:

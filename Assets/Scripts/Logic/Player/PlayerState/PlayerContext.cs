@@ -17,14 +17,16 @@ public readonly struct PlayerContext
     public readonly bool inputLogging;
     public readonly bool inputDrinking;
     public readonly bool inputEating;
-    public readonly Vector2 targetPos;
+    // 부가 데이터
+    public readonly Vector2 targetPos; // 바라봐야 할 좌표
+    public readonly float duration; // 단발성 애니메이션 지속시간
+    public readonly bool isCanceled; // 애니메이션 취소 요청
 
     // 생성자
     public PlayerContext(
         Rigidbody2D rb, Transform tr, SpriteRenderer sprite, Animator anim,
-        Vector2 inputMove, bool inputRun,
-        bool inputFishing, bool inputMining, bool inputLogging,
-        bool inputDrinking, bool inputEating, Vector2 targetPos)
+        Vector2 inputMove, bool inputRun, bool inputFishing, bool inputMining, bool inputLogging,
+        bool inputDrinking, bool inputEating, Vector2 targetPos, float duration, bool isCanceled)
     {
         this.rb = rb;
         this.tr = tr;
@@ -38,5 +40,7 @@ public readonly struct PlayerContext
         this.inputDrinking = inputDrinking;
         this.inputEating = inputEating;
         this.targetPos = targetPos;
+        this.duration = duration;
+        this.isCanceled = isCanceled;
     }
 }
