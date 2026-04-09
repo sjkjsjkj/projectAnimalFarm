@@ -704,7 +704,7 @@ MonoBehaviour:
   _instanceId: 0
   _slotContainer: {fileID: 2460892831586013129}
   _slotPrefab: {fileID: 8775709780734684913, guid: 5c58b6d882b88a744958e52fd197fb09, type: 3}
-  _defaultSlotCount: 15
+  _dragIcon: {fileID: 0}
   _slotList:
   - {fileID: 8775709780734684913, guid: 5c58b6d882b88a744958e52fd197fb09, type: 3}
   - {fileID: 8775709780734684913, guid: 5c58b6d882b88a744958e52fd197fb09, type: 3}
@@ -721,6 +721,7 @@ MonoBehaviour:
   - {fileID: 8775709780734684913, guid: 5c58b6d882b88a744958e52fd197fb09, type: 3}
   - {fileID: 8775709780734684913, guid: 5c58b6d882b88a744958e52fd197fb09, type: 3}
   - {fileID: 8775709780734684913, guid: 5c58b6d882b88a744958e52fd197fb09, type: 3}
+  TestCurrentId: 0
   _popupRoot: {fileID: 5114499866179276271}
   _actionPopup: {fileID: 8569374336056314499}
   _popupOffsetX: 10
@@ -1320,9 +1321,11 @@ MonoBehaviour:
   _defaultCategory: Animal
   _toggleKey: 111
   _closeKey: 27
-  _animalSelectedObject: {fileID: 0}
-  _fishSelectedObject: {fileID: 0}
-  _gatherSelectedObject: {fileID: 0}
+  _animalTabIcon: {fileID: 0}
+  _fishTabIcon: {fileID: 0}
+  _gatherTabIcon: {fileID: 0}
+  _selectedTabColor: {r: 1, g: 1, b: 1, a: 1}
+  _unselectedTabColor: {r: 1, g: 1, b: 1, a: 0.55}
   _logEnabled: 1
 --- !u!114 &-3232677152463958726
 MonoBehaviour:
@@ -1340,13 +1343,19 @@ MonoBehaviour:
   _instanceId: 0
   _category: Animal
   _bookSystem: {fileID: 0}
-  _spriteRegistry: {fileID: 0}
+  _detailPanel: {fileID: 0}
   _leftSlotRoot: {fileID: 0}
   _rightSlotRoot: {fileID: 0}
   _slotPrefab: {fileID: -2511549104263994465, guid: dcbd4126814300f48aab1a1ed32ecb4d, type: 3}
   _buildOnStart: 1
   _leftPageCapacity: 20
   _rightPageCapacity: 20
+  _prevPageButton: {fileID: 0}
+  _nextPageButton: {fileID: 0}
+  _pageIndexText: {fileID: 0}
+  _pageTextFormat: '{0} / {1}'
+  _hideDetailPanelOnPageChanged: 1
+  _logEnabled: 1
 --- !u!1 &3868939218758053431
 GameObject:
   m_ObjectHideFlags: 0
