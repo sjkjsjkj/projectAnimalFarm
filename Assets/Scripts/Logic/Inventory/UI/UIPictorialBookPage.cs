@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -12,6 +12,7 @@ using UnityEngine.UI;
 ///    -> 물고기처럼 엔트리가 적은 카테고리도 빈 슬롯이 같이 보이게 함
 /// 2. 페이지가 비어 있어도 1페이지는 유지해서 책 UI가 비어 보이지 않게 함
 /// 3. 슬롯 클릭 / 페이지 이동 로직은 기존 방식 유지
+/// 4. 이전 / 다음 페이지 버튼 클릭 시 페이지 넘김 사운드를 재생할 수 있게 추가
 /// </summary>
 public class UIPictorialBookPage : BaseMono
 {
@@ -41,6 +42,24 @@ public class UIPictorialBookPage : BaseMono
     [Header("페이지 표시 텍스트 (선택)")]
     [SerializeField] private TMP_Text _pageIndexText;
     [SerializeField] private string _pageTextFormat = "{0} / {1}";
+
+    [Header("페이지 넘김 사운드")]
+    [SerializeField] private Transform _soundTarget;
+    [SerializeField] private bool _useRandomPageSound = false;
+
+    [Tooltip("다음 페이지 버튼 클릭 시 재생할 사운드 ID 목록")]
+    [SerializeField]
+    private string[] _nextPageSoundIds =
+    {
+        Id.Sfx_Ui_Paper_4
+    };
+
+    [Tooltip("이전 페이지 버튼 클릭 시 재생할 사운드 ID 목록")]
+    [SerializeField]
+    private string[] _prevPageSoundIds =
+    {
+        Id.Sfx_Ui_Paper_4
+    };
 
     [Header("옵션")]
     [SerializeField] private bool _hideDetailPanelOnPageChanged = true;
@@ -72,6 +91,11 @@ public class UIPictorialBookPage : BaseMono
     private void Start()
     {
         BindBookSystemEvent();
+
+        if (_soundTarget == null)
+        {
+            _soundTarget = transform;
+        }
 
         if (_buildOnStart)
         {
@@ -205,7 +229,6 @@ public class UIPictorialBookPage : BaseMono
                 $"page={CurrentPageNumber}/{totalPageCount}, startIndex={startIndex}, pageCapacity={pageCapacity}");
         }
 
-        // 엔트리 수와 상관없이 페이지 슬롯 수만큼 항상 생성
         for (int localIndex = 0; localIndex < pageCapacity; localIndex++)
         {
             Transform parent = GetParentByIndex(localIndex, leftCapacity, rightCapacity);
@@ -250,6 +273,7 @@ public class UIPictorialBookPage : BaseMono
 
         _currentPageIndex--;
         Rebuild();
+        PlayPrevPageSound();
     }
 
     public void OnClickNextPage()
@@ -261,6 +285,7 @@ public class UIPictorialBookPage : BaseMono
 
         _currentPageIndex++;
         Rebuild();
+        PlayNextPageSound();
     }
 
     public void GoToPage(int pageIndex)
@@ -281,6 +306,24 @@ public class UIPictorialBookPage : BaseMono
     public void GoToFirstPage()
     {
         GoToPage(0);
+    }
+
+    /// <summary>
+    /// 다음 페이지 버튼 클릭 사운드 수동 재생용
+    /// 필요하면 Button OnClick에 직접 연결해도 됨
+    /// </summary>
+    public void PlayNextPageSound()
+    {
+        PlayPageSound(_nextPageSoundIds, "NextPage");
+    }
+
+    /// <summary>
+    /// 이전 페이지 버튼 클릭 사운드 수동 재생용
+    /// 필요하면 Button OnClick에 직접 연결해도 됨
+    /// </summary>
+    public void PlayPrevPageSound()
+    {
+        PlayPageSound(_prevPageSoundIds, "PrevPage");
     }
 
     private void HandleDiscovered(string itemId)
@@ -361,7 +404,6 @@ public class UIPictorialBookPage : BaseMono
             return 0;
         }
 
-        // 엔트리가 0개여도 빈 슬롯 페이지 1장은 유지
         if (totalEntryCount <= 0)
         {
             return 1;
@@ -423,5 +465,75 @@ public class UIPictorialBookPage : BaseMono
         }
 
         return category.Trim();
+    }
+
+    private void PlayPageSound(string[] soundIds, string tag)
+    {
+        if (soundIds == null || soundIds.Length == 0)
+        {
+            return;
+        }
+
+        int validCount = 0;
+        for (int i = 0; i < soundIds.Length; i++)
+        {
+            if (!string.IsNullOrWhiteSpace(soundIds[i]))
+            {
+                validCount++;
+            }
+        }
+
+        if (validCount <= 0)
+        {
+            return;
+        }
+
+        string selectedSoundId = string.Empty;
+
+        if (_useRandomPageSound && validCount > 1)
+        {
+            int targetIndex = UnityEngine.Random.Range(0, validCount);
+            int currentIndex = 0;
+
+            for (int i = 0; i < soundIds.Length; i++)
+            {
+                if (string.IsNullOrWhiteSpace(soundIds[i]))
+                {
+                    continue;
+                }
+
+                if (currentIndex == targetIndex)
+                {
+                    selectedSoundId = soundIds[i];
+                    break;
+                }
+
+                currentIndex++;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < soundIds.Length; i++)
+            {
+                if (!string.IsNullOrWhiteSpace(soundIds[i]))
+                {
+                    selectedSoundId = soundIds[i];
+                    break;
+                }
+            }
+        }
+
+        if (string.IsNullOrWhiteSpace(selectedSoundId))
+        {
+            return;
+        }
+
+        // UI 사운드는 위치 기반이 아니라 2D처럼 재생
+        USound.PlaySfx(selectedSoundId);
+
+        if (_logEnabled)
+        {
+            Debug.Log($"[UIPictorialBookPage] 페이지 사운드 재생: {selectedSoundId} / tag={tag}");
+        }
     }
 }

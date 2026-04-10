@@ -303,11 +303,6 @@ MonoBehaviour:
     icon: {fileID: 21300000, guid: 4702af5b72bf45e468f021e8391be901, type: 2}
     category: Animal
     assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Ostrich_Brown_0.asset
-  - itemId: Panda Idel_0
-    displayName: "\uD310\uB2E4"
-    icon: {fileID: 0}
-    category: Animal
-    assetPath: Assets/ScriptableObjects/Item/Animal/StaticItemSO_Panda_Idel_0.asset
   - itemId: Penguin_0
     displayName: "\uD33D\uADC4"
     icon: {fileID: 21300000, guid: 659f729c893671e459e245a12696ec7d, type: 2}
@@ -943,7 +938,7 @@ MonoBehaviour:
     icon: {fileID: 21300000, guid: 088c24cdcaa7592488939d618a41f364, type: 2}
     category: Gather
     assetPath: Assets/ScriptableObjects/Item/Harvest/StaticItemSO_Grape_0.asset
-  - itemId: LargeGgreenOnion_0
+  - itemId: "\u314A"
     displayName: "\uB300\uD30C"
     icon: {fileID: 21300000, guid: 576a252aaa033aa41890dcf337a78428, type: 2}
     category: Gather

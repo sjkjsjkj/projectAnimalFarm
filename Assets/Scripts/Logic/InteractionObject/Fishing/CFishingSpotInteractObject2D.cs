@@ -49,7 +49,11 @@ public class CFishingSpotInteractObject2D : BaseMono, IInteractable
         }
 
         bool useSeaFishing = _fishingSpotType == EFishingSpotType.SeaWater;
-        bool canFish = collector.FishingController.CanManualFishFromSpot(collector, useSeaFishing);
+        bool canFish = collector.FishingController.CanManualFishFromSpot(
+            collector,
+            useSeaFishing,
+            transform.position
+        );
 
         if (_logEnabled)
         {
@@ -79,7 +83,11 @@ public class CFishingSpotInteractObject2D : BaseMono, IInteractable
 
         bool useSeaFishing = _fishingSpotType == EFishingSpotType.SeaWater;
         bool result = collector.FishingController != null &&
-                      collector.FishingController.TryFishFromSpot(collector, useSeaFishing);
+                      collector.FishingController.TryFishFromSpot(
+                          collector,
+                          useSeaFishing,
+                          transform.position
+                      );
 
         if (_logEnabled)
         {
