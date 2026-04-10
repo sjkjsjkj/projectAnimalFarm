@@ -3,6 +3,9 @@
 [System.Serializable]
 public class PlayerRunState : IPlayerState
 {
+    [Header("걸음 설정")]
+    [SerializeField] private float _stepSoundInterval = 0.2f;
+
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private const string MOVE_SPEED_PARAM = "fMoveSpeed";
     private const string FACING_PARAM = "fFacing";
@@ -11,6 +14,8 @@ public class PlayerRunState : IPlayerState
     private readonly int _hashSpeed = Animator.StringToHash(MOVE_SPEED_PARAM);
     private readonly int _hashFacing = Animator.StringToHash(FACING_PARAM);
     private readonly int _hashLocomotion = Animator.StringToHash(LOCOMOTION_PARAM);
+
+    private float _nextStepTime;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -39,6 +44,8 @@ public class PlayerRunState : IPlayerState
             context.anim.SetFloat(_hashFacing, facing);
             UPlayer.SetSpriteFacing(context.sprite, dir);
         }
+        // 발자국 소리 재생
+        UPlayer.TryPlayStepSound(ref _nextStepTime, _stepSoundInterval);
         return false;
     }
 

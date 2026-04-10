@@ -75,7 +75,7 @@ public class AnimalData
     // 오브젝트에서 특정 프레임마다 불러옴.
     public void Tick()
     {
-        UDebug.Print($"current Animal Hunger : {_hunger}");
+        //UDebug.Print($"current Animal Hunger : {_hunger}");
         if(_productProgress == K.MAX_PRODUCT_PROGRESS)
         {
             return;
@@ -95,7 +95,7 @@ public class AnimalData
 
             if (_hunger <= K.ANIMAL_HUNGER_CONDITION)
             {
-                UDebug.Print($"{Name} is so Hungry");
+                //UDebug.Print($"{Name} is so Hungry");
                 OnHungry?.Invoke();
                 return;
             }

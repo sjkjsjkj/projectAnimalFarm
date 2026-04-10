@@ -124,6 +124,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     #endregion
 
     #region ─────────────────────────▶ 접근자 ◀─────────────────────────
+    public string RewardItemId => _itemId;
     public bool IsCollectableNow => !_isCollected && !_isProcessing;
     public bool CanManualCollect => _collectMode == ECollectMode.ButtonOnly || _collectMode == ECollectMode.AutoOrButton;
     public bool CanAutoCollect => _collectMode == ECollectMode.AutoOnly || _collectMode == ECollectMode.AutoOrButton;
@@ -351,7 +352,19 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         {
             yield break;
         }
-
+        // TODO
+        var so = DatabaseManager.Ins.Unit(_itemId);
+        UDebug.Print("타입 판단 시작");
+        switch (so.Type)
+        {
+            case EType.FeedItem:
+                break;
+            case EType.OreItem:
+                UDebug.Print("광물 판단 완료");
+                OnPlayerMining.Publish(transform.position, 0.5f);
+                break;
+        }
+        
         _isProcessing = true;
 
         if (_setPlayerBusyDuringManualCollect && collector != null)
@@ -612,7 +625,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     {
         if (_autoCollectDelay > 0f)
         {
-            yield return new WaitForSeconds(_autoCollectDelay);
+            yield return UCoroutine.GetWait(_autoCollectDelay);
         }
 
         _autoCollectRoutine = null;

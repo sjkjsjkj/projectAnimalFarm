@@ -1,40 +1,24 @@
 ﻿using UnityEngine;
 
-[System.Serializable]
-public class PlayerLoggingState : IPlayerState
+public class PlayerLoggingState : PlayerOneTime
 {
-    #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
-    private const string MOVE_SPEED_PARAM = "fMoveSpeed";
-    private const string FACING_PARAM = "fFacing";
-    private const string LOCOMOTION_PARAM = "Locomotion";
+    private const string LOGGING_PARAM = "Logging";
 
-    private readonly int _hashSpeed = Animator.StringToHash(MOVE_SPEED_PARAM);
-    private readonly int _hashFacing = Animator.StringToHash(FACING_PARAM);
-    private readonly int _hashLocomotion = Animator.StringToHash(LOCOMOTION_PARAM);
-    #endregion
+    private readonly int _hashLogging = Animator.StringToHash(LOGGING_PARAM);
+
+    private static string[] _loggingSound =
+    {
+        Id.Sfx_Player_WoodHit_4,
+    };
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
-    public bool Enter(in PlayerContext context)
+    public override bool Enter(in PlayerContext context)
     {
-        DataManager.Ins.Player.ChangeState(EPlayerState.Logging);
-        context.anim.SetFloat(_hashSpeed, 0.5f); // Walk
-        context.anim.Play(_hashLocomotion);
-        return false;
+        base.Enter(in context);
+        context.anim.Play(_hashLogging);
+        int index = Random.Range(0, _loggingSound.Length);
+        USound.PlaySfx(_loggingSound[index]);
+        return true;
     }
-
-    public bool Frame(in PlayerContext context)
-    {
-        // 속도 주입
-        Vector2 dir = context.inputMove.normalized;
-        context.rb.velocity = dir * DataManager.Ins.Player.CurWalkSpeed;
-        // 이동이 있을 경우 방향 설정
-        if (dir.sqrMagnitude > 0)
-        {
-            context.anim.SetFloat(_hashFacing, UPlayer.GetFacingValue(dir));
-        }
-        return false;
-    }
-
-    public void Exit(in PlayerContext context) { }
     #endregion
 }

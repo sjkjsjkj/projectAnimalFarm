@@ -26,6 +26,11 @@ public class GameMenuScreen : BaseMono, IEscClosable
     {
         UObject.SetActive(gameObject, false);
     }
+    public void CloseButton()
+    {
+        CloseUi();
+        EscManager.Ins.Exit(this);
+    }
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────

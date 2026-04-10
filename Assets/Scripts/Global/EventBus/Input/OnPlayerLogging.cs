@@ -6,15 +6,18 @@
 public readonly struct OnPlayerLogging
 {
     public readonly Vector2 woodPos;
+    public readonly float duration;
 
-    public OnPlayerLogging(Vector2 woodPos)
+    public OnPlayerLogging(Vector2 woodPos, float duration)
     {
         this.woodPos = woodPos;
+        this.duration = duration;
     }
 
     /// <param name="woodPos">나무 좌표</param>
-    public static void Publish(Vector2 woodPos)
+    /// <param name="duration">애니메이션 지속시간</param>
+    public static void Publish(Vector2 woodPos, float duration)
     {
-        EventBus<OnPlayerLogging>.Publish(new OnPlayerLogging(woodPos));
+        EventBus<OnPlayerLogging>.Publish(new OnPlayerLogging(woodPos, duration));
     }
 }

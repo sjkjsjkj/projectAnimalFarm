@@ -47,6 +47,15 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
             return null;
         }
     }
+
+    private void CallBack()
+    {
+
+    }
+    private void Progress(float progress)
+    {
+
+    }
     /// <summary>
     /// ID 만으로 정적 데이터를 반환합니다.
     /// </summary>
@@ -55,20 +64,20 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
     public ItemSO Item(string id)
     {
         UnitSO tempUnitSo = Unit(id);
-        if(tempUnitSo == null)
+        if (tempUnitSo == null)
         {
             //데이터베이스에 없음.
             return null;
         }
         ItemSO tempItemSO = Categorize(tempUnitSo);
-        if(tempItemSO == null)
+        if (tempItemSO == null)
         {
             //아이템 아님
             return null;
         }
         return tempItemSO;
     }
-    
+
     /// <summary>
     /// 미끼 아이템의 정적 데이터를 반환합니다.
     /// </summary>

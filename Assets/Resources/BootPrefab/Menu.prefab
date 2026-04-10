@@ -1681,7 +1681,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8770858131493788259}
         m_TargetAssemblyTypeName: GameMenuAudio, Assembly-CSharp
-        m_MethodName: CloseUi
+        m_MethodName: CloseButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5583,7 +5583,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3532975932302691153}
         m_TargetAssemblyTypeName: GameMenuScreen, Assembly-CSharp
-        m_MethodName: CloseUi
+        m_MethodName: CloseButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

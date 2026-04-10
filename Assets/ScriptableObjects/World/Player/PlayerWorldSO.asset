@@ -21,12 +21,24 @@ MonoBehaviour:
   _prefab: {fileID: 5251321745402914498, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
   _size: {x: 0.4, y: 0.4}
   _animController: {fileID: 0}
-  _walkSpeed: 5
-  _runMultiplier: 1.5
+  _walkSpeed: 3
+  _runMultiplier: 1.85
   _maxStamina: 100
   _maxHunger: 100
   _maxThirst: 100
   _maxMoney: 2147483647
   _skillExpTables:
+  - skillType: 1
+    expTable: 0a00000014000000280000004600000064000000
+  - skillType: 2
+    expTable: 0a00000014000000280000004600000064000000
+  - skillType: 3
+    expTable: 0a00000014000000280000004600000064000000
   - skillType: 4
-    expTable: 0a000000
+    expTable: 0a00000014000000280000004600000064000000
+  - skillType: 5
+    expTable: 0a00000014000000280000004600000064000000
+  - skillType: 6
+    expTable: 0a00000014000000280000004600000064000000
+  - skillType: 7
+    expTable: 0a00000014000000280000004600000064000000

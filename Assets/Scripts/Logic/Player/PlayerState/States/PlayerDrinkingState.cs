@@ -1,40 +1,26 @@
 ﻿using UnityEngine;
 
-[System.Serializable]
-public class PlayerDrinkingState : IPlayerState
+public class PlayerDrinkingState : PlayerOneTime
 {
-    #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
-    private const string MOVE_SPEED_PARAM = "fMoveSpeed";
-    private const string FACING_PARAM = "fFacing";
-    private const string LOCOMOTION_PARAM = "Locomotion";
+    private const string DRINKING_PARAM = "Eating";
 
-    private readonly int _hashSpeed = Animator.StringToHash(MOVE_SPEED_PARAM);
-    private readonly int _hashFacing = Animator.StringToHash(FACING_PARAM);
-    private readonly int _hashLocomotion = Animator.StringToHash(LOCOMOTION_PARAM);
-    #endregion
+    private readonly int _hashDrinking = Animator.StringToHash(DRINKING_PARAM);
+
+    private static string[] _drinkingSound =
+    {
+        Id.Sfx_Player_Drink_2,
+        Id.Sfx_Player_Drink_3,
+        Id.Sfx_Player_Drink_4,
+    };
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
-    public bool Enter(in PlayerContext context)
+    public override bool Enter(in PlayerContext context)
     {
-        DataManager.Ins.Player.ChangeState(EPlayerState.Drinking);
-        context.anim.SetFloat(_hashSpeed, 0.5f); // Walk
-        context.anim.Play(_hashLocomotion);
-        return false;
+        base.Enter(in context);
+        context.anim.Play(_hashDrinking);
+        int index = Random.Range(0, _drinkingSound.Length);
+        USound.PlaySfx(_drinkingSound[index]);
+        return true;
     }
-
-    public bool Frame(in PlayerContext context)
-    {
-        // 속도 주입
-        Vector2 dir = context.inputMove.normalized;
-        context.rb.velocity = dir * DataManager.Ins.Player.CurWalkSpeed;
-        // 이동이 있을 경우 방향 설정
-        if (dir.sqrMagnitude > 0)
-        {
-            context.anim.SetFloat(_hashFacing, UPlayer.GetFacingValue(dir));
-        }
-        return false;
-    }
-
-    public void Exit(in PlayerContext context) { }
     #endregion
 }

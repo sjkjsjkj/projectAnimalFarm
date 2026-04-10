@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8637693700152055993}
   - component: {fileID: 3391262680044502054}
   - component: {fileID: 1535459641262774118}
-  - component: {fileID: 7387353744042630589}
   - component: {fileID: 8255518558608426736}
   - component: {fileID: 9075371350282008030}
   - component: {fileID: 2002955669171265438}
@@ -111,21 +110,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.3, y: 0.5}
   m_EdgeRadius: 0
---- !u!114 &7387353744042630589
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5251321745402914498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6fbddd25d4742014bad4c52f5660ed0b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _uniqueId: 
-  _instanceId: 0
-  _stepSoundInterval: 0.2
 --- !u!114 &8255518558608426736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,7 +124,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _uniqueId: 
   _instanceId: 0
-  _fsm: {}
+  _fsm:
+    _walk:
+      _stepSoundInterval: 0.35
+    _run:
+      _stepSoundInterval: 0.2
+    _fishing:
+      _castingWeight: 0
+      _waitWeight: 0
+      _hookedWeight: 0
+      _rollWeight: 0
+      _capturedYesWeight: 0
+      _capturedNoWeight: 0
 --- !u!114 &9075371350282008030
 MonoBehaviour:
   m_ObjectHideFlags: 0

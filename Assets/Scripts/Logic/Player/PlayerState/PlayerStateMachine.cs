@@ -13,6 +13,8 @@ public class PlayerStateMachine
     [SerializeField] private PlayerFishingState _fishing = new();
     [SerializeField] private PlayerMiningState _mining = new();
     [SerializeField] private PlayerLoggingState _logging = new();
+    [SerializeField] private PlayerShovelState _shovel = new();
+    [SerializeField] private PlayerSickleState _sickle = new();
     [SerializeField] private PlayerDrinkingState _drinking = new();
     [SerializeField] private PlayerEatingState _eating = new();
 
@@ -68,6 +70,14 @@ public class PlayerStateMachine
         if (context.inputMining) // 채광 애니메이션 확정
         {
             return _mining;
+        }
+        if (context.inputShovel) // 삽 애니메이션 확정
+        {
+            return _shovel;
+        }
+        if (context.inputSickle) // 낫 애니메이션 확정
+        {
+            return _sickle;
         }
         if (context.inputFishing) // 낚시 애니메이션 확정
         {

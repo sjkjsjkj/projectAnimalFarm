@@ -44,6 +44,12 @@ public class GameMenuButton : BaseMono, IEscClosable
     {
         UObject.SetActive(gameObject, false);
     }
+
+    public void CloseButton()
+    {
+        CloseUi();
+        EscManager.Ins.Exit(this);
+    }
     #endregion
 
     private void OnEnable()
