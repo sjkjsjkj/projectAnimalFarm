@@ -9,6 +9,9 @@ public sealed class InputManager : GlobalSingleton<InputManager>, InputDispatche
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private bool _isInitialized = false;
     private InputDispatcher _input; // 디스페처 주소
+
+    private Vector2 _moveInput; // WASD 이동 변수
+
     private int _curSlot; // 현재 슬롯 변수
     private float _nextSlotChangeTime;
     private const float SCROLL_INTERVAL = 0.01f;
