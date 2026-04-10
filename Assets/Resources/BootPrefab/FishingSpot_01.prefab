@@ -92,6 +92,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _uniqueId: 
   _instanceId: 0
+  _fishingSpotType: 0
   _defaultMessage: "\uB09A\uC2DC\uD558\uAE30"
   _interactionKey: 101
   _logEnabled: 1

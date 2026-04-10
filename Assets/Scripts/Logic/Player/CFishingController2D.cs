@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +12,7 @@ using UnityEngine.Events;
 /// 2. 낚시 시작 후 일정 시간 안에 움직이면 즉시 취소
 /// 3. 취소되면 보상 지급 없음
 /// 4. 피드백 UI / 사운드는 나중에 Inspector 이벤트로 연결 가능
+/// 5. 테스트용으로 낚싯대 / 미끼 보유 검사를 우회할 수 있음
 /// </summary>
 public class CFishingController2D : BaseMono
 {
@@ -57,6 +58,10 @@ public class CFishingController2D : BaseMono
     [Header("지급 설정")]
     [SerializeField] private int _amount = 1;
     [SerializeField] private int _fishingSkillExp = 0;
+
+    [Header("테스트용 우회 설정")]
+    [Tooltip("체크하면 낚싯대 / 미끼가 인벤토리에 없어도 낚시를 시작할 수 있습니다.")]
+    [SerializeField] private bool _bypassRequiredFishingItemsForTest = false;
 
     [Header("이동 취소 설정")]
     [Tooltip("이동 입력의 sqrMagnitude가 이 값보다 크면 취소")]
@@ -248,15 +253,22 @@ public class CFishingController2D : BaseMono
             return EFishingStartResult.NoFishingArea;
         }
 
-        // 장착 여부가 아니라 인벤토리 보유 여부만 검사
-        if (!HasFishingRodInInventory(playerInventory))
+        // 테스트 모드가 아닐 때만 낚싯대 / 미끼 보유 여부 검사
+        if (!IsFishingItemRequirementBypassed())
         {
-            return EFishingStartResult.NoFishingRodInInventory;
-        }
+            if (!HasFishingRodInInventory(playerInventory))
+            {
+                return EFishingStartResult.NoFishingRodInInventory;
+            }
 
-        if (!HasBaitInInventory(playerInventory))
+            if (!HasBaitInInventory(playerInventory))
+            {
+                return EFishingStartResult.NoBaitInInventory;
+            }
+        }
+        else if (_logEnabled)
         {
-            return EFishingStartResult.NoBaitInInventory;
+            Debug.Log("[FishingController] 테스트 모드: 낚싯대 / 미끼 보유 검사 우회");
         }
 
         List<SheetItemRow> candidates = GetFishCandidates(areaType);
@@ -531,6 +543,14 @@ public class CFishingController2D : BaseMono
         }
 
         return true;
+    }
+
+    /// <summary>
+    /// 테스트용으로 낚시 필수 아이템 검사를 우회할지 반환
+    /// </summary>
+    private bool IsFishingItemRequirementBypassed()
+    {
+        return _bypassRequiredFishingItemsForTest;
     }
 
     /// <summary>

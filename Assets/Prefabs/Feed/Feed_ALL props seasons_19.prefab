@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 7923442519211688429}
   - component: {fileID: 7343232540792940284}
   - component: {fileID: 4179089148082351115}
+  - component: {fileID: 9203775759500280721}
   m_Layer: 3
   m_Name: Feed_ALL props seasons_19
   m_TagString: Untagged
@@ -130,24 +131,152 @@ MonoBehaviour:
   _displayName: "\uD1A0\uB07C \uBA39\uC774"
   _collectMode: 1
   _autoCollectDelay: 0.15
+  _manualCollectMaxDistance: 1
+  _autoCollectMaxDistance: 0.8
   _useInteractionMotion: 1
   _manualCollectDelay: 1
   _setPlayerBusyDuringManualCollect: 1
   _gatherSkillExp: 2
+  _moveCancelInputThreshold: 0.0001
+  _moveCancelPositionThreshold: 0.0001
+  _manualCollectCancelMessage: "\uC774\uB3D9\uD558\uC5EC \uCC44\uC9D1\uC774 \uCDE8\uC18C\uB418\uC5C8\uC2B5\uB2C8\uB2E4."
   _destroyOnCollected: 0
   _disableTargetAfterCollected: {fileID: 1933570699578692462}
   _useRespawn: 1
   _respawnDelay: 10
   _onCollectStarted:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 9203775759500280721}
+        m_TargetAssemblyTypeName: InteractionFeedbackRelay, Assembly-CSharp
+        m_MethodName: OnCollectStarted
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _onCollected:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 9203775759500280721}
+        m_TargetAssemblyTypeName: InteractionFeedbackRelay, Assembly-CSharp
+        m_MethodName: OnCollected
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _onRespawned:
     m_PersistentCalls:
       m_Calls: []
+  _onFeedbackMessage:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 9203775759500280721}
+        m_TargetAssemblyTypeName: InteractionFeedbackRelay, Assembly-CSharp
+        m_MethodName: ShowWarningFeedback
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onCollectFailed:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 9203775759500280721}
+        m_TargetAssemblyTypeName: InteractionFeedbackRelay, Assembly-CSharp
+        m_MethodName: OnCollectFailed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onCollectCanceled:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 9203775759500280721}
+        m_TargetAssemblyTypeName: InteractionFeedbackRelay, Assembly-CSharp
+        m_MethodName: OnCollectCanceled
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _logEnabled: 1
+--- !u!114 &9203775759500280721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2481079708005461027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31af1eb6ee8f85a4e946c8a1dd59b100, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _uniqueId: 
+  _instanceId: 0
+  _soundTarget: {fileID: 0}
+  _defaultDuration: 1.5
+  _startDuration: 1
+  _successDuration: 1.5
+  _failDuration: 1.5
+  _fishingStartMessage: "\uB09A\uC2DC \uC911..."
+  _fishingSuccessMessage: "\uBB3C\uACE0\uAE30\uB97C \uD68D\uB4DD\uD588\uC2B5\uB2C8\uB2E4."
+  _fishingFailMessage: "\uB09A\uC2DC\uC5D0 \uC2E4\uD328\uD588\uC2B5\uB2C8\uB2E4."
+  _fishingCancelMessage: "\uB09A\uC2DC\uB97C \uCDE8\uC18C\uD588\uC2B5\uB2C8\uB2E4."
+  _collectStartMessage: "\uCC44\uC9D1 \uC911..."
+  _collectSuccessMessage: "\uC544\uC774\uD15C\uC744 \uD68D\uB4DD\uD588\uC2B5\uB2C8\uB2E4."
+  _collectFailMessage: "\uCC44\uC9D1\uC5D0 \uC2E4\uD328\uD588\uC2B5\uB2C8\uB2E4."
+  _collectCancelMessage: "\uCC44\uC9D1\uC744 \uCDE8\uC18C\uD588\uC2B5\uB2C8\uB2E4."
+  _fishingStartSoundIds:
+  - Sfx_Player_FishingWater_1
+  - Sfx_Player_FishingWater_2
+  - Sfx_Player_FishingWater_3
+  - Sfx_Player_FishingWater_4
+  _fishingSuccessSoundIds:
+  - Sfx_Other_Success_1
+  - Sfx_Other_Success_2
+  _fishingFailSoundIds:
+  - Sfx_Ui_No_1
+  - Sfx_Ui_No_2
+  _fishingCancelSoundIds:
+  - Sfx_Ui_Click_1
+  _collectStartSoundIds:
+  - Sfx_Player_PlowField_01
+  - Sfx_Player_PlowField_02
+  - Sfx_Player_PlowField_03
+  - Sfx_Player_PlowField_04
+  _collectSuccessSoundIds:
+  - Sfx_Other_Success_1
+  - Sfx_Other_Success_2
+  _collectFailSoundIds:
+  - Sfx_Ui_No_1
+  - Sfx_Ui_No_2
+  _collectCancelSoundIds:
+  - Sfx_Ui_Click_1
+  _logEnabled: 0
 --- !u!1 &6916021647555885881
 GameObject:
   m_ObjectHideFlags: 0
