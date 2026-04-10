@@ -214,10 +214,15 @@ MonoBehaviour:
   _displayName: "\uC740"
   _collectMode: 1
   _autoCollectDelay: 0.15
+  _manualCollectMaxDistance: 1
+  _autoCollectMaxDistance: 0.8
   _useInteractionMotion: 1
   _manualCollectDelay: 1
   _setPlayerBusyDuringManualCollect: 1
   _gatherSkillExp: 2
+  _moveCancelInputThreshold: 0.0001
+  _moveCancelPositionThreshold: 0.0001
+  _manualCollectCancelMessage: "\uC774\uB3D9\uD558\uC5EC \uCC44\uC9D1\uC774 \uCDE8\uC18C\uB418\uC5C8\uC2B5\uB2C8\uB2E4."
   _destroyOnCollected: 0
   _disableTargetAfterCollected: {fileID: 1070942201902375190}
   _useRespawn: 1
@@ -229,6 +234,15 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _onRespawned:
+    m_PersistentCalls:
+      m_Calls: []
+  _onFeedbackMessage:
+    m_PersistentCalls:
+      m_Calls: []
+  _onCollectFailed:
+    m_PersistentCalls:
+      m_Calls: []
+  _onCollectCanceled:
     m_PersistentCalls:
       m_Calls: []
   _logEnabled: 1

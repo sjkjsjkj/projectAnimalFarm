@@ -21,6 +21,7 @@ public class PlayerController : BaseMono
     private bool _inputEating;
     private Vector2 _targetPos;
     private float _duration;
+    private bool _isSuccess;
     private bool _isCanceled;
     #endregion
 
@@ -69,6 +70,7 @@ public class PlayerController : BaseMono
         _inputLogging = false;
         _inputDrinking = false;
         _inputEating = false;
+        _isSuccess = false;
         _isCanceled = false;
     }
     #endregion
@@ -78,7 +80,7 @@ public class PlayerController : BaseMono
     {
         PlayerContext context = new(_rb, transform, _sprite, _anim,
             _inputMove, _inputRun, _inputFishing, _inputMining, _inputLogging,
-            _inputEating, _inputDrinking, _targetPos, _duration, _isCanceled);
+            _inputEating, _inputDrinking, _targetPos, _duration, _isSuccess, _isCanceled);
         _fsm.UpdateState(in context);
         ClearInput();
     }

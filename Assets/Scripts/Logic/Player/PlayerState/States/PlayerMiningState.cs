@@ -4,35 +4,38 @@
 public class PlayerMiningState : IPlayerState
 {
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
-    private const string MOVE_SPEED_PARAM = "fMoveSpeed";
     private const string FACING_PARAM = "fFacing";
-    private const string LOCOMOTION_PARAM = "Locomotion";
+    private const string MINING_PARAM = "Mining";
 
-    private readonly int _hashSpeed = Animator.StringToHash(MOVE_SPEED_PARAM);
     private readonly int _hashFacing = Animator.StringToHash(FACING_PARAM);
-    private readonly int _hashLocomotion = Animator.StringToHash(LOCOMOTION_PARAM);
+    private readonly int _hashLocomotion = Animator.StringToHash(MINING_PARAM);
+
+    private float _nextAnimationEndTime;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     public bool Enter(in PlayerContext context)
     {
         DataManager.Ins.Player.ChangeState(EPlayerState.Mining);
-        context.anim.SetFloat(_hashSpeed, 0.5f); // Walk
+        // 방향
+        Vector2 playerPos = context.tr.position;
+        Vector2 dir = (context.targetPos - playerPos).normalized;
+        // 애니메이션
+        context.anim.SetFloat(_hashFacing, UPlayer.GetFacingValue(dir));
         context.anim.Play(_hashLocomotion);
-        return false;
+        _nextAnimationEndTime = Time.time + context.duration;
+        return true;
     }
 
     public bool Frame(in PlayerContext context)
     {
-        // 속도 주입
-        Vector2 dir = context.inputMove.normalized;
-        context.rb.velocity = dir * DataManager.Ins.Player.CurWalkSpeed;
-        // 이동이 있을 경우 방향 설정
-        if (dir.sqrMagnitude > 0)
+        context.rb.velocity = Vector2.zero;
+        // 취소 요청 or 애니메이션 길이 종료
+        if (context.isCanceled || Time.time > _nextAnimationEndTime)
         {
-            context.anim.SetFloat(_hashFacing, UPlayer.GetFacingValue(dir));
+            return false;
         }
-        return false;
+        return true;
     }
 
     public void Exit(in PlayerContext context) { }
