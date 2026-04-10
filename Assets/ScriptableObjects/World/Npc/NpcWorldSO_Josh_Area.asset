@@ -27,5 +27,7 @@ MonoBehaviour:
   _initPosition: {x: 0, y: 0}
   _moveSpeed: 3
   _eNpcMoveType: 2
+  _sfxId_footStepSound: Sfx_Environment_StepStone_1
+  _sfxId_buzzing: Sfx_Creature_Human_Idle_02
   _minPos: {x: -2, y: -2}
   _maxPos: {x: 2, y: 2}

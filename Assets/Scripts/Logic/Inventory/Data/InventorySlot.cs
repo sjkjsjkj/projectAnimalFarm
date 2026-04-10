@@ -7,6 +7,8 @@ public struct InventorySlot
     private ItemSO _itemData;
     private int _stack;
     private int _slotIdx;
+
+    private string _sfxIdITemmoveSound;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -23,6 +25,8 @@ public struct InventorySlot
         _itemData = null;
         _stack = 0;
         _slotIdx = slotIdx;
+
+        _sfxIdITemmoveSound = Id.Sfx_Ui_ItemMovement_3;
     }
     #endregion
 
@@ -48,6 +52,7 @@ public struct InventorySlot
             _stack+= itemStack;
         }
         UDebug.Print($"아이템 습득 성공 : {_slotIdx}번째 슬롯 | 획득 아이템 : {itemData.Name}");
+        USound.PlaySfx(_sfxIdITemmoveSound);
     }
     /// <summary>
     /// 해당 슬롯 초기화.

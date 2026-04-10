@@ -52,4 +52,11 @@ public class FoodBoxUI : InventoryUI
         _selectedIndex = slotIndex;
         RefreshSelectionView();
     }
+
+    private void Awake()
+    {
+        _sfxId_InventoryOpen = Id.Sfx_Ui_ChestOpen_2;
+        _sfxId_InventoryClose = Id.Sfx_Ui_ChestClosed_2;
+        gameObject.SetActive(false);
+    }
 }

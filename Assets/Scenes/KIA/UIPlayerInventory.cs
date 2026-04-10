@@ -28,6 +28,7 @@ public class UIPlayerInventory : InventoryUI
     private int _dragBeginIndex = -1;
     private bool _isDragging = false;
     private bool _isDropHandled = false;
+    
     #endregion
 
     #region ─────────────────────────▶ 외부 메서드 ◀─────────────────────────
@@ -108,7 +109,11 @@ public class UIPlayerInventory : InventoryUI
         gameObject.SetActive(false);
     }
 
-
+    public override void SetToggleUI()
+    {
+        
+            base.SetToggleUI();
+    }
     /// <summary>
     /// 슬롯 클릭 시 선택 상태를 갱신합니다.
     /// 빈 슬롯은 아무 반응 없이 무시합니다.
@@ -270,8 +275,11 @@ public class UIPlayerInventory : InventoryUI
         {
             _actionPopup.Initialize(this);
         }
-
+        _sfxId_InventoryOpen = Id.Sfx_Ui_Paper_3;
+        _sfxId_InventoryClose = Id.Sfx_Ui_Paper_4;
         gameObject.SetActive(false);
+
+        //_sfxId_InventoryOpen
     }
     #endregion
 }

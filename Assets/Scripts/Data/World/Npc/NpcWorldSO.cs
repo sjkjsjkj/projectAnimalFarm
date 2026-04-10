@@ -16,6 +16,8 @@ public class NpcWorldSO : WorldSO
     [SerializeField] protected Vector2 _initPosition;
     [SerializeField, CsvIgnore] private float _moveSpeed;
     [SerializeField, CsvIgnore] private ENpcMoveType _eNpcMoveType;
+    [SerializeField] private string _sfxId_footStepSound;
+    [SerializeField] private string _sfxId_buzzing;
     // NPC나 상점 / 맵에 종속된 컨텐츠의 경우, Map SO를 만들던지 해서 관리하는게 편하다고 판단.
     // NPC가 존재할 씬 ID?   X
     // NPC가 이동하는 포인트 좌표?    O
@@ -28,6 +30,9 @@ public class NpcWorldSO : WorldSO
     public float MoveSpeed => _moveSpeed;
     public Vector2 InitPosition => _initPosition;
     public ENpcMoveType NpcMoveType => _eNpcMoveType;
+    public string FootStepSoundId => _sfxId_footStepSound;
+    public string BuzzingSoundId => _sfxId_buzzing;
+
     // 정상 값을 가지는지 검사
     public override bool IsValid()
     {

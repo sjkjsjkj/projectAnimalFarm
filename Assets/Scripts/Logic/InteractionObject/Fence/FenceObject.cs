@@ -54,10 +54,11 @@ public class FenceObject : BaseMono , IInteractable
     {
         //UDebug.Print("문 열렸다.");
         DoorSetting(true);
-
+        USound.PlaySfx(Id.Sfx_Player_Door_1, transform);
         yield return new WaitForSeconds(0.5f);
 
         //UDebug.Print("문 닫혔다.");
+        USound.PlaySfx(Id.Sfx_Player_Door_2, transform);
         DoorSetting(false);
     }
     #endregion
