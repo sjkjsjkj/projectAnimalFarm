@@ -11,6 +11,8 @@ public class Inventory
     protected int _inventorySize;
     protected InventorySlot[] _inventorySlots;
     protected EInventoryType _inventoryType;
+
+    
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -36,6 +38,7 @@ public class Inventory
             UDebug.Print($"인벤토리 생성자 체크 : {i}");
             _inventorySlots[i] = new InventorySlot(i);
         }
+        
     }
     #endregion
 

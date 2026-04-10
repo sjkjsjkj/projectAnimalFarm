@@ -48,4 +48,10 @@ public class StorageUI : InventoryUI
         //Vector2 popupLocalPos = CalcPopupLocalPosition(targetSlot);
         //_actionPopup.Show(popupLocalPos);
     }
+    private void Awake()
+    {
+        _sfxId_InventoryOpen = Id.Sfx_Ui_ChestOpen_2;
+        _sfxId_InventoryClose = Id.Sfx_Ui_ChestClosed_2;
+        gameObject.SetActive(false);
+    }
 }

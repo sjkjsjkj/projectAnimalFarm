@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: SoundSO_Sfx_Environment_StepStone_1
   m_EditorClassIdentifier: 
   _id: Sfx_Environment_StepStone_1
-  _type: 0
+  _type: 22
   _clip: {fileID: 8300000, guid: c434ca42ea02fcb468b508ae56cbdc6f, type: 3}
-  _volume: 0.5
+  _volume: 1

@@ -1,7 +1,9 @@
-﻿/// <summary>
+﻿using System;
+
+/// <summary>
 /// 클래스의 설계 의도입니다.
 /// </summary>
-public class WorkbenchUI : BaseMono
+public class WorkbenchUI : BaseMono, ICraftUI
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     //[Header("주제")]
@@ -27,4 +29,21 @@ public class WorkbenchUI : BaseMono
     #region ─────────────────────────▶ 중첩 타입 ◀─────────────────────────
 
     #endregion
+    public event Action<string> OnItemClicked;
+    public event Action<string> OnCraftButtonPressed;
+
+    public void CraftFailureHandle(string failMsg)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void CraftSuccessHandle(string successMsg)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void ReceiveMaterialsHandle(out WorkbenchReturnStruct[] works)
+    {
+        throw new NotImplementedException();
+    }
 }

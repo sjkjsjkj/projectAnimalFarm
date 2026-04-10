@@ -1,28 +1,34 @@
 ﻿using System;
-using UnityEngine;
 /// <summary>
 /// 경작지 각각의 타일의 정보를 담고있는 클래스
 /// 플레이어가 타일의 데이터를 읽어오며 경작 가능여부를 확인할 수 있다면 일반 클래스로, 그렇지 않다면 Mono로 해서 collider Check 방식으로
 /// </summary>
-[System.Serializable]
 public class Farmland
 {
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
-    [SerializeField] private EFarmlandState _state;       // 땅의 단계  0:기본 흙 | 1: 일궈진 흙 | 2:
-    [SerializeField] private string _seededId;           //심어진 씨앗의 id
-    [SerializeField] private int _pos;            //경작지의 배열좌표
-    [SerializeField] private string _harvestItemId;
+    private EFarmlandState _state;       // 땅의 단계  0:기본 흙 | 1: 일궈진 흙 | 2:
+    private string _seededId;           //심어진 씨앗의 id
+    private int _pos;            //경작지의 배열좌표
+    private string _harvestItemId;
     //Tick
     //N초 (미정) 마다 식물의 성장 주기를 올리는 역할을 함.
     //경작지의 상태가 MoistLand 상태일 때에만 증가함.
     //Idleland > soil(다져진땅) > seeded (씨앗뿌린땅) > MoistLand (물뿌린땅) 의 순서.
-    [SerializeField] private int _grownUpTick;         //씨앗이 전부 자랄 때 까지 얼마나 많은 Tick이 지나야 하는가.
-    [SerializeField] private int _currentTick;         //현재 얼마나 Tick 이 지났는가.
-    [SerializeField] private float _tickTimer = 0;
-                     
-    [SerializeField] private uint _soiledConnectDir;           //현재 주변에 경작지들과 같은 상태라면 (soiled 와 moist만 비교)스프라이트 연결. 이것은 현재 연결된 방향들을 Flag 형식으로 나타낸 것.
-    [SerializeField] private uint _moistConnectDir;
-    [SerializeField] private uint _stateFlag;            //state를 Flag 형태로 나타낸 것. 주변 경작지의 상태 비교에 사용. 
+    private int _grownUpTick;         //씨앗이 전부 자랄 때 까지 얼마나 많은 Tick이 지나야 하는가.
+    private int _currentTick;         //현재 얼마나 Tick 이 지났는가.
+    private float _tickTimer = 0;
+    
+    private uint _soiledConnectDir;           //현재 주변에 경작지들과 같은 상태라면 (soiled 와 moist만 비교)스프라이트 연결. 이것은 현재 연결된 방향들을 Flag 형식으로 나타낸 것.
+    private uint _moistConnectDir;
+    private uint _stateFlag;            //state를 Flag 형태로 나타낸 것. 주변 경작지의 상태 비교에 사용.
+
+    private IFarmlandObjectProvider _farmlandObjectProvider;
+
+    //효과음 Id들
+    private string _sfxId_Soiled;
+    private string _sfxId_Seeded;
+    private string _sfxId_Moist;
+    private string _sfxId_GrownUp;
     #endregion
 
     #region ─────────────────────────▶  외부 공개  ◀─────────────────────────
@@ -47,15 +53,26 @@ public class Farmland
     {
 
     }
-    public Farmland(int pos)
+    public Farmland(int pos, IFarmlandObjectProvider farmlandObjectProvider)
     {
         //경작지의 배열좌표
         _pos = pos;
         SetClear();
+        SetSfxIdSetting();
+        _farmlandObjectProvider = farmlandObjectProvider;
     }
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
+    //사운드 ID를 미리 캐싱해두는 메서드
+    private void SetSfxIdSetting()
+    {
+        _sfxId_Soiled = Id.Sfx_Other_Cutter_2;
+        _sfxId_Seeded = Id.Sfx_Environment_CropGrowth_1;
+        _sfxId_Moist = Id.Sfx_Environment_WaterExit_1;
+        _sfxId_GrownUp = Id.Sfx_Other_BlowUp_2;
+    }
+
     //인터랙트 시도에서 경작지의 상태가 변할 때 불러와질 메서드
     //private void SetState(EFarmlandState nextState)
     private void SetState(EFarmlandState nextState)
@@ -63,7 +80,26 @@ public class Farmland
         EFarmlandState beforeState = _state;
 
         _state = nextState;
-        
+
+        switch(_state)
+        {
+            case EFarmlandState.IdleLand:
+                
+                break;
+            case EFarmlandState.SoiledLand:
+                USound.PlaySfx(_sfxId_Soiled, _farmlandObjectProvider.GetFarmlandObject(_pos).transform);
+                break;
+            case EFarmlandState.SeededLand:
+                USound.PlaySfx(_sfxId_Seeded, _farmlandObjectProvider.GetFarmlandObject(_pos).transform);
+                break;
+            case EFarmlandState.MoistLand:
+                USound.PlaySfx(_sfxId_Moist, _farmlandObjectProvider.GetFarmlandObject(_pos).transform);
+                break;
+            case EFarmlandState.GrownUp:
+                USound.PlaySfx(_sfxId_GrownUp, _farmlandObjectProvider.GetFarmlandObject(_pos).transform);
+                break;
+        }
+
         _stateFlag |= (uint)nextState;
 
         //경작지 전체를 관리하는 FarmArea에게 나의 좌표(배열 좌표)와 상태를 전달한다.
@@ -176,7 +212,7 @@ public class Farmland
 
             if (!(tempItemSO as SeedItemSO))
             {
-                UDebug.Print("인벤토리의 FindItemType의 반환이 잘못되었습니다.", LogType.Warning);
+                UDebug.Print("인벤토리의 FindItemType의 반환이 잘못되었습니다.", UnityEngine.LogType.Warning);
                 return;
             }
             else

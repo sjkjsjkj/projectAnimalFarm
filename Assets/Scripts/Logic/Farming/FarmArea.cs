@@ -3,7 +3,7 @@
 /// <summary>
 /// 경작지들 전체를 관리하는 클래스
 /// </summary>
-public class FarmArea : Frameable
+public class FarmArea : Frameable , IFarmlandObjectProvider
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("프리팹")]
@@ -52,7 +52,12 @@ public class FarmArea : Frameable
     {
         return _farmlands[idx].CanInteract();
     }
-    
+
+    public FarmlandSpriteObject GetFarmlandObject(int idx)
+    {
+        return _farmlandsSprites[idx];
+    }
+
     #endregion
 
 
@@ -295,7 +300,7 @@ public class FarmArea : Frameable
         int length = _farmlands.Length;
         for (int i = 0; i < length; ++i)
         {
-            _farmlands[i] = new Farmland(i);
+            _farmlands[i] = new Farmland(i,this);
         }
         // 프리펩 생성 및 이벤트 연결
         MakeFarmlands();
@@ -311,5 +316,6 @@ public class FarmArea : Frameable
             UDebug.Print($"글로벌 매니저에 팜랜드를 등록하지 못했습니다.", LogType.Warning);
         }
     }
+
     #endregion
 }

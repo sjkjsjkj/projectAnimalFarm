@@ -25,3 +25,5 @@ MonoBehaviour:
   _initPosition: {x: 9, y: 9}
   _moveSpeed: 3
   _eNpcMoveType: 1
+  _sfxId_footStepSound: Sfx_Environment_StepStone_1
+  _sfxId_buzzing: Sfx_Creature_Human_Idle_02
