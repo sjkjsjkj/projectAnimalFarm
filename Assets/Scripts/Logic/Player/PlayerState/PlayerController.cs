@@ -17,6 +17,8 @@ public class PlayerController : BaseMono
     private bool _inputFishing;
     private bool _inputMining;
     private bool _inputLogging;
+    private bool _inputShovel;
+    private bool _inputSickle;
     private bool _inputDrinking;
     private bool _inputEating;
     private Vector2 _targetPos;
@@ -38,26 +40,44 @@ public class PlayerController : BaseMono
     {
         _inputFishing = true;
         _targetPos = ctx.fishingPointPos;
+        _duration = ctx.duration;
+        _isSuccess = ctx.isSuccess;
     }
     private void PlayerMiningHandle(OnPlayerMining ctx)
     {
         _inputMining = true;
         _targetPos = ctx.orePos;
+        _duration = ctx.duration;
     }
     private void PlayerLoggingHandle(OnPlayerLogging ctx)
     {
         _inputLogging = true;
         _targetPos = ctx.woodPos;
+        _duration = ctx.duration;
+    }
+    private void PlayerShovelHandle(OnPlayerShovel ctx)
+    {
+        _inputShovel = true;
+        _targetPos = ctx.targetPos;
+        _duration = ctx.duration;
+    }
+    private void PlayerSickleHandle(OnPlayerSickle ctx)
+    {
+        _inputSickle = true;
+        _targetPos = ctx.targetPos;
+        _duration = ctx.duration;
     }
     private void PlayerDrinkingHandle(OnPlayerDrinking ctx)
     {
         _inputDrinking = true;
         _duration = ctx.drinkingTime;
+        _duration = ctx.duration;
     }
     private void PlayerEatingHandle(OnPlayerEating ctx)
     {
         _inputEating = true;
         _duration = ctx.eatingTime;
+        _duration = ctx.duration;
     }
     private void PlayerCanceledHandle(OnPlayerCanceled ctx)
     {
@@ -68,6 +88,8 @@ public class PlayerController : BaseMono
         _inputFishing = false;
         _inputMining = false;
         _inputLogging = false;
+        _inputShovel = false;
+        _inputSickle = false;
         _inputDrinking = false;
         _inputEating = false;
         _isSuccess = false;
@@ -80,7 +102,8 @@ public class PlayerController : BaseMono
     {
         PlayerContext context = new(_rb, transform, _sprite, _anim,
             _inputMove, _inputRun, _inputFishing, _inputMining, _inputLogging,
-            _inputEating, _inputDrinking, _targetPos, _duration, _isSuccess, _isCanceled);
+            _inputShovel, _inputSickle, _inputDrinking, _inputEating,
+            _targetPos, _duration, _isSuccess, _isCanceled);
         _fsm.UpdateState(in context);
         ClearInput();
     }
@@ -118,6 +141,8 @@ public class PlayerController : BaseMono
         EventBus<OnPlayerFishing>.Subscribe(PlayerFishingHandle);
         EventBus<OnPlayerMining>.Subscribe(PlayerMiningHandle);
         EventBus<OnPlayerLogging>.Subscribe(PlayerLoggingHandle);
+        EventBus<OnPlayerSickle>.Subscribe(PlayerSickleHandle);
+        EventBus<OnPlayerShovel>.Subscribe(PlayerShovelHandle);
         EventBus<OnPlayerDrinking>.Subscribe(PlayerDrinkingHandle);
         EventBus<OnPlayerEating>.Subscribe(PlayerEatingHandle);
         EventBus<OnPlayerCanceled>.Subscribe(PlayerCanceledHandle);
@@ -130,6 +155,8 @@ public class PlayerController : BaseMono
         EventBus<OnPlayerFishing>.Unsubscribe(PlayerFishingHandle);
         EventBus<OnPlayerMining>.Unsubscribe(PlayerMiningHandle);
         EventBus<OnPlayerLogging>.Unsubscribe(PlayerLoggingHandle);
+        EventBus<OnPlayerSickle>.Unsubscribe(PlayerSickleHandle);
+        EventBus<OnPlayerShovel>.Unsubscribe(PlayerShovelHandle);
         EventBus<OnPlayerDrinking>.Unsubscribe(PlayerDrinkingHandle);
         EventBus<OnPlayerEating>.Unsubscribe(PlayerEatingHandle);
         EventBus<OnPlayerCanceled>.Unsubscribe(PlayerCanceledHandle);

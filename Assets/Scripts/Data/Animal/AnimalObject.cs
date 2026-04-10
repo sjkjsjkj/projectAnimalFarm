@@ -137,7 +137,7 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
 
         if (_tickTimer >= _tickInterval)
         {
-            UDebug.Print($"Current State : {_state.ToString()}");
+            //UDebug.Print($"Current State : {_state.ToString()}");
             _tickTimer = 0;
             _data.Tick();
         }

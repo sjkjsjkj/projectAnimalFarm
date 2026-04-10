@@ -11,11 +11,38 @@ public class PlayerFishingState : IPlayerState
     [SerializeField] private int _capturedYesWeight;
     [SerializeField] private int _capturedNoWeight;
 
+    private static string _fishingStartSound = Id.Sfx_Player_FishingStart_1;
+    private static string _waterStartSound = Id.Sfx_Player_FishingWater_2;
+    private static string[] _hookedSound =
+    {
+        Id.Sfx_Environment_WaterSplashes_1,
+        Id.Sfx_Environment_WaterSplashes_2,
+        Id.Sfx_Environment_WaterSplashes_3,
+    };
+    private static string[] _rollSound =
+    {
+        Id.Sfx_Environment_WaterSplashes_4,
+        Id.Sfx_Environment_WaterSplashes_5,
+        Id.Sfx_Environment_WaterSplashes_6,
+    };
+    private static string[] _capturedYesSound =
+    {
+        Id.Sfx_Player_FishingWater_5,
+        Id.Sfx_Player_FishingWater_8,
+    };
+    private static string[] _capturedNoSound =
+    {
+        Id.Sfx_Environment_WaterExit_1,
+        Id.Sfx_Environment_WaterExit_2,
+    };
+
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private const string FACING_PARAM = "fFacing";
-    private const string FISHING_PARAM = "fFishing";
+    private const string PHASE_PARAM = "fFishing";
+    private const string FISHING_PARAM = "Fishing";
 
     private readonly int _hashFacing = Animator.StringToHash(FACING_PARAM);
+    private readonly int _hashPhase = Animator.StringToHash(PHASE_PARAM);
     private readonly int _hashFishing = Animator.StringToHash(FISHING_PARAM);
 
     private float _facingValue;
@@ -23,6 +50,7 @@ public class PlayerFishingState : IPlayerState
     private float _curPhaseDuration;
     private bool _isSuccess;
     private EFishingState _fishingState;
+    private float _nextSoundTime;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -31,26 +59,44 @@ public class PlayerFishingState : IPlayerState
         DataManager.Ins.Player.ChangeState(EPlayerState.Fishing);
         _fishingState = EFishingState.Casting;
         _isSuccess = context.isSuccess;
+        _totalDuration = context.duration;
         // 방향
         Vector2 playerPos = context.tr.position;
         Vector2 dir = (context.targetPos - playerPos).normalized;
         _facingValue = UPlayer.GetFacingValue(dir);
         // 애니메이션 세팅
+        context.anim.Play(_hashFishing);
         context.anim.SetFloat(_hashFacing, _facingValue);
         UPlayer.SetSpriteFacing(context.sprite, dir);
         // 첫 페이즈로 설정
         SetPhase(EFishingState.Casting, _castingWeight, in context);
+        // 낚시대 던지기 사운드
+        USound.PlaySfx(_fishingStartSound);
         return true;
     }
 
     public bool Frame(in PlayerContext context)
     {
         context.rb.velocity = Vector2.zero; // 이동 차단
-        if(Time.time >= _curPhaseDuration)
+        if (Time.time >= _curPhaseDuration)
         {
             if (!TransitionNextState(in context))
             {
                 return false;
+            }
+        }
+        // 사운드 재생
+        if (UMath.TryCooldownEnd(Time.time, ref _nextSoundTime, 0.3f))
+        {
+            if (EFishingState.Hooked == _fishingState)
+            {
+                int hookedI = Random.Range(0, _hookedSound.Length);
+                USound.PlaySfx(_hookedSound[hookedI]);
+            }
+            else if (EFishingState.Roll == _fishingState)
+            {
+                int rollI = Random.Range(0, _rollSound.Length);
+                USound.PlaySfx(_rollSound[rollI]);
             }
         }
         return true;
@@ -66,7 +112,7 @@ public class PlayerFishingState : IPlayerState
         float newDuration = WeightToDuration(weight);
         // 새로운 페이즈 설정
         _fishingState = nextState;
-        ctx.anim.SetFloat(_hashFishing, fishingValue);
+        ctx.anim.SetFloat(_hashPhase, fishingValue);
         _curPhaseDuration = Time.time + newDuration;
     }
 
@@ -77,21 +123,28 @@ public class PlayerFishingState : IPlayerState
         {
             case EFishingState.Casting:
                 SetPhase(EFishingState.Wait, _waitWeight, in ctx);
+                USound.PlaySfx(_waterStartSound);
                 return true;
             case EFishingState.Wait:
                 SetPhase(EFishingState.Hooked, _hookedWeight, in ctx);
                 return true;
             case EFishingState.Hooked:
                 SetPhase(EFishingState.Roll, _rollWeight, in ctx);
+                int roolI = Random.Range(0, _rollSound.Length);
+                USound.PlaySfx(_rollSound[roolI]);
                 return true;
             case EFishingState.Roll:
                 if (_isSuccess)
                 {
                     SetPhase(EFishingState.CapturedYes, _capturedYesWeight, in ctx);
+                    int capturedI = Random.Range(0, _capturedYesSound.Length);
+                    USound.PlaySfx(_capturedYesSound[capturedI]);
                 }
                 else
                 {
                     SetPhase(EFishingState.CapturedNo, _capturedNoWeight, in ctx);
+                    int capturedI = Random.Range(0, _capturedNoSound.Length);
+                    USound.PlaySfx(_capturedNoSound[capturedI]);
                 }
                 return true;
             case EFishingState.CapturedYes:
@@ -102,7 +155,7 @@ public class PlayerFishingState : IPlayerState
         return false;
     }
 
-    // 
+    // 애니메이터에 사용할 Value값 반환
     private float GetFishingValue(EFishingState state)
     {
         switch (state)
