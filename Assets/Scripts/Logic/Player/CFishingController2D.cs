@@ -6,13 +6,13 @@ using UnityEngine.Events;
 
 /// <summary>
 /// 낚시 컨트롤러
-/// 
-/// 이번 수정 핵심
-/// 1. 낚싯대 / 미끼는 장착이 아니라 인벤토리에만 있으면 낚시 가능
-/// 2. 낚시 시작 후 일정 시간 안에 움직이면 즉시 취소
-/// 3. 취소되면 보상 지급 없음
-/// 4. 피드백 UI / 사운드는 나중에 Inspector 이벤트로 연결 가능
-/// 5. 테스트용으로 낚싯대 / 미끼 보유 검사를 우회할 수 있음
+///
+/// 수정 포인트
+/// 1. 테스트용 낚싯대/미끼 우회 유지
+/// 2. 낚시 시작 시 팀원 모션 이벤트 발행 유지
+/// 3. FishingSpot 사용 시 실제 spotWorldPos를 checkPos로 사용
+/// 4. 모션 목표 위치와 방향 계산을 실제 낚시 지점 기준으로 처리
+/// 5. 낚시 취소 시 OnPlayerCanceled.Publish() 호출
 /// </summary>
 public class CFishingController2D : BaseMono
 {
@@ -62,6 +62,22 @@ public class CFishingController2D : BaseMono
     [Header("테스트용 우회 설정")]
     [Tooltip("체크하면 낚싯대 / 미끼가 인벤토리에 없어도 낚시를 시작할 수 있습니다.")]
     [SerializeField] private bool _bypassRequiredFishingItemsForTest = false;
+
+    [Header("모션 이벤트 설정")]
+    [Tooltip("낚시 시작 시 OnPlayerFishing.Publish(pos, duration, isSuccess)로 넘길 isSuccess 값")]
+    [SerializeField] private bool _motionStartIsSuccessValue = true;
+
+    [Tooltip("모션 이벤트로 넘길 길이값")]
+    [SerializeField] private float _fishingMotionDuration = 2.5f;
+
+    [Tooltip("플레이어가 바라보는 방향으로 모션 목표 위치를 계산할지 여부")]
+    [SerializeField] private bool _useFacingDirectionMotionTarget = true;
+
+    [Tooltip("플레이어 위치 기준으로 바라보는 방향 앞쪽에 얼마나 던질지")]
+    [SerializeField] private float _motionTargetDistance = 1.1f;
+
+    [Tooltip("최종 모션 목표 위치에 추가할 보정값")]
+    [SerializeField] private Vector2 _motionTargetOffset = Vector2.zero;
 
     [Header("이동 취소 설정")]
     [Tooltip("이동 입력의 sqrMagnitude가 이 값보다 크면 취소")]
@@ -118,6 +134,7 @@ public class CFishingController2D : BaseMono
             collector,
             false,
             false,
+            Vector2.zero,
             out _,
             out _);
 
@@ -155,6 +172,7 @@ public class CFishingController2D : BaseMono
             collector,
             false,
             false,
+            Vector2.zero,
             out EFishingAreaType areaType,
             out Vector2 checkPos);
 
@@ -167,24 +185,26 @@ public class CFishingController2D : BaseMono
         return true;
     }
 
-    public bool CanManualFishFromSpot(CPlayerCollector2D collector, bool useSeaFishing)
+    public bool CanManualFishFromSpot(CPlayerCollector2D collector, bool useSeaFishing, Vector2 spotWorldPos)
     {
         EFishingStartResult result = ValidateFishingStart(
             collector,
             true,
             useSeaFishing,
+            spotWorldPos,
             out _,
             out _);
 
         return result == EFishingStartResult.Success;
     }
 
-    public bool TryFishFromSpot(CPlayerCollector2D collector, bool useSeaFishing)
+    public bool TryFishFromSpot(CPlayerCollector2D collector, bool useSeaFishing, Vector2 spotWorldPos)
     {
         EFishingStartResult result = ValidateFishingStart(
             collector,
             true,
             useSeaFishing,
+            spotWorldPos,
             out EFishingAreaType areaType,
             out Vector2 checkPos);
 
@@ -202,7 +222,7 @@ public class CFishingController2D : BaseMono
     /// </summary>
     public void CancelFishingByMove()
     {
-        CancelFishingInternal(_moveCancelMessage, true);
+        CancelFishingInternal(_moveCancelMessage, true, true);
     }
 
     /// <summary>
@@ -212,6 +232,7 @@ public class CFishingController2D : BaseMono
         CPlayerCollector2D collector,
         bool useSpotArea,
         bool useSeaFishing,
+        Vector2 spotWorldPos,
         out EFishingAreaType areaType,
         out Vector2 checkPos)
     {
@@ -248,12 +269,17 @@ public class CFishingController2D : BaseMono
             return EFishingStartResult.InventoryMissing;
         }
 
-        if (!TryResolveFishingArea(collector, useSpotArea, useSeaFishing, out areaType, out checkPos))
+        if (!TryResolveFishingArea(
+                collector,
+                useSpotArea,
+                useSeaFishing,
+                spotWorldPos,
+                out areaType,
+                out checkPos))
         {
             return EFishingStartResult.NoFishingArea;
         }
 
-        // 테스트 모드가 아닐 때만 낚싯대 / 미끼 보유 여부 검사
         if (!IsFishingItemRequirementBypassed())
         {
             if (!HasFishingRodInInventory(playerInventory))
@@ -321,10 +347,26 @@ public class CFishingController2D : BaseMono
         _fishingStartPosition = collector.transform.position;
 
         _activeCollector.SetInteractionBusy(true);
+
+        Vector2 fishingDirection = GetFishingDirectionFromTarget(collector, checkPos);
+        ApplyFishingFacingDirection(fishingDirection);
+
         _activeCollector.PlayFishingAnimation();
 
         SubscribeMoveCancel();
 
+        Vector2 motionTargetPos = GetFishingMotionTargetPosition(collector, checkPos, fishingDirection);
+        float motionDuration = Mathf.Max(0f, _fishingMotionDuration);
+
+        if (_logEnabled)
+        {
+            Debug.Log("[FishingController] OnPlayerFishing.Publish / pos = " + motionTargetPos +
+                      " / duration = " + motionDuration +
+                      " / isSuccess = " + _motionStartIsSuccessValue +
+                      " / fishingDirection = " + fishingDirection);
+        }
+
+        OnPlayerFishing.Publish(motionTargetPos, motionDuration, _motionStartIsSuccessValue);
         _onFishingStarted?.Invoke();
 
         if (_logEnabled)
@@ -342,10 +384,9 @@ public class CFishingController2D : BaseMono
             yield return new WaitForSeconds(_fishingDelay);
         }
 
-        // 이동 이벤트를 놓친 경우를 대비한 마지막 안전 검사
         if (HasCollectorMovedSinceStart(collector))
         {
-            CancelFishingInternal(_moveCancelMessage, true);
+            CancelFishingInternal(_moveCancelMessage, true, true);
             yield break;
         }
 
@@ -396,8 +437,6 @@ public class CFishingController2D : BaseMono
 
         ShowReservedFeedback(message);
         _onFishingFailed?.Invoke();
-
-        // 실패도 낚시 시도는 끝난 것으로 보고 쿨타임 적용
         ReleaseFishingState(true);
     }
 
@@ -435,7 +474,7 @@ public class CFishingController2D : BaseMono
         _isFishing = false;
     }
 
-    private void CancelFishingInternal(string message, bool showFeedback)
+    private void CancelFishingInternal(string message, bool showFeedback, bool publishMotionCancel)
     {
         if (!_isFishing)
         {
@@ -458,9 +497,17 @@ public class CFishingController2D : BaseMono
             ShowReservedFeedback(message);
         }
 
-        _onFishingCanceled?.Invoke();
+        if (publishMotionCancel)
+        {
+            if (_logEnabled)
+            {
+                Debug.Log("[FishingController] OnPlayerCanceled.Publish");
+            }
 
-        // 취소는 완료가 아니므로 쿨타임 없이 풀어줌
+            OnPlayerCanceled.Publish();
+        }
+
+        _onFishingCanceled?.Invoke();
         ReleaseFishingState(false);
     }
 
@@ -505,6 +552,7 @@ public class CFishingController2D : BaseMono
         CPlayerCollector2D collector,
         bool useSpotArea,
         bool useSeaFishing,
+        Vector2 spotWorldPos,
         out EFishingAreaType areaType,
         out Vector2 checkPos)
     {
@@ -514,7 +562,7 @@ public class CFishingController2D : BaseMono
         if (useSpotArea)
         {
             areaType = useSeaFishing ? EFishingAreaType.SeaWater : EFishingAreaType.FreshWater;
-            checkPos = collector != null ? (Vector2)collector.transform.position : Vector2.zero;
+            checkPos = spotWorldPos;
             return true;
         }
 
@@ -546,16 +594,83 @@ public class CFishingController2D : BaseMono
     }
 
     /// <summary>
-    /// 테스트용으로 낚시 필수 아이템 검사를 우회할지 반환
+    /// 팀원 모션 이벤트에 넘길 목표 좌표를 계산합니다.
+    /// 현재 저장된 방향이 아니라 실제 낚시 지점 방향을 기준으로 계산합니다.
     /// </summary>
+    private Vector2 GetFishingMotionTargetPosition(CPlayerCollector2D collector, Vector2 fallbackPos, Vector2 fishingDirection)
+    {
+        if (collector == null)
+        {
+            return fallbackPos + _motionTargetOffset;
+        }
+
+        if (_useFacingDirectionMotionTarget)
+        {
+            Vector2 dir = fishingDirection;
+
+            if (dir.sqrMagnitude <= 0.0001f)
+            {
+                dir = Vector2.down;
+            }
+
+            Vector2 playerPos = collector.transform.position;
+            return playerPos + dir * Mathf.Max(0f, _motionTargetDistance) + _motionTargetOffset;
+        }
+
+        return fallbackPos + _motionTargetOffset;
+    }
+
+    /// <summary>
+    /// 플레이어 위치에서 실제 낚시 지점까지의 방향을 4방향으로 정규화합니다.
+    /// </summary>
+    private Vector2 GetFishingDirectionFromTarget(CPlayerCollector2D collector, Vector2 targetPos)
+    {
+        if (collector == null)
+        {
+            return Vector2.down;
+        }
+
+        Vector2 playerPos = collector.transform.position;
+        Vector2 delta = targetPos - playerPos;
+
+        if (delta.sqrMagnitude <= 0.0001f)
+        {
+            return GetCardinalFacingDirection();
+        }
+
+        if (Mathf.Abs(delta.x) > Mathf.Abs(delta.y))
+        {
+            return delta.x >= 0f ? Vector2.right : Vector2.left;
+        }
+
+        return delta.y >= 0f ? Vector2.up : Vector2.down;
+    }
+
+    /// <summary>
+    /// 낚시 시작 전에 플레이어의 바라보는 방향 데이터를 실제 낚시 방향으로 맞춥니다.
+    /// </summary>
+    private void ApplyFishingFacingDirection(Vector2 direction)
+    {
+        if (direction.sqrMagnitude <= 0.0001f)
+        {
+            return;
+        }
+
+        if (DataManager.Ins != null && DataManager.Ins.Player != null)
+        {
+            Vector2 currentPos = _activeCollector != null
+                ? (Vector2)_activeCollector.transform.position
+                : DataManager.Ins.Player.Position;
+
+            DataManager.Ins.Player.SetTransform(currentPos, direction);
+        }
+    }
+
     private bool IsFishingItemRequirementBypassed()
     {
         return _bypassRequiredFishingItemsForTest;
     }
 
-    /// <summary>
-    /// 인벤토리에 낚싯대 타입 아이템이 하나라도 있으면 true
-    /// </summary>
     private bool HasFishingRodInInventory(Inventory inventory)
     {
         if (inventory == null || inventory.InventorySlots == null)
@@ -587,9 +702,6 @@ public class CFishingController2D : BaseMono
         return false;
     }
 
-    /// <summary>
-    /// 인벤토리에 미끼 타입 아이템이 하나라도 있으면 true
-    /// </summary>
     private bool HasBaitInInventory(Inventory inventory)
     {
         if (inventory == null || inventory.InventorySlots == null)
@@ -621,10 +733,6 @@ public class CFishingController2D : BaseMono
         return false;
     }
 
-    /// <summary>
-    /// Inventory.cs를 수정하지 않고
-    /// 이 스크립트 내부에서 아이템 수용 가능 여부만 계산
-    /// </summary>
     private bool CanInventoryAcceptItem(Inventory inventory, ItemSO itemData, int amount)
     {
         if (inventory == null)
@@ -651,7 +759,6 @@ public class CFishingController2D : BaseMono
         int remainAmount = amount;
         int maxStack = Mathf.Max(1, itemData.MaxStack);
 
-        // 같은 아이템 스택 여유 확인
         for (int i = 0; i < slots.Length; i++)
         {
             if (slots[i].IsEmpty)
@@ -683,7 +790,6 @@ public class CFishingController2D : BaseMono
             }
         }
 
-        // 빈 슬롯 확인
         for (int i = 0; i < slots.Length; i++)
         {
             if (!slots[i].IsEmpty)
@@ -841,9 +947,6 @@ public class CFishingController2D : BaseMono
         return result;
     }
 
-    /// <summary>
-    /// 현재 인벤토리에 실제로 들어갈 수 있는 물고기만 추려서 랜덤 선택
-    /// </summary>
     private SheetItemRow GetRandomFishRow(EFishingAreaType areaType, Inventory playerInventory)
     {
         List<SheetItemRow> candidates = GetFishCandidates(areaType);
@@ -975,10 +1078,6 @@ public class CFishingController2D : BaseMono
         }
     }
 
-    /// <summary>
-    /// 지금은 로그 + 이벤트만 호출
-    /// 나중에 UI 스크립트가 생기면 Inspector에서 바로 연결 가능
-    /// </summary>
     private void ShowReservedFeedback(string message)
     {
         if (string.IsNullOrWhiteSpace(message))
@@ -996,6 +1095,6 @@ public class CFishingController2D : BaseMono
 
     private void OnDisable()
     {
-        CancelFishingInternal(string.Empty, false);
+        CancelFishingInternal(string.Empty, false, false);
     }
 }

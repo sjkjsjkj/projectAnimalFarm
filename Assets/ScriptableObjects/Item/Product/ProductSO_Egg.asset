@@ -17,7 +17,7 @@ MonoBehaviour:
   _name: "\uB2EC\uAC40"
   _description: "\uB2EC\uAC40 \uC785\uB2C8\uB2E4."
   _rarity: 1
-  _image: {fileID: 3343607977148753158, guid: 08dea8c965289a44494aeffda61216d8, type: 3}
+  _image: {fileID: 3207895765519258276, guid: ae55dc67471b9de4290b59f80a8969b5, type: 3}
   _prefab: {fileID: 0}
   _sellPrice: 100
   _buyPrice: 80
