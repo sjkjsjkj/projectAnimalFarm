@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ead18204b0e9824888953c537aad3c3, type: 3}
   m_Name: ToolItemSO_3_3
   m_EditorClassIdentifier: 
-  _id: 3_3
+  _id: Item_Tool_SolidAxe
   _type: 18
   _name: "\uC911\uAE09 \uB3C4\uB07C"
   _description: "\uBC8C\uBAA9 \uD6A8\uC728\uC774 \uC88B\uC544\uC9C4 \uB3C4\uAD6C"
