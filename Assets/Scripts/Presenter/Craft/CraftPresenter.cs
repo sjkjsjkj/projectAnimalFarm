@@ -57,6 +57,7 @@ public class CraftPresenter : BaseMono
     {
         if (_craftLogicalMono == null)
         {
+            //Todo : 코루틴으로 생성 대기
             UDebug.Print($"인스펙터에 상점 로직이 등록되지 않았습니다.", LogType.Assert);
             return false;
         }

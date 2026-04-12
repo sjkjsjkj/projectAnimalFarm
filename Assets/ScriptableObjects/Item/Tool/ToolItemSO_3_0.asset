@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ead18204b0e9824888953c537aad3c3, type: 3}
   m_Name: ToolItemSO_3_0
   m_EditorClassIdentifier: 
-  _id: 3_0
+  _id: Item_Tool_SolidWateringCan
   _type: 20
   _name: "\uC911\uAE09 \uBB3C\uBFCC\uB9AC\uAC1C"
   _description: "\uBB3C \uC8FC\uAE30 \uD6A8\uC728\uC774 \uB354 \uC88B\uB2E4"

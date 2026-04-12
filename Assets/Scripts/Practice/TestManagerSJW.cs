@@ -73,15 +73,16 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
     }
     public void TestGetItemInvenCoordinator()
     {
-        _itemCoordinatior.TryCollectItem(Id.Item_Seed_BlueBerry, 1);
-        _itemCoordinatior.TryCollectItem(Id.Item_Seed_Broccoli, 1);
-        _itemCoordinatior.TryCollectItem(Id.Item_Seed_Cabbage, 1);
-        _itemCoordinatior.TryCollectItem(Id.Item_Seed_Carrot, 1);
-        _itemCoordinatior.TryCollectItem("ALL props seasons_69", 1);
-        _itemCoordinatior.TryCollectItem("ALL props seasons_13", 1);
-        _itemCoordinatior.TryCollectItem("ALL props seasons_19", 1);
-        _itemCoordinatior.TryCollectItem("ALL props seasons_34", 1);
-        _itemCoordinatior.TryCollectItem("ALL props seasons_38", 1);
+        ItemCollectionCoordinator.Ins.TryCollectItem(Id.stone_with_minerals_26, 1);
+        ItemCollectionCoordinator.Ins.TryCollectItem(Id.stone_with_minerals_25, 1);
+        ItemCollectionCoordinator.Ins.TryCollectItem(Id.stone_with_minerals_24, 1);
+        ItemCollectionCoordinator.Ins.TryCollectItem(Id.stone_with_minerals_22, 1);
+        ItemCollectionCoordinator.Ins.TryCollectItem(Id.stone_with_minerals_27, 1);
+        ItemCollectionCoordinator.Ins.TryCollectItem(Id.stone_with_minerals_28, 1);
+        ItemCollectionCoordinator.Ins.TryCollectItem(Id.stone_with_minerals_29, 1);
+        ItemCollectionCoordinator.Ins.TryCollectItem(Id.stone_with_minerals_30, 1);
+        ItemCollectionCoordinator.Ins.TryCollectItem(Id.stone_with_minerals_31, 1);
+        ItemCollectionCoordinator.Ins.TryCollectItem(Id.stone_with_minerals_45, 1);
     }
 
     public void TestFarm()
@@ -103,7 +104,7 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
     {
         for (int i = 0; i < curRequireCondition.Length; i++)
         {
-            UDebug.Print($"요구 아이템 {i} [{_recipeSOs[_recipeIdx].RequiedItems[i].Id}] : {curRequireCondition[i].CurHasCount} / {curRequireCondition[i].RequireCount} | 제작 가능 여부 : {curRequireCondition[i].IsCondition}");
+            UDebug.Print($"요구 아이템 {i} [{_recipeSOs[_recipeIdx].RequiedItems[i].RequireItem.Id}] : {curRequireCondition[i].CurHasCount} / {curRequireCondition[i].RequireCount} | 제작 가능 여부 : {curRequireCondition[i].IsCondition}");
         }
         if(canMake)
         {

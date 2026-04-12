@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ead18204b0e9824888953c537aad3c3, type: 3}
   m_Name: ToolItemSO_1_8
   m_EditorClassIdentifier: 
-  _id: 1_8
+  _id: Item_Tool_BasicSickle
   _type: 1
   _name: "\uAE30\uBCF8 \uB0AB"
   _description: "\uC218\uD655\uC5D0 \uC4F0\uB294 \uAE30\uBCF8 \uB0AB"

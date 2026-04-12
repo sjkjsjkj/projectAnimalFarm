@@ -13,19 +13,17 @@ public class TestAnimalAndSeed : BaseMono
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     public void GiveAllSeeds()
     {
-        var coord = ItemCollectionCoordinator.Ins;
-        coord.TryCollectItem(Id.Item_Seed_BlueBerry, 3);
-        coord.TryCollectItem(Id.Item_Seed_Broccoli, 3);
-        coord.TryCollectItem(Id.Item_Seed_Cabbage, 3);
-        coord.TryCollectItem(Id.Item_Seed_Carrot, 3);
-        coord.TryCollectItem(Id.Item_Seed_Cauliflower, 3);
-        coord.TryCollectItem(Id.Item_Seed_GreenOnion, 3);
-        coord.TryCollectItem(Id.Item_Seed_Onion, 3);
-        coord.TryCollectItem(Id.Item_Seed_Potato, 3);
-        coord.TryCollectItem(Id.Item_Seed_Radish, 3);
-        coord.TryCollectItem(Id.Item_Seed_Rice, 3);
-        coord.TryCollectItem(Id.Item_Seed_StrawBerry, 3);
-        UDebug.Print("씨앗 생성 완료");
+        ItemCollectionCoordinator.Ins.TryCollectItem(Id.Item_Seed_BlueBerry, 3);
+        ItemCollectionCoordinator.Ins.TryCollectItem(Id.Item_Seed_Broccoli, 3);
+        ItemCollectionCoordinator.Ins.TryCollectItem(Id.Item_Seed_Cabbage, 3);
+        ItemCollectionCoordinator.Ins.TryCollectItem(Id.Item_Seed_Carrot, 3);
+        ItemCollectionCoordinator.Ins.TryCollectItem(Id.Item_Seed_Cauliflower, 3);
+        ItemCollectionCoordinator.Ins.TryCollectItem(Id.Item_Seed_GreenOnion, 3);
+        ItemCollectionCoordinator.Ins.TryCollectItem(Id.Item_Seed_Onion, 3);
+        ItemCollectionCoordinator.Ins.TryCollectItem(Id.Item_Seed_Potato, 3);
+        ItemCollectionCoordinator.Ins.TryCollectItem(Id.Item_Seed_Radish, 3);
+        ItemCollectionCoordinator.Ins.TryCollectItem(Id.Item_Seed_Rice, 3);
+        ItemCollectionCoordinator.Ins.TryCollectItem(Id.Item_Seed_StrawBerry, 3);
     }
 
     public void SpawnAllAnimals()
@@ -37,15 +35,15 @@ public class TestAnimalAndSeed : BaseMono
         _breedingArea.SpawnAnimal(Id.World_Animal_Horse);
         _breedingArea.SpawnAnimal(Id.World_Animal_Duck);
         _breedingArea.SpawnAnimal(Id.World_Animal_Pig);
-        _breedingArea.SpawnAnimal(Id.World_Animal_Goat);
-        UDebug.Print("동물 스폰 완료");
+        _breedingArea.SpawnAnimal(Id.World_Animal_Goat);       
     }
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
     private void Start()
     {
-        SpawnAllAnimals();
+        //_itemCoordinatior = GameObject.Find("Item_Collection_Coordinator").GetComponent<ItemCollectionCoordinator>();
+        //SpawnAllAnimals();
     }
 
     private bool _canGetSeeds = true;

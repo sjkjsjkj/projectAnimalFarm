@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ead18204b0e9824888953c537aad3c3, type: 3}
   m_Name: ToolItemSO_4_1
   m_EditorClassIdentifier: 
-  _id: 4_1
+  _id: Item_Tool_SuperPickAxe
   _type: 19
   _name: "\uACE0\uAE09 \uACE1\uAD49\uC774"
   _description: "\uB2E8\uB2E8\uD55C \uAD11\uBB3C\uB3C4 \uCE98 \uC218 \uC788\uB2E4"

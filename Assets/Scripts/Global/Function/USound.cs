@@ -3,6 +3,7 @@
 /// <summary>
 /// 요청받은 소리를 재생하는 사운드 유틸리티 클래스입니다.
 /// </summary>
+
 public static class USound
 {
     private static AudioSource _mainSource;

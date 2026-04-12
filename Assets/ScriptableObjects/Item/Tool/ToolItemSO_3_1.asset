@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ead18204b0e9824888953c537aad3c3, type: 3}
   m_Name: ToolItemSO_3_1
   m_EditorClassIdentifier: 
-  _id: 3_1
+  _id: Item_Tool_SolidPickAxe
   _type: 19
   _name: "\uC911\uAE09 \uACE1\uAD49\uC774"
   _description: "\uCC44\uAD74 \uC131\uB2A5\uC774 \uD5A5\uC0C1\uB41C \uB3C4\uAD6C"
