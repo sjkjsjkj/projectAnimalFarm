@@ -213,7 +213,7 @@ MonoBehaviour:
   _itemId: stone with minerals_45
   _amount: 1
   _displayName: "\uB3CC"
-  _collectMode: 1
+  _collectMode: 2
   _autoCollectDelay: 0.15
   _manualCollectMaxDistance: 1
   _autoCollectMaxDistance: 0.8
@@ -330,7 +330,7 @@ MonoBehaviour:
   _fishingSuccessMessage: "\uBB3C\uACE0\uAE30\uB97C \uD68D\uB4DD\uD588\uC2B5\uB2C8\uB2E4."
   _fishingFailMessage: "\uB09A\uC2DC\uC5D0 \uC2E4\uD328\uD588\uC2B5\uB2C8\uB2E4."
   _fishingCancelMessage: "\uB09A\uC2DC\uB97C \uCDE8\uC18C\uD588\uC2B5\uB2C8\uB2E4."
-  _collectStartMessage: "\uCC44\uAD74\uC911...."
+  _collectStartMessage: "\uCC44\uAD74 \uC911..."
   _collectSuccessMessage: "\uC544\uC774\uD15C\uC744 \uD68D\uB4DD\uD588\uC2B5\uB2C8\uB2E4."
   _collectFailMessage: "\uCC44\uAD74\uC5D0 \uC2E4\uD328\uD588\uC2B5\uB2C8\uB2E4."
   _collectCancelMessage: "\uCC44\uAD74\uC744 \uCDE8\uC18C\uD588\uC2B5\uB2C8\uB2E4."

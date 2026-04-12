@@ -86,14 +86,15 @@ public class BreedingArea : BaseMono, IFoodProvider
             tempGo = FactoryManager.Ins.Animal.Spawn(id);
         }
 
-        if (!tempGo.GetComponent<AnimalObject>())
+        AnimalObject tempAnimal = tempGo.GetComponent<AnimalObject>();
+        if (tempAnimal == null)
         {
             UDebug.Print("잘못된 객체가 생성되고 있습니다. 여기에는 AnimalObject가 반환되어야 합니다. 팩토리 확인");
             return;
         }
 
-        _animals.Add(tempGo.GetComponent<AnimalObject>());
-        tempGo.GetComponent<AnimalObject>().SetFoodProvider(this);
+        _animals.Add(tempAnimal);
+        tempAnimal.SetFoodProvider(this);
 
         tempGo.transform.SetParent(this.transform);
         tempGo.transform.localPosition = GetRandomPos();
