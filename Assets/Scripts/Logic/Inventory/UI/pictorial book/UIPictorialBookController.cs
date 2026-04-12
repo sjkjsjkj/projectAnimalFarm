@@ -11,6 +11,8 @@ using UnityEngine.UI;
 /// - O 키로 도감 열기 / 닫기
 /// - 탭 전환
 /// - 도감 열 때 / 탭 바꿀 때 강제 전체 갱신
+/// - 현재 선택된 탭만 선명하게 보이고
+///   나머지 탭은 반투명하게 표시
 /// </summary>
 public class UIPictorialBookController : BaseMono
 {
@@ -27,6 +29,11 @@ public class UIPictorialBookController : BaseMono
     [SerializeField] private KeyCode _toggleKey = KeyCode.O;
     [SerializeField] private KeyCode _closeKey = KeyCode.Escape;
 
+    [Header("탭 버튼 루트 (전체 버튼 오브젝트 연결 권장)")]
+    [SerializeField] private GameObject _animalTabRoot;
+    [SerializeField] private GameObject _fishTabRoot;
+    [SerializeField] private GameObject _gatherTabRoot;
+
     [Header("탭 아이콘 (선택)")]
     [SerializeField] private Image _animalTabIcon;
     [SerializeField] private Image _fishTabIcon;
@@ -36,10 +43,25 @@ public class UIPictorialBookController : BaseMono
     [SerializeField] private Color _selectedTabColor = Color.white;
     [SerializeField] private Color _unselectedTabColor = new Color(1f, 1f, 1f, 0.55f);
 
+    [Header("탭 알파")]
+    [Tooltip("현재 선택된 탭은 이 알파값으로 표시")]
+    [SerializeField] private float _selectedTabAlpha = 1f;
+
+    [Tooltip("선택되지 않은 탭은 이 알파값으로 표시")]
+    [SerializeField] private float _unselectedTabAlpha = 0.35f;
+
+    [Header("자동 연결")]
+    [Tooltip("탭 루트를 비워두면 아이콘의 부모 오브젝트를 자동으로 탭 루트로 사용 시도")]
+    [SerializeField] private bool _autoBindTabRootFromIconParent = true;
+
     [Header("로그")]
     [SerializeField] private bool _logEnabled = true;
 
     private CanvasGroup _bookCanvasGroup;
+    private CanvasGroup _animalTabCanvasGroup;
+    private CanvasGroup _fishTabCanvasGroup;
+    private CanvasGroup _gatherTabCanvasGroup;
+
     private bool _isInitialized = false;
     private string _currentCategory;
 
@@ -200,6 +222,11 @@ public class UIPictorialBookController : BaseMono
             }
         }
 
+        TryAutoBindTabRoots();
+        _animalTabCanvasGroup = GetOrAddCanvasGroup(_animalTabRoot, _animalTabCanvasGroup);
+        _fishTabCanvasGroup = GetOrAddCanvasGroup(_fishTabRoot, _fishTabCanvasGroup);
+        _gatherTabCanvasGroup = GetOrAddCanvasGroup(_gatherTabRoot, _gatherTabCanvasGroup);
+
         _isInitialized = true;
     }
 
@@ -221,20 +248,67 @@ public class UIPictorialBookController : BaseMono
         bool isFish = IsSameCategory(category, "Fish");
         bool isGather = IsSameCategory(category, "Gather");
 
-        if (_animalTabIcon != null)
+        ApplyTabVisual(_animalTabCanvasGroup, _animalTabIcon, isAnimal);
+        ApplyTabVisual(_fishTabCanvasGroup, _fishTabIcon, isFish);
+        ApplyTabVisual(_gatherTabCanvasGroup, _gatherTabIcon, isGather);
+    }
+
+    private void ApplyTabVisual(CanvasGroup canvasGroup, Image icon, bool isSelected)
+    {
+        float alpha = isSelected ? _selectedTabAlpha : _unselectedTabAlpha;
+        Color color = isSelected ? _selectedTabColor : _unselectedTabColor;
+
+        if (canvasGroup != null)
         {
-            _animalTabIcon.color = isAnimal ? _selectedTabColor : _unselectedTabColor;
+            canvasGroup.alpha = Mathf.Clamp01(alpha);
+            canvasGroup.interactable = true;
+            canvasGroup.blocksRaycasts = true;
         }
 
-        if (_fishTabIcon != null)
+        if (icon != null)
         {
-            _fishTabIcon.color = isFish ? _selectedTabColor : _unselectedTabColor;
+            icon.color = color;
+        }
+    }
+
+    private void TryAutoBindTabRoots()
+    {
+        if (!_autoBindTabRootFromIconParent)
+        {
+            return;
         }
 
-        if (_gatherTabIcon != null)
+        if (_animalTabRoot == null && _animalTabIcon != null && _animalTabIcon.transform.parent != null)
         {
-            _gatherTabIcon.color = isGather ? _selectedTabColor : _unselectedTabColor;
+            _animalTabRoot = _animalTabIcon.transform.parent.gameObject;
         }
+
+        if (_fishTabRoot == null && _fishTabIcon != null && _fishTabIcon.transform.parent != null)
+        {
+            _fishTabRoot = _fishTabIcon.transform.parent.gameObject;
+        }
+
+        if (_gatherTabRoot == null && _gatherTabIcon != null && _gatherTabIcon.transform.parent != null)
+        {
+            _gatherTabRoot = _gatherTabIcon.transform.parent.gameObject;
+        }
+    }
+
+    private CanvasGroup GetOrAddCanvasGroup(GameObject target, CanvasGroup current)
+    {
+        if (target == null)
+        {
+            return current;
+        }
+
+        CanvasGroup canvasGroup = current != null ? current : target.GetComponent<CanvasGroup>();
+
+        if (canvasGroup == null)
+        {
+            canvasGroup = target.AddComponent<CanvasGroup>();
+        }
+
+        return canvasGroup;
     }
 
     private bool IsSameCategory(string a, string b)
