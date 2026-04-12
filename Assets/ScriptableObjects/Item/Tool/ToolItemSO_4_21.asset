@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ead18204b0e9824888953c537aad3c3, type: 3}
   m_Name: ToolItemSO_4_21
   m_EditorClassIdentifier: 
-  _id: 4_21
+  _id: Item_Tool_SuperFishingRod
   _type: 24
   _name: "\uACE0\uAE09 \uB09A\uC2DC\uB300"
   _description: "\uD76C\uADC0 \uC5B4\uC885\uC744 \uB178\uB9B4 \uC218 \uC788\uB2E4"

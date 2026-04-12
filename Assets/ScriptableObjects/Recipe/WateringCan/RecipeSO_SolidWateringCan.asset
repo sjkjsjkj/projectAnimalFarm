@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35cd5ebebe4cdc84282a901c7151ff26, type: 3}
+  m_Name: RecipeSO_SolidWateringCan
+  m_EditorClassIdentifier: 
+  _id: Recipe_SolidWateringCan
+  _type: 17
+  _icon: {fileID: 21300000, guid: 23c331adf4c626d488234262d5da5aa1, type: 2}
+  _makeTargetItemId: Item_Tool_SolidWateringCan
+  _makeTargetItemName: "\uC911\uAE09 \uB3C4\uB07C"
+  _targetItemType: 20
+  _requireItems:
+  - {fileID: 11400000, guid: def4edcd1db9c0f428701aaadf6ba23b, type: 2}
+  - {fileID: 11400000, guid: dc92cb98acb3dde4292c6815479d8178, type: 2}

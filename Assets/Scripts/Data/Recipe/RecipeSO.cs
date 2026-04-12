@@ -9,7 +9,9 @@ public class RecipeSO : BaseSO
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("기본 정보")]
     //만드는 아이템 아이디
+    [SerializeField] private Sprite _icon;
     [SerializeField] private string _makeTargetItemId;
+    [SerializeField] private string _makeTargetItemName;
     [SerializeField] private EType _targetItemType;
     //필요한 아이템 목록
     [SerializeField] private RequireItemSO[] _requireItems;
@@ -18,6 +20,9 @@ public class RecipeSO : BaseSO
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     public string Id => _id;
+    public Sprite Icon => _icon;
+    public string MakeTargetItemId => _makeTargetItemId;
+    public string MakeTargetName => _makeTargetItemName;
     public string TargetItemId => _makeTargetItemId;
     public EType TargetItemType => _targetItemType;
     public RequireItemSO[] RequiedItems => _requireItems;
