@@ -12,4 +12,6 @@ public enum EPlayerState : byte
     Logging = 6,
     Drinking = 7,
     Eating = 8,
+    Sickle = 9,
+    Shovel = 10,
 }

@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 5059007461852088965}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 22.106197, y: -0.02092816, z: 0.29624692}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -163,7 +163,7 @@ MonoBehaviour:
     \uB3CB\uC740 \uD574\uB9C8\uB958\t0\t1\r\nAll Fish_87\t\uC0B0\uD638\uD574\uB9C8\tPrime\t690\t\uC0B0\uD638
     \uC9C0\uB300\uC758 \uD76C\uADC0 \uD574\uB9C8\t0\t1\r\nAll Fish_88\t\uBCF5\uD574\uB9C8\tPrime\t700\t\uC791\uACE0
     \uADC0\uD55C \uD574\uB9C8\uB958\t0\t1"
-  _database: {fileID: 0}
+  _database: {fileID: 3741708259854580653}
   _loadOnAwake: 1
   _clearBeforeLoad: 1
   _logEnabled: 1

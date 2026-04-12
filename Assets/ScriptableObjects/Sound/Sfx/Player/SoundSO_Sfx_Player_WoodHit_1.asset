@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: SoundSO_Sfx_Player_WoodHit_1
   m_EditorClassIdentifier: 
   _id: Sfx_Player_WoodHit_1
-  _type: 0
+  _type: 22
   _clip: {fileID: 8300000, guid: 2df114db4920c5f4d980c1ba5b6567cd, type: 3}
-  _volume: 0.5
+  _volume: 0.75

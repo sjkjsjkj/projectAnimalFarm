@@ -7,7 +7,6 @@ public class TestAnimalAndSeed : BaseMono
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("코디네이터 연결")]
-    [SerializeField] private ItemCollectionCoordinator _itemCoordinatior;
     [SerializeField] private BreedingArea _breedingArea;
     #endregion
 

@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -296,6 +297,20 @@ public class UIPictorialBookDetailPanel : BaseMono
         }
 
         return value.Trim();
+    }
+
+    private void Start()
+    {
+        StartCoroutine(CoFindSheetItemDatabase());
+    }
+
+    private IEnumerator CoFindSheetItemDatabase()
+    {
+        while (_sheetDatabase != null)
+        {
+            _sheetDatabase = FindAnyObjectByType<SheetItemDatabase>();
+            yield return null;
+        }
     }
 
     [Serializable]

@@ -30,6 +30,11 @@ public class PlayerStateMachine
     /// </summary>
     public void UpdateState(in PlayerContext context)
     {
+        // 취소 명령이 있을 경우 상태 잠금 해제
+        if (context.isCanceled)
+        {
+            _lockStateTransition = false;
+        }
         // 초기 상태일 경우 Idle로 진입
         if (_curState == null)
         {

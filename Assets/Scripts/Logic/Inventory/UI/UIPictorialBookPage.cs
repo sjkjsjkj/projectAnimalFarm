@@ -536,4 +536,11 @@ public class UIPictorialBookPage : BaseMono
             Debug.Log($"[UIPictorialBookPage] 페이지 사운드 재생: {selectedSoundId} / tag={tag}");
         }
     }
+
+    protected override void Awake()
+    {
+        base.Awake();
+        _bookSystem = FindObjectOfType<PictorialBookSystem>();
+        UDebug.IsNull(_bookSystem);
+    }
 }

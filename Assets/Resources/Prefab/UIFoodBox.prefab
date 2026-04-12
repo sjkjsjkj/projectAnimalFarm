@@ -175,7 +175,6 @@ MonoBehaviour:
   _instanceId: 0
   _slotContainer: {fileID: 5747028632230681564}
   _slotPrefab: {fileID: 8775709780734684913, guid: 01804c1d96173434f85e5f861a2c1637, type: 3}
-  _defaultSlotCount: 15
   _dragIcon: {fileID: 933309544551170654}
   _slotList: []
   TestCurrentId: 0

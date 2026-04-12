@@ -69,10 +69,13 @@ public class ObjectPool<T> where T : BaseMono, IPoolable
     public bool Pull(out T instance)
     {
         // 꺼내기 시도
-        if(_pool.TryDequeue(out instance))
+        while(_pool.TryDequeue(out instance))
         {
-            instance.gameObject.SetActive(true);
-            return true;
+            if(instance != null)
+            {
+                instance.gameObject.SetActive(true);
+                return true;
+            }
         }
         // 동적 생성이 허용
         if (_useOverFlow)

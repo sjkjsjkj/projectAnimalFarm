@@ -11,6 +11,22 @@ public class PlayerFishingState : IPlayerState
     [SerializeField] private int _capturedYesWeight;
     [SerializeField] private int _capturedNoWeight;
 
+    #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
+    private const string FACING_PARAM = "fFacing";
+    private const string PHASE_PARAM = "fFishing";
+    private const string FISHING_PARAM = "Fishing";
+
+    private readonly int _hashFacing = Animator.StringToHash(FACING_PARAM);
+    private readonly int _hashPhase = Animator.StringToHash(PHASE_PARAM);
+    private readonly int _hashFishing = Animator.StringToHash(FISHING_PARAM);
+
+    private float _facingValue;
+    private float _totalDuration;
+    private float _curPhaseDuration;
+    private bool _isSuccess;
+    private EFishingState _fishingState;
+    private float _nextSoundTime;
+
     private static string _fishingStartSound = Id.Sfx_Player_FishingStart_1;
     private static string _waterStartSound = Id.Sfx_Player_FishingWater_2;
     private static string[] _hookedSound =
@@ -35,22 +51,6 @@ public class PlayerFishingState : IPlayerState
         Id.Sfx_Environment_WaterExit_1,
         Id.Sfx_Environment_WaterExit_2,
     };
-
-    #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
-    private const string FACING_PARAM = "fFacing";
-    private const string PHASE_PARAM = "fFishing";
-    private const string FISHING_PARAM = "Fishing";
-
-    private readonly int _hashFacing = Animator.StringToHash(FACING_PARAM);
-    private readonly int _hashPhase = Animator.StringToHash(PHASE_PARAM);
-    private readonly int _hashFishing = Animator.StringToHash(FISHING_PARAM);
-
-    private float _facingValue;
-    private float _totalDuration;
-    private float _curPhaseDuration;
-    private bool _isSuccess;
-    private EFishingState _fishingState;
-    private float _nextSoundTime;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────

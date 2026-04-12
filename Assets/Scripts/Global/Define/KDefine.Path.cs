@@ -6,6 +6,7 @@ public static partial class K
     public static readonly string AUTO_SO_EXPORT_PATH = "Assets/Export";
     // 부트 프리펩 리소스 경로
     public static readonly string BOOT_PREFAB_RESOURCE_PATH = "BootPrefab";
+    public static readonly string BOOT_CANVAS_RESOURCE_PATH = "CanvasPrefab";
     // SO 테이블 리소스 경로
     public static readonly string TABLE_RESOURCE_PATH = "Table";
     public static readonly string PREFAB_RESOURCE_PATH = "Prefab";
