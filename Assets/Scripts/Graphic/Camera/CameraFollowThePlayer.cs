@@ -35,6 +35,10 @@ public class CameraFollowThePlayer : Frameable
     private Vector3 BuildDesiredPos()
     {
         Vector3 desiredPos = _playerTr.position + _offset;
+        if ((int)GameManager.Ins.Scene > (int)EScene.Cave)
+        {
+            return desiredPos;
+        }
         // 맵 테두리
         float startX, endX, startY, endY;
         (startX, endX, startY, endY) = TileManager.Ins.Tile.MapOutline();
