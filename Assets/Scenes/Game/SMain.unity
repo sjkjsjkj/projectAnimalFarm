@@ -37407,10 +37407,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8971653198583773683, guid: 26ec90f14a41d2947b1e1b54ec047854, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1349196934}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1894463161914598553, guid: 26ec90f14a41d2947b1e1b54ec047854, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 392808291}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 26ec90f14a41d2947b1e1b54ec047854, type: 3}
 --- !u!1 &254967102
 GameObject:
@@ -37430,7 +37427,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &254967103
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37896,25 +37893,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 382970256}
   m_CullTransparentMesh: 1
---- !u!1 &392808290 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1894463161914598553, guid: 26ec90f14a41d2947b1e1b54ec047854, type: 3}
-  m_PrefabInstance: {fileID: 252281649}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &392808291
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 392808290}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 687b757ce608a2743adb66529099e28a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _uniqueId: e22222a3-6eb6-4593-9ca7-ef3abaf4840b
-  _instanceId: 137708
 --- !u!4 &392808293 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8971653198583773683, guid: 26ec90f14a41d2947b1e1b54ec047854, type: 3}
@@ -37938,7 +37916,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &467586669
 RectTransform:
   m_ObjectHideFlags: 0
@@ -39209,8 +39187,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7116f37a184de894bbf48bc13d0bdd00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: 62a2e22e-b236-4585-b9b8-4daf3a714c09
-  _instanceId: 137800
+  _uniqueId: c95bb695-85d2-476b-bd46-21494d467235
+  _instanceId: 160244
   _testTileID: 10000
   _animalID: World_Animal_Cow
   _breedingArea: {fileID: 2060048076}
@@ -39239,8 +39217,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3d637a0af3f6dd42855b5bf6243446d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: de5db113-ea15-44c7-badd-1888ff239216
-  _instanceId: 137802
+  _uniqueId: 283afe0c-2703-4f3f-af33-edfc12f07b79
+  _instanceId: 160246
   _breedingArea: {fileID: 2060048076}
 --- !u!1001 &1343634250
 PrefabInstance:
