@@ -25,11 +25,13 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
     private SoundTableSO[] _soundTables;
     private PlayerWorldTableSO[] _playerWorldTables;
     private ProductTableSO[] _productTables;
+    private RecipeTableSO[] _recipeTables;
     // 프리펩
     private SoundEmitter _soundEmiiterPrefab;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
+    public bool IsInit => _isInitialized;
     /// <summary>
     /// 기본적인 정적 데이터를 반환합니다. (UnitSO)
     /// 구체적인 SO 데이터는 가져올 수 없습니다.
@@ -177,6 +179,15 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
         => FindData<ProductTableSO, ProductSO>(_productTables, id);
 
     /// <summary>
+    /// 레시피 정적 데이터를 반환합니다.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public RecipeSO Recipe(string id)
+        => FindData<RecipeTableSO, RecipeSO>(_recipeTables, id);
+    public RecipeTableSO AllRecipe() => _recipeTables[0];
+
+    /// <summary>
     /// 사운드 이미터 프리펩을 반환합니다.
     /// </summary>
     public SoundEmitter SoundPrefab() => GetSafePrefab(_soundEmiiterPrefab);
@@ -214,6 +225,8 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
         SettingUnitDict<PlayerWorldTableSO, PlayerWorldSO>(_playerWorldTables);
         _productTables = LoadTables<ProductTableSO, ProductSO>();
         SettingUnitDict<ProductTableSO, ProductSO>(_productTables);
+        _recipeTables = LoadTables<RecipeTableSO, RecipeSO>();
+        SettingUnitDict<RecipeTableSO, RecipeSO>(_recipeTables);
 
         // UnitSO를 상속받지 않는 SO 작성
         _soundTables = LoadTables<SoundTableSO, SoundSO>();

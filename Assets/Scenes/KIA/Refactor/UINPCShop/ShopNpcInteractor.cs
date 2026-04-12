@@ -17,6 +17,9 @@ public class ShopNpcInteractor : BaseMono, IInteractable
     [Header("자동 닫기 옵션")]
     [SerializeField] private bool _useAutoCloseByDistance = true;
     [SerializeField] private float _autoCloseDistance = 2.0f;
+
+    [Header("상점 정보")]
+    [SerializeField] private ShopSO _shopSO;
     #endregion
 
     #region ─────────────────────────▶ 접근자 ◀─────────────────────────

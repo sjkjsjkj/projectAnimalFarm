@@ -93,10 +93,10 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
     {
         UDebug.Print("제작대 테스트");
 
-        Workbench.Ins.OnChenageRecipe -= ShowCurrentRequireCondition;
-        Workbench.Ins.OnChenageRecipe += ShowCurrentRequireCondition;
+        WorkbenchManager.Ins.Workbench.OnChenageRecipe -= ShowCurrentRequireCondition;
+        WorkbenchManager.Ins.Workbench.OnChenageRecipe += ShowCurrentRequireCondition;
 
-        Workbench.Ins.SetRecipe(_recipeSOs[_recipeIdx]);
+        //Workbench.Ins.SetRecipe(_recipeSOs[_recipeIdx]);
     }
 
     public void ShowCurrentRequireCondition(WorkbenchReturnStruct[] curRequireCondition, bool canMake)
@@ -116,9 +116,9 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
     }
     public void TestMakeItem()
     {
-        Workbench.Ins.MakeItem();
+        WorkbenchManager.Ins.Workbench.MakeItem();
 
-        Workbench.Ins.SetRecipe(_recipeSOs[_recipeIdx]);
+        //Workbench.Ins.SetRecipe(_recipeSOs[_recipeIdx]);
     }
     public void FlagTest()
     {
@@ -129,17 +129,16 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
         UDebug.Print($"Flag 1 : LeftRight {flag1} | Flag 2 : LeftRightUp {flag2} | Flag 3 : None {flag3} ");
         UDebug.Print($"Flag 1 & Flag 3 : { flag1 ^ flag3} ");
     }
+    public void TestGetMoney()
+    {
+        DataManager.Ins.Player.AddMoney(10000);
+    }
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
     private void Start()
     {
-        _itemCoordinatior = GameObject.Find("Item_Collection_Coordinator").GetComponent<ItemCollectionCoordinator>();
-
-        FlagTest();
-        
-        
-
+ 
     }
     #endregion
 }

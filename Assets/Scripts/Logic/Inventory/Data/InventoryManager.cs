@@ -238,7 +238,7 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
         _reUseTimer = 0;
         if (_inventoriesCanvasTr == null)
         {
-            _inventoriesCanvasTr = UObject.Find("Canvas").transform;
+            _inventoriesCanvasTr = UObject.Find(K.NAME_GLOBAL_CANVAS_ROOT).transform;
         }
         switch(invenType)
         {

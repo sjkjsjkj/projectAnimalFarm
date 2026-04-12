@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1160eebecdf5f47438a6ef5f39ac01a8, type: 3}
+  m_Name: ShopSO_FishMan
+  m_EditorClassIdentifier: 
+  _id: World_Shop_FIshman
+  _type: 10
+  _name: "\uC0DD\uC120\uAC00\uAC8C\uC544\uC800\uC528"
+  _description: "\uC0DD\uC120\uAC00\uAC8C\uC544\uC800\uC528"
+  _rarity: 1
+  _image: {fileID: 0}
+  _prefab: {fileID: 0}
+  _size: {x: 1, y: 1}
+  _shopItems:
+  - {fileID: 11400000, guid: 761be12f8602fdb4b975d377cb97eb86, type: 2}
+  - {fileID: 11400000, guid: 3efca1da142a65c459aca75a99c8c6a4, type: 2}
+  - {fileID: 11400000, guid: 26fb5e4b0016ac7439548879fbe8ff19, type: 2}
+  - {fileID: 11400000, guid: 547b7957afc9a9142b6a3a0e636853c7, type: 2}
+  - {fileID: 11400000, guid: 843c3f39e0dd91a499126b3b658acebc, type: 2}
+  - {fileID: 11400000, guid: 901bd434eb3b0cf458338dd140385597, type: 2}
+  - {fileID: 11400000, guid: f70f7ff9c35054042bea22d3bf1d1322, type: 2}
+  - {fileID: 11400000, guid: 75f4b5e60d16ef64c8056421585e5086, type: 2}
+  - {fileID: 11400000, guid: 423bb698e7daa8847bbb165aeee7f08d, type: 2}
+  - {fileID: 11400000, guid: 4cc536ca66731874ba24c2eab6ddb02f, type: 2}
+  - {fileID: 11400000, guid: a102288c3afa165439c5630d526e3854, type: 2}
+  - {fileID: 11400000, guid: f103c827a9583e941af2ac9ab5feb50a, type: 2}
+  - {fileID: 11400000, guid: 043035f0616e66d4f997828b7dd0d52a, type: 2}
+  - {fileID: 11400000, guid: 4531840fdd94640448a0c47228ce41d2, type: 2}
