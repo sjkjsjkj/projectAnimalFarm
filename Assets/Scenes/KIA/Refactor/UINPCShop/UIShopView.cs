@@ -8,7 +8,7 @@ using UnityEngine.UI;
 /// UIShopView 오브젝트 자체를 표시 루트로 사용하되,
 /// 부모 윈도우 루트도 함께 제어할 수 있는 구조입니다.
 /// </summary>
-public class UIShopView : BaseMono
+public class UIShopView : BaseMono, IShopUI
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("상점 표시 루트")]
@@ -51,6 +51,9 @@ public class UIShopView : BaseMono
     /// 닫기 버튼 클릭 시 호출할 외부 콜백입니다.
     /// </summary>
     private Action _onClickClose;
+
+    public event Action<string, int, int> OnBuyButtonPressed;
+    public event Action<string, int, int> OnSellButtonPressed;
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
@@ -165,7 +168,6 @@ public class UIShopView : BaseMono
 
         RefreshSlotLayout();
     }
-
     /// <summary>
     /// 생성된 슬롯들을 모두 삭제합니다.
     /// </summary>
@@ -224,6 +226,26 @@ public class UIShopView : BaseMono
         {
             _windowRoot = transform.parent != null ? transform.parent.gameObject : gameObject;
         }
+    }
+
+    public void BuySuccessHandle(string successMsg)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void BuyFailureHandle(string failMsg)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SellSuccessHandle(string successMsg)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SellFailureHandle(string failMsg)
+    {
+        throw new NotImplementedException();
     }
     #endregion
 }

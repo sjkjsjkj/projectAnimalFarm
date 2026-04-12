@@ -94,6 +94,15 @@ public class UIShopSlotItem : BaseMono
     #endregion
 
     #region ─────────────────────────▶ 외부 메서드 ◀─────────────────────────
+    public void SlotClear()
+    {
+        _itemIcon.sprite = null;
+
+        _buyButton.onClick.RemoveListener(HandleClickBuy);
+        _sellButton.onClick.RemoveListener(HandleClickSell);
+
+    }
+
     /// <summary>
     /// 슬롯 표시 정보와 버튼 콜백을 세팅합니다.
     /// </summary>
@@ -129,7 +138,6 @@ public class UIShopSlotItem : BaseMono
 
         _isSetup = true;
     }
-
     /// <summary>
     /// 슬롯 버튼 활성 여부를 설정합니다.
     /// </summary>

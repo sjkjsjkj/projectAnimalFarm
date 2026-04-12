@@ -32,7 +32,9 @@ public class Shop : IShopLogical
         
         if(player.Money < buyPrice)
         {
+            
             message = "플레이어의 소지금이 부족합니다.";
+            UDebug.Print(message);
             return false;
         }
 
@@ -41,12 +43,14 @@ public class Shop : IShopLogical
         if (playerInven == null)
         {
             message = "플레이어 인벤토리를 찾을 수 없습니다.";
+            UDebug.Print(message);
             return false;
         }
 
         if (!(playerInven.CheckSlots()))
         {
             message = "인벤토리가 가득 찼습니다.";
+            UDebug.Print(message);
             return false;
         }
 
@@ -56,10 +60,14 @@ public class Shop : IShopLogical
         ItemCollectionCoordinator.Ins.TryCollectItem(tempItemSO, amount);
 
         message = "구매 성공";
+        UDebug.Print(message);
         return true;
 
     }
-
+    public ItemSO GetItemSOShopSlotIdx(int slotIdx)
+    {
+        return _sellItems[slotIdx];
+    }
     public bool TrySellItem(string itemId, int sellPrice, int amount, out string failMessage)
     {
         Inventory playerInven = InventoryManager.Ins.PlayerInventory;

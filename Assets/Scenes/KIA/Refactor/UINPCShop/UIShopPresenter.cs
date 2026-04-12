@@ -5,7 +5,7 @@
 /// 외부 상호작용으로 창을 열고 닫을 수 있게 관리하는 프리젠터입니다.
 /// IUIWindow를 구현하여 UIWindowStackManager의 Esc 닫기 스택에 통합됩니다.
 /// </summary>
-public class UIShopPresenter : BaseMono, IUIWindow
+public class UIShopPresenter : BaseMono, IUIWindow 
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("상점 식별자")]
@@ -25,6 +25,9 @@ public class UIShopPresenter : BaseMono, IUIWindow
 
     [Header("피드백 설정")]
     [SerializeField] private float _feedbackDuration = 1.5f;
+
+    [Header("상점 정보")]
+    [SerializeField] private ShopSO _shopSO;
     #endregion
 
     #region ─────────────────────────▶ 접근자 ◀─────────────────────────
@@ -54,8 +57,7 @@ public class UIShopPresenter : BaseMono, IUIWindow
     /// <summary>
     /// 상점 거래 로직입니다.
     /// </summary>
-    private ShopLogic _shopLogic;
-
+    private Shop _shop;
     /// <summary>
     /// 초기화 완료 여부입니다.
     /// </summary>
@@ -107,7 +109,6 @@ public class UIShopPresenter : BaseMono, IUIWindow
         {
             UDebug.Print("UIShopPresenter가 UIShopView를 찾지 못했습니다.", LogType.Assert);
         }
-
         return false;
     }
 
@@ -118,11 +119,10 @@ public class UIShopPresenter : BaseMono, IUIWindow
     /// <returns>유효 여부</returns>
     private bool HasValidLogic(bool shouldPrintLog)
     {
-        if (_shopLogic != null)
+        if(_shop !=null)
         {
             return true;
         }
-
         if (shouldPrintLog)
         {
             UDebug.Print("UIShopPresenter의 ShopLogic이 초기화되지 않았습니다.", LogType.Assert);
@@ -176,13 +176,16 @@ public class UIShopPresenter : BaseMono, IUIWindow
 
         PlayClickSound();
 
-        if (_shopLogic.TryBuy(slotIndex, out string message))
+
+        //if (_shopLogic.TryBuy(slotIndex, out string message))
+        ItemSO tempItemSO = _shop.GetItemSOShopSlotIdx(slotIndex);
+
+        if(_shop.TryBuyItem(tempItemSO.Id, tempItemSO.SellPrice, 1, out string message))
         {
             PlaySuccessSound();
             ShowFeedback(message, EFeedbackMessageType.Success);
             return;
         }
-
         PlayErrorSound();
         ShowFeedback(message, EFeedbackMessageType.Failure);
     }
@@ -200,7 +203,10 @@ public class UIShopPresenter : BaseMono, IUIWindow
 
         PlayClickSound();
 
-        if (_shopLogic.TrySell(slotIndex, out string message))
+        ItemSO tempItemSO = _shop.GetItemSOShopSlotIdx(slotIndex);
+
+        //if (_shopLogic.TrySell(slotIndex, out string message))
+        if(_shop.TrySellItem(tempItemSO.Id,tempItemSO.SellPrice, 1, out string message ))
         {
             PlaySuccessSound();
             ShowFeedback(message, EFeedbackMessageType.Success);
@@ -305,7 +311,8 @@ public class UIShopPresenter : BaseMono, IUIWindow
             return;
         }
 
-        _shopLogic = new ShopLogic(_slotCount, _useTestLogic);
+        //_shopLogic = new ShopLogic(_slotCount, _useTestLogic);
+        
         _shopView.Initialize(HandleClickClose);
         BuildShopSlots();
 

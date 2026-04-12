@@ -8,6 +8,9 @@ public class ShopInteractObject : BaseMono, IInteractable // 맵에 귀속될 NP
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("주제")]
     [SerializeField] private ShopSO _shopData;
+    //[SerializeField] private UIShopPresenter _shopUI;
+
+    [SerializeField] private int _shopID;
     #endregion
 
     #region 내부 변수
@@ -38,6 +41,7 @@ public class ShopInteractObject : BaseMono, IInteractable // 맵에 귀속될 NP
         //상점 UI 에서는 _shop.SellItems 로 접근
         //throw new System.NotImplementedException();
         //UDebug.Print("상점 인터랙션");
+        ShopManager.Ins.SetToggleShopUI(_shopID);
         _shop.ShowShopList();
     }
     #endregion
@@ -46,6 +50,7 @@ public class ShopInteractObject : BaseMono, IInteractable // 맵에 귀속될 NP
     protected override void Awake()
     {
         _shop = new Shop(_shopData.ShopItems);
+        _shopID = ShopManager.Ins.RequestNewShop(_shopData);
     }
     #endregion
 }

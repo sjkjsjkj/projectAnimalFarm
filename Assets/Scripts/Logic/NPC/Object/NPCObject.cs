@@ -10,6 +10,8 @@ public class NPCObject : Frameable
     [Header("MonoBehaviour")]
     [SerializeField] private SpriteRenderer _spRenderer;
     [SerializeField] private NpcWorldSO _npcSO;
+
+    
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
