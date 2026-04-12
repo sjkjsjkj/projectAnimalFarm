@@ -8,18 +8,18 @@ public class RequireItemSO : ScriptableObject
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("기본 정보")]
-    [SerializeField] private string _id = "";
+    [SerializeField] private ItemSO _requireItem;
     [SerializeField] private int _count;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
-    public string Id => _id;
+    public ItemSO RequireItem => _requireItem; 
     public int Count => _count;
     
     // 값 유효성 검사
     public virtual bool IsValid()
     {
-        if (_id.IsEmpty()) return false;
+        if (_requireItem == null) return false;
         if (_count == 0) return false;
         return true;
     }
@@ -30,7 +30,7 @@ public class RequireItemSO : ScriptableObject
     {
         if (!IsValid())
         {
-            UDebug.PrintOnce($"SO({_id})의 값이 올바르지 않습니다.", LogType.Warning);
+            UDebug.PrintOnce($"SO({name})의 값이 올바르지 않습니다.", LogType.Warning);
         }
     }
     #endregion

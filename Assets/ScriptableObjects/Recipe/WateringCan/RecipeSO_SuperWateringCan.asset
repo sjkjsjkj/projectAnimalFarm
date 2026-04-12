@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35cd5ebebe4cdc84282a901c7151ff26, type: 3}
+  m_Name: RecipeSO_SuperWateringCan
+  m_EditorClassIdentifier: 
+  _id: Recipe_SuperWateringCan
+  _type: 17
+  _icon: {fileID: 21300000, guid: 4bfa4db918004994fab4fafc4f46aadc, type: 2}
+  _makeTargetItemId: Item_Tool_SuperWateringCan
+  _makeTargetItemName: "\uACE0\uAE09 \uB3C4\uB07C"
+  _targetItemType: 20
+  _requireItems:
+  - {fileID: 11400000, guid: 1cf25e40eaaa41a4bb487eb0a38b36c4, type: 2}
+  - {fileID: 11400000, guid: f9e04cc0672adef4d91bf5f10acf1b54, type: 2}

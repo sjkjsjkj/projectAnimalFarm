@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35cd5ebebe4cdc84282a901c7151ff26, type: 3}
+  m_Name: RecipeSO_PrimeFishingRod
+  m_EditorClassIdentifier: 
+  _id: Recipe_PrimeFishingRod
+  _type: 17
+  _icon: {fileID: 21300000, guid: 38a55c1914629114b91873049754aebd, type: 2}
+  _makeTargetItemId: Item_Tool_PrimeFishingRod
+  _makeTargetItemName: "\uCD5C\uACE0\uAE09 \uB09A\uC2DC\uB300"
+  _targetItemType: 24
+  _requireItems:
+  - {fileID: 11400000, guid: 4a486cd34e73c304888602dd20eab5e3, type: 2}
+  - {fileID: 11400000, guid: 95d6e6e6078213447af7bc53392f4bff, type: 2}

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ead18204b0e9824888953c537aad3c3, type: 3}
   m_Name: ToolItemSO_1_7
   m_EditorClassIdentifier: 
-  _id: 1_7
+  _id: Item_Tool_BasicShovel
   _type: 23
   _name: "\uAE30\uBCF8 \uC0BD"
   _description: "\uB545\uC744 \uD30C\uB294 \uAE30\uBCF8 \uB3C4\uAD6C"
