@@ -4,17 +4,18 @@
 public abstract class PlayerOneTime : IPlayerState
 {
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
-    private const string FACING_PARAM = "fFacing";
+    protected const string FACING_PARAM = "fFacing";
+    protected const string ACTION_SPEED_PARAM = "fActionSpeed";
 
-    private readonly int _hashFacing = Animator.StringToHash(FACING_PARAM);
+    protected readonly int _hashFacing = Animator.StringToHash(FACING_PARAM);
+    protected readonly int _hashActionSpeed = Animator.StringToHash(ACTION_SPEED_PARAM);
 
-    private float _nextAnimationEndTime;
+    protected float _nextAnimationEndTime;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     public virtual bool Enter(in PlayerContext context)
     {
-        DataManager.Ins.Player.ChangeState(EPlayerState.Mining);
         // 방향
         Vector2 playerPos = context.tr.position;
         Vector2 dir = (context.targetPos - playerPos).normalized;
@@ -37,4 +38,14 @@ public abstract class PlayerOneTime : IPlayerState
 
     public virtual void Exit(in PlayerContext context) { }
     #endregion
+
+    protected void ApplyAnimationSpeed(Animator anim, float originalClipLength, float targetDuration)
+    {
+        float speedMultiplier = 1f;
+        if(targetDuration > K.SMALL_DISTANCE)
+        {
+            speedMultiplier = originalClipLength / targetDuration;
+        }
+        anim.SetFloat(_hashActionSpeed, speedMultiplier);
+    }
 }

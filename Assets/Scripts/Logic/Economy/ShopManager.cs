@@ -66,7 +66,7 @@ public class ShopManager : GlobalSingleton<ShopManager>
     }
     private void CollectPrefab()
     {
-        _shopUIPrefab = Resources.Load<ShopUI>("BootPrefab/UIShopView_");
+        _shopUIPrefab = Resources.Load<ShopUI>("Prefab/UIShopView_");
         
         StartCoroutine(SceneLoadWaitCoroutine());
     }

@@ -503,10 +503,8 @@ public class CFishingController2D : BaseMono
             {
                 Debug.Log("[FishingController] OnPlayerCanceled.Publish");
             }
-
-            OnPlayerCanceled.Publish();
         }
-
+        OnPlayerCanceled.Publish();
         _onFishingCanceled?.Invoke();
         ReleaseFishingState(false);
     }
@@ -1089,12 +1087,26 @@ public class CFishingController2D : BaseMono
         {
             Debug.Log("[FishingController][Feedback] " + message);
         }
-
+        OnPlayerCanceled.Publish();
         _onFeedbackMessage?.Invoke(message);
     }
 
     private void OnDisable()
     {
         CancelFishingInternal(string.Empty, false, false);
+    }
+
+    private void Start()
+    {
+        StartCoroutine(CoFindSheetItemDatabase());
+    }
+
+    private IEnumerator CoFindSheetItemDatabase()
+    {
+        while(_database == null)
+        {
+            _database = FindAnyObjectByType<SheetItemDatabase>();
+            yield return null;
+        }
     }
 }

@@ -76,9 +76,9 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
     private void CollectPrefab()
     {
         //_playerInventoryPrefab = Resources.Load<PlayerInventoryUI>("BootPrefab/PlayerInventoryUIPrefab");
-        _playerInventoryPrefab = Resources.Load<UIPlayerInventory>("BootPrefab/UIInventory");
-        _storagePrefab = Resources.Load<StorageUI>("BootPrefab/UIStorage");
-        _foodBoxPrefab = Resources.Load<FoodBoxUI>("BootPrefab/UIFoodBox");
+        _playerInventoryPrefab = Resources.Load<UIPlayerInventory>("Prefab/UIInventory");
+        _storagePrefab = Resources.Load<StorageUI>("Prefab/UIStorage");
+        _foodBoxPrefab = Resources.Load<FoodBoxUI>("Prefab/UIFoodBox");
 
         StartCoroutine(SceneLoadWaitCoroutine());
     }
@@ -96,9 +96,7 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
             }
         }
         MakeInventoryUIs();//인벤토리 UI들 생성 (인벤 / 창고 / 상점 각각 하나씩)
-
         MakeNewInventory(_inventorySize, EInventoryType.PlayerInventory); // 가장 먼저 플레이어의 인벤토리 생성.
-
         _isSettingFinish = true;
     }
 
@@ -106,7 +104,7 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
     //이곳에서 생성된 UI로 각종 창고와 상점 / 플레이어의 인벤토리 UI를 보여 줌.
     private void MakeInventoryUIs()
     {
-        if(_playerInventoryPrefab == null)
+        if (_playerInventoryPrefab == null)
         {
             UDebug.Print("Global Prefab : PlayerInvenUI 찾을 수 없음. 확인", LogType.Assert);
             return;
@@ -128,6 +126,13 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
         _playerInventoryUI.transform.SetParent(_inventoriesCanvasTr);
         _playerInventoryUI.transform.localPosition = new Vector3(-450, 0);
         _playerInventoryUI.gameObject.SetActive(false);
+        // 재조정
+        RectTransform rectTr = _playerInventoryUI.GetComponent<RectTransform>();
+        if (rectTr != null)
+        {
+            rectTr.localScale = Vector3.one;
+            rectTr.anchoredPosition = Vector2.zero;
+        }
 
         //창고 UI 활성화
         _storageUI = Instantiate(_storagePrefab);
@@ -135,6 +140,13 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
         _storageUI.transform.SetParent(_inventoriesCanvasTr);
         _storageUI.transform.localPosition = new Vector3(450, 0);
         _storageUI.gameObject.SetActive(false);
+        // 재조정
+        rectTr = _storageUI.GetComponent<RectTransform>();
+        if (rectTr != null)
+        {
+            rectTr.localScale = Vector3.one;
+            rectTr.anchoredPosition = Vector2.zero;
+        }
 
         //먹이통 UI 활성화
         _foodBoxUI = Instantiate(_foodBoxPrefab);
@@ -142,6 +154,13 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
         _foodBoxUI.transform.SetParent(_inventoriesCanvasTr);
         _foodBoxUI.transform.localPosition = new Vector3(450, 0);
         _foodBoxUI.gameObject.SetActive(false);
+        // 재조정
+        rectTr = _foodBoxUI.GetComponent<RectTransform>();
+        if (rectTr != null)
+        {
+            rectTr.localScale = Vector3.one;
+            rectTr.anchoredPosition = Vector2.zero;
+        }
     }
     //각종 InteractObject에서 새로운 인벤토리 생성요청이 들어오면 이것을 실행하여 새로운 인벤토리를 생성함.
     public int RequestNewInventory(int newInventorySize, EInventoryType newInventoryType)

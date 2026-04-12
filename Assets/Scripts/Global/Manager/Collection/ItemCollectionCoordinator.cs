@@ -1,3 +1,4 @@
+﻿using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -184,5 +185,19 @@ public class ItemCollectionCoordinator : GlobalSingleton<ItemCollectionCoordinat
         }
 
         return successCount == amount;
+    }
+
+    private void Start()
+    {
+        StartCoroutine(CoFindSheetItemDatabase());
+    }
+
+    private IEnumerator CoFindSheetItemDatabase()
+    {
+        while (_pictorialBookSystem != null)
+        {
+            _pictorialBookSystem = FindAnyObjectByType<PictorialBookSystem>();
+            yield return null;
+        }
     }
 }

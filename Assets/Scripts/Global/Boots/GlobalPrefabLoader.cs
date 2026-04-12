@@ -8,26 +8,26 @@ public class GlobalPrefabLoader : BaseMono
     private bool _isInitialized = false;
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
-    public void Initialize(Transform root)
+    public void Initialize(Transform root, string path)
     {
         if (_isInitialized)
         {
             UDebug.Print("글로벌 프리펩 로더가 중복 호출되었습니다.", LogType.Assert);
             return;
         }
-        LoadPrefabs(root);
+        LoadPrefabs(root, path);
         _isInitialized = true;
     }
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
     // 모든 프리펩 로드
-    private void LoadPrefabs(Transform root)
+    private void LoadPrefabs(Transform root, string path)
     {
-        GameObject[] prefabs = Resources.LoadAll<GameObject>(K.BOOT_PREFAB_RESOURCE_PATH);
+        GameObject[] prefabs = Resources.LoadAll<GameObject>(path);
         if (prefabs == null || prefabs.Length <= 0)
         {
-            UDebug.Print($"경로({K.BOOT_PREFAB_RESOURCE_PATH})에서 로드할 프리팹이 존재하지 않습니다.");
+            UDebug.Print($"경로(Resources/{path})에서 로드할 프리팹이 존재하지 않습니다.");
             return;
         }
         // 글로벌 프리펩을 모두 생성
@@ -49,9 +49,15 @@ public class GlobalPrefabLoader : BaseMono
             return;
         }
         // 생성
-        GameObject instance = Instantiate(prefab, root);
-        Object.DontDestroyOnLoad(instance);
+        GameObject instance = UObject.Spawn(prefab, root, false);
         instance.name = prefab.name; // Clone 이름 제거
+        // 재조정
+        RectTransform rectTr = instance.GetComponent<RectTransform>();
+        if (rectTr != null)
+        {
+            rectTr.localScale = Vector3.one;
+            rectTr.anchoredPosition = Vector2.zero;
+        }
         UDebug.Print($"글로벌 프리펩({instance.name})을 생성했습니다.");
     }
     #endregion

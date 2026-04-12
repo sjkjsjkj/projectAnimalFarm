@@ -24,12 +24,31 @@ public class BootManager : MonoBehaviour
         // 매니저 생성 및 초기화
         ManagerSpawner(root);
         UDebug.Print("▷ 글로벌 프리펩 생성을 시작합니다. ◁");
-        // 글로벌 프리펩 생성 및 초기화
+        // 글로벌 오브젝트 생성 및 초기화
+        GameObject prefabRoot = GlobalPrefabSpawner();
+        yield return null;
+        var globalPrefab = prefabRoot.AddComponent<GlobalPrefabLoader>();
+        globalPrefab.Initialize(prefabRoot.transform, K.BOOT_PREFAB_RESOURCE_PATH);
+        yield return null;
+        GameObject canvasRoot = GlobalCanvasSpawner();
+        yield return null;
+        var globalCanvas = canvasRoot.AddComponent<GlobalPrefabLoader>();
+        globalCanvas.Initialize(canvasRoot.transform, K.BOOT_CANVAS_RESOURCE_PATH);
+        // 완료
+        yield return null;
+        UDebug.Print("▷ 부트 시퀀스가 완료되었습니다. ◁");
+        _co = null;
+    }
+
+    private GameObject GlobalPrefabSpawner()
+    {
         GameObject prefabRoot = new GameObject(K.NAME_GLOBAL_PREFAB_ROOT);
         Object.DontDestroyOnLoad(prefabRoot);
-        var globalPrefab = prefabRoot.AddComponent<GlobalPrefabLoader>();
-        globalPrefab.Initialize(prefabRoot.transform);
-        // 글로벌 캔버스 생성 및 초기화
+        return prefabRoot;
+    }
+
+    private GameObject GlobalCanvasSpawner()
+    {
         GameObject canvasRoot = new GameObject(K.NAME_GLOBAL_CANVAS_ROOT);
         Object.DontDestroyOnLoad(canvasRoot);
         Canvas canvas = UObject.AddComponent<Canvas>(canvasRoot);
@@ -45,10 +64,7 @@ public class BootManager : MonoBehaviour
         graphicRaycaster.ignoreReversedGraphics = true;
         graphicRaycaster.blockingObjects = GraphicRaycaster.BlockingObjects.None;
         graphicRaycaster.blockingMask = LayerMask.GetMask("Everything");
-        // 완료
-        yield return null;
-        UDebug.Print("▷ 부트 시퀀스가 완료되었습니다. ◁");
-        _co = null;
+        return canvasRoot;
     }
 
     private void ManagerSpawner(GameObject root)
@@ -63,8 +79,8 @@ public class BootManager : MonoBehaviour
         var inventoryManager = UObject.AddComponent<InventoryManager>(root); // 리소스 폴더를 읽고 씬 오브젝트를 코루틴으로 탐색
         inventoryManager.Initialize();
         // DatabaseManager 이후 실행 ↓
-        var workbenchManager = UObject.AddComponent<WorkbenchManager>(root);
-        workbenchManager.Initialize();
+        //var workbenchManager = UObject.AddComponent<WorkbenchManager>(root);
+        //workbenchManager.Initialize();
         var shopManager = UObject.AddComponent<ShopManager>(root);
         shopManager.Initialize();
         var dataManager = UObject.AddComponent<DataManager>(root);
