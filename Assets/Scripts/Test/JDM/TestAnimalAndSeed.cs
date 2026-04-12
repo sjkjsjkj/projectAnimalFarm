@@ -43,11 +43,6 @@ public class TestAnimalAndSeed : BaseMono
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
-    private void Start()
-    {
-        SpawnAllAnimals();
-    }
-
     private bool _canGetSeeds = true;
     private int _frame = 0;
     private void Update()
@@ -57,6 +52,7 @@ public class TestAnimalAndSeed : BaseMono
         {
             _canGetSeeds = false;
             GiveAllSeeds();
+            SpawnAllAnimals();
         }
     }
     #endregion

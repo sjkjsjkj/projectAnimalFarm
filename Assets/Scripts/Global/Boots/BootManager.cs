@@ -26,12 +26,9 @@ public class BootManager : MonoBehaviour
         UDebug.Print("▷ 글로벌 프리펩 생성을 시작합니다. ◁");
         // 글로벌 오브젝트 생성 및 초기화
         GameObject prefabRoot = GlobalPrefabSpawner();
-        yield return null;
         var globalPrefab = prefabRoot.AddComponent<GlobalPrefabLoader>();
         globalPrefab.Initialize(prefabRoot.transform, K.BOOT_PREFAB_RESOURCE_PATH);
-        yield return null;
         GameObject canvasRoot = GlobalCanvasSpawner();
-        yield return null;
         var globalCanvas = canvasRoot.AddComponent<GlobalPrefabLoader>();
         globalCanvas.Initialize(canvasRoot.transform, K.BOOT_CANVAS_RESOURCE_PATH);
         // 완료
