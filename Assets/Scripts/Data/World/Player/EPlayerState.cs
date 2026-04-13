@@ -14,4 +14,6 @@ public enum EPlayerState : byte
     Eating = 8,
     Sickle = 9,
     Shovel = 10,
+    Watering = 11,
+    Crouching = 12,
 }

@@ -8,29 +8,29 @@ using UnityEngine;
 public class Farmland
 {
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
-    [SerializeField]private EFarmlandState _state;       // 땅의 단계  0:기본 흙 | 1: 일궈진 흙 | 2:
-    [SerializeField]private string _seededId;           //심어진 씨앗의 id
-    [SerializeField]private int _pos;            //경작지의 배열좌표
-    [SerializeField]private string _harvestItemId;
+    [SerializeField] private EFarmlandState _state;       // 땅의 단계  0:기본 흙 | 1: 일궈진 흙 | 2:
+    [SerializeField] private string _seededId;           //심어진 씨앗의 id
+    [SerializeField] private int _pos;            //경작지의 배열좌표
+    [SerializeField] private string _harvestItemId;
     //Tick
     //N초 (미정) 마다 식물의 성장 주기를 올리는 역할을 함.
     //경작지의 상태가 MoistLand 상태일 때에만 증가함.
     //Idleland > soil(다져진땅) > seeded (씨앗뿌린땅) > MoistLand (물뿌린땅) 의 순서.
-    [SerializeField]private int _grownUpTick;         //씨앗이 전부 자랄 때 까지 얼마나 많은 Tick이 지나야 하는가.
-    [SerializeField]private int _currentTick;         //현재 얼마나 Tick 이 지났는가.
-    [SerializeField]private float _tickTimer = 0;
-    
-    [SerializeField]private uint _soiledConnectDir;           //현재 주변에 경작지들과 같은 상태라면 (soiled 와 moist만 비교)스프라이트 연결. 이것은 현재 연결된 방향들을 Flag 형식으로 나타낸 것.
-    [SerializeField]private uint _moistConnectDir;
-    [SerializeField]private uint _stateFlag;            //state를 Flag 형태로 나타낸 것. 주변 경작지의 상태 비교에 사용.
-    
-    [SerializeField]private IFarmlandObjectProvider _farmlandObjectProvider;
-    
+    [SerializeField] private int _grownUpTick;         //씨앗이 전부 자랄 때 까지 얼마나 많은 Tick이 지나야 하는가.
+    [SerializeField] private int _currentTick;         //현재 얼마나 Tick 이 지났는가.
+    [SerializeField] private float _tickTimer = 0;
+
+    [SerializeField] private uint _soiledConnectDir;           //현재 주변에 경작지들과 같은 상태라면 (soiled 와 moist만 비교)스프라이트 연결. 이것은 현재 연결된 방향들을 Flag 형식으로 나타낸 것.
+    [SerializeField] private uint _moistConnectDir;
+    [SerializeField] private uint _stateFlag;            //state를 Flag 형태로 나타낸 것. 주변 경작지의 상태 비교에 사용.
+
+    [SerializeField] private IFarmlandObjectProvider _farmlandObjectProvider;
+
     //효과음 Id들
-    [SerializeField]private string _sfxId_Soiled;
-    [SerializeField]private string _sfxId_Seeded;
-    [SerializeField]private string _sfxId_Moist;
-    [SerializeField]private string _sfxId_GrownUp;
+    [SerializeField] private string _sfxId_Soiled;
+    [SerializeField] private string _sfxId_Seeded;
+    [SerializeField] private string _sfxId_Moist;
+    [SerializeField] private string _sfxId_GrownUp;
     #endregion
 
     #region ─────────────────────────▶  외부 공개  ◀─────────────────────────
@@ -53,7 +53,7 @@ public class Farmland
     #region ─────────────────────────▶  생성자  ◀─────────────────────────
     public Farmland()
     {
-        
+
     }
     public Farmland(int pos, IFarmlandObjectProvider farmlandObjectProvider)
     {
@@ -80,25 +80,35 @@ public class Farmland
     private void SetState(EFarmlandState nextState)
     {
         EFarmlandState beforeState = _state;
+        Transform tr;
 
         _state = nextState;
-
-        switch(_state)
+        switch (_state)
         {
             case EFarmlandState.IdleLand:
-                
+
                 break;
             case EFarmlandState.SoiledLand:
-                USound.PlaySfx(_sfxId_Soiled, _farmlandObjectProvider.GetFarmlandObject(_pos).transform);
+                tr = _farmlandObjectProvider.GetFarmlandObject(_pos).transform;
+                USound.PlaySfx(_sfxId_Soiled, tr);
+                OnPlayerCanceled.Publish();
+                OnPlayerShovel.Publish(tr.position, 0.15f);
                 break;
             case EFarmlandState.SeededLand:
-                USound.PlaySfx(_sfxId_Seeded, _farmlandObjectProvider.GetFarmlandObject(_pos).transform);
+                tr = _farmlandObjectProvider.GetFarmlandObject(_pos).transform;
+                USound.PlaySfx(_sfxId_Seeded, tr);
+                OnPlayerCanceled.Publish();
+                OnPlayerCrouching.Publish(tr.position, 0.22f);
                 break;
             case EFarmlandState.MoistLand:
-                USound.PlaySfx(_sfxId_Moist, _farmlandObjectProvider.GetFarmlandObject(_pos).transform);
+                tr = _farmlandObjectProvider.GetFarmlandObject(_pos).transform;
+                USound.PlaySfx(_sfxId_Moist, tr);
+                OnPlayerCanceled.Publish();
+                OnPlayerWatering.Publish(tr.position, 0.15f);
                 break;
             case EFarmlandState.GrownUp:
-                USound.PlaySfx(_sfxId_GrownUp, _farmlandObjectProvider.GetFarmlandObject(_pos).transform);
+                tr = _farmlandObjectProvider.GetFarmlandObject(_pos).transform;
+                USound.PlaySfx(_sfxId_GrownUp, tr);
                 break;
         }
 
@@ -116,7 +126,7 @@ public class Farmland
         _currentTick = 0;
         _soiledConnectDir = 0;
         _moistConnectDir = 0;
-        
+
         _stateFlag = (uint)EFarmlandState.IdleLand;
         SetState(EFarmlandState.IdleLand);
         //UDebug.Print($"Clear된 경작지의 StateFlag = {_stateFlag}");
@@ -139,7 +149,7 @@ public class Farmland
                 }
                 return true;
             case EFarmlandState.MoistLand:
-                
+
                 return false;
             case EFarmlandState.GrownUp:
                 return true;
@@ -150,10 +160,10 @@ public class Farmland
     }
 
     //외부에서 인터랙트를 시도했을 때 불러와질 메서드
-    public void Interact(string seedid = "" ) //플레이어 및 인벤토리가 제작되면 해당 부분에서 아무것도 받아오지 않아도 됨. 지금은 임시로 씨앗의 정보를 받아 옴.
+    public void Interact(string seedid = "") //플레이어 및 인벤토리가 제작되면 해당 부분에서 아무것도 받아오지 않아도 됨. 지금은 임시로 씨앗의 정보를 받아 옴.
     {
         UDebug.Print("Interact");
-        
+
         switch (_state)
         {
             case EFarmlandState.IdleLand:
@@ -180,8 +190,8 @@ public class Farmland
         }
     }
 
-    
-     private void IdleLandInteract()
+
+    private void IdleLandInteract()
     {
         SetState(EFarmlandState.SoiledLand);
     }
@@ -190,7 +200,7 @@ public class Farmland
         int slotIdx = 0;
         Inventory playerInven = InventoryManager.Ins.PlayerInventory;
 
-        if(playerInven == null)
+        if (playerInven == null)
         {
             UDebug.Print("플레이어 인벤 찾지 못함.");
             return;
@@ -198,7 +208,7 @@ public class Farmland
         int count = 0;
         while (true)
         {
-            if(++count >= K.PLAYER_INVENTORY_SIZE)
+            if (++count >= K.PLAYER_INVENTORY_SIZE)
             {
                 break;
             }
@@ -255,7 +265,12 @@ public class Farmland
     {
         OnGetHarvest?.Invoke(_pos);
         //ItemSO tempItemSO = DatabaseManager.Ins.Item(_harvestItemId);
-        ItemCollectionCoordinator.Ins.TryCollectItem(_harvestItemId, 1);
+        if (ItemCollectionCoordinator.Ins.TryCollectItem(_harvestItemId, 1))
+        {
+            Vector3 pos = _farmlandObjectProvider.GetFarmlandObject(_pos).transform.position;
+            OnPlayerCanceled.Publish();
+            OnPlayerSickle.Publish(pos, 0.15f);
+        }
         SetClear();
     }
 
@@ -264,15 +279,15 @@ public class Farmland
     public void Tick(float deltaTime)
     {
         // 물 준 상태가 아니거나, 이미 다 자란 상태일 경우 방어
-        if(_state != EFarmlandState.MoistLand || _state == EFarmlandState.GrownUp)
+        if (_state != EFarmlandState.MoistLand || _state == EFarmlandState.GrownUp)
         {
             return;
         }
-   
+
 
         _tickTimer += deltaTime;
 
-        if(_tickTimer >= _grownUpTick)
+        if (_tickTimer >= _grownUpTick)
         {
             GrowUp();
         }
@@ -281,7 +296,7 @@ public class Farmland
     {
         _tickTimer = 0;
 
-        if ((_currentTick = (int)MathF.Min(_currentTick+1, K.FARMLAND_MAX_GROWNPROGRESS))  == K.FARMLAND_MAX_GROWNPROGRESS)
+        if ((_currentTick = (int)MathF.Min(_currentTick + 1, K.FARMLAND_MAX_GROWNPROGRESS)) == K.FARMLAND_MAX_GROWNPROGRESS)
         {
             SetState(EFarmlandState.GrownUp);
             OnGrownUp?.Invoke(_pos);
@@ -296,9 +311,9 @@ public class Farmland
         {
             return;
         }
-        
+
         _soiledConnectDir ^= connection;
-        
+
         OnFarmlandConnetionChange?.Invoke(new FarmlandConnetionChangeStruct(_soiledConnectDir, EFarmlandState.SoiledLand, _pos));
     }
     public void SetDisConnectMoist(uint connection)
@@ -338,7 +353,7 @@ public class Farmland
     public void OnLoadFunction()
     {
         // 다 자란 작물 말풍선 표시 용도
-        if(_currentTick >= K.FARMLAND_MAX_GROWNPROGRESS)
+        if (_currentTick >= K.FARMLAND_MAX_GROWNPROGRESS)
         {
             SetState(EFarmlandState.GrownUp);
             OnGrownUp?.Invoke(_pos);
@@ -351,14 +366,14 @@ public class Farmland
 
         OnFarmStateChange?.Invoke(new FarmStateChangeStruct(EFarmlandState.SoiledLand, _pos, _seededId, _currentTick));
 
-        if(_seededId=="")
+        if (_seededId == "")
         {
             return;
         }
 
         OnFarmStateChange?.Invoke(new FarmStateChangeStruct(EFarmlandState.SeededLand, _pos, _seededId, _currentTick));
 
-        if ((StateFlag & (int)EFarmlandState.MoistLand) ==0)
+        if ((StateFlag & (int)EFarmlandState.MoistLand) == 0)
         {
             return;
         }

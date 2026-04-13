@@ -354,14 +354,17 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         }
         // TODO
         var so = DatabaseManager.Ins.Unit(_itemId);
-        UDebug.Print("타입 판단 시작");
         switch (so.Type)
         {
+            case EType.WoodItem:
+                OnPlayerLogging.Publish(transform.position, _manualCollectDelay);
+                break;
+            case EType.SeedItem:
             case EType.FeedItem:
+                OnPlayerShovel.Publish(transform.position, _manualCollectDelay);
                 break;
             case EType.OreItem:
-                UDebug.Print("광물 판단 완료");
-                OnPlayerMining.Publish(transform.position, 0.5f);
+                OnPlayerMining.Publish(transform.position, _manualCollectDelay);
                 break;
         }
         
@@ -839,7 +842,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         {
             Debug.Log("[Collectable][Feedback] " + message);
         }
-
+        OnPlayerCanceled.Publish();
         _onFeedbackMessage?.Invoke(message);
     }
     #endregion

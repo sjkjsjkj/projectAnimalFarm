@@ -21,6 +21,8 @@ public class PlayerController : BaseMono
     private bool _inputSickle;
     private bool _inputDrinking;
     private bool _inputEating;
+    private bool _inputWatering;
+    private bool _inputCrouching;
     private Vector2 _targetPos;
     private float _duration;
     private bool _isSuccess;
@@ -79,6 +81,18 @@ public class PlayerController : BaseMono
         _duration = ctx.eatingTime;
         _duration = ctx.duration;
     }
+    private void PlayerWateringHandle(OnPlayerWatering ctx)
+    {
+        _inputWatering = true;
+        _targetPos = ctx.targetPos;
+        _duration = ctx.duration;
+    }
+    private void PlayerCrouchingHandle(OnPlayerCrouching ctx)
+    {
+        _inputCrouching = true;
+        _targetPos = ctx.targetPos;
+        _duration = ctx.duration;
+    }
     private void PlayerCanceledHandle(OnPlayerCanceled ctx)
     {
         _isCanceled = true;
@@ -92,6 +106,8 @@ public class PlayerController : BaseMono
         _inputSickle = false;
         _inputDrinking = false;
         _inputEating = false;
+        _inputWatering = false;
+        _inputCrouching = false;
         _isSuccess = false;
         _isCanceled = false;
     }
@@ -102,8 +118,8 @@ public class PlayerController : BaseMono
     {
         PlayerContext context = new(_rb, transform, _sprite, _anim,
             _inputMove, _inputRun, _inputFishing, _inputMining, _inputLogging,
-            _inputShovel, _inputSickle, _inputDrinking, _inputEating,
-            _targetPos, _duration, _isSuccess, _isCanceled);
+            _inputShovel, _inputSickle, _inputDrinking, _inputEating, _inputWatering,
+            _inputCrouching, _targetPos, _duration, _isSuccess, _isCanceled);
         _fsm.UpdateState(in context);
         ClearInput();
     }
@@ -145,6 +161,8 @@ public class PlayerController : BaseMono
         EventBus<OnPlayerShovel>.Subscribe(PlayerShovelHandle);
         EventBus<OnPlayerDrinking>.Subscribe(PlayerDrinkingHandle);
         EventBus<OnPlayerEating>.Subscribe(PlayerEatingHandle);
+        EventBus<OnPlayerWatering>.Subscribe(PlayerWateringHandle);
+        EventBus<OnPlayerCrouching>.Subscribe(PlayerCrouchingHandle);
         EventBus<OnPlayerCanceled>.Subscribe(PlayerCanceledHandle);
     }
 
@@ -159,6 +177,8 @@ public class PlayerController : BaseMono
         EventBus<OnPlayerShovel>.Unsubscribe(PlayerShovelHandle);
         EventBus<OnPlayerDrinking>.Unsubscribe(PlayerDrinkingHandle);
         EventBus<OnPlayerEating>.Unsubscribe(PlayerEatingHandle);
+        EventBus<OnPlayerWatering>.Unsubscribe(PlayerWateringHandle);
+        EventBus<OnPlayerCrouching>.Unsubscribe(PlayerCrouchingHandle);
         EventBus<OnPlayerCanceled>.Unsubscribe(PlayerCanceledHandle);
     }
     #endregion

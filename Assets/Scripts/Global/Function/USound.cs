@@ -69,6 +69,18 @@ public static class USound
     }
 
     /// <summary>
+    /// BGM이 재생 중인지 여부를 반환합니다.
+    /// </summary>
+    public static bool IsPlayingBgm()
+    {
+        if (_bgmSource != null)
+        {
+            return _bgmSource.isPlaying;
+        }
+        return false;
+    }
+
+    /// <summary>
     /// BGM을 변경하고 재생합니다.
     /// </summary>
     /// <param name="id"></param>

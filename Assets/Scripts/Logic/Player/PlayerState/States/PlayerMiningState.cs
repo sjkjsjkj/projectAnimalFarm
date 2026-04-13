@@ -3,7 +3,7 @@
 public class PlayerMiningState : PlayerOneTime
 {
     private const string MINING_PARAM = "Mining";
-    private const float CLIP_LENGTH = 1f;
+    private const float CLIP_LENGTH = 0.517f * 0.8f;
 
     private readonly int _hashMining = Animator.StringToHash(MINING_PARAM);
 
@@ -11,6 +11,7 @@ public class PlayerMiningState : PlayerOneTime
     {
         Id.Sfx_Player_WoodHit_1,
     };
+    private static bool _isPlaying;
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     public override bool Enter(in PlayerContext context)
@@ -19,15 +20,22 @@ public class PlayerMiningState : PlayerOneTime
         base.Enter(in context);
         ApplyAnimationSpeed(context.anim, CLIP_LENGTH, context.duration);
         context.anim.Play(_hashMining);
-        // 사운드
-        int index = Random.Range(0, _miningSound.Length);
-        USound.PlaySfx(_miningSound[index], context.tr);
+        _isPlaying = false;
         return true;
     }
 
     public override bool Frame(in PlayerContext context)
     {
-        if(base.Frame(context) == false)
+        // 사운드
+        float animHitTime = _nextAnimationEndTime - (CLIP_LENGTH * 1f); 
+        if (!_isPlaying && Time.time > animHitTime)
+        {
+            _isPlaying = true;
+            int index = Random.Range(0, _miningSound.Length);
+            USound.PlaySfx(_miningSound[index], context.tr);
+        }
+        // 
+        if (base.Frame(context) == false)
         {
             return false;
         }
