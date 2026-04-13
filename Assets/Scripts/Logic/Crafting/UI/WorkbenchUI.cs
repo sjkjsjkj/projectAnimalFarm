@@ -6,7 +6,7 @@ using UnityEngine.UI;
 /// <summary>
 /// 제작대 UI
 /// </summary>
-public class WorkbenchUI : BaseMono, ICraftUI
+public class WorkbenchUI : BaseMono, ICraftUI, IEscClosable
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────\
     [Header("제작대 UI")]
@@ -125,6 +125,14 @@ public class WorkbenchUI : BaseMono, ICraftUI
     {
         gameObject.SetActive(false);
     }
+
+    // ★ IEscClosable 구현 — ESC가 눌렸을 때 EscManager가 직접 호출
+    public void CloseUi()
+    {
+        SetToggleUI();
+    }
+
+    
     public void RecipeButtonHandler(int idx)
     {
         _lastestChoicedBtnIdx = idx;
@@ -164,7 +172,18 @@ public class WorkbenchUI : BaseMono, ICraftUI
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
- 
+    // ★ SetActive(true)  → EscManager 자동 등록
+    private void OnEnable()
+    {
+        EscManager.Ins.Enter(this);
+    }
+
+    // ★ SetActive(false) → EscManager 자동 해제
+    private void OnDisable()
+    {
+        EscManager.Ins.Exit(this);
+    }
+
     #endregion
 
     #region ─────────────────────────▶ 중첩 타입 ◀─────────────────────────

@@ -7,7 +7,7 @@ using UnityEngine;
 /// 실제 아이템 데이터는 외부 시스템이 들고 있고,
 /// 이 클래스는 외부에서 받은 표시 정보만 화면에 반영합니다.
 /// </summary>
-public class UIPlayerInventory : InventoryUI
+public class UIPlayerInventory : InventoryUI, IEscClosable
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("팝업")]
@@ -194,14 +194,19 @@ public class UIPlayerInventory : InventoryUI
         OnRequestTrashSlot?.Invoke(_selectedIndex);
         ClearSelection();
     }
+
+    public void CloseUi()
+    {
+        SetToggleUI();
+    }
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-    
+
     /// <summary>
     /// 슬롯 프리팹을 기본 개수만큼 자동 생성합니다.
     /// </summary>
-    
+
 
     /// <summary>
     /// 선택 슬롯 기준으로 팝업 위치를 계산합니다.
@@ -267,6 +272,16 @@ public class UIPlayerInventory : InventoryUI
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
+    private void OnEnable()
+    {
+        EscManager.Ins.Enter(this);
+    }
+
+    // ★ SetActive(false) → EscManager 자동 해제
+    private void OnDisable()
+    {
+        EscManager.Ins.Exit(this);
+    }
     protected override void Awake()
     {
         base.Awake();

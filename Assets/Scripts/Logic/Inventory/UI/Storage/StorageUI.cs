@@ -2,7 +2,7 @@
 /// <summary>
 /// 창고의 UI 입니다.
 /// </summary>
-public class StorageUI : InventoryUI
+public class StorageUI : InventoryUI, IEscClosable
 {
     public override void RefreshInventoryUI(int slotIdx, InventorySlot invenSlot)
     {
@@ -11,12 +11,14 @@ public class StorageUI : InventoryUI
     public override void RefreshInventoryUI(Inventory inventory)
     {
         InventorySlot[] invenSlots = inventory.InventorySlots;
+
         for (int i = 0; i < invenSlots.Length; ++i)
         {
             if (invenSlots[i].IsEmpty)
             {
                 _slotList[i].ClearView();
             }
+
             else
             {
                 _slotList[i].SetView(invenSlots[i]);
@@ -48,8 +50,27 @@ public class StorageUI : InventoryUI
         //Vector2 popupLocalPos = CalcPopupLocalPosition(targetSlot);
         //_actionPopup.Show(popupLocalPos);
     }
-    private void Awake()
+
+    public void CloseUi()
     {
+        SetToggleUI(); // 부모의 토글로 닫기
+    }
+
+    // ★ SetActive(true)  → 자동으로 EscManager 등록
+    private void OnEnable()
+    {
+        EscManager.Ins.Enter(this);
+    }
+
+    // ★ SetActive(false) → 자동으로 EscManager 해제
+    private void OnDisable()
+    {
+        EscManager.Ins.Exit(this);
+    }
+
+    private new void Awake()
+    {
+        base.Awake(); // ← 부모 Awake 실행 유지
         _sfxId_InventoryOpen = Id.Sfx_Ui_ChestOpen_2;
         _sfxId_InventoryClose = Id.Sfx_Ui_ChestClosed_2;
         gameObject.SetActive(false);

@@ -1,7 +1,7 @@
 ﻿/// <summary>
 /// 클래스의 설계 의도입니다.
 /// </summary>
-public class FoodBoxUI : InventoryUI
+public class FoodBoxUI : InventoryUI, IEscClosable
 {
     public override void RefreshInventoryUI(int slotIndex, InventorySlot slotData)
     {
@@ -53,8 +53,26 @@ public class FoodBoxUI : InventoryUI
         RefreshSelectionView();
     }
 
-    private void Awake()
+    public void CloseUi()
     {
+        SetToggleUI(); // 부모의 토글로 닫기
+    }
+
+    // ★ SetActive(true)  → 자동으로 EscManager 등록
+    private void OnEnable()
+    {
+        EscManager.Ins.Enter(this);
+    }
+
+    // ★ SetActive(false) → 자동으로 EscManager 해제
+    private void OnDisable()
+    {
+        EscManager.Ins.Exit(this);
+    }
+
+    private new void Awake()
+    {
+        base.Awake();
         _sfxId_InventoryOpen = Id.Sfx_Ui_ChestOpen_2;
         _sfxId_InventoryClose = Id.Sfx_Ui_ChestClosed_2;
         gameObject.SetActive(false);
