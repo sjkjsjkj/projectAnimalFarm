@@ -131,7 +131,8 @@ public class WorkbenchUI : BaseMono, ICraftUI, IEscClosable
     // ★ IEscClosable 구현 — ESC가 눌렸을 때 EscManager가 직접 호출
     public void CloseUi()
     {
-        _isOpen = !_isOpen;
+        _isOpen = false;
+        //_isOpen = !_isOpen;
         CloseUI();
     }
 
@@ -179,17 +180,17 @@ public class WorkbenchUI : BaseMono, ICraftUI, IEscClosable
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
-    // ★ SetActive(true)  → EscManager 자동 등록
-    private void OnEnable()
-    {
-        EscManager.Ins.Enter(this);
-    }
-
-    // ★ SetActive(false) → EscManager 자동 해제
-    private void OnDisable()
-    {
-        EscManager.Ins.Exit(this);
-    }
+    // ★ ShowUI/CloseUI에서 직접 Enter/Exit 처리하므로 OnEnable/OnDisable 제거
+    //private void OnEnable()
+    //{
+    //    EscManager.Ins.Enter(this);
+    //}
+    //
+    //// ★ SetActive(false) → EscManager 자동 해제
+    //private void OnDisable()
+    //{
+    //    EscManager.Ins.Exit(this);
+    //}
 
     #endregion
 

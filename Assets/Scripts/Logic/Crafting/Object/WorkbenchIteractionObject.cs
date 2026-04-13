@@ -9,6 +9,10 @@ public class WorkbenchIteractionObject : BaseMono, IInteractable
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("제작대 UI")]
     [SerializeField] private WorkbenchUI _workUI;
+
+    [Header("자동 닫기 설정")]
+    [SerializeField] private float _autoCloseDistance = 3.0f;
+    [SerializeField] private bool _printAutoCloseLog = false;
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
@@ -34,6 +38,29 @@ public class WorkbenchIteractionObject : BaseMono, IInteractable
             UDebug.Print("12?");
         }
         _workUI.SetToggleUI();
+
+        if (UIAutoCloseManager.Ins == null)
+        {
+            UDebug.Print("WorkbenchIteractionObject: UIAutoCloseManager가 씬에 없습니다.", LogType.Warning);
+            return;
+        }
+
+        if (_workUI.gameObject.activeInHierarchy)
+        {
+            UIAutoCloseManager.Ins.StartTracking(
+                player.transform,
+                transform,
+                _workUI,
+                _workUI.gameObject,
+                _autoCloseDistance,
+                true,
+                _printAutoCloseLog,
+                "Workbench");
+        }
+        else
+        {
+            UIAutoCloseManager.Ins.StopTracking();
+        }
     }
     #endregion
 

@@ -4,6 +4,9 @@
 /// </summary>
 public class StorageUI : InventoryUI, IEscClosable
 {
+
+    private bool _isEscRegistered = false;
+
     public override void RefreshInventoryUI(int slotIdx, InventorySlot invenSlot)
     {
         _inventorySlotUIs[slotIdx].SetInfo(invenSlot.ItemSO.Image, invenSlot.CurStack);
@@ -25,7 +28,6 @@ public class StorageUI : InventoryUI, IEscClosable
             }
         }
     }
-
     public override void SelectSlot(int slotIndex)
     {
         if (IsValidSlotIndex(slotIndex) == false)
@@ -60,12 +62,15 @@ public class StorageUI : InventoryUI, IEscClosable
     private void OnEnable()
     {
         EscManager.Ins.Enter(this);
+        _isEscRegistered = true;
     }
 
     // ★ SetActive(false) → 자동으로 EscManager 해제
     private void OnDisable()
     {
+        if (_isEscRegistered == false) return;
         EscManager.Ins.Exit(this);
+        _isEscRegistered = false;
     }
 
     private new void Awake()

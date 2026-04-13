@@ -16,7 +16,7 @@ public class UIPlayerInventory : InventoryUI, IEscClosable
 
     [Header("팝업 위치")]
     [SerializeField] protected float _popupOffsetX = 10f;
-    [SerializeField] protected float _popupOffsetY = 0f;
+    [SerializeField] protected float _popupOffsetY = -10f;
     #endregion
 
     #region ─────────────────────────▶ 접근자 ◀─────────────────────────

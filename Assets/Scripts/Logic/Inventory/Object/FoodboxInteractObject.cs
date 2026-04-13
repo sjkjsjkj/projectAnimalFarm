@@ -11,6 +11,10 @@ public class FoodboxInteractObject : BaseMono, IInteractable
     [SerializeField] private int _storageIdx; //테스트용
     //[SerializeField] private BreedingArea _breedingArea;
     //[SerializeField] EInventoryType _inventoryType;
+
+    [Header("자동 닫기 설정")]
+    [SerializeField] private float _autoCloseDistance = 3.0f;
+    [SerializeField] private bool _printAutoCloseLog = false;
     #endregion
 
     private InventoryManager _inventoryManager;
@@ -29,8 +33,25 @@ public class FoodboxInteractObject : BaseMono, IInteractable
 
     public void Interact(GameObject player)
     {
-        //UDebug.Print("창고야 열려라");
+        if (player == null)
+        {
+            return;
+        }
 
+        if (HasValidInventoryManager(true) == false)
+        {
+            return;
+        }
+        //UDebug.Print("창고야 열려라");
+        _inventoryManager.InventoryUIToggle(_storageIdx, EInventoryType.FoodBox);
+
+        if (IsFoodBoxUiOpen())
+        {
+            StartAutoCloseTracking(player);
+            return;
+        }
+
+        StopAutoCloseTracking();
         StorageUI storageUI = _inventoryManager.StorageUI;
 
         //UDebug.Print($"{_storageIdx}번째 인벤토리(창고) 오픈!");
@@ -39,6 +60,105 @@ public class FoodboxInteractObject : BaseMono, IInteractable
         _inventoryManager.InventoryUIToggle(_storageIdx, EInventoryType.FoodBox);
     }
 
+    /// <summary>
+    /// InventoryManager가 유효한지 검사합니다.
+    /// </summary>
+    /// <param name="shouldPrintLog">실패 시 로그 출력 여부</param>
+    /// <returns>유효 여부</returns>
+    private bool HasValidInventoryManager(bool shouldPrintLog)
+    {
+        if (_inventoryManager == null)
+        {
+            if (shouldPrintLog)
+            {
+                UDebug.Print("FoodboxInteractObject: InventoryManager가 비어 있습니다.", LogType.Assert);
+            }
+
+            return false;
+        }
+
+        if (_inventoryManager.IsSettingFinish == false)
+        {
+            if (shouldPrintLog)
+            {
+                UDebug.Print("FoodboxInteractObject: InventoryManager 초기화가 아직 완료되지 않았습니다.", LogType.Warning);
+            }
+
+            return false;
+        }
+
+        if (_inventoryManager.FoodBoxUI == null)
+        {
+            if (shouldPrintLog)
+            {
+                UDebug.Print("FoodboxInteractObject: FoodBoxUI가 비어 있습니다.", LogType.Warning);
+            }
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// 현재 먹이통 UI가 열려 있는지 검사합니다.
+    /// </summary>
+    /// <returns>열림 여부</returns>
+    private bool IsFoodBoxUiOpen()
+    {
+        if (HasValidInventoryManager(false) == false)
+        {
+            return false;
+        }
+
+        return _inventoryManager.FoodBoxUI.gameObject.activeInHierarchy;
+    }
+
+    /// <summary>
+    /// 먹이통 UI 자동 닫기 추적을 시작합니다.
+    /// </summary>
+    /// <param name="player">상호작용한 플레이어</param>
+    private void StartAutoCloseTracking(GameObject player)
+    {
+        if (player == null)
+        {
+            return;
+        }
+
+        if (UIAutoCloseManager.Ins == null)
+        {
+            UDebug.Print("FoodboxInteractObject: UIAutoCloseManager가 씬에 없습니다.", LogType.Warning);
+            return;
+        }
+
+        if (HasValidInventoryManager(true) == false)
+        {
+            return;
+        }
+
+        UIAutoCloseManager.Ins.StartTracking(
+            player.transform,
+            transform,
+            _inventoryManager.FoodBoxUI,
+            _inventoryManager.FoodBoxUI.gameObject,
+            _autoCloseDistance,
+            true,
+            _printAutoCloseLog,
+            "FoodBox");
+    }
+
+    /// <summary>
+    /// 먹이통 UI 자동 닫기 추적을 중단합니다.
+    /// </summary>
+    private void StopAutoCloseTracking()
+    {
+        if (UIAutoCloseManager.Ins == null)
+        {
+            return;
+        }
+
+        UIAutoCloseManager.Ins.StopTracking();
+    }
 
     private IEnumerator CoWaitLoadInventoryManagerSetting()
     {
@@ -60,6 +180,7 @@ public class FoodboxInteractObject : BaseMono, IInteractable
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
     protected override void Awake()
     {
+        base.Awake();
         StartCoroutine(CoWaitLoadInventoryManagerSetting());
 
        
