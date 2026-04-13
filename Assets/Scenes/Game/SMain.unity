@@ -39187,8 +39187,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7116f37a184de894bbf48bc13d0bdd00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: c95bb695-85d2-476b-bd46-21494d467235
-  _instanceId: 160244
+  _uniqueId: 87cd416c-46ac-44cb-ab8f-4162c6aa1b32
+  _instanceId: 157512
   _testTileID: 10000
   _animalID: World_Animal_Cow
   _breedingArea: {fileID: 2060048076}
@@ -39217,8 +39217,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3d637a0af3f6dd42855b5bf6243446d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: 283afe0c-2703-4f3f-af33-edfc12f07b79
-  _instanceId: 160246
+  _uniqueId: b5e6e586-103c-411f-80ee-941f94c5690c
+  _instanceId: 157514
   _breedingArea: {fileID: 2060048076}
 --- !u!1001 &1343634250
 PrefabInstance:
