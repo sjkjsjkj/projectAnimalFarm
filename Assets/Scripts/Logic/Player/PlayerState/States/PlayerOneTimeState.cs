@@ -28,8 +28,8 @@ public abstract class PlayerOneTime : IPlayerState
     public virtual bool Frame(in PlayerContext context)
     {
         context.rb.velocity = Vector2.zero;
-        // 취소 요청 or 애니메이션 길이 종료
-        if (context.isCanceled || Time.time > _nextAnimationEndTime)
+        // 애니메이션 길이 종료
+        if (Time.time > _nextAnimationEndTime)
         {
             return false;
         }

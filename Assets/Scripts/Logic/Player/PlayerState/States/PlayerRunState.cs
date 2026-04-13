@@ -7,10 +7,12 @@ public class PlayerRunState : IPlayerState
     [SerializeField] private float _stepSoundInterval = 0.2f;
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
+    private const string ACTION_SPEED_PARAM = "fActionSpeed";
     private const string MOVE_SPEED_PARAM = "fMoveSpeed";
     private const string FACING_PARAM = "fFacing";
     private const string LOCOMOTION_PARAM = "Locomotion";
 
+    private readonly int _hashActionSpeed = Animator.StringToHash(ACTION_SPEED_PARAM);
     private readonly int _hashSpeed = Animator.StringToHash(MOVE_SPEED_PARAM);
     private readonly int _hashFacing = Animator.StringToHash(FACING_PARAM);
     private readonly int _hashLocomotion = Animator.StringToHash(LOCOMOTION_PARAM);
@@ -22,6 +24,7 @@ public class PlayerRunState : IPlayerState
     public bool Enter(in PlayerContext context)
     {
         DataManager.Ins.Player.ChangeState(EPlayerState.Run);
+        context.anim.SetFloat(_hashActionSpeed, 1f);
         context.anim.SetFloat(_hashSpeed, 1f); // Run
         context.anim.Play(_hashLocomotion);
         return false;

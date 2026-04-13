@@ -15,8 +15,10 @@ public class PlayerStateMachine
     [SerializeField] private PlayerLoggingState _logging = new();
     [SerializeField] private PlayerShovelState _shovel = new();
     [SerializeField] private PlayerSickleState _sickle = new();
+    [SerializeField] private PlayerWateringState _watering = new();
     [SerializeField] private PlayerDrinkingState _drinking = new();
     [SerializeField] private PlayerEatingState _eating = new();
+    [SerializeField] private PlayerCrouchingState _crouching = new();
 
     private IPlayerState _curState;
     private bool _lockStateTransition;
@@ -84,6 +86,10 @@ public class PlayerStateMachine
         {
             return _sickle;
         }
+        if (context.inputWatering) // 물뿌리개 애니메이션 확정
+        {
+            return _watering;
+        }
         if (context.inputFishing) // 낚시 애니메이션 확정
         {
             return _fishing;
@@ -95,6 +101,10 @@ public class PlayerStateMachine
         if (context.inputEating) // 음식 애니메이션 확정
         {
             return _eating;
+        }
+        if (context.inputCrouching) // 씨앗 심기 애니메이션 확정
+        {
+            return _crouching;
         }
         if (context.inputMove != Vector2.zero) // 걷거나 달리기
         {

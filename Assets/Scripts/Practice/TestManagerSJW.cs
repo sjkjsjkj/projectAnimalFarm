@@ -94,10 +94,10 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
     {
         UDebug.Print("제작대 테스트");
 
-        //WorkbenchManager.Ins.Workbench.OnChenageRecipe -= ShowCurrentRequireCondition;
-        //WorkbenchManager.Ins.Workbench.OnChenageRecipe += ShowCurrentRequireCondition;
+        WorkbenchManager.Ins.Workbench.OnChenageRecipe -= ShowCurrentRequireCondition;
+        WorkbenchManager.Ins.Workbench.OnChenageRecipe += ShowCurrentRequireCondition;
 
-        //Workbench.Ins.SetRecipe(_recipeSOs[_recipeIdx]);
+        //WorkbenchManager.Ins.SetRecipe(_recipeSOs[_recipeIdx]);
     }
 
     public void ShowCurrentRequireCondition(WorkbenchReturnStruct[] curRequireCondition, bool canMake)
@@ -117,8 +117,7 @@ public class TestManagerSJW : Singleton<TestManagerSJW>
     }
     public void TestMakeItem()
     {
-        //WorkbenchManager.Ins.Workbench.MakeItem();
-
+        WorkbenchManager.Ins.Workbench.MakeItem();
         //Workbench.Ins.SetRecipe(_recipeSOs[_recipeIdx]);
     }
     public void FlagTest()
