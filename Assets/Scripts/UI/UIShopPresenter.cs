@@ -223,34 +223,34 @@ public class UIShopPresenter : BaseMono, IUIWindow
     private void HandleClickClose()
     {
         PlayClickSound();
-        CloseShop();
+        //CloseShop();
     }
 
     /// <summary>
     /// UIWindowStackManager에 현재 창을 등록합니다.
     /// </summary>
-    private void RegisterToStackManager()
-    {
-        if (UIWindowStackManager.Ins == null)
-        {
-            return;
-        }
-
-        UIWindowStackManager.Ins.RegisterWindow(this);
-    }
+    //private void RegisterToStackManager()
+    //{
+    //    if (UIWindowStackManager.Ins == null)
+    //    {
+    //        return;
+    //    }
+    //
+    //    UIWindowStackManager.Ins.RegisterWindow(this);
+    //}
 
     /// <summary>
     /// UIWindowStackManager에서 현재 창을 제거합니다.
     /// </summary>
-    private void UnregisterFromStackManager()
-    {
-        if (UIWindowStackManager.Ins == null)
-        {
-            return;
-        }
-
-        UIWindowStackManager.Ins.UnregisterWindow(this);
-    }
+    //private void UnregisterFromStackManager()
+    //{
+    //    if (UIWindowStackManager.Ins == null)
+    //    {
+    //        return;
+    //    }
+    //
+    //    UIWindowStackManager.Ins.UnregisterWindow(this);
+    //}
 
     /// <summary>
     /// 클릭 사운드 호출 자리입니다.
@@ -335,7 +335,7 @@ public class UIShopPresenter : BaseMono, IUIWindow
     /// </summary>
     public void Close()
     {
-        CloseShop();
+        //CloseShop();
     }
 
     /// <summary>
@@ -356,12 +356,12 @@ public class UIShopPresenter : BaseMono, IUIWindow
 
         if (IsOpen)
         {
-            RegisterToStackManager();
+            //RegisterToStackManager();
             return;
         }
 
         _shopView.SetVisible(true);
-        RegisterToStackManager();
+        //RegisterToStackManager();
 
         PrintTestLog($"UIShopPresenter.OpenShop : {_shopId}");
     }
@@ -369,25 +369,25 @@ public class UIShopPresenter : BaseMono, IUIWindow
     /// <summary>
     /// 상점 창을 닫습니다.
     /// </summary>
-    public void CloseShop()
-    {
-        if (HasValidView(false) == false)
-        {
-            UnregisterFromStackManager();
-            return;
-        }
-
-        if (IsOpen == false)
-        {
-            UnregisterFromStackManager();
-            return;
-        }
-
-        _shopView.SetVisible(false);
-        UnregisterFromStackManager();
-
-        PrintTestLog($"UIShopPresenter.CloseShop : {_shopId}");
-    }
+    //public void CloseShop()
+    //{
+    //    if (HasValidView(false) == false)
+    //    {
+    //        UnregisterFromStackManager();
+    //        return;
+    //    }
+    //
+    //    if (IsOpen == false)
+    //    {
+    //        UnregisterFromStackManager();
+    //        return;
+    //    }
+    //
+    //    _shopView.SetVisible(false);
+    //    UnregisterFromStackManager();
+    //
+    //    PrintTestLog($"UIShopPresenter.CloseShop : {_shopId}");
+    //}
 
     /// <summary>
     /// 상점 창 표시 상태를 토글합니다.
@@ -406,7 +406,7 @@ public class UIShopPresenter : BaseMono, IUIWindow
 
         if (IsOpen)
         {
-            CloseShop();
+            //CloseShop();
             return;
         }
 
@@ -439,14 +439,14 @@ public class UIShopPresenter : BaseMono, IUIWindow
         }
     }
 
-    private void OnDisable()
-    {
-        UnregisterFromStackManager();
-    }
-
-    private void OnDestroy()
-    {
-        UnregisterFromStackManager();
-    }
+    //private void OnDisable()
+    //{
+    //    UnregisterFromStackManager();
+    //}
+    //
+    //private void OnDestroy()
+    //{
+    //    UnregisterFromStackManager();
+    //}
     #endregion
 }
