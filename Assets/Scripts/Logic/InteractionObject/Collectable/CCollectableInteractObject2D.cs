@@ -13,6 +13,7 @@ using UnityEngine.Events;
 /// 3. AutoOnly / AutoOrButton도 자동 채집 거리 제한 추가
 /// 4. 수동 채집 도중 이동 시 취소
 /// 5. 피드백 UI / 사운드는 나중에 Inspector 이벤트로 연결 가능
+/// 6. 플레이어가 가까이 왔을 때 오브젝트 위에 "채집 가능" 이미지 표시
 /// </summary>
 [RequireComponent(typeof(Collider2D))]
 public class CCollectableInteractObject2D : BaseMono, IInteractable
@@ -51,6 +52,13 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
     [Tooltip("자동 채집 가능 최대 거리. 이 거리보다 멀면 자동 채집 불가")]
     [SerializeField] private float _autoCollectMaxDistance = 0.8f;
+
+    [Header("채집 가능 표시")]
+    [Tooltip("플레이어가 가까이 갔을 때 켜둘 표시용 오브젝트(SpriteRenderer / World Space Canvas 등)")]
+    [SerializeField] private GameObject _canCollectIndicatorObject;
+
+    [Tooltip("채집 시작 중에는 표시를 숨길지 여부")]
+    [SerializeField] private bool _hideIndicatorWhileCollecting = true;
 
     [Header("수동 채집 연출")]
     [Tooltip("버튼 채집 시 채집 애니메이션 / 딜레이를 사용할지")]
@@ -282,6 +290,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
                 Debug.Log($"[CCollectableInteractObject2D] 거리 또는 상태 조건 미충족. object={name}, manual={isManualRequest}");
             }
 
+            UpdateIndicatorVisibility();
             return false;
         }
 
@@ -295,6 +304,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
                     Debug.Log($"[CCollectableInteractObject2D] 플레이어가 Busy 상태라 채집 시작 불가. object={name}");
                 }
 
+                UpdateIndicatorVisibility();
                 return false;
             }
 
@@ -309,6 +319,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         {
             ShowReservedFeedback("아이템을 획득하지 못했습니다.");
             _onCollectFailed?.Invoke();
+            UpdateIndicatorVisibility();
             return false;
         }
 
@@ -343,6 +354,11 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         SubscribeMoveCancel();
         _onCollectStarted?.Invoke();
 
+        if (_hideIndicatorWhileCollecting)
+        {
+            ApplyIndicatorActive(false);
+        }
+
         _manualCollectRoutine = StartCoroutine(CoManualCollect(collector));
     }
 
@@ -352,6 +368,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         {
             yield break;
         }
+
         // TODO
         var so = DatabaseManager.Ins.Unit(_itemId);
         switch (so.Type)
@@ -367,7 +384,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
                 OnPlayerMining.Publish(transform.position, _manualCollectDelay);
                 break;
         }
-        
+
         _isProcessing = true;
 
         if (_setPlayerBusyDuringManualCollect && collector != null)
@@ -409,6 +426,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
             ShowReservedFeedback("아이템을 획득하지 못했습니다.");
             _onCollectFailed?.Invoke();
+            UpdateIndicatorVisibility();
             yield break;
         }
 
@@ -434,6 +452,8 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         _manualCollectRoutine = null;
         _manualCollectCollector = null;
         _manualCollectStartPosition = Vector2.zero;
+
+        UpdateIndicatorVisibility();
     }
 
     private void CancelManualCollectInternal(string message, bool showFeedback)
@@ -473,6 +493,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         }
 
         _onCollectCanceled?.Invoke();
+        UpdateIndicatorVisibility();
     }
 
     private void OnPlayerMoveEvent(OnPlayerMove eventData)
@@ -664,6 +685,8 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
                 yield break;
             }
         }
+
+        UpdateIndicatorVisibility();
     }
 
     private void CompleteCollect()
@@ -677,6 +700,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
         _nearCollectors.Clear();
         StopAutoCollect();
+        ApplyIndicatorActive(false);
 
         if (_triggerCollider != null)
         {
@@ -754,6 +778,8 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         {
             StartAutoCollect();
         }
+
+        UpdateIndicatorVisibility();
     }
 
     private void SetCollectedVisual(bool isVisible)
@@ -789,6 +815,8 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
     private void RebuildCollectorListInRange()
     {
+        _nearCollectors.Clear();
+
         if (_triggerCollider == null)
         {
             return;
@@ -845,6 +873,86 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         OnPlayerCanceled.Publish();
         _onFeedbackMessage?.Invoke(message);
     }
+
+    /// <summary>
+    /// 현재 표시를 켜야 하는지 판단
+    /// - 수동 채집 가능한 모드일 것
+    /// - 아직 채집되지 않았을 것
+    /// - 채집 처리 중이 아닐 것
+    /// - 범위 안에 실제로 채집 가능한 플레이어가 있을 것
+    /// </summary>
+    private bool ShouldShowCollectIndicator()
+    {
+        if (_canCollectIndicatorObject == null)
+        {
+            return false;
+        }
+
+        if (_isCollected)
+        {
+            return false;
+        }
+
+        if (!CanManualCollect)
+        {
+            return false;
+        }
+
+        if (_hideIndicatorWhileCollecting && _manualCollectRoutine != null)
+        {
+            return false;
+        }
+
+        if (_isProcessing)
+        {
+            return false;
+        }
+
+        CleanupCollectors();
+
+        for (int i = 0; i < _nearCollectors.Count; i++)
+        {
+            CPlayerCollector2D collector = _nearCollectors[i];
+
+            if (collector == null)
+            {
+                continue;
+            }
+
+            if (CanCollect(collector, true))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void UpdateIndicatorVisibility()
+    {
+        if (_canCollectIndicatorObject == null)
+        {
+            return;
+        }
+
+        bool shouldShow = ShouldShowCollectIndicator();
+        ApplyIndicatorActive(shouldShow);
+    }
+
+    private void ApplyIndicatorActive(bool isActive)
+    {
+        if (_canCollectIndicatorObject == null)
+        {
+            return;
+        }
+
+        if (_canCollectIndicatorObject.activeSelf == isActive)
+        {
+            return;
+        }
+
+        _canCollectIndicatorObject.SetActive(isActive);
+    }
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
@@ -858,6 +966,8 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         {
             Debug.LogWarning($"[CCollectableInteractObject2D] {name}의 Collider2D가 Trigger가 아닙니다. 자동/버튼 채집 범위 감지가 안 될 수 있습니다.");
         }
+
+        ApplyIndicatorActive(false);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -879,11 +989,35 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             _nearCollectors.Add(collector);
         }
 
+        UpdateIndicatorVisibility();
+
         // ButtonOnly면 자동 채집 시작 금지
         if (CanAutoCollect)
         {
             StartAutoCollect();
         }
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (_isCollected)
+        {
+            return;
+        }
+
+        CPlayerCollector2D collector = other.GetComponentInParent<CPlayerCollector2D>();
+
+        if (collector == null)
+        {
+            return;
+        }
+
+        if (!_nearCollectors.Contains(collector))
+        {
+            _nearCollectors.Add(collector);
+        }
+
+        UpdateIndicatorVisibility();
     }
 
     private void OnTriggerExit2D(Collider2D other)
@@ -896,6 +1030,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         }
 
         _nearCollectors.Remove(collector);
+        UpdateIndicatorVisibility();
 
         if (!HasAnyCollectorInRange())
         {
@@ -914,6 +1049,8 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             StopCoroutine(_respawnRoutine);
             _respawnRoutine = null;
         }
+
+        ApplyIndicatorActive(false);
     }
     #endregion
 }
