@@ -75,6 +75,8 @@ public class BootManager : MonoBehaviour
         databaseManager.Initialize();
         var inventoryManager = UObject.AddComponent<InventoryManager>(root); // 리소스 폴더를 읽고 씬 오브젝트를 코루틴으로 탐색
         inventoryManager.Initialize();
+        var uiAutoCloseManager = UObject.AddComponent<UIAutoCloseManager>(root);
+        uiAutoCloseManager.Initialize();
         // DatabaseManager 이후 실행 ↓
         var workbenchManager = UObject.AddComponent<WorkbenchManager>(root);
         workbenchManager.Initialize();
