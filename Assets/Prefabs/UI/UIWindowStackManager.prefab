@@ -50,4 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _uniqueId: 
   _instanceId: 0
-  _fallbackWindowMono: {fileID: 0}
+  _fallbackWindowMono: {fileID: 4502867929330421473}
+  _windowRegistryEntries:
+  - _windowId: 1
+    _windowMono: {fileID: 4502867929330421473}

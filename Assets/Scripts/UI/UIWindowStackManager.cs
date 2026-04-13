@@ -2,15 +2,16 @@
 using UnityEngine;
 
 /// <summary>
-/// 열린 UI 창 스택을 관리하고,
-/// 뒤로가기 요청 시 최상단 창을 닫아주는 매니저입니다.
-/// registry를 통해 비활성 상태의 창도 찾아서 열 수 있습니다.
+/// UI 창 열기 / 닫기 / 토글 요청을 처리하는 매니저입니다.
+/// 
+/// 현재 구조에서는 EscManager가 ESC 입력과 최상단 UI 닫기를 담당하므로,
+/// UIWindowStackManager는 IUIWindow registry를 이용한 창 열기 / 닫기 / 토글만 담당합니다.
 /// </summary>
 public class UIWindowStackManager : Singleton<UIWindowStackManager>
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
-    [Header("공통 UI 창 관리 참조")]
-    [SerializeField] private BaseMono _fallbackWindowMono;
+    //[Header("공통 UI 창 관리 참조")]
+    //[SerializeField] private BaseMono _fallbackWindowMono;
 
     [Header("UI 창 레지스트리")]
     [SerializeField] private List<CWindowRegistryEntry> _windowRegistryEntries = new();
@@ -36,31 +37,35 @@ public class UIWindowStackManager : Singleton<UIWindowStackManager>
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     /// <summary>
-    /// 현재 열린 UI 창 스택입니다.
-    /// 최상단 요소가 가장 최근에 열린 창입니다.
-    /// </summary>
-    private readonly List<IUIWindow> _windowStack = new();
-
-    /// <summary>
     /// 비활성 시작 창까지 포함하는 전체 UI 창 registry입니다.
     /// </summary>
     private readonly Dictionary<EUIWindowId, IUIWindow> _windowRegistry = new();
 
     /// <summary>
-    /// 스택이 비어 있을 때 열 수 있는 fallback 창입니다.
-    /// </summary>
-    private IUIWindow _fallbackWindow;
-
-    /// <summary>
     /// Initialize 중복 호출 방지 플래그입니다.
     /// </summary>
     private bool _isInitialized = false;
+
+    /*
+    /// <summary>
+    /// 현재 열린 UI 창 스택입니다.
+    /// EscManager를 유지하는 현재 구조에서는 사용하지 않습니다.
+    /// </summary>
+    private readonly List<IUIWindow> _windowStack = new();
+
+    /// <summary>
+    /// 스택이 비어 있을 때 열 수 있는 fallback 창입니다.
+    /// 현재 구조에서는 EscManager가 담당하므로 사용하지 않습니다.
+    /// </summary>
+    private IUIWindow _fallbackWindow;
+    */
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
+    /*
     /// <summary>
     /// fallback 창 인터페이스를 연결합니다.
-    /// 실패 시 이전 참조가 남지 않도록 null로 초기화합니다.
+    /// 현재 구조에서는 EscManager가 fallback 처리하므로 사용하지 않습니다.
     /// </summary>
     private void ResolveFallbackWindow()
     {
@@ -79,6 +84,7 @@ public class UIWindowStackManager : Singleton<UIWindowStackManager>
                 LogType.Assert);
         }
     }
+    */
 
     /// <summary>
     /// inspector에 연결된 UI 창 registry를 해석합니다.
@@ -159,6 +165,7 @@ public class UIWindowStackManager : Singleton<UIWindowStackManager>
     /// </summary>
     /// <param name="windowId">찾을 창 식별자</param>
     /// <param name="window">찾은 창</param>
+    /// <returns>찾기 성공 여부</returns>
     private bool TryGetRegisteredWindow(EUIWindowId windowId, out IUIWindow window)
     {
         window = null;
@@ -185,8 +192,10 @@ public class UIWindowStackManager : Singleton<UIWindowStackManager>
         return false;
     }
 
+    /*
     /// <summary>
     /// 스택에서 null이거나 이미 닫힌 비정상 참조를 정리합니다.
+    /// 현재 구조에서는 사용하지 않습니다.
     /// </summary>
     private void CleanupInvalidWindows()
     {
@@ -203,8 +212,7 @@ public class UIWindowStackManager : Singleton<UIWindowStackManager>
 
     /// <summary>
     /// 최상단 창을 닫을 수 있으면 닫습니다.
-    /// 최상단 창이 CanCloseWithEsc == false 이면
-    /// 하위 창으로 내려가지 않고 처리되었다고 판단하여 true를 반환합니다.
+    /// 현재 구조에서는 EscManager가 담당하므로 사용하지 않습니다.
     /// </summary>
     private bool TryCloseTopWindow()
     {
@@ -224,45 +232,19 @@ public class UIWindowStackManager : Singleton<UIWindowStackManager>
             return false;
         }
 
-        // 최상단 창이 Esc로 닫히지 않는 정책이면 fallback 창이 열리지 않게 true를 반환합니다.
         if (topWindow.CanCloseWithEsc == false)
         {
             return true;
         }
 
         topWindow.Close();
-
-        // 방어: 창 구현체가 직접 Unregister를 하지 않더라도 스택이 꼬이지 않게 한 번 더 정리합니다.
-        UnregisterWindow(topWindow);
         return true;
     }
 
     /// <summary>
-    /// 스택이 비어 있을 때 fallback 창을 엽니다.
-    /// </summary>
-    private bool TryOpenFallbackWindow()
-    {
-        if (IsNullWindow(_fallbackWindow) == true || _fallbackWindow.IsOpen == true)
-        {
-            return false;
-        }
-
-        _fallbackWindow.Open();
-
-        // 방어: fallback 창 구현체가 직접 Register를 하지 않더라도 스택에 반영되게 합니다.
-        if (_fallbackWindow.IsOpen == true)
-        {
-            RegisterWindow(_fallbackWindow);
-            return true;
-        }
-
-        return false;
-    }
-
-    /// <summary>
     /// 뒤로가기 요청 이벤트를 처리합니다.
+    /// 현재 구조에서는 EscManager가 담당하므로 사용하지 않습니다.
     /// </summary>
-    /// <param name="channel">뒤로가기 요청 이벤트</param>
     private void HandleUIBackRequested(OnUIBackRequested channel)
     {
         if (TryCloseTopWindow() == true)
@@ -272,6 +254,22 @@ public class UIWindowStackManager : Singleton<UIWindowStackManager>
 
         TryOpenFallbackWindow();
     }
+
+    /// <summary>
+    /// 스택이 비어 있을 때 fallback 창을 엽니다.
+    /// 현재 구조에서는 EscManager가 담당하므로 사용하지 않습니다.
+    /// </summary>
+    private bool TryOpenFallbackWindow()
+    {
+        if (IsNullWindow(_fallbackWindow) == true || _fallbackWindow.IsOpen == true)
+        {
+            return false;
+        }
+
+        _fallbackWindow.Open();
+        return _fallbackWindow.IsOpen;
+    }
+    */
 
     /// <summary>
     /// UI 창 열기 요청 이벤트를 처리합니다.
@@ -312,7 +310,7 @@ public class UIWindowStackManager : Singleton<UIWindowStackManager>
             return;
         }
 
-        ResolveFallbackWindow();
+        // ResolveFallbackWindow();
         ResolveWindowRegistry();
         _isInitialized = true;
     }
@@ -321,6 +319,7 @@ public class UIWindowStackManager : Singleton<UIWindowStackManager>
     /// 특정 창이 현재 열려 있는지 반환합니다.
     /// </summary>
     /// <param name="windowId">검사할 창 식별자</param>
+    /// <returns>열림 여부</returns>
     public bool IsWindowOpen(EUIWindowId windowId)
     {
         if (TryGetRegisteredWindow(windowId, out IUIWindow window) == false)
@@ -336,6 +335,7 @@ public class UIWindowStackManager : Singleton<UIWindowStackManager>
     /// 비활성 시작 창도 참조만 있으면 열 수 있습니다.
     /// </summary>
     /// <param name="windowId">열 창 식별자</param>
+    /// <returns>성공 여부</returns>
     public bool TryOpenWindow(EUIWindowId windowId)
     {
         if (TryGetRegisteredWindow(windowId, out IUIWindow window) == false)
@@ -348,28 +348,18 @@ public class UIWindowStackManager : Singleton<UIWindowStackManager>
 
         if (window.IsOpen == true)
         {
-            // 이미 열려 있으면 스택 최상단으로 재배치만 수행합니다.
-            RegisterWindow(window);
             return true;
         }
 
         window.Open();
-
-        // 방어: 창 구현체가 직접 RegisterWindow를 호출하지 않더라도
-        // 매니저 쪽에서 한 번 더 등록해 스택 상태를 보정합니다.
-        if (window.IsOpen == true)
-        {
-            RegisterWindow(window);
-            return true;
-        }
-
-        return false;
+        return window.IsOpen;
     }
 
     /// <summary>
     /// registry에 등록된 창을 닫습니다.
     /// </summary>
     /// <param name="windowId">닫을 창 식별자</param>
+    /// <returns>성공 여부</returns>
     public bool TryCloseWindow(EUIWindowId windowId)
     {
         if (TryGetRegisteredWindow(windowId, out IUIWindow window) == false)
@@ -382,16 +372,10 @@ public class UIWindowStackManager : Singleton<UIWindowStackManager>
 
         if (window.IsOpen == false)
         {
-            // 이미 닫혀 있으면 스택에서만 정리합니다.
-            UnregisterWindow(window);
             return true;
         }
 
         window.Close();
-
-        // 방어: 창 구현체가 직접 UnregisterWindow를 호출하지 않더라도
-        // 매니저 쪽에서 한 번 더 해제해 스택 상태를 보정합니다.
-        UnregisterWindow(window);
         return true;
     }
 
@@ -399,16 +383,17 @@ public class UIWindowStackManager : Singleton<UIWindowStackManager>
     /// registry에 등록된 창을 토글합니다.
     /// </summary>
     /// <param name="windowId">토글할 창 식별자</param>
+    /// <returns>성공 여부</returns>
     public bool TryToggleWindow(EUIWindowId windowId)
     {
         return IsWindowOpen(windowId) ? TryCloseWindow(windowId) : TryOpenWindow(windowId);
     }
 
+    /*
     /// <summary>
     /// 열린 UI 창을 스택에 등록합니다.
-    /// 이미 등록된 창은 최상단으로 재배치합니다.
+    /// 현재 구조에서는 사용하지 않습니다.
     /// </summary>
-    /// <param name="window">등록할 UI 창</param>
     public void RegisterWindow(IUIWindow window)
     {
         if (IsNullWindow(window) == true || window.IsOpen == false)
@@ -428,8 +413,8 @@ public class UIWindowStackManager : Singleton<UIWindowStackManager>
 
     /// <summary>
     /// 닫힌 UI 창을 스택에서 제거합니다.
+    /// 현재 구조에서는 사용하지 않습니다.
     /// </summary>
-    /// <param name="window">제거할 UI 창</param>
     public void UnregisterWindow(IUIWindow window)
     {
         if (IsNullWindow(window) == true)
@@ -442,13 +427,14 @@ public class UIWindowStackManager : Singleton<UIWindowStackManager>
 
     /// <summary>
     /// 스택에 등록된 유효한 창 수를 반환합니다.
-    /// 디버깅용으로 활용할 수 있습니다.
+    /// 현재 구조에서는 사용하지 않습니다.
     /// </summary>
     public int GetStackCount()
     {
         CleanupInvalidWindows();
         return _windowStack.Count;
     }
+    */
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
@@ -465,7 +451,7 @@ public class UIWindowStackManager : Singleton<UIWindowStackManager>
 
     private void OnEnable()
     {
-        EventBus<OnUIBackRequested>.Subscribe(HandleUIBackRequested);
+        // EventBus<OnUIBackRequested>.Subscribe(HandleUIBackRequested);
         EventBus<OnUIWindowOpenRequested>.Subscribe(HandleUIWindowOpenRequested);
         EventBus<OnUIWindowCloseRequested>.Subscribe(HandleUIWindowCloseRequested);
         EventBus<OnUIWindowToggleRequested>.Subscribe(HandleUIWindowToggleRequested);
@@ -473,7 +459,7 @@ public class UIWindowStackManager : Singleton<UIWindowStackManager>
 
     private void OnDisable()
     {
-        EventBus<OnUIBackRequested>.Unsubscribe(HandleUIBackRequested);
+        // EventBus<OnUIBackRequested>.Unsubscribe(HandleUIBackRequested);
         EventBus<OnUIWindowOpenRequested>.Unsubscribe(HandleUIWindowOpenRequested);
         EventBus<OnUIWindowCloseRequested>.Unsubscribe(HandleUIWindowCloseRequested);
         EventBus<OnUIWindowToggleRequested>.Unsubscribe(HandleUIWindowToggleRequested);
@@ -483,9 +469,11 @@ public class UIWindowStackManager : Singleton<UIWindowStackManager>
     {
         base.OnDestroy();
 
-        // 방어: 씬 종료/전환 시 내부 참조를 정리합니다.
-        _windowStack.Clear();
         _windowRegistry.Clear();
+
+        /*
+        _windowStack.Clear();
+        */
     }
     #endregion
 }
