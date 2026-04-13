@@ -120,16 +120,19 @@ public class WorkbenchUI : BaseMono, ICraftUI, IEscClosable
         CategoryBtnClick(ECraftableItemType.Axe);
         RecipeBtnClick(_currentChoiceCategory, 0);
         gameObject.SetActive(true);
+        EscManager.Ins.Enter(this);
     }
     public virtual void CloseUI()
     {
+        EscManager.Ins.Exit(this);
         gameObject.SetActive(false);
     }
 
     // ★ IEscClosable 구현 — ESC가 눌렸을 때 EscManager가 직접 호출
     public void CloseUi()
     {
-        SetToggleUI();
+        _isOpen = !_isOpen;
+        CloseUI();
     }
 
     
@@ -169,6 +172,10 @@ public class WorkbenchUI : BaseMono, ICraftUI, IEscClosable
             Destroy(buttonClearTr.GetChild(i).gameObject);
         }
     }
+    //public void CloseUi()
+    //{
+    //    CloseUI();
+    //}
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
