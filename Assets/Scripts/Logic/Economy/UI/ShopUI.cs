@@ -3,7 +3,7 @@
 /// <summary>
 /// 상점의 UI 입니다.
 /// </summary>
-public class ShopUI : BaseMono //, IUIWindow
+public class ShopUI : BaseMono, IEscClosable
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [SerializeField] private UIShopSlotItem _sellItemSlotPrefab;
@@ -88,10 +88,20 @@ public class ShopUI : BaseMono //, IUIWindow
     public void ShowUI()
     {
         gameObject.SetActive(true);
+        EscManager.Ins.Enter(this); // 추가
     }
     public virtual void CloseUI()
     {
+        EscManager.Ins.Exit(this); // 추가
         gameObject.SetActive(false);
+    }
+
+    public void CloseUi()
+    {
+        // ESC가 눌렸을 때 EscManager가 호출하는 함수 추가 
+        _isOpen = false;
+        USound.PlaySfx(Id.Sfx_Ui_ChestClosed_2);
+        CloseUI();
     }
 
     /// <summary>
