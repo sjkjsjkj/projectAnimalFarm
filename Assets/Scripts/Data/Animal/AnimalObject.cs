@@ -212,7 +212,6 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
             default:
                 break;
         }
-
     }
     #endregion
 
@@ -264,6 +263,7 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
                 break;
             case EAnimalState.Move:
                 _moveDir = RandomDirSetting();
+                SetFaceDir(_moveDir);
                 _animator.SetBool("Move", true);
                 break;
             case EAnimalState.Sleep:
@@ -276,6 +276,7 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
             case EAnimalState.MoveToEat:
                 _animator.SetBool("Move", true);
                 _moveDir = (_foodBoxPos-transform.position).normalized;
+                SetFaceDir(_foodBoxPos - transform.position);
                 break;
             case EAnimalState.MoveToBed:
                 break;
@@ -296,11 +297,6 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
     private void SetHungry()
     {
         SetState(EAnimalState.MoveToEat);
-    }
-    //밥을 먹고 난 후에도 여전히 배가 고픈지 확인하는 메서드
-    private bool CheckHungry()
-    {
-        return _data.IsHungry;
     }
 
     //생산완료
@@ -345,8 +341,10 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
         {
             return;
         }
+
         float dis = Vector3.Distance(transform.position, _foodBoxPos);
-        if (dis <= 0.1f)
+
+        if (dis <= 0.5f)
         {
             UDebug.Print("멈춰");
             SetState(EAnimalState.Eat);
@@ -355,14 +353,21 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
     private Vector3 RandomDirSetting()
     {
         float dirX, dirY;
-        int resultDir;  // 1 : (동)서 / 2 : 남 / 3 : 북
+
         dirX = Random.Range(-1.0f, 1.0f);
         dirY = Random.Range(-1.0f, 1.0f);
 
-        if (Mathf.Abs(dirX) >= Mathf.Abs(dirY))
+        SetFaceDir(new Vector3(dirX, dirY));
+
+        return new Vector3(dirX, dirY).normalized;
+    }
+    private void SetFaceDir(Vector3 moveDir)
+    {
+        int resultDir = -1;
+        if (Mathf.Abs(moveDir.x) >= Mathf.Abs(moveDir.y))
         {
-            resultDir = 1;
-            if (dirX >= 0.0f)
+            resultDir = 1;  // 1 : (동)서 / 2 : 남 / 3 : 북
+            if (moveDir.x >= 0.0f)
             {
                 _spRenderer.flipX = true;
             }
@@ -373,11 +378,9 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
         }
         else
         {
-            resultDir = dirY >= 0.0f ? 3 : 2;
+            resultDir = moveDir.y >= 0.0f ? 3 : 2;
         }
         _animator.SetInteger("FaceDir", resultDir);
-
-        return new Vector3(dirX, dirY).normalized;
     }
     //Idle <> Move 상태를 자연스럽게 변경해주기 위해 다음 액션을 랜덤하게 선택
     private void RandomAction()
@@ -407,20 +410,6 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
         if((int)(randomValue)%2==0)
         {
             USound.PlaySfx(_sfxId_Cry, transform);
-        }
-    }
-
-    private IEnumerator CoWaitPrefabLoad()
-    {
-        while (true)
-        {
-            
-            yield return null;
-
-            if (InventoryManager.Ins.IsSettingFinish)
-            {
-                break;
-            }
         }
     }
     #endregion
