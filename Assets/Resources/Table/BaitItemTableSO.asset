@@ -12,4 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8728aab39c533834c9bbb035cd93451f, type: 3}
   m_Name: BaitItemTableSO
   m_EditorClassIdentifier: 
-  _elements: []
+  _elements:
+  - {fileID: 11400000, guid: a75bb7eb2d4f78f4f818962fbf793f1a, type: 2}
+  - {fileID: 11400000, guid: f687f0d377a1a004c99b1a20af8fbe53, type: 2}
+  - {fileID: 11400000, guid: b1eee196e9857394b8106158a898bdb5, type: 2}
+  - {fileID: 11400000, guid: 789a649a12a467c4ba49c9399935e03a, type: 2}
+  - {fileID: 11400000, guid: d63afa354a94f6047b9771095d6db5cc, type: 2}

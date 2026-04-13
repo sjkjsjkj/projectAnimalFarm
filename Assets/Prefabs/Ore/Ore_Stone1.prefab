@@ -213,7 +213,7 @@ MonoBehaviour:
   _itemId: stone with minerals_45
   _amount: 1
   _displayName: "\uB3CC"
-  _collectMode: 2
+  _collectMode: 1
   _autoCollectDelay: 0.15
   _manualCollectMaxDistance: 1
   _autoCollectMaxDistance: 0.8
