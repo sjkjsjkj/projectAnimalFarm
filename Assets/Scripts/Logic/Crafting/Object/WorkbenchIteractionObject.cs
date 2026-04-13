@@ -54,8 +54,9 @@ public class WorkbenchIteractionObject : BaseMono, IInteractable
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         StartCoroutine(CoWaitRootLoading());
        
     }
