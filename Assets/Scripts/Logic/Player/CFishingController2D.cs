@@ -461,6 +461,25 @@ public class CFishingController2D : BaseMono
             yield break;
         }
 
+        ItemSO rewardItemSo = DatabaseManager.Ins != null ? DatabaseManager.Ins.Item(fishRow.id) : null;
+        if (rewardItemSo == null)
+        {
+            HandleFishingRuntimeFail("물고기 데이터를 찾지 못했습니다.");
+            yield break;
+        }
+
+        // 중요:
+        // 낚시 결과 선택 자체는 인벤토리 상태에 의해 왜곡되지 않게 유지한다.
+        // 대신 실제 지급 직전에 현재 인벤토리가 선택된 물고기를 받을 수 있는지 다시 검사한다.
+        // 이렇게 해야 인벤토리가 꽉 찬 상태에서 "이미 들고 있는 물고기만 계속 낚이는" 현상을 막을 수 있다.
+        if (!CanInventoryAcceptItem(playerInventory, rewardItemSo, _amount))
+        {
+            NotifyFeedbackByResult(EFishingStartResult.InventoryFull, "인벤토리가 가득 찼습니다.");
+            _onFishingFailed?.Invoke();
+            ReleaseFishingState(true);
+            yield break;
+        }
+
         if (_requireBait && !IsFishingItemRequirementBypassed())
         {
             if (selectedBait == null)
@@ -1151,12 +1170,17 @@ public class CFishingController2D : BaseMono
             return null;
         }
 
-        List<SheetItemRow> receivableCandidates = new List<SheetItemRow>();
+        List<SheetItemRow> validCandidates = new List<SheetItemRow>();
 
         for (int i = 0; i < candidates.Count; i++)
         {
             SheetItemRow row = candidates[i];
             if (row == null)
+            {
+                continue;
+            }
+
+            if (DatabaseManager.Ins == null)
             {
                 continue;
             }
@@ -1167,45 +1191,40 @@ public class CFishingController2D : BaseMono
                 continue;
             }
 
-            if (!CanInventoryAcceptItem(playerInventory, rewardItemSo, _amount))
-            {
-                continue;
-            }
-
-            receivableCandidates.Add(row);
+            validCandidates.Add(row);
         }
 
-        if (receivableCandidates.Count == 0)
+        if (validCandidates.Count == 0)
         {
             return null;
         }
 
         float totalWeight = 0f;
 
-        for (int i = 0; i < receivableCandidates.Count; i++)
+        for (int i = 0; i < validCandidates.Count; i++)
         {
-            totalWeight += Mathf.Max(0.01f, GetWeightByRarity(receivableCandidates[i].rarity));
+            totalWeight += Mathf.Max(0.01f, GetWeightByRarity(validCandidates[i].rarity));
         }
 
         float randomValue = UnityEngine.Random.Range(0f, totalWeight);
         float cumulative = 0f;
 
-        for (int i = 0; i < receivableCandidates.Count; i++)
+        for (int i = 0; i < validCandidates.Count; i++)
         {
-            cumulative += Mathf.Max(0.01f, GetWeightByRarity(receivableCandidates[i].rarity));
+            cumulative += Mathf.Max(0.01f, GetWeightByRarity(validCandidates[i].rarity));
 
             if (randomValue <= cumulative)
             {
-                ERarity fishRarity = ParseFishRarity(receivableCandidates[i].rarity);
+                ERarity fishRarity = ParseFishRarity(validCandidates[i].rarity);
                 TryGetUsableBaitForFish(playerInventory, areaType, fishRarity, out selectedBait);
-                return receivableCandidates[i];
+                return validCandidates[i];
             }
         }
 
-        ERarity lastFishRarity = ParseFishRarity(receivableCandidates[receivableCandidates.Count - 1].rarity);
+        ERarity lastFishRarity = ParseFishRarity(validCandidates[validCandidates.Count - 1].rarity);
         TryGetUsableBaitForFish(playerInventory, areaType, lastFishRarity, out selectedBait);
 
-        return receivableCandidates[receivableCandidates.Count - 1];
+        return validCandidates[validCandidates.Count - 1];
     }
 
     private float GetWeightByRarity(string rarity)
