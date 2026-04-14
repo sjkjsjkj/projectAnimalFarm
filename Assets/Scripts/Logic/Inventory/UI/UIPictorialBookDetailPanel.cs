@@ -11,13 +11,10 @@ using UnityEngine.UI;
 /// 1. 도감 슬롯을 클릭했을 때 상세 정보를 표시한다.
 /// 2. ItemSO / SheetItemDatabase를 함께 참조해서 정보를 최대한 보강한다.
 /// 3. 이름 / 설명 / 등급 / 판매금액 / 구매금액 / ID / 아이콘을 보여준다.
-/// 
-/// 우선순위
-/// 1. PictorialBookEntry의 기본 정보
-/// 2. DatabaseManager.Item(itemId)에서 가져온 ItemSO 정보
-/// 3. SheetItemDatabase에 같은 ID가 있으면 구글 시트 값을 우선 적용
+/// 4. 상세 패널이 열린 상태에서는 EscManager에 등록되어 ESC 입력 시
+///    도감 전체가 아니라 상세 패널만 먼저 닫히도록 처리한다.
 /// </summary>
-public class UIPictorialBookDetailPanel : BaseMono
+public class UIPictorialBookDetailPanel : BaseMono, IEscClosable
 {
     [Header("루트")]
     [SerializeField] private GameObject _rootObject;
@@ -43,6 +40,7 @@ public class UIPictorialBookDetailPanel : BaseMono
     [SerializeField] private string _emptyValueText = "-";
 
     private string _currentItemId = string.Empty;
+    private bool _isEscRegistered = false;
 
     protected override void Awake()
     {
@@ -74,6 +72,7 @@ public class UIPictorialBookDetailPanel : BaseMono
         Apply(detailData);
         _currentItemId = NormalizeText(detailData.itemId);
         SetVisible(true);
+        RegisterEscClose();
     }
 
     /// <summary>
@@ -81,8 +80,17 @@ public class UIPictorialBookDetailPanel : BaseMono
     /// </summary>
     public void Hide()
     {
-        _currentItemId = string.Empty;
-        SetVisible(false);
+        HideInternal(true);
+    }
+
+    /// <summary>
+    /// EscManager가 호출하는 닫기.
+    /// EscManager는 CloseUi 호출 전에 이미 스택에서 이 패널을 제거하므로
+    /// 여기서는 추가 Exit 호출 없이 내부 상태만 정리한다.
+    /// </summary>
+    public void CloseUi()
+    {
+        HideInternal(false);
     }
 
     /// <summary>
@@ -97,6 +105,53 @@ public class UIPictorialBookDetailPanel : BaseMono
     /// 현재 표시 중인 itemId 반환
     /// </summary>
     public string CurrentItemId => _currentItemId;
+
+    private void HideInternal(bool unregisterEsc)
+    {
+        _currentItemId = string.Empty;
+
+        if (unregisterEsc)
+        {
+            UnregisterEscClose();
+        }
+        else
+        {
+            _isEscRegistered = false;
+        }
+
+        SetVisible(false);
+    }
+
+    private void RegisterEscClose()
+    {
+        if (_isEscRegistered)
+        {
+            return;
+        }
+
+        if (EscManager.Ins == null)
+        {
+            return;
+        }
+
+        EscManager.Ins.Enter(this);
+        _isEscRegistered = true;
+    }
+
+    private void UnregisterEscClose()
+    {
+        if (_isEscRegistered == false)
+        {
+            return;
+        }
+
+        if (EscManager.Ins != null)
+        {
+            EscManager.Ins.Exit(this);
+        }
+
+        _isEscRegistered = false;
+    }
 
     private PictorialBookDetailData BuildDetailData(PictorialBookEntry entry)
     {
@@ -306,11 +361,16 @@ public class UIPictorialBookDetailPanel : BaseMono
 
     private IEnumerator CoFindSheetItemDatabase()
     {
-        while (_sheetDatabase != null)
+        while (_sheetDatabase == null)
         {
             _sheetDatabase = FindAnyObjectByType<SheetItemDatabase>();
             yield return null;
         }
+    }
+
+    private void OnDisable()
+    {
+        UnregisterEscClose();
     }
 
     [Serializable]
