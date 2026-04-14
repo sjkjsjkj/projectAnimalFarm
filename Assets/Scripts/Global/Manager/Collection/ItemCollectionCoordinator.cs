@@ -194,7 +194,7 @@ public class ItemCollectionCoordinator : GlobalSingleton<ItemCollectionCoordinat
 
     private IEnumerator CoFindSheetItemDatabase()
     {
-        while (_pictorialBookSystem != null)
+        while (_pictorialBookSystem == null)
         {
             _pictorialBookSystem = FindAnyObjectByType<PictorialBookSystem>();
             yield return null;

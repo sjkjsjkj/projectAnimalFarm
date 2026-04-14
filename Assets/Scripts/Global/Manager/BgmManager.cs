@@ -15,6 +15,7 @@ public class BgmManager : GlobalSingleton<BgmManager>
             return;
         }
         EventBus<OnSceneLoadEnd>.Subscribe(SceneChangeHandle);
+        EventBus<OnTimeChanged>.Subscribe(TimeChangeHandle);
         // ↑ 필요한 초기화 로직 / 부모 클래스에서 자동 실행
         _isInitialized = true;
     }
@@ -22,6 +23,15 @@ public class BgmManager : GlobalSingleton<BgmManager>
     private void SceneChangeHandle(OnSceneLoadEnd ctx)
     {
         ChangeBGM(ctx.nextScene);
+    }
+
+    private void TimeChangeHandle(OnTimeChanged ctx)
+    {
+        EScene curScene = GameManager.Ins.Scene;
+        if (curScene == EScene.Main || curScene == EScene.Forest)
+        {
+            ChangeBGM(curScene);
+        }
     }
 
     private void ChangeBGM(EScene scene)
@@ -33,24 +43,56 @@ public class BgmManager : GlobalSingleton<BgmManager>
                 UDebug.Print($"타이틀 BGM을 재생합니다.");
                 break;
             case EScene.Main:
-                if (UMath.IsProbability(50f))
+                // 낮
+                if (TimeAndLight.IsDay)
                 {
-                    USound.PlayBgm(Id.Bgm_Spring_1);
+                    if (UMath.IsProbability(50f))
+                    {
+                        USound.PlayBgm(Id.Bgm_Spring_1);
+                    }
+                    else
+                    {
+                        USound.PlayBgm(Id.Bgm_Spring_2);
+                    }
                 }
+                // 밤
                 else
                 {
-                    USound.PlayBgm(Id.Bgm_Spring_2);
+                    if (UMath.IsProbability(50f))
+                    {
+                        USound.PlayBgm(Id.Bgm_Night_1);
+                    }
+                    else
+                    {
+                        USound.PlayBgm(Id.Bgm_Night_2);
+                    }
                 }
                 UDebug.Print($"마을 BGM을 재생합니다.");
                 break;
             case EScene.Forest:
-                if (UMath.IsProbability(50f))
+                // 낮
+                if (TimeAndLight.IsDay)
                 {
-                    USound.PlayBgm(Id.Bgm_Forest_3);
+                    if (UMath.IsProbability(50f))
+                    {
+                        USound.PlayBgm(Id.Bgm_Forest_3);
+                    }
+                    else
+                    {
+                        USound.PlayBgm(Id.Bgm_Forest_4);
+                    }
                 }
+                // 밤
                 else
                 {
-                    USound.PlayBgm(Id.Bgm_Forest_4);
+                    if (UMath.IsProbability(50f))
+                    {
+                        USound.PlayBgm(Id.Bgm_Winter_1);
+                    }
+                    else
+                    {
+                        USound.PlayBgm(Id.Bgm_Winter_2);
+                    }
                 }
                 UDebug.Print($"숲 BGM을 재생합니다.");
                 break;

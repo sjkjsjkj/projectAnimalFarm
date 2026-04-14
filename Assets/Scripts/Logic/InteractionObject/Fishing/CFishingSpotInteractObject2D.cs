@@ -34,7 +34,7 @@ public class CFishingSpotInteractObject2D : BaseMono, IInteractable
         {
             if (_logEnabled)
             {
-                Debug.Log("[FishingSpot] collector 없음");
+                Debug.Log("[FishingSpot] CanInteract 실패: collector 없음");
             }
             return false;
         }
@@ -43,24 +43,16 @@ public class CFishingSpotInteractObject2D : BaseMono, IInteractable
         {
             if (_logEnabled)
             {
-                Debug.Log("[FishingSpot] FishingController 없음");
+                Debug.Log("[FishingSpot] CanInteract 실패: FishingController 없음");
             }
             return false;
         }
 
-        bool useSeaFishing = _fishingSpotType == EFishingSpotType.SeaWater;
-        bool canFish = collector.FishingController.CanManualFishFromSpot(
-            collector,
-            useSeaFishing,
-            transform.position
-        );
-
-        if (_logEnabled)
-        {
-            Debug.Log("[FishingSpot] CanManualFish 결과 = " + canFish);
-        }
-
-        return canFish;
+        // 중요:
+        // 여기서 낚시 가능 여부를 너무 빡세게 검사하면
+        // TryFishFromSpot()까지 못 들어가서 실패 피드백 메시지가 안 뜬다.
+        // 실제 성공/실패 판정은 FishingController 내부에서 처리하게 둔다.
+        return true;
     }
 
     public void Interact(GameObject player)
@@ -81,13 +73,22 @@ public class CFishingSpotInteractObject2D : BaseMono, IInteractable
             return;
         }
 
+        if (collector.FishingController == null)
+        {
+            if (_logEnabled)
+            {
+                Debug.Log("[FishingSpot] Interact 실패: FishingController 없음");
+            }
+            return;
+        }
+
         bool useSeaFishing = _fishingSpotType == EFishingSpotType.SeaWater;
-        bool result = collector.FishingController != null &&
-                      collector.FishingController.TryFishFromSpot(
-                          collector,
-                          useSeaFishing,
-                          transform.position
-                      );
+
+        bool result = collector.FishingController.TryFishFromSpot(
+            collector,
+            useSeaFishing,
+            transform.position
+        );
 
         if (_logEnabled)
         {
@@ -107,6 +108,18 @@ public class CFishingSpotInteractObject2D : BaseMono, IInteractable
 
     public string GetDetailedMessage(GameObject player)
     {
+        CPlayerCollector2D collector = GetCollectorFromPlayer(player);
+
+        if (collector != null && collector.FishingController != null)
+        {
+            string detailMessage = collector.FishingController.GetInteractionMessage(_interactionKey, collector);
+
+            if (!string.IsNullOrWhiteSpace(detailMessage))
+            {
+                return detailMessage;
+            }
+        }
+
         return GetMessage();
     }
 

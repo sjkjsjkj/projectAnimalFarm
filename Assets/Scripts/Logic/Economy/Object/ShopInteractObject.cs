@@ -10,7 +10,12 @@ public class ShopInteractObject : BaseMono, IInteractable // 맵에 귀속될 NP
     [SerializeField] private ShopSO _shopData;
     //[SerializeField] private UIShopPresenter _shopUI;
 
+    [Header("상점 ID")]
     [SerializeField] private int _shopID;
+
+    [Header("자동 닫기 설정")]
+    [SerializeField] private float _autoCloseDistance = 3.0f;
+    [SerializeField] private bool _printAutoCloseLog = false;
     #endregion
 
     #region 내부 변수
@@ -19,7 +24,107 @@ public class ShopInteractObject : BaseMono, IInteractable // 맵에 귀속될 NP
     #endregion
 
     #region 내부메서드
-    
+    /// <summary>
+    /// 현재 ShopManager와 ShopUI가 유효한지 검사합니다.
+    /// </summary>
+    /// <param name="shouldPrintLog">실패 시 로그 출력 여부</param>
+    /// <returns>유효 여부</returns>
+    private bool HasValidShopManager(bool shouldPrintLog)
+    {
+        if (ShopManager.Ins == null)
+        {
+            if (shouldPrintLog)
+            {
+                UDebug.Print("ShopInteractObject: ShopManager가 존재하지 않습니다.", LogType.Assert);
+            }
+
+            return false;
+        }
+
+        if (ShopManager.Ins.IsSettingFinish == false)
+        {
+            if (shouldPrintLog)
+            {
+                UDebug.Print("ShopInteractObject: ShopManager 초기화가 아직 완료되지 않았습니다.", LogType.Warning);
+            }
+
+            return false;
+        }
+
+        if (ShopManager.Ins.ShopUI == null)
+        {
+            if (shouldPrintLog)
+            {
+                UDebug.Print("ShopInteractObject: ShopUI가 아직 생성되지 않았습니다.", LogType.Warning);
+            }
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// 현재 상점 UI가 열려 있는지 반환합니다.
+    /// </summary>
+    /// <returns>열림 여부</returns>
+    private bool IsShopUiOpen()
+    {
+        if (HasValidShopManager(false) == false)
+        {
+            return false;
+        }
+
+        return ShopManager.Ins.ShopUI.IsOpen;
+    }
+
+    /// <summary>
+    /// 거리 자동 닫기 추적을 시작합니다.
+    /// </summary>
+    /// <param name="player">상호작용한 플레이어</param>
+    private void StartAutoCloseTracking(GameObject player)
+    {
+        if (player == null)
+        {
+            return;
+        }
+
+        if (UIAutoCloseManager.Ins == null)
+        {
+            UDebug.Print("ShopInteractObject: UIAutoCloseManager가 씬에 없습니다.", LogType.Warning);
+            return;
+        }
+
+        if (HasValidShopManager(true) == false)
+        {
+            return;
+        }
+
+        ShopUI shopUi = ShopManager.Ins.ShopUI;
+
+        UIAutoCloseManager.Ins.StartTracking(
+            player.transform,
+            transform,
+            shopUi,
+            shopUi.gameObject,
+            _autoCloseDistance,
+            true,
+            _printAutoCloseLog,
+            "Shop");
+    }
+
+    /// <summary>
+    /// 거리 자동 닫기 추적을 중단합니다.
+    /// </summary>
+    private void StopAutoCloseTracking()
+    {
+        if (UIAutoCloseManager.Ins == null)
+        {
+            return;
+        }
+
+        UIAutoCloseManager.Ins.StopTracking();
+    }
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -37,12 +142,25 @@ public class ShopInteractObject : BaseMono, IInteractable // 맵에 귀속될 NP
 
     public void Interact(GameObject player)
     {
+        if(player == null)
+    {
+            return;
+        }
+
         //상점 UI 열면서 _shop 보냄.
         //상점 UI 에서는 _shop.SellItems 로 접근
         //throw new System.NotImplementedException();
         //UDebug.Print("상점 인터랙션");
         ShopManager.Ins.SetToggleShopUI(_shopID);
         _shop.ShowShopList();
+
+        if (IsShopUiOpen())
+        {
+            StartAutoCloseTracking(player);
+            return;
+        }
+
+        StopAutoCloseTracking();
     }
     #endregion
 
