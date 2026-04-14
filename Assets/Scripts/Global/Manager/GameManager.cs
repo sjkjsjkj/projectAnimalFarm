@@ -21,6 +21,7 @@ public class GameManager : GlobalSingleton<GameManager>
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     public EScene Scene => _curScene;
+    public int NextSpawnPointIndex { get; set; } = -1;
     public void BootComplete() => _isBooted = true;
 
     public static Transform UIRoot => RootProvider(_uiRoot, K.NAME_UI_ROOT);

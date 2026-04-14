@@ -12,9 +12,12 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
     private bool _isInitialized = false;
     private bool _isLoading = false;
     private bool _isSaving = false;
+    private bool _isFirst = true;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
+    public bool IsFirst => _isFirst;
+
     /// <summary>
     /// 글로벌 데이터와 현재 씬 정보를 저장합니다.
     /// </summary>
@@ -121,6 +124,7 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         }
         ReadJsonAndLoadObjects(ctx.nextScene);
         LoadDynamicData(ctx.nextScene);
+        _isFirst = false;
     }
     #endregion
 
@@ -274,11 +278,11 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         LoadData(ref option);
         var player = m.Player;
         LoadData(ref player);
+        player.IsLoaded = true;
         var farmland = m.Farmlands;
         LoadData(ref farmland);
         var im = InventoryManager.Ins.Inventories;
         LoadData(ref im);
-        player.IsLoaded = true;
     }
 
     // DataManager의 씬 데이터 일괄 저장
