@@ -45,10 +45,10 @@ public class CameraFollowThePlayer : Frameable
         // 카메라 크기 적용
         float camW = _cam.orthographicSize * _cam.aspect;
         float camH = _cam.orthographicSize;
-        startX += camW + 1f;
-        endX -= camW - 1f;
-        startY+= camH + 1f;
-        endY -= camH - 1f;
+        startX += (camW + 1f);
+        endX -= (camW + 1f);
+        startY += (camH + 1f);
+        endY -= (camH + 1f);
 
         // 클램프 적용
         desiredPos.x = Mathf.Clamp(desiredPos.x, startX, endX);

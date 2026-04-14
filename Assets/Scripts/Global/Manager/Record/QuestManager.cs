@@ -49,7 +49,8 @@ public class QuestManager : GlobalSingleton<QuestManager>
             // 다음 퀘스트로
             UDebug.Print($"퀘스트 클리어: {curQuest.Description}");
             record.goalIndex++;
-            OnQuestChanged.Publish(record.goalIndex, QuestContainer.list[record.goalIndex].Description);
+            string title = record.goalIndex >= length ? null : QuestContainer.list[record.goalIndex].Description;
+            OnQuestChanged.Publish(record.goalIndex, title);
         }
     }
     #endregion
