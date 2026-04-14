@@ -30,6 +30,12 @@ public class PlayerController : BaseMono
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
+    private void SavePosition()
+    {
+        var player = DataManager.Ins.Player;
+        Vector2 angle = transform.rotation.eulerAngles;
+        player.SetTransform(transform.position, angle);
+    }
     private void PlayerMoveHandle(OnPlayerMove ctx)
     {
         _inputMove = ctx.moved;
@@ -122,6 +128,7 @@ public class PlayerController : BaseMono
             _inputCrouching, _targetPos, _duration, _isSuccess, _isCanceled);
         _fsm.UpdateState(in context);
         ClearInput();
+        SavePosition();
     }
 
     protected override void Awake()
