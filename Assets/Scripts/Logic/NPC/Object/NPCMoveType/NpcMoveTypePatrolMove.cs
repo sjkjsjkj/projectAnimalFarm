@@ -15,6 +15,7 @@ public class NpcMoveTypePatrolMove : NpcMoveTypeBase
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
     public void InitSetting(Vector3[] patrolTargets, float moveSpeed)
     {
+        UDebug.Print($"셋팅 확인 Patrol\npatrolTargets : {patrolTargets.Length}\nmoveSpeed : {moveSpeed}");
         _patrolTarget = patrolTargets;
         _moveSpeed = moveSpeed;
     }
@@ -29,32 +30,35 @@ public class NpcMoveTypePatrolMove : NpcMoveTypeBase
         transform.position += (_patrolTarget[_currentPatrolIndex] - transform.position).normalized * Time.deltaTime * _moveSpeed;
     }
 
-    public override int NextTargetFind()
+    public override Vector3 NextTargetFind()
     {
         //UDebug.Print("AreaMoveNPC : NextTargetFind");
-        _currentPatrolIndex = _currentPatrolIndex - 1 == _patrolTarget.Length ? 0 : _currentPatrolIndex + 1;
+        _currentPatrolIndex = _currentPatrolIndex == _patrolTarget.Length - 1? 0 : _currentPatrolIndex + 1;
 
-        int resultDir;
+        return _patrolTarget[_currentPatrolIndex];
+    }
+    #endregion
+}
+
+/*int resultDir;
         int diffX, diffY;
-        diffX = (int)(Mathf.Abs(transform.position.x) - Mathf.Abs(_patrolTarget[_currentPatrolIndex].x));
-        diffY = (int)(Mathf.Abs(transform.position.y) - Mathf.Abs(_patrolTarget[_currentPatrolIndex].y));
+        diffX = (int)(Mathf.Abs(transform.position.x - _nextMoveTarget.x));
+        diffY = (int)(Mathf.Abs(transform.position.y - _nextMoveTarget.y));
+        //diffX = (int)(Mathf.Abs(transform.position.x)- Mathf.Abs(_nextMoveTarget.x));
+        //diffY = (int)(Mathf.Abs(transform.position.y) - Mathf.Abs(_nextMoveTarget.y));
 
         if (Mathf.Abs(diffX) >= Mathf.Abs(diffY))
         {
             resultDir = 1;
-            if (_patrolTarget[_currentPatrolIndex].x >= 0.0f)
+            if (_nextMoveTarget.x >= 0.0f)
             {
                 resultDir = 0;// _spRenderer.flipX = true;
             }
         }
         else
         {
-            resultDir = _patrolTarget[_currentPatrolIndex].y >= 0.0f ? 3 : 2;
+            resultDir = _nextMoveTarget.y >= 0.0f ? 3 : 2;
         }
-        //UDebug.Print($"현재 타겟 : {_currentPatrolIndex} | NextFaceDir : {resultDir}");
-
+        //UDebug.Print($"NextFaceDir : {resultDir}");
         return resultDir;
-    }
-    #endregion
-}
-
+*/

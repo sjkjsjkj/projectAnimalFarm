@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00221066813a3a64a875cf667bf35ab0, type: 3}
+  m_Name: NpcWorldSO_Tori
+  m_EditorClassIdentifier: 
+  _id: World Npc Tori
+  _type: 10
+  _name: Tori
+  _description: Npc Tori
+  _rarity: 1
+  _image: {fileID: 4723107735738678597, guid: 5cec253709d732547a5755dc137a7f6c, type: 3}
+  _prefab: {fileID: 0}
+  _size: {x: 1, y: 1}
+  _animController: {fileID: 9100000, guid: feca84b1a88b56640ae1b4e4dcd3f33e, type: 2}
+  _dialog: []
+  _initPosition: {x: 0, y: 0}
+  _moveSpeed: 3
+  _eNpcMoveType: 0
+  _sfxId_footStepSound: Sfx_Environment_StepTuff_01
+  _sfxId_buzzing: Sfx_Creature_Human_Idle_02
