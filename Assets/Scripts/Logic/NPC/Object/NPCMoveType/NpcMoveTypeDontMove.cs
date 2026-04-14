@@ -1,4 +1,6 @@
-﻿/// <summary>
+﻿using UnityEngine;
+
+/// <summary>
 /// 안움직이는 NPC 스크립트
 /// </summary>
 public class NpcMoveTypeDontMove : NpcMoveTypeBase
@@ -9,9 +11,9 @@ public class NpcMoveTypeDontMove : NpcMoveTypeBase
     {
         //UDebug.Print($"이 객체는 움직이지 않습니다.");
     }
-    public override int NextTargetFind()
+    public override Vector3 NextTargetFind()
     {
-        return 2;
+        return Vector3.zero;
     }
     #endregion
 }

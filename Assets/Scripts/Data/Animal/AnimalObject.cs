@@ -346,7 +346,6 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
 
         if (dis <= 0.5f)
         {
-            UDebug.Print("멈춰");
             SetState(EAnimalState.Eat);
         }
     }
@@ -361,6 +360,7 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
 
         return new Vector3(dirX, dirY).normalized;
     }
+    
     private void SetFaceDir(Vector3 moveDir)
     {
         int resultDir = -1;

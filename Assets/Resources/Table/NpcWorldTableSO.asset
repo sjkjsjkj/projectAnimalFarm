@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38864123f296e5e41b76ec5911d84120, type: 3}
   m_Name: NpcWorldTableSO
   m_EditorClassIdentifier: 
-  _elements: []
+  _elements:
+  - {fileID: 11400000, guid: 57264a195f3511b4ca5c5debb4629af4, type: 2}
+  - {fileID: 11400000, guid: 6aaab57ab0e3b7e4895c078c32902f42, type: 2}
+  - {fileID: 11400000, guid: 7cccebf12c1a32e4facf3d5f9e650436, type: 2}
+  - {fileID: 11400000, guid: 2c7febe9e9c30ea4fb4a0e5aebb4356c, type: 2}

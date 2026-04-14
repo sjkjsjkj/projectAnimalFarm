@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using TMPro;
 using UnityEngine;
 
 /// <summary>
@@ -10,16 +11,25 @@ public class NPCObject : Frameable
     [Header("MonoBehaviour")]
     [SerializeField] private SpriteRenderer _spRenderer;
     [SerializeField] private NpcWorldSO _npcSO;
+    [SerializeField] private NpcMoveTypeSO _moveTypeSO;
 
-    
+    [SerializeField] private string[] _dialog;
+    [SerializeField] private GameObject _dialogCanvas;
+    [SerializeField] private RectTransform _dialogBack;
+    [SerializeField] private TextMeshProUGUI _dialogText;
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private NPCData _data;
     private ENpcState _state;
+    private ENpcMoveType _moveType;
 
     private float _actionTimer = 0;       // Idle <> Move 상태를 자연스럽게 변경해줄 때 사용할 타이머
     private float _actionInterval = 3.0f; // 3초마다 한번씩 Move/Idle일 경우 랜덤하게 Move/Idle로 행동을 변경할 예정.
+
+    private float _dialogTimer = 0;
+    private float _dialogInterval = 10.0f;
+    private float _dialogMessageTime = 5.0f;
 
     [SerializeField] private Animator _animator;
     private NpcMoveTypeBase _moveMaster;
@@ -69,37 +79,69 @@ public class NPCObject : Frameable
         
         _data = new NPCData(_npcSO);
 
-        switch(_npcSO.NpcMoveType)
+        if(_moveTypeSO == null)
         {
-            case ENpcMoveType.DontMove:
-                gameObject.AddComponent<NpcMoveTypeDontMove>();
-                break;
-            case ENpcMoveType.AreaMove:
-                if (!(_npcSO is NpcWorldAreaMoveSO areaMoveSO))
-                {
-                    UDebug.Print("인스펙터 에러. 모드에 맞는 SO를 넣으세요.", LogType.Assert);
-                    return; 
-                }
-                UDebug.Print("AreaMove Mode Npc 생성");
-                NpcMoveTypeAreaMove tempAreaMoveMode = gameObject.AddComponent<NpcMoveTypeAreaMove>();
-                tempAreaMoveMode.InitSetting(areaMoveSO.InitPosition, areaMoveSO.MinPos, areaMoveSO.MaxPos,areaMoveSO.MoveSpeed);
-
-                tempAreaMoveMode.GetComponent<NpcMoveTypeAreaMove>().OnNextMove -= Reorganize;
-                tempAreaMoveMode.GetComponent<NpcMoveTypeAreaMove>().OnNextMove += Reorganize;
-                break;
-            case ENpcMoveType.PatrolMove:
-                if (!(_npcSO is NpcWorldPatrolMoveSo patrolMoveSO))
-                {
-                    UDebug.Print("인스펙터 에러. 모드에 맞는 SO를 넣으세요.", LogType.Assert);
-                    return;
-                }
-                NpcMoveTypePatrolMove tempPatrolMode = gameObject.AddComponent<NpcMoveTypePatrolMove>();
-                tempPatrolMode.InitSetting(patrolMoveSO.PatrolPoints, patrolMoveSO.MoveSpeed);
-
-                tempPatrolMode.GetComponent<NpcMoveTypePatrolMove>().OnNextMove -= Reorganize;
-                tempPatrolMode.GetComponent<NpcMoveTypePatrolMove>().OnNextMove += Reorganize;
-                break;
+            UDebug.Print("인스펙터 에러. 모드에 맞는 SO를 넣으세요.", LogType.Assert);
+            return;
         }
+
+        if ((_moveTypeSO is NpcWorldDontMoveSO dontMoveSO))
+        {
+            _moveType = ENpcMoveType.DontMove;
+        }
+
+        else if ((_moveTypeSO is NpcWorldAreaMoveSO areaMoveSO))
+        {
+            _moveType = ENpcMoveType.AreaMove;
+            UDebug.Print("AreaMove Mode Npc 생성");
+            NpcMoveTypeAreaMove tempAreaMoveMode = gameObject.AddComponent<NpcMoveTypeAreaMove>();
+            tempAreaMoveMode.InitSetting(_npcSO.InitPosition, areaMoveSO.MinPos, areaMoveSO.MaxPos, _npcSO.MoveSpeed);
+
+            tempAreaMoveMode.GetComponent<NpcMoveTypeAreaMove>().OnNextMove -= Reorganize;
+            tempAreaMoveMode.GetComponent<NpcMoveTypeAreaMove>().OnNextMove += Reorganize;
+        }
+
+        else if (_moveTypeSO is NpcWorldPatrolMoveSo patrolMoveSO)
+        {
+            _moveType = ENpcMoveType.PatrolMove;
+            NpcMoveTypePatrolMove tempPatrolMode = gameObject.AddComponent<NpcMoveTypePatrolMove>();
+            tempPatrolMode.InitSetting(patrolMoveSO.PatrolPoints, _npcSO.MoveSpeed);
+
+            tempPatrolMode.GetComponent<NpcMoveTypePatrolMove>().OnNextMove -= Reorganize;
+            tempPatrolMode.GetComponent<NpcMoveTypePatrolMove>().OnNextMove += Reorganize;
+        }
+        //switch (_moveType)
+        //{
+        //    case ENpcMoveType.DontMove:
+        //        gameObject.AddComponent<NpcMoveTypeDontMove>();
+        //        break;
+        //    case ENpcMoveType.AreaMove:
+        //        //if (!(_npcSO is NpcWorldAreaMoveSO areaMoveSO))
+        //        if (!(_moveTypeSO is NpcWorldAreaMoveSO areaMoveSO))
+        //        {
+        //            UDebug.Print("인스펙터 에러. 모드에 맞는 SO를 넣으세요.", LogType.Assert);
+        //            return; 
+        //        }
+        //        UDebug.Print("AreaMove Mode Npc 생성");
+        //        NpcMoveTypeAreaMove tempAreaMoveMode = gameObject.AddComponent<NpcMoveTypeAreaMove>();
+        //        tempAreaMoveMode.InitSetting(_npcSO.InitPosition, areaMoveSO.MinPos, areaMoveSO.MaxPos, _npcSO.MoveSpeed);
+
+        //        tempAreaMoveMode.GetComponent<NpcMoveTypeAreaMove>().OnNextMove -= Reorganize;
+        //        tempAreaMoveMode.GetComponent<NpcMoveTypeAreaMove>().OnNextMove += Reorganize;
+        //        break;
+        //    case ENpcMoveType.PatrolMove:
+        //        if (!(_moveTypeSO is NpcWorldPatrolMoveSo patrolMoveSO))
+        //        {
+        //            UDebug.Print("인스펙터 에러. 모드에 맞는 SO를 넣으세요.", LogType.Assert);
+        //            return;
+        //        }
+        //        NpcMoveTypePatrolMove tempPatrolMode = gameObject.AddComponent<NpcMoveTypePatrolMove>();
+        //        tempPatrolMode.InitSetting(patrolMoveSO.PatrolPoints, _npcSO.MoveSpeed);
+
+        //        tempPatrolMode.GetComponent<NpcMoveTypePatrolMove>().OnNextMove -= Reorganize;
+        //        tempPatrolMode.GetComponent<NpcMoveTypePatrolMove>().OnNextMove += Reorganize;
+        //        break;
+        //}
 
         _moveMaster = GetComponent<NpcMoveTypeBase>();
         //TODO: 이벤트 연결
@@ -130,6 +172,10 @@ public class NPCObject : Frameable
     //Idle <> Move 상태를 자연스럽게 변경해주기 위해 다음 액션을 랜덤하게 선택
     private void RandomAction()
     {
+        if(_moveType == ENpcMoveType.DontMove)
+        {
+            return;
+        }
         if (!(_state == ENpcState.Idle || _state == ENpcState.Move))
         {
             return;
@@ -144,43 +190,93 @@ public class NPCObject : Frameable
         {
             SetState(ENpcState.Move);
             //UDebug.Print("이제부터 움직여라");
-            FaceDirCheck(_moveMaster.NextTargetFind());
+            SetFaceDir(_moveMaster.NextTargetFind());
         }
         else
         {
             SetState(ENpcState.Idle);
         }
-    }
 
-    private void FaceDirCheck(int resultFaceDir)
-    {
-        if(resultFaceDir == 1)
+        float tempRandNum = Random.Range(0.0f, 1.0f) * 10;
+        if ((int)(tempRandNum) % 2 == 0)
         {
-            _spRenderer.flipX = true;
+            USound.PlaySfx(_stxId_buzzingSound, transform);
+        }
+    }
+    private bool RandomDialog()
+    {
+        float tempRandNum = Random.Range(0.0f, 1.0f);
+
+        if(tempRandNum >= 0.5f)
+        {
+            return false;
+        }
+
+        int tempRandDialogIdx = Random.Range(0, _dialog.Length);
+        //UDebug.Print($"show [{tempRandDialogIdx}] Dialog | Dialog Length : {_dialog.Length}");
+        //UDebug.Print($"{ _dialog[tempRandDialogIdx] }");
+        StartCoroutine(CoDialog(_dialog[tempRandDialogIdx]));
+        return true;
+    }
+    private IEnumerator CoDialog(string dialog)
+    {
+        _dialogBack.localScale = new Vector3(0.6f , 0.7f, 1);
+        _dialogCanvas.SetActive(true);
+        _dialogText.text = dialog;
+        yield return new WaitForSeconds(_dialogMessageTime);
+        _dialogCanvas.SetActive(false);
+    }
+   
+    private void SetFaceDir(Vector3 targetDir)
+    {
+        Vector3 moveDir = targetDir - transform.position;
+
+        int resultDir = -1;
+        if (Mathf.Abs(moveDir.x) >= Mathf.Abs(moveDir.y))
+        {
+            resultDir = 1;  // 1 : (동)서 / 2 : 남 / 3 : 북
+            if (moveDir.x >= 0.0f)
+            {
+                _spRenderer.flipX = false;
+            }
+            else
+            {
+                _spRenderer.flipX = true;
+            }
         }
         else
         {
-            _spRenderer.flipX = false;
+            resultDir = moveDir.y >= 0.0f ? 3 : 2;
         }
-        _animator.SetInteger("FaceDir", resultFaceDir);
+        _animator.SetInteger("FaceDir", resultDir);
     }
-
 
     public override EPriority Priority => EPriority.Last;
     public override void ExecuteFrame()
     {
         _actionTimer += Time.deltaTime;
+        if (_dialog.Length > 0)
+        {
+            _dialogTimer += Time.deltaTime;
+        }
+        
 
         if (_actionTimer >= _actionInterval)
         {
             RandomAction();
-            float tempRandNum = Random.Range(0.0f, 1.0f)*10;
-            if ((int)(tempRandNum) % 2 == 0)
+        }
+        if (_dialogTimer >= _dialogInterval )
+        {
+            if (!RandomDialog())
             {
-                USound.PlaySfx(_stxId_buzzingSound,transform);
+                _dialogInterval += 2;
+            }
+            else
+            {
+                _dialogTimer = 0;
+                _dialogInterval = 10;
             }
         }
-
         switch (_state)
         {
             case ENpcState.Interaction:

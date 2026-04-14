@@ -18,7 +18,7 @@ MonoBehaviour:
   _description: "\uBD89\uACE0 \uB2EC\uCF64\uD55C \uACFC\uC721\uC744 \uB9FA\uB294
     \uB9E4\uB825\uC801\uC778 \uC791\uBB3C\uC785\uB2C8\uB2E4."
   _rarity: 1
-  _image: {fileID: -795079669, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
+  _image: {fileID: 612252541, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
   _prefab: {fileID: 0}
   _sellPrice: 100
   _buyPrice: 200
