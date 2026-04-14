@@ -3,6 +3,7 @@
 /// <summary>
 /// NPC가 월드에서 가지는 정적 데이터입니다.
 /// </summary>
+[CreateAssetMenu(fileName = "NpcWorldSO_", menuName = "ScriptableObjects/World/NPC", order = 1)]
 public class NpcWorldSO : WorldSO
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────

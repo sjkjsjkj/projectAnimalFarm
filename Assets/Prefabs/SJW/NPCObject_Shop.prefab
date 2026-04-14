@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5818916025463756478}
+  - component: {fileID: 6021423182229946053}
   - component: {fileID: 139942416444556515}
   - component: {fileID: 3651851569220122346}
   - component: {fileID: 7768656918058223304}
-  - component: {fileID: 6021423182229946053}
   - component: {fileID: 3370614780295236830}
   m_Layer: 3
   m_Name: NPCObject_Shop
@@ -36,6 +36,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6021423182229946053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2406738304328047922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 822268c3a77278c44904518c318eef41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _uniqueId: 
+  _instanceId: 0
+  _shopData: {fileID: 11400000, guid: 66abbd91a67575548b0528f73af79848, type: 2}
+  _shopID: 0
+  _autoCloseDistance: 3
+  _printAutoCloseLog: 0
 --- !u!114 &139942416444556515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51,7 +69,8 @@ MonoBehaviour:
   _uniqueId: 
   _instanceId: 0
   _spRenderer: {fileID: 3651851569220122346}
-  _npcSO: {fileID: 11400000, guid: 46618acb92bbf80429a17fba4acc2ffe, type: 2}
+  _npcSO: {fileID: 0}
+  _moveTypeSO: {fileID: 11400000, guid: f3e19782d9875cc42826d08e0f14202e, type: 2}
   _animator: {fileID: 0}
 --- !u!212 &3651851569220122346
 SpriteRenderer:
@@ -126,22 +145,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6021423182229946053
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2406738304328047922}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 822268c3a77278c44904518c318eef41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _uniqueId: 
-  _instanceId: 0
-  _shopData: {fileID: 11400000, guid: 66abbd91a67575548b0528f73af79848, type: 2}
-  _shopID: 0
 --- !u!61 &3370614780295236830
 BoxCollider2D:
   m_ObjectHideFlags: 0
