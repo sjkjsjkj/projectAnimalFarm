@@ -13,8 +13,10 @@ using UnityEngine.UI;
 /// - 도감 열 때 / 탭 바꿀 때 강제 전체 갱신
 /// - 현재 선택된 탭만 선명하게 보이고
 ///   나머지 탭은 반투명하게 표시
+/// - ESC는 EscManager를 통해 닫히도록 등록하여
+///   도감을 닫을 때 옵션 메뉴가 함께 뜨지 않게 처리
 /// </summary>
-public class UIPictorialBookController : BaseMono
+public class UIPictorialBookController : BaseMono, IEscClosable
 {
     [Header("도감 루트")]
     [SerializeField] private GameObject _bookRoot;
@@ -63,6 +65,7 @@ public class UIPictorialBookController : BaseMono
     private CanvasGroup _gatherTabCanvasGroup;
 
     private bool _isInitialized = false;
+    private bool _isEscRegistered = false;
     private string _currentCategory;
 
     public bool IsOpen
@@ -106,10 +109,8 @@ public class UIPictorialBookController : BaseMono
             return;
         }
 
-        if (IsOpen && Input.GetKeyDown(_closeKey))
-        {
-            CloseBook();
-        }
+        // ESC는 직접 닫지 않고 EscManager를 통해 닫히도록 맡깁니다.
+        // 그렇지 않으면 같은 프레임에 옵션 메뉴가 함께 열릴 수 있습니다.
     }
 
     public void ToggleBook()
@@ -143,6 +144,7 @@ public class UIPictorialBookController : BaseMono
         RefreshTabVisual(_currentCategory);
         _bookRoot.transform.SetAsLastSibling();
         SetBookVisible(true);
+        RegisterEscClose();
 
         if (_logEnabled)
         {
@@ -154,11 +156,17 @@ public class UIPictorialBookController : BaseMono
     {
         Initialize();
         SetBookVisible(false);
+        UnregisterEscClose();
 
         if (_logEnabled)
         {
             Debug.Log("[UIPictorialBookController] 도감 닫기");
         }
+    }
+
+    public void CloseUi()
+    {
+        CloseBook();
     }
 
     public void OnClickAnimalTab()
@@ -240,6 +248,28 @@ public class UIPictorialBookController : BaseMono
         _bookCanvasGroup.alpha = isVisible ? 1f : 0f;
         _bookCanvasGroup.interactable = isVisible;
         _bookCanvasGroup.blocksRaycasts = isVisible;
+    }
+
+    private void RegisterEscClose()
+    {
+        if (_isEscRegistered)
+        {
+            return;
+        }
+
+        EscManager.Ins.Enter(this);
+        _isEscRegistered = true;
+    }
+
+    private void UnregisterEscClose()
+    {
+        if (_isEscRegistered == false)
+        {
+            return;
+        }
+
+        EscManager.Ins.Exit(this);
+        _isEscRegistered = false;
     }
 
     private void RefreshTabVisual(string category)
@@ -353,5 +383,10 @@ public class UIPictorialBookController : BaseMono
         }
 
         return false;
+    }
+
+    private void OnDisable()
+    {
+        UnregisterEscClose();
     }
 }
