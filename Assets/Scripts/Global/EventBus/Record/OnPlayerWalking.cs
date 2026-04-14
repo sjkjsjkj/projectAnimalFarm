@@ -1,18 +1,18 @@
-/// <summary>
-/// 
+﻿/// <summary>
+/// 플레이어가 걷는 중일 때
 /// </summary>
 public readonly struct OnPlayerWalking
 {
-    public readonly int number;
+    public readonly float movement;
 
-    public OnPlayerWalking(int number)
+    public OnPlayerWalking(float movement)
     {
-        this.number = number;
+        this.movement = movement;
     }
 
-    /// <param name="number">숫자</param>
-    public static void Publish(int number)
+    /// <param name="movement">이동량</param>
+    public static void Publish(float movement)
     {
-        EventBus<OnPlayerWalking>.Publish(new OnPlayerWalking(number));
+        EventBus<OnPlayerWalking>.Publish(new OnPlayerWalking(movement));
     }
 }

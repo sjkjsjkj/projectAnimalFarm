@@ -1,18 +1,18 @@
-/// <summary>
-/// 
+﻿/// <summary>
+/// 플레이어가 씨앗을 심었을 때
 /// </summary>
 public readonly struct OnPlayerPlantingSeeds
 {
-    public readonly int number;
+    public readonly string seedId;
 
-    public OnPlayerPlantingSeeds(int number)
+    public OnPlayerPlantingSeeds(string seedId)
     {
-        this.number = number;
+        this.seedId = seedId;
     }
 
-    /// <param name="number">숫자</param>
-    public static void Publish(int number)
+    /// <param name="seedId">씨앗 Id</param>
+    public static void Publish(string seedId)
     {
-        EventBus<OnPlayerPlantingSeeds>.Publish(new OnPlayerPlantingSeeds(number));
+        EventBus<OnPlayerPlantingSeeds>.Publish(new OnPlayerPlantingSeeds(seedId));
     }
 }

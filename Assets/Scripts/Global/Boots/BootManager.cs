@@ -95,6 +95,8 @@ public class BootManager : MonoBehaviour
         persistenceManager.Initialize();
         var bgmManager = UObject.AddComponent<BgmManager>(root); // 옵션(Data), SO(Database)를 읽음
         bgmManager.Initialize();
+        var questManager = UObject.AddComponent<QuestManager>(root);
+        questManager.Initialize();
         // 다른 매니저들을 위해 마지막에 실행 ↓
         var frameManager = UObject.AddComponent<FrameManager>(root);
         frameManager.Initialize();

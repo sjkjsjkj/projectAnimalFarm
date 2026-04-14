@@ -5,23 +5,33 @@
 /// </summary>
 public static class QuestContainer
 {
-    public static readonly IReadOnlyList<QuestInfo> Goals = new List<QuestInfo>
+    public static readonly IReadOnlyList<QuestInfo> list = new List<QuestInfo>
     {
         new QuestInfo(
             description: "마을 걸어보기 (이동 : WASD)",
-            rewardGold: 50,
+            rewardGold: 100,
             rewardItemId: null,
             rewardItemAmount: 0,
-            condition: (data) =>
-                data.totalWalkingDistance >= 100f
+            new QuestCondition(
+                subtopic: "이동량",
+                condition: (data) =>
+                    data.totalWalkingDistance >= 10f,
+                progress: (data) =>
+                    (data.totalWalkingDistance, 10f)
+            )
         ),
         new QuestInfo(
             description: "마을 달려보기 (달리기 : Shift)",
-            rewardGold: 50,
+            rewardGold: 100,
             rewardItemId: null,
             rewardItemAmount: 0,
-            condition: (data) =>
-                data.totalRunningDistance >= 500f
+            new QuestCondition(
+                subtopic: "이동량",
+                condition: (data) =>
+                    data.totalRunningDistance >= 10f,
+                progress: (data) =>
+                    (data.totalRunningDistance, 10f)
+            )
         ),
     };
 }
