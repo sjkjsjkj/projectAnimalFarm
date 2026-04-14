@@ -1,20 +1,38 @@
 ﻿using System;
 
 /// <summary>
-/// 클래스의 설계 의도입니다.
+/// 목표의 각 조건을 정의하는 구조체
 /// </summary>
-public class QuestCondition
+public readonly struct QuestCondition
 {
-    #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
-    private Func<RecordData, bool> _condition; // 조건식
-    private Func<RecordData, (float cur, float need)> _progress;
-    #endregion
+    private readonly string _subtopic;
+    private readonly Func<RecordData, bool> _condition; // 조건식
+    private readonly Func<RecordData, (float cur, float need)> _progress;
 
-    #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
+    public QuestCondition(string subtopic,
+        Func<RecordData, bool> condition, Func<RecordData, (float cur, float need)> progress)
+    {
+        _subtopic = subtopic;
+        _condition = condition;
+        _progress = progress;
+    }
 
-    #endregion
+    public string GetSubtopic() => _subtopic;
 
-    #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
+    public bool IsClear(RecordData data)
+    {
+        return _condition.Invoke(data);
+    }
 
-    #endregion
+    public (float cur, float need) GetProgress(RecordData data)
+    {
+        if(_progress == null)
+        {
+            UDebug.Print($"{_subtopic}에서 Progress Func가 할당되지 않았습니다.");
+            return (0f, 1f);
+        }
+        var progress = _progress.Invoke(data);
+        float cur = MathF.Min(progress.cur, progress.need);
+        return (cur, progress.need);
+    }
 }

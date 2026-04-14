@@ -18,6 +18,7 @@ public class PlayerWalkState : IPlayerState
     private readonly int _hashLocomotion = Animator.StringToHash(LOCOMOTION_PARAM);
 
     private float _nextStepTime;
+    private Vector2 _prevPos;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -27,11 +28,17 @@ public class PlayerWalkState : IPlayerState
         context.anim.SetFloat(_hashActionSpeed, 1f);
         context.anim.SetFloat(_hashSpeed, 0.5f); // Walk
         context.anim.Play(_hashLocomotion);
+        _prevPos = context.tr.position; // 기록용
         return false;
     }
 
     public bool Frame(in PlayerContext context)
     {
+        // 기록용
+        Vector2 curPos = context.tr.position;
+        float movement = Vector2.Distance(curPos, _prevPos);
+        OnPlayerWalking.Publish(movement);
+        _prevPos = curPos;
         // 변수 작성
         Vector2 pos = context.tr.position;
         Vector2 size = DatabaseManager.Ins.Player(Id.World_Player).Size;
