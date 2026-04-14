@@ -8,11 +8,11 @@ using UnityEngine.Events;
 /// 낚시 컨트롤러
 ///
 /// 수정 포인트
-/// 1. 테스트용 낚싯대/미끼 우회 유지
-/// 2. 낚시 시작 시 팀원 모션 이벤트 발행 유지
-/// 3. FishingSpot 사용 시 실제 spotWorldPos를 checkPos로 사용
-/// 4. 모션 목표 위치와 방향 계산을 실제 낚시 지점 기준으로 처리
-/// 5. 낚시 취소 시 OnPlayerCanceled.Publish() 호출
+/// 1. 낚시 실패 사유를 InteractionFeedbackRelay로 중앙 관리
+/// 2. 낚싯대 / 미끼 / 등급 / 인벤토리 상태에 따라 상황별 메시지 출력
+/// 3. 손에 든 아이템이 아니라 인벤토리 내 대표 낚싯대 기준으로 판정
+/// 4. FishingSpot의 CanInteract 단계에서 막히지 않도록 수동 가능 여부는 느슨하게 허용
+/// 5. 바다 낚시 시 미끼의 바다 사용 가능 여부도 검사
 /// </summary>
 public class CFishingController2D : BaseMono
 {
@@ -36,9 +36,13 @@ public class CFishingController2D : BaseMono
         DatabaseMissing,
         InventoryMissing,
         NoFishingArea,
+        NoFishingRodInQuickSlot,
         NoFishingRodInInventory,
         NoBaitInInventory,
+        BaitInsufficient,
         NoCandidateFish,
+        NoCatchableFishForQuickSlotRod,
+        NoCatchableFishForBait,
         RewardItemDataMissing,
         InventoryFull
     }
@@ -59,9 +63,31 @@ public class CFishingController2D : BaseMono
     [SerializeField] private int _amount = 1;
     [SerializeField] private int _fishingSkillExp = 0;
 
+    [Header("낚시 도구 / 미끼 요구 조건")]
+    [Tooltip("체크하면 인벤토리의 대표 낚싯대가 있어야 낚시 가능")]
+    [SerializeField] private bool _requireFishingRodInQuickSlot = true;
+
+    [Tooltip("체크하면 대표 낚싯대 등급 이하의 물고기만 낚임")]
+    [SerializeField] private bool _limitCatchByQuickSlotRodRarity = true;
+
+    [Tooltip("체크하면 미끼가 있어야 낚시 가능")]
+    [SerializeField] private bool _requireBait = true;
+
+    [Tooltip("1회 낚시당 필요한 미끼 개수")]
+    [SerializeField] private int _requiredBaitCount = 1;
+
+    [Tooltip("체크하면 낚시 성공 시 미끼를 소모")]
+    [SerializeField] private bool _consumeBaitOnSuccess = true;
+
+    [Tooltip("체크하면 미끼 등급 이하의 물고기만 낚임")]
+    [SerializeField] private bool _limitCatchByBaitRarity = true;
+
     [Header("테스트용 우회 설정")]
     [Tooltip("체크하면 낚싯대 / 미끼가 인벤토리에 없어도 낚시를 시작할 수 있습니다.")]
     [SerializeField] private bool _bypassRequiredFishingItemsForTest = false;
+
+    [Header("피드백 릴레이")]
+    [SerializeField] private InteractionFeedbackRelay _feedbackRelay;
 
     [Header("모션 이벤트 설정")]
     [Tooltip("낚시 시작 시 OnPlayerFishing.Publish(pos, duration, isSuccess)로 넘길 isSuccess 값")]
@@ -94,13 +120,14 @@ public class CFishingController2D : BaseMono
 
     [Header("희귀도 가중치")]
     [SerializeField] private float _basicWeight = 70f;
-    [SerializeField] private float _primeWeight = 25f;
-    [SerializeField] private float _rareWeight = 10f;
-    [SerializeField] private float _legendaryWeight = 2f;
+    [SerializeField] private float _solidWeight = 40f;
+    [SerializeField] private float _superiorWeight = 18f;
+    [SerializeField] private float _primeWeight = 8f;
+    [SerializeField] private float _masterworkWeight = 2f;
     [SerializeField] private float _unknownWeight = 5f;
 
     [Header("나중에 연결할 이벤트")]
-    [Tooltip("피드백 UI를 나중에 연결할 때 사용. string 메시지를 받는 함수 연결")]
+    [Tooltip("기존 Inspector 연결 유지용 string 이벤트")]
     [SerializeField] private StringEvent _onFeedbackMessage;
 
     [Tooltip("낚시 시작 시 호출. 나중에 사운드/VFX 연결 가능")]
@@ -128,17 +155,14 @@ public class CFishingController2D : BaseMono
 
     public string LastFailMessage => _lastFailMessage;
 
+    /// <summary>
+    /// FishingSpot에서 CanInteract 단계에서 너무 일찍 막아버리면
+    /// 실패 메시지를 띄울 기회가 없으므로 여기서는 느슨하게 허용한다.
+    /// 실제 성공/실패 판정은 TryFish에서 한다.
+    /// </summary>
     public bool CanManualFish(CPlayerCollector2D collector)
     {
-        EFishingStartResult result = ValidateFishingStart(
-            collector,
-            false,
-            false,
-            Vector2.zero,
-            out _,
-            out _);
-
-        return result == EFishingStartResult.Success;
+        return collector != null && collector.FishingController != null;
     }
 
     public string GetInteractionMessage(KeyCode key, CPlayerCollector2D collector)
@@ -174,28 +198,26 @@ public class CFishingController2D : BaseMono
             false,
             Vector2.zero,
             out EFishingAreaType areaType,
-            out Vector2 checkPos);
+            out Vector2 checkPos,
+            out _,
+            out _);
 
         if (result != EFishingStartResult.Success)
         {
-            return HandleFishingStartFail(result);
+            return HandleFishingStartFail(collector, result);
         }
 
         StartFishingRoutine(collector, areaType, checkPos);
         return true;
     }
 
+    /// <summary>
+    /// FishingSpot의 CanInteract에서 실패 메시지를 막지 않기 위해
+    /// 여기서는 느슨하게 허용한다.
+    /// </summary>
     public bool CanManualFishFromSpot(CPlayerCollector2D collector, bool useSeaFishing, Vector2 spotWorldPos)
     {
-        EFishingStartResult result = ValidateFishingStart(
-            collector,
-            true,
-            useSeaFishing,
-            spotWorldPos,
-            out _,
-            out _);
-
-        return result == EFishingStartResult.Success;
+        return collector != null && collector.FishingController != null;
     }
 
     public bool TryFishFromSpot(CPlayerCollector2D collector, bool useSeaFishing, Vector2 spotWorldPos)
@@ -206,38 +228,38 @@ public class CFishingController2D : BaseMono
             useSeaFishing,
             spotWorldPos,
             out EFishingAreaType areaType,
-            out Vector2 checkPos);
+            out Vector2 checkPos,
+            out _,
+            out _);
 
         if (result != EFishingStartResult.Success)
         {
-            return HandleFishingStartFail(result);
+            return HandleFishingStartFail(collector, result);
         }
 
         StartFishingRoutine(collector, areaType, checkPos);
         return true;
     }
 
-    /// <summary>
-    /// 외부에서도 이동 취소를 강제로 호출할 수 있게 열어둔 함수
-    /// </summary>
     public void CancelFishingByMove()
     {
         CancelFishingInternal(_moveCancelMessage, true, true);
     }
 
-    /// <summary>
-    /// 낚시 시작 전 공통 검사
-    /// </summary>
     private EFishingStartResult ValidateFishingStart(
         CPlayerCollector2D collector,
         bool useSpotArea,
         bool useSeaFishing,
         Vector2 spotWorldPos,
         out EFishingAreaType areaType,
-        out Vector2 checkPos)
+        out Vector2 checkPos,
+        out ToolItemSO activeFishingRod,
+        out BaitItemSO previewBait)
     {
         areaType = EFishingAreaType.None;
         checkPos = Vector2.zero;
+        activeFishingRod = null;
+        previewBait = null;
 
         if (_isFishing)
         {
@@ -282,14 +304,16 @@ public class CFishingController2D : BaseMono
 
         if (!IsFishingItemRequirementBypassed())
         {
-            if (!HasFishingRodInInventory(playerInventory))
+            EFishingStartResult rodResult = TryResolveActiveFishingRod(playerInventory, out activeFishingRod);
+            if (rodResult != EFishingStartResult.Success)
             {
-                return EFishingStartResult.NoFishingRodInInventory;
+                return rodResult;
             }
 
-            if (!HasBaitInInventory(playerInventory))
+            EFishingStartResult baitResult = ValidateBaitStartRequirement(playerInventory);
+            if (baitResult != EFishingStartResult.Success)
             {
-                return EFishingStartResult.NoBaitInInventory;
+                return baitResult;
             }
         }
         else if (_logEnabled)
@@ -297,9 +321,23 @@ public class CFishingController2D : BaseMono
             Debug.Log("[FishingController] 테스트 모드: 낚싯대 / 미끼 보유 검사 우회");
         }
 
-        List<SheetItemRow> candidates = GetFishCandidates(areaType);
+        bool blockedByRod = false;
+        bool blockedByBait = false;
+
+        List<SheetItemRow> candidates = GetFishCandidates(areaType, activeFishingRod, playerInventory, out blockedByRod, out blockedByBait);
+
         if (candidates.Count <= 0)
         {
+            if (blockedByRod)
+            {
+                return EFishingStartResult.NoCatchableFishForQuickSlotRod;
+            }
+
+            if (blockedByBait)
+            {
+                return EFishingStartResult.NoCatchableFishForBait;
+            }
+
             return EFishingStartResult.NoCandidateFish;
         }
 
@@ -323,6 +361,18 @@ public class CFishingController2D : BaseMono
 
             if (CanInventoryAcceptItem(playerInventory, rewardItemSo, _amount))
             {
+                ERarity fishRarity = ParseFishRarity(row.rarity);
+
+                if (!TryGetUsableBaitForFish(playerInventory, areaType, fishRarity, out previewBait))
+                {
+                    if (_requireBait && !IsFishingItemRequirementBypassed())
+                    {
+                        return EFishingStartResult.NoCatchableFishForBait;
+                    }
+
+                    return EFishingStartResult.Success;
+                }
+
                 return EFishingStartResult.Success;
             }
         }
@@ -396,7 +446,14 @@ public class CFishingController2D : BaseMono
             yield break;
         }
 
-        SheetItemRow fishRow = GetRandomFishRow(areaType, playerInventory);
+        ToolItemSO activeFishingRod = null;
+        if (!IsFishingItemRequirementBypassed())
+        {
+            TryResolveActiveFishingRod(playerInventory, out activeFishingRod);
+        }
+
+        BaitItemSO selectedBait = null;
+        SheetItemRow fishRow = GetRandomFishRow(areaType, playerInventory, activeFishingRod, out selectedBait);
 
         if (fishRow == null)
         {
@@ -404,11 +461,36 @@ public class CFishingController2D : BaseMono
             yield break;
         }
 
+        if (_requireBait && !IsFishingItemRequirementBypassed())
+        {
+            if (selectedBait == null)
+            {
+                NotifyFeedbackByResult(EFishingStartResult.NoCatchableFishForBait, "미끼 등급이 낮습니다.");
+                _onFishingFailed?.Invoke();
+                ReleaseFishingState(true);
+                yield break;
+            }
+
+            if (_consumeBaitOnSuccess)
+            {
+                bool removed = playerInventory.TryRemoveItem(selectedBait.Id, Mathf.Max(1, _requiredBaitCount));
+                if (!removed)
+                {
+                    NotifyFeedbackByResult(EFishingStartResult.BaitInsufficient, "미끼가 부족합니다.");
+                    _onFishingFailed?.Invoke();
+                    ReleaseFishingState(true);
+                    yield break;
+                }
+            }
+        }
+
         bool received = collector != null && collector.TryReceiveItem(fishRow.id, _amount);
 
         if (!received)
         {
-            HandleFishingRuntimeFail("인벤토리에 물고기를 넣지 못했습니다.");
+            NotifyFeedbackByResult(EFishingStartResult.InventoryFull, "인벤토리가 가득 찼습니다.");
+            _onFishingFailed?.Invoke();
+            ReleaseFishingState(true);
             yield break;
         }
 
@@ -435,12 +517,12 @@ public class CFishingController2D : BaseMono
             Debug.LogWarning("[FishingController] 낚시 실패: " + message);
         }
 
-        ShowReservedFeedback(message);
+        NotifyFallbackFeedback(message);
         _onFishingFailed?.Invoke();
         ReleaseFishingState(true);
     }
 
-    private bool HandleFishingStartFail(EFishingStartResult result)
+    private bool HandleFishingStartFail(CPlayerCollector2D collector, EFishingStartResult result)
     {
         _lastFailMessage = GetFailMessage(result);
 
@@ -449,7 +531,7 @@ public class CFishingController2D : BaseMono
             Debug.LogWarning("[FishingController] 낚시 시작 실패: " + _lastFailMessage);
         }
 
-        ShowReservedFeedback(_lastFailMessage);
+        NotifyFeedbackByResult(result, _lastFailMessage);
         _onFishingFailed?.Invoke();
         return false;
     }
@@ -494,16 +576,14 @@ public class CFishingController2D : BaseMono
 
         if (showFeedback)
         {
-            ShowReservedFeedback(message);
+            NotifyFallbackFeedback(message);
         }
 
-        if (publishMotionCancel)
+        if (publishMotionCancel && _logEnabled)
         {
-            if (_logEnabled)
-            {
-                Debug.Log("[FishingController] OnPlayerCanceled.Publish");
-            }
+            Debug.Log("[FishingController] OnPlayerCanceled.Publish");
         }
+
         OnPlayerCanceled.Publish();
         _onFishingCanceled?.Invoke();
         ReleaseFishingState(false);
@@ -591,10 +671,6 @@ public class CFishingController2D : BaseMono
         return true;
     }
 
-    /// <summary>
-    /// 팀원 모션 이벤트에 넘길 목표 좌표를 계산합니다.
-    /// 현재 저장된 방향이 아니라 실제 낚시 지점 방향을 기준으로 계산합니다.
-    /// </summary>
     private Vector2 GetFishingMotionTargetPosition(CPlayerCollector2D collector, Vector2 fallbackPos, Vector2 fishingDirection)
     {
         if (collector == null)
@@ -618,9 +694,6 @@ public class CFishingController2D : BaseMono
         return fallbackPos + _motionTargetOffset;
     }
 
-    /// <summary>
-    /// 플레이어 위치에서 실제 낚시 지점까지의 방향을 4방향으로 정규화합니다.
-    /// </summary>
     private Vector2 GetFishingDirectionFromTarget(CPlayerCollector2D collector, Vector2 targetPos)
     {
         if (collector == null)
@@ -644,9 +717,6 @@ public class CFishingController2D : BaseMono
         return delta.y >= 0f ? Vector2.up : Vector2.down;
     }
 
-    /// <summary>
-    /// 낚시 시작 전에 플레이어의 바라보는 방향 데이터를 실제 낚시 방향으로 맞춥니다.
-    /// </summary>
     private void ApplyFishingFacingDirection(Vector2 direction)
     {
         if (direction.sqrMagnitude <= 0.0001f)
@@ -669,8 +739,27 @@ public class CFishingController2D : BaseMono
         return _bypassRequiredFishingItemsForTest;
     }
 
-    private bool HasFishingRodInInventory(Inventory inventory)
+    private EFishingStartResult TryResolveActiveFishingRod(Inventory inventory, out ToolItemSO activeFishingRod)
     {
+        activeFishingRod = null;
+
+        if (!_requireFishingRodInQuickSlot)
+        {
+            return EFishingStartResult.Success;
+        }
+
+        if (!TryGetBestFishingRodInInventory(inventory, out activeFishingRod))
+        {
+            return EFishingStartResult.NoFishingRodInQuickSlot;
+        }
+
+        return EFishingStartResult.Success;
+    }
+
+    private bool TryGetBestFishingRodInInventory(Inventory inventory, out ToolItemSO bestRod)
+    {
+        bestRod = null;
+
         if (inventory == null || inventory.InventorySlots == null)
         {
             return false;
@@ -680,27 +769,86 @@ public class CFishingController2D : BaseMono
 
         for (int i = 0; i < slots.Length; i++)
         {
-            if (slots[i].IsEmpty)
+            InventorySlot slot = slots[i];
+
+            if (slot.IsEmpty)
             {
                 continue;
             }
 
-            ItemSO itemSo = slots[i].ItemSO;
-            if (itemSo == null)
+            ToolItemSO candidate = slot.ItemSO as ToolItemSO;
+            if (candidate == null)
             {
                 continue;
             }
 
-            if (itemSo.Type == EType.Fishingrod)
+            if (candidate.Type != EType.Fishingrod)
             {
-                return true;
+                continue;
+            }
+
+            if (bestRod == null || IsBetterTool(candidate, bestRod))
+            {
+                bestRod = candidate;
             }
         }
 
-        return false;
+        return bestRod != null;
     }
 
-    private bool HasBaitInInventory(Inventory inventory)
+    private bool IsBetterTool(ToolItemSO candidate, ToolItemSO currentBest)
+    {
+        if (candidate == null)
+        {
+            return false;
+        }
+
+        if (currentBest == null)
+        {
+            return true;
+        }
+
+        if (candidate.Rarity != currentBest.Rarity)
+        {
+            return candidate.Rarity > currentBest.Rarity;
+        }
+
+        if (candidate.CurrentLv != currentBest.CurrentLv)
+        {
+            return candidate.CurrentLv > currentBest.CurrentLv;
+        }
+
+        if (!Mathf.Approximately(candidate.Strength, currentBest.Strength))
+        {
+            return candidate.Strength > currentBest.Strength;
+        }
+
+        return string.Compare(candidate.Id, currentBest.Id, StringComparison.Ordinal) < 0;
+    }
+
+    private EFishingStartResult ValidateBaitStartRequirement(Inventory inventory)
+    {
+        if (!_requireBait)
+        {
+            return EFishingStartResult.Success;
+        }
+
+        int safeRequiredBaitCount = Mathf.Max(1, _requiredBaitCount);
+
+        if (!HasAnyBaitInInventory(inventory))
+        {
+            return EFishingStartResult.NoBaitInInventory;
+        }
+
+        if (GetTotalBaitCount(inventory) < safeRequiredBaitCount)
+        {
+            return EFishingStartResult.BaitInsufficient;
+        }
+
+        return EFishingStartResult.Success;
+    }
+
+    private bool HasAnyBaitInInventory(Inventory inventory)
     {
         if (inventory == null || inventory.InventorySlots == null)
         {
@@ -731,31 +879,16 @@ public class CFishingController2D : BaseMono
         return false;
     }
 
-    private bool CanInventoryAcceptItem(Inventory inventory, ItemSO itemData, int amount)
+    private int GetTotalBaitCount(Inventory inventory)
     {
-        if (inventory == null)
-        {
-            return false;
-        }
+        int totalCount = 0;
 
-        if (itemData == null)
+        if (inventory == null || inventory.InventorySlots == null)
         {
-            return false;
-        }
-
-        if (amount <= 0)
-        {
-            return false;
+            return totalCount;
         }
 
         InventorySlot[] slots = inventory.InventorySlots;
-        if (slots == null || slots.Length == 0)
-        {
-            return false;
-        }
-
-        int remainAmount = amount;
-        int maxStack = Mathf.Max(1, itemData.MaxStack);
 
         for (int i = 0; i < slots.Length; i++)
         {
@@ -764,46 +897,72 @@ public class CFishingController2D : BaseMono
                 continue;
             }
 
-            if (slots[i].ItemSO == null)
+            ItemSO itemSo = slots[i].ItemSO;
+            if (itemSo == null || itemSo.Type != EType.BaitItem)
             {
                 continue;
             }
 
-            if (slots[i].ItemSO.Id != itemData.Id)
-            {
-                continue;
-            }
-
-            int remainStack = maxStack - slots[i].CurStack;
-            if (remainStack <= 0)
-            {
-                continue;
-            }
-
-            remainAmount -= remainStack;
-
-            if (remainAmount <= 0)
-            {
-                return true;
-            }
+            totalCount += Mathf.Max(0, slots[i].CurStack);
         }
+
+        return totalCount;
+    }
+
+    private bool TryGetUsableBaitForFish(Inventory inventory, EFishingAreaType areaType, ERarity fishRarity, out BaitItemSO selectedBait)
+    {
+        selectedBait = null;
+
+        if (!_requireBait)
+        {
+            return true;
+        }
+
+        if (inventory == null || inventory.InventorySlots == null)
+        {
+            return false;
+        }
+
+        int safeRequiredBaitCount = Mathf.Max(1, _requiredBaitCount);
+        InventorySlot[] slots = inventory.InventorySlots;
 
         for (int i = 0; i < slots.Length; i++)
         {
-            if (!slots[i].IsEmpty)
+            InventorySlot slot = slots[i];
+
+            if (slot.IsEmpty)
             {
                 continue;
             }
 
-            remainAmount -= maxStack;
-
-            if (remainAmount <= 0)
+            BaitItemSO candidate = slot.ItemSO as BaitItemSO;
+            if (candidate == null)
             {
-                return true;
+                continue;
+            }
+
+            if (areaType == EFishingAreaType.SeaWater && !candidate.CanUseSea)
+            {
+                continue;
+            }
+
+            if (_limitCatchByBaitRarity && candidate.Rarity < fishRarity)
+            {
+                continue;
+            }
+
+            if (!inventory.CheckHasItem(candidate.Id, safeRequiredBaitCount))
+            {
+                continue;
+            }
+
+            if (selectedBait == null || candidate.Rarity > selectedBait.Rarity)
+            {
+                selectedBait = candidate;
             }
         }
 
-        return false;
+        return selectedBait != null;
     }
 
     private bool HasCollectorMovedSinceStart(CPlayerCollector2D collector)
@@ -894,9 +1053,16 @@ public class CFishingController2D : BaseMono
         return dir.y >= 0f ? Vector2.up : Vector2.down;
     }
 
-    private List<SheetItemRow> GetFishCandidates(EFishingAreaType areaType)
+    private List<SheetItemRow> GetFishCandidates(
+        EFishingAreaType areaType,
+        ToolItemSO activeFishingRod,
+        Inventory inventory,
+        out bool blockedByRod,
+        out bool blockedByBait)
     {
         List<SheetItemRow> result = new List<SheetItemRow>();
+        blockedByRod = false;
+        blockedByBait = false;
 
         if (_database == null)
         {
@@ -939,15 +1105,46 @@ public class CFishingController2D : BaseMono
                     continue;
             }
 
+            ERarity fishRarity = ParseFishRarity(row.rarity);
+
+            if (_limitCatchByQuickSlotRodRarity && activeFishingRod != null && fishRarity > activeFishingRod.Rarity)
+            {
+                blockedByRod = true;
+                continue;
+            }
+
+            if (_requireBait && !IsFishingItemRequirementBypassed())
+            {
+                if (!TryGetUsableBaitForFish(inventory, areaType, fishRarity, out _))
+                {
+                    blockedByBait = true;
+                    continue;
+                }
+            }
+
             result.Add(row);
         }
 
         return result;
     }
 
-    private SheetItemRow GetRandomFishRow(EFishingAreaType areaType, Inventory playerInventory)
+    private SheetItemRow GetRandomFishRow(
+        EFishingAreaType areaType,
+        Inventory playerInventory,
+        ToolItemSO activeFishingRod,
+        out BaitItemSO selectedBait)
     {
-        List<SheetItemRow> candidates = GetFishCandidates(areaType);
+        selectedBait = null;
+
+        bool blockedByRod = false;
+        bool blockedByBait = false;
+
+        List<SheetItemRow> candidates = GetFishCandidates(
+            areaType,
+            activeFishingRod,
+            playerInventory,
+            out blockedByRod,
+            out blockedByBait);
 
         if (candidates.Count == 0)
         {
@@ -999,36 +1196,159 @@ public class CFishingController2D : BaseMono
 
             if (randomValue <= cumulative)
             {
+                ERarity fishRarity = ParseFishRarity(receivableCandidates[i].rarity);
+                TryGetUsableBaitForFish(playerInventory, areaType, fishRarity, out selectedBait);
                 return receivableCandidates[i];
             }
         }
+
+        ERarity lastFishRarity = ParseFishRarity(receivableCandidates[receivableCandidates.Count - 1].rarity);
+        TryGetUsableBaitForFish(playerInventory, areaType, lastFishRarity, out selectedBait);
 
         return receivableCandidates[receivableCandidates.Count - 1];
     }
 
     private float GetWeightByRarity(string rarity)
     {
-        if (string.IsNullOrWhiteSpace(rarity))
+        ERarity parsed = ParseFishRarity(rarity);
+
+        switch (parsed)
         {
-            return _unknownWeight;
+            case ERarity.Basic:
+                return _basicWeight;
+
+            case ERarity.Solid:
+                return _solidWeight;
+
+            case ERarity.Superior:
+                return _superiorWeight;
+
+            case ERarity.Prime:
+                return _primeWeight;
+
+            case ERarity.Masterwork:
+                return _masterworkWeight;
+
+            default:
+                return _unknownWeight;
+        }
+    }
+
+    private ERarity ParseFishRarity(string rarityText)
+    {
+        if (string.IsNullOrWhiteSpace(rarityText))
+        {
+            return ERarity.Basic;
         }
 
-        string key = rarity.Trim().ToLowerInvariant();
+        string key = rarityText.Trim().ToLowerInvariant();
 
         switch (key)
         {
             case "basic":
-                return _basicWeight;
-            case "prime":
-                return _primeWeight;
+            case "기본":
+                return ERarity.Basic;
+
+            case "solid":
+            case "견고":
+                return ERarity.Solid;
+
             case "rare":
-                return _rareWeight;
+            case "superior":
+            case "고급":
+            case "희귀":
+                return ERarity.Superior;
+
+            case "prime":
+            case "프라임":
+                return ERarity.Prime;
+
             case "legend":
             case "legendary":
-                return _legendaryWeight;
+            case "master":
+            case "masterwork":
+            case "전설":
+            case "마스터":
+                return ERarity.Masterwork;
+
             default:
-                return _unknownWeight;
+                return ERarity.Basic;
         }
+    }
+
+    private bool CanInventoryAcceptItem(Inventory inventory, ItemSO itemData, int amount)
+    {
+        if (inventory == null)
+        {
+            return false;
+        }
+
+        if (itemData == null)
+        {
+            return false;
+        }
+
+        if (amount <= 0)
+        {
+            return false;
+        }
+
+        InventorySlot[] slots = inventory.InventorySlots;
+        if (slots == null || slots.Length == 0)
+        {
+            return false;
+        }
+
+        int remainAmount = amount;
+        int maxStack = Mathf.Max(1, itemData.MaxStack);
+
+        for (int i = 0; i < slots.Length; i++)
+        {
+            if (slots[i].IsEmpty)
+            {
+                continue;
+            }
+
+            if (slots[i].ItemSO == null)
+            {
+                continue;
+            }
+
+            if (slots[i].ItemSO.Id != itemData.Id)
+            {
+                continue;
+            }
+
+            int remainStack = maxStack - slots[i].CurStack;
+            if (remainStack <= 0)
+            {
+                continue;
+            }
+
+            remainAmount -= remainStack;
+
+            if (remainAmount <= 0)
+            {
+                return true;
+            }
+        }
+
+        for (int i = 0; i < slots.Length; i++)
+        {
+            if (!slots[i].IsEmpty)
+            {
+                continue;
+            }
+
+            remainAmount -= maxStack;
+
+            if (remainAmount <= 0)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private string GetFailMessage(EFishingStartResult result)
@@ -1056,17 +1376,27 @@ public class CFishingController2D : BaseMono
             case EFishingStartResult.NoFishingArea:
                 return "이 위치에서는 낚시할 수 없습니다.";
 
+            case EFishingStartResult.NoFishingRodInQuickSlot:
             case EFishingStartResult.NoFishingRodInInventory:
-                return "인벤토리에 낚싯대가 필요합니다.";
+                return "낚싯대가 없습니다.";
 
             case EFishingStartResult.NoBaitInInventory:
-                return "인벤토리에 미끼가 필요합니다.";
+                return "미끼가 없습니다.";
+
+            case EFishingStartResult.BaitInsufficient:
+                return "미끼가 부족합니다.";
+
+            case EFishingStartResult.NoCatchableFishForQuickSlotRod:
+                return "아이템 등급이 낮습니다.";
+
+            case EFishingStartResult.NoCatchableFishForBait:
+                return "미끼의 등급이 낮습니다.";
 
             case EFishingStartResult.NoCandidateFish:
-                return "이 지역에서 낚을 수 있는 물고기가 없습니다.";
+                return "이 지역 물고기가 없습니다.";
 
             case EFishingStartResult.RewardItemDataMissing:
-                return "지급할 물고기 데이터를 찾지 못했습니다.";
+                return "물고기 데이터를 찾지 못했습니다.";
 
             case EFishingStartResult.InventoryFull:
                 return "인벤토리가 가득 찼습니다.";
@@ -1076,7 +1406,47 @@ public class CFishingController2D : BaseMono
         }
     }
 
-    private void ShowReservedFeedback(string message)
+    private void NotifyFeedbackByResult(EFishingStartResult result, string fallbackMessage)
+    {
+        if (_feedbackRelay != null)
+        {
+            switch (result)
+            {
+                case EFishingStartResult.NoBaitInInventory:
+                    _feedbackRelay.OnFishingNoBait();
+                    return;
+
+                case EFishingStartResult.NoFishingRodInQuickSlot:
+                case EFishingStartResult.NoFishingRodInInventory:
+                    _feedbackRelay.OnFishingNoRod();
+                    return;
+
+                case EFishingStartResult.BaitInsufficient:
+                    _feedbackRelay.OnFishingBaitInsufficient();
+                    return;
+
+                case EFishingStartResult.NoCatchableFishForQuickSlotRod:
+                    _feedbackRelay.OnFishingToolRarityLow();
+                    return;
+
+                case EFishingStartResult.NoCatchableFishForBait:
+                    _feedbackRelay.OnFishingBaitRarityLow();
+                    return;
+
+                case EFishingStartResult.InventoryFull:
+                    _feedbackRelay.OnInventoryFull();
+                    return;
+
+                default:
+                    _feedbackRelay.OnFishingFailed();
+                    return;
+            }
+        }
+
+        NotifyFallbackFeedback(fallbackMessage);
+    }
+
+    private void NotifyFallbackFeedback(string message)
     {
         if (string.IsNullOrWhiteSpace(message))
         {
@@ -1087,7 +1457,7 @@ public class CFishingController2D : BaseMono
         {
             Debug.Log("[FishingController][Feedback] " + message);
         }
-        OnPlayerCanceled.Publish();
+
         _onFeedbackMessage?.Invoke(message);
     }
 
@@ -1103,7 +1473,7 @@ public class CFishingController2D : BaseMono
 
     private IEnumerator CoFindSheetItemDatabase()
     {
-        while(_database == null)
+        while (_database == null)
         {
             _database = FindAnyObjectByType<SheetItemDatabase>();
             yield return null;

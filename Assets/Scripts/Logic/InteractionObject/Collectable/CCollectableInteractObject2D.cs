@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -7,18 +6,19 @@ using UnityEngine.Events;
 /// <summary>
 /// 채집 가능한 오브젝트
 ///
-/// 이번 수정 핵심
-/// 1. 버튼 채집은 "가까운 거리" 안에서만 가능
+/// 수정 핵심
+/// 1. 버튼 채집은 가까운 거리 안에서만 가능
 /// 2. ButtonOnly일 때 자동 채집이 절대 발생하지 않도록 보강
 /// 3. AutoOnly / AutoOrButton도 자동 채집 거리 제한 추가
 /// 4. 수동 채집 도중 이동 시 취소
-/// 5. 피드백 UI / 사운드는 나중에 Inspector 이벤트로 연결 가능
-/// 6. 플레이어가 가까이 왔을 때 오브젝트 위에 "채집 가능" 이미지 표시
+/// 5. 보상 아이템이 OreItem이면 채굴 컨텍스트로 처리
+/// 6. InteractionFeedbackRelay를 통해 채집 / 채굴 / 인벤토리 full 상태 메시지 출력
+/// 7. 플레이어가 가까이 왔을 때만 채집/채광 가능 아이콘 표시
 /// </summary>
 [RequireComponent(typeof(Collider2D))]
 public class CCollectableInteractObject2D : BaseMono, IInteractable
 {
-    [Serializable]
+    [System.Serializable]
     public class StringEvent : UnityEvent<string> { }
 
     public enum ECollectMode
@@ -53,12 +53,25 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     [Tooltip("자동 채집 가능 최대 거리. 이 거리보다 멀면 자동 채집 불가")]
     [SerializeField] private float _autoCollectMaxDistance = 0.8f;
 
-    [Header("채집 가능 표시")]
-    [Tooltip("플레이어가 가까이 갔을 때 켜둘 표시용 오브젝트(SpriteRenderer / World Space Canvas 등)")]
+    [Header("채집 가능 아이콘")]
+    [Tooltip("플레이어가 가까이 왔을 때만 켜둘 표시용 오브젝트")]
     [SerializeField] private GameObject _canCollectIndicatorObject;
 
-    [Tooltip("채집 시작 중에는 표시를 숨길지 여부")]
+    [Tooltip("채집/채광 진행 중에는 아이콘을 숨길지 여부")]
     [SerializeField] private bool _hideIndicatorWhileCollecting = true;
+
+    [Header("대표 도구 요구 조건")]
+    [Tooltip("체크하면 플레이어 인벤토리의 대표 도구 기준으로 채집 가능 여부를 검사합니다.")]
+    [SerializeField] private bool _requireEquippedTool = true;
+
+    [Tooltip("직접 지정하면 이 도구를 요구합니다. None이면 보상 아이템 타입으로 자동 추론합니다.")]
+    [SerializeField] private EType _requiredToolType = EType.None;
+
+    [Tooltip("체크하면 보상 아이템의 등급을 최소 요구 도구 등급으로 사용합니다.")]
+    [SerializeField] private bool _useRewardItemRarityAsRequiredToolRarity = true;
+
+    [Tooltip("직접 지정할 최소 도구 등급입니다.")]
+    [SerializeField] private ERarity _requiredToolMinRarity = ERarity.Basic;
 
     [Header("수동 채집 연출")]
     [Tooltip("버튼 채집 시 채집 애니메이션 / 딜레이를 사용할지")]
@@ -82,6 +95,9 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
     [SerializeField] private string _manualCollectCancelMessage = "이동하여 채집이 취소되었습니다.";
 
+    [Header("피드백 릴레이")]
+    [SerializeField] private InteractionFeedbackRelay _feedbackRelay;
+
     [Header("획득 후 처리")]
     [Tooltip("획득 즉시 이 오브젝트를 파괴할지")]
     [SerializeField] private bool _destroyOnCollected = false;
@@ -102,7 +118,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     [SerializeField] private UnityEvent _onRespawned;
 
     [Header("나중에 연결할 이벤트")]
-    [Tooltip("피드백 UI를 나중에 연결할 때 사용. string 메시지를 받는 함수 연결")]
+    [Tooltip("기존 Inspector 연결 유지용 string 메시지 이벤트")]
     [SerializeField] private StringEvent _onFeedbackMessage;
 
     [Tooltip("채집 실패 시 호출. 나중에 사운드/VFX 연결 가능")]
@@ -157,7 +173,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             collector = player.GetComponent<CPlayerCollector2D>();
         }
 
-        return CanCollect(collector, true);
+        return CanCollectBase(collector, true);
     }
 
     public void Interact(GameObject player)
@@ -187,15 +203,23 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
     public string GetMessage()
     {
-        string targetName = string.IsNullOrWhiteSpace(_displayName) ? _itemId : _displayName;
-        return $"{targetName} 채집";
+        string targetName = GetTargetDisplayName();
+        string actionName = GetActionDisplayName();
+        string toolGuide = GetRequiredToolGuideMessage();
+
+        if (string.IsNullOrWhiteSpace(toolGuide))
+        {
+            return $"{targetName} {actionName}";
+        }
+
+        return $"{targetName} {actionName} ({toolGuide})";
     }
     #endregion
 
     #region ─────────────────────────▶ 외부 메서드 ◀─────────────────────────
     public bool CanCollect(CPlayerCollector2D collector)
     {
-        return CanCollect(collector, true);
+        return CanCollectBase(collector, true);
     }
 
     public bool TryCollect(CPlayerCollector2D collector)
@@ -205,16 +229,21 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
     public string GetInteractionMessage(KeyCode key)
     {
-        string targetName = string.IsNullOrWhiteSpace(_displayName) ? _itemId : _displayName;
-        return $"[{key}] {targetName} 채집";
+        string targetName = GetTargetDisplayName();
+        string actionName = GetActionDisplayName();
+        string toolGuide = GetRequiredToolGuideMessage();
+
+        if (string.IsNullOrWhiteSpace(toolGuide))
+        {
+            return $"[{key}] {targetName} {actionName}";
+        }
+
+        return $"[{key}] {targetName} {actionName} ({toolGuide})";
     }
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-    /// <summary>
-    /// 수동/자동 여부에 따라 거리 제한을 다르게 적용
-    /// </summary>
-    private bool CanCollect(CPlayerCollector2D collector, bool isManual)
+    private bool CanCollectBase(CPlayerCollector2D collector, bool isManual)
     {
         if (_isCollected)
         {
@@ -271,19 +300,36 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             return false;
         }
 
-        // 버튼 채집은 버튼 가능한 모드에서만
         if (isManualRequest && !CanManualCollect)
         {
+            UpdateIndicatorVisibility();
             return false;
         }
 
-        // 자동 채집은 자동 가능한 모드에서만
         if (!isManualRequest && !CanAutoCollect)
         {
+            UpdateIndicatorVisibility();
             return false;
         }
 
-        if (!CanCollect(collector, isManualRequest))
+        if (!TryValidateRequiredTool(out EType requiredToolType, out bool isRarityLow, out string toolFailMessage))
+        {
+            if (_logEnabled)
+            {
+                Debug.Log($"[CCollectableInteractObject2D] 요구 도구 조건 미충족. object={name}, message={toolFailMessage}");
+            }
+
+            if (isManualRequest)
+            {
+                ShowToolConditionFailFeedback(requiredToolType, isRarityLow, toolFailMessage);
+                _onCollectFailed?.Invoke();
+            }
+
+            UpdateIndicatorVisibility();
+            return false;
+        }
+
+        if (!CanCollectBase(collector, isManualRequest))
         {
             if (_logEnabled)
             {
@@ -294,7 +340,6 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             return false;
         }
 
-        // 수동 채집 + 모션 사용이면 딜레이 동안 이동 취소 가능하게 코루틴 처리
         if (isManualRequest && _useInteractionMotion)
         {
             if (!collector.CanStartInteraction())
@@ -312,12 +357,19 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             return true;
         }
 
-        // 자동 채집 또는 즉시 채집
+        if (!CanInventoryAcceptReward(collector))
+        {
+            ShowInventoryFullFeedback();
+            _onCollectFailed?.Invoke();
+            UpdateIndicatorVisibility();
+            return false;
+        }
+
         bool received = TryGiveReward(collector);
 
         if (!received)
         {
-            ShowReservedFeedback("아이템을 획득하지 못했습니다.");
+            ShowGeneralCollectFailFeedback();
             _onCollectFailed?.Invoke();
             UpdateIndicatorVisibility();
             return false;
@@ -345,11 +397,13 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             {
                 Debug.Log($"[CCollectableInteractObject2D] 수동 채집 시작 실패: 너무 멀리 있음. object={name}");
             }
+
+            UpdateIndicatorVisibility();
             return;
         }
 
         _manualCollectCollector = collector;
-        _manualCollectStartPosition = collector != null ? (Vector2)collector.transform.position : Vector2.zero;
+        _manualCollectStartPosition = collector.transform.position;
 
         SubscribeMoveCancel();
         _onCollectStarted?.Invoke();
@@ -362,6 +416,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         _manualCollectRoutine = StartCoroutine(CoManualCollect(collector));
     }
 
+
     private IEnumerator CoManualCollect(CPlayerCollector2D collector)
     {
         if (_isProcessing)
@@ -369,52 +424,64 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             yield break;
         }
 
-        // TODO
-        var so = DatabaseManager.Ins.Unit(_itemId);
-        switch (so.Type)
+        if (collector == null)
         {
-            case EType.WoodItem:
-                OnPlayerLogging.Publish(transform.position, _manualCollectDelay);
-                break;
-            case EType.SeedItem:
-            case EType.FeedItem:
-                OnPlayerShovel.Publish(transform.position, _manualCollectDelay);
-                break;
-            case EType.OreItem:
-                OnPlayerMining.Publish(transform.position, _manualCollectDelay);
-                break;
+            ReleaseManualCollectState(null);
+            yield break;
+        }
+
+        ItemSO rewardItemSo = ResolveRewardItemSO();
+        if (rewardItemSo == null)
+        {
+            if (_logEnabled)
+            {
+                Debug.LogWarning($"[CCollectableInteractObject2D] 보상 아이템을 찾지 못해 수동 채집을 중단합니다. itemId={_itemId}, object={name}");
+            }
+
+            ReleaseManualCollectState(collector);
+            ShowGeneralCollectFailFeedback();
+            _onCollectFailed?.Invoke();
+            yield break;
         }
 
         _isProcessing = true;
 
-        if (_setPlayerBusyDuringManualCollect && collector != null)
+        PublishManualCollectAction(rewardItemSo);
+
+        if (_setPlayerBusyDuringManualCollect)
         {
             collector.SetInteractionBusy(true);
-            collector.PlayGatherAnimation();
         }
+
+        collector.PlayGatherAnimation();
 
         if (_manualCollectDelay > 0f)
         {
             yield return new WaitForSeconds(_manualCollectDelay);
         }
 
-        // 이동 이벤트를 놓친 경우를 대비한 마지막 안전 검사
         if (HasCollectorMovedSinceStart(collector))
         {
             CancelManualCollectInternal(_manualCollectCancelMessage, true);
             yield break;
         }
 
-        // 딜레이가 끝난 시점에도 가까운 거리 유지 중인지 다시 검사
         if (!IsCollectorWithinDistance(collector, _manualCollectMaxDistance))
         {
-            CancelManualCollectInternal("채집 범위를 벗어나 채집이 취소되었습니다.", true);
+            CancelManualCollectInternal("채집 범위를 벗어나 취소됨", true);
+            yield break;
+        }
+
+        if (!CanInventoryAcceptReward(collector))
+        {
+            ReleaseManualCollectState(collector);
+            ShowInventoryFullFeedback();
+            _onCollectFailed?.Invoke();
             yield break;
         }
 
         bool received = TryGiveReward(collector);
 
-        // 보상 처리 전에 상태부터 풀어줘야 비활성화/파괴돼도 Busy가 남지 않음
         ReleaseManualCollectState(collector);
 
         if (!received)
@@ -424,18 +491,41 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
                 Debug.LogWarning($"[CCollectableInteractObject2D] 수동 채집 실패. itemId={_itemId}, object={name}");
             }
 
-            ShowReservedFeedback("아이템을 획득하지 못했습니다.");
+            ShowGeneralCollectFailFeedback();
             _onCollectFailed?.Invoke();
-            UpdateIndicatorVisibility();
             yield break;
         }
 
-        if (collector != null && _gatherSkillExp > 0)
+        if (_gatherSkillExp > 0)
         {
             collector.TryAddLifeSkillExp(ELifeSkill.Gathering, _gatherSkillExp);
         }
 
         CompleteCollect();
+    }
+
+    private void PublishManualCollectAction(ItemSO rewardItemSo)
+    {
+        if (rewardItemSo == null)
+        {
+            return;
+        }
+
+        switch (rewardItemSo.Type)
+        {
+            case EType.WoodItem:
+                OnPlayerLogging.Publish(transform.position, _manualCollectDelay);
+                break;
+
+            case EType.SeedItem:
+            case EType.FeedItem:
+                OnPlayerShovel.Publish(transform.position, _manualCollectDelay);
+                break;
+
+            case EType.OreItem:
+                OnPlayerMining.Publish(transform.position, _manualCollectDelay);
+                break;
+        }
     }
 
     private void ReleaseManualCollectState(CPlayerCollector2D collector)
@@ -489,7 +579,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
         if (showFeedback)
         {
-            ShowReservedFeedback(message);
+            NotifyWarningFeedback(message);
         }
 
         _onCollectCanceled?.Invoke();
@@ -545,10 +635,291 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         return movedSqrDistance > _moveCancelPositionThreshold;
     }
 
-    /// <summary>
-    /// 콜라이더 기준 실제 가까운 거리 계산
-    /// 오브젝트 중심이 아니라 가장 가까운 콜라이더 표면 기준이라 더 정확함
-    /// </summary>
+    private ItemSO ResolveRewardItemSO()
+    {
+        if (DatabaseManager.Ins == null || string.IsNullOrWhiteSpace(_itemId))
+        {
+            return null;
+        }
+
+        return DatabaseManager.Ins.Item(_itemId);
+    }
+
+    private bool IsMiningTarget()
+    {
+        ItemSO rewardItemSo = ResolveRewardItemSO();
+        return rewardItemSo != null && rewardItemSo.Type == EType.OreItem;
+    }
+
+    private string GetTargetDisplayName()
+    {
+        return string.IsNullOrWhiteSpace(_displayName) ? _itemId : _displayName;
+    }
+
+    private string GetActionDisplayName()
+    {
+        return IsMiningTarget() ? "채광" : "채집";
+    }
+
+    private EType ResolveRequiredToolType()
+    {
+        if (!_requireEquippedTool)
+        {
+            return EType.None;
+        }
+
+        if (_requiredToolType != EType.None)
+        {
+            return _requiredToolType;
+        }
+
+        ItemSO rewardItemSO = ResolveRewardItemSO();
+        if (rewardItemSO == null)
+        {
+            return EType.None;
+        }
+
+        switch (rewardItemSO.Type)
+        {
+            case EType.OreItem:
+                return EType.PickaxeItem;
+
+            case EType.WoodItem:
+                return EType.AxeItem;
+
+            case EType.FeedItem:
+                return EType.ShovelItem;
+
+            case EType.HarvestItem:
+            case EType.ProductItem:
+            case EType.AnimalItem:
+                return EType.SickleItem;
+
+            default:
+                return EType.None;
+        }
+    }
+
+    private ERarity ResolveRequiredToolRarity()
+    {
+        if (_useRewardItemRarityAsRequiredToolRarity)
+        {
+            ItemSO rewardItemSO = ResolveRewardItemSO();
+            if (rewardItemSO != null && rewardItemSO.Rarity != ERarity.None)
+            {
+                return rewardItemSO.Rarity;
+            }
+        }
+
+        return _requiredToolMinRarity == ERarity.None ? ERarity.Basic : _requiredToolMinRarity;
+    }
+
+    private bool TryValidateRequiredTool(
+        out EType requiredToolType,
+        out bool isRarityLow,
+        out string failMessage)
+    {
+        requiredToolType = ResolveRequiredToolType();
+        isRarityLow = false;
+        failMessage = string.Empty;
+
+        if (requiredToolType == EType.None)
+        {
+            return true;
+        }
+
+        if (!TryGetBestToolInInventory(requiredToolType, out ToolItemSO bestTool))
+        {
+            failMessage = GetMissingToolMessage(requiredToolType);
+            return false;
+        }
+
+        ERarity requiredRarity = ResolveRequiredToolRarity();
+        if (bestTool.Rarity < requiredRarity)
+        {
+            isRarityLow = true;
+            failMessage = GetLowRarityMessage(requiredToolType);
+            return false;
+        }
+
+        return true;
+    }
+
+    private bool TryGetBestToolInInventory(EType toolType, out ToolItemSO bestTool)
+    {
+        bestTool = null;
+
+        if (InventoryManager.Ins == null || InventoryManager.Ins.PlayerInventory == null)
+        {
+            return false;
+        }
+
+        Inventory inventory = InventoryManager.Ins.PlayerInventory;
+        InventorySlot[] slots = inventory.InventorySlots;
+
+        if (slots == null || slots.Length == 0)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < slots.Length; i++)
+        {
+            InventorySlot slot = slots[i];
+
+            if (slot.IsEmpty)
+            {
+                continue;
+            }
+
+            ToolItemSO candidate = slot.ItemSO as ToolItemSO;
+            if (candidate == null)
+            {
+                continue;
+            }
+
+            if (candidate.Type != toolType)
+            {
+                continue;
+            }
+
+            if (bestTool == null || IsBetterTool(candidate, bestTool))
+            {
+                bestTool = candidate;
+            }
+        }
+
+        return bestTool != null;
+    }
+
+    private bool IsBetterTool(ToolItemSO candidate, ToolItemSO currentBest)
+    {
+        if (candidate == null)
+        {
+            return false;
+        }
+
+        if (currentBest == null)
+        {
+            return true;
+        }
+
+        if (candidate.Rarity != currentBest.Rarity)
+        {
+            return candidate.Rarity > currentBest.Rarity;
+        }
+
+        if (candidate.CurrentLv != currentBest.CurrentLv)
+        {
+            return candidate.CurrentLv > currentBest.CurrentLv;
+        }
+
+        if (!Mathf.Approximately(candidate.Strength, currentBest.Strength))
+        {
+            return candidate.Strength > currentBest.Strength;
+        }
+
+        return string.Compare(candidate.Id, currentBest.Id, System.StringComparison.Ordinal) < 0;
+    }
+
+    private string GetMissingToolMessage(EType requiredToolType)
+    {
+        if (IsMiningTarget() && requiredToolType == EType.PickaxeItem)
+        {
+            return "곡괭이가 없습니다.";
+        }
+
+        switch (requiredToolType)
+        {
+            case EType.PickaxeItem:
+                return "곡괭이가 필요합니다.";
+
+            case EType.ShovelItem:
+                return "삽이 없습니다.";
+
+            case EType.SickleItem:
+                return "낫이 필요합니다.";
+
+            case EType.AxeItem:
+                return "도끼가 필요합니다.";
+
+            default:
+                return "도구가 필요합니다.";
+        }
+    }
+
+    private string GetLowRarityMessage(EType requiredToolType)
+    {
+        if (IsMiningTarget() && requiredToolType == EType.PickaxeItem)
+        {
+            return "도구 등급이 낮습니다.";
+        }
+
+        return "도구 등급이 낮습니다.";
+    }
+
+    private string GetRequiredToolGuideMessage()
+    {
+        EType requiredToolType = ResolveRequiredToolType();
+        if (requiredToolType == EType.None)
+        {
+            return string.Empty;
+        }
+
+        ERarity requiredRarity = ResolveRequiredToolRarity();
+        return $"{GetRarityDisplayName(requiredRarity)} 등급 이상의 {GetToolTypeDisplayName(requiredToolType)} 필요";
+    }
+
+    private string GetToolTypeDisplayName(EType toolType)
+    {
+        switch (toolType)
+        {
+            case EType.SickleItem:
+                return "낫";
+
+            case EType.ShovelItem:
+                return "삽";
+
+            case EType.AxeItem:
+                return "도끼";
+
+            case EType.PickaxeItem:
+                return "곡괭이";
+
+            case EType.WateringCan:
+                return "물뿌리개";
+
+            case EType.Fishingrod:
+                return "낚싯대";
+
+            default:
+                return "도구";
+        }
+    }
+
+    private string GetRarityDisplayName(ERarity rarity)
+    {
+        switch (rarity)
+        {
+            case ERarity.Basic:
+                return "기본";
+
+            case ERarity.Solid:
+                return "견고";
+
+            case ERarity.Superior:
+                return "고급";
+
+            case ERarity.Prime:
+                return "프라임";
+
+            case ERarity.Masterwork:
+                return "마스터워크";
+
+            default:
+                return "기본";
+        }
+    }
+
     private bool IsCollectorWithinDistance(CPlayerCollector2D collector, float maxDistance)
     {
         if (collector == null)
@@ -571,6 +942,98 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         float sqrDistance = (collectorPos - closestPoint).sqrMagnitude;
 
         return sqrDistance <= maxDistance * maxDistance;
+    }
+
+    private bool CanInventoryAcceptReward(CPlayerCollector2D collector)
+    {
+        if (collector == null)
+        {
+            return false;
+        }
+
+        if (string.IsNullOrWhiteSpace(_itemId))
+        {
+            return false;
+        }
+
+        if (_amount <= 0)
+        {
+            return false;
+        }
+
+        if (InventoryManager.Ins == null || InventoryManager.Ins.PlayerInventory == null)
+        {
+            return false;
+        }
+
+        ItemSO rewardItemSO = ResolveRewardItemSO();
+        if (rewardItemSO == null)
+        {
+            return false;
+        }
+
+        Inventory inventory = InventoryManager.Ins.PlayerInventory;
+        InventorySlot[] slots = inventory.InventorySlots;
+
+        if (slots == null || slots.Length == 0)
+        {
+            return false;
+        }
+
+        int remainAmount = _amount;
+        int maxStack = Mathf.Max(1, rewardItemSO.MaxStack);
+
+        for (int i = 0; i < slots.Length; i++)
+        {
+            InventorySlot slot = slots[i];
+
+            if (slot.IsEmpty)
+            {
+                continue;
+            }
+
+            if (slot.ItemSO == null)
+            {
+                continue;
+            }
+
+            if (slot.ItemSO.Id != rewardItemSO.Id)
+            {
+                continue;
+            }
+
+            int remainStack = maxStack - slot.CurStack;
+            if (remainStack <= 0)
+            {
+                continue;
+            }
+
+            remainAmount -= remainStack;
+
+            if (remainAmount <= 0)
+            {
+                return true;
+            }
+        }
+
+        for (int i = 0; i < slots.Length; i++)
+        {
+            InventorySlot slot = slots[i];
+
+            if (!slot.IsEmpty)
+            {
+                continue;
+            }
+
+            remainAmount -= maxStack;
+
+            if (remainAmount <= 0)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private bool TryGiveReward(CPlayerCollector2D collector)
@@ -610,7 +1073,6 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
     private void StartAutoCollect()
     {
-        // ButtonOnly면 자동 채집 절대 금지
         if (_collectMode == ECollectMode.ButtonOnly)
         {
             return;
@@ -654,7 +1116,6 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
         _autoCollectRoutine = null;
 
-        // ButtonOnly면 자동 채집 절대 금지
         if (_collectMode == ECollectMode.ButtonOnly)
         {
             yield break;
@@ -674,7 +1135,6 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
                 continue;
             }
 
-            // 자동 채집도 거리 제한을 다시 걸어준다
             if (!IsCollectorWithinDistance(collector, _autoCollectMaxDistance))
             {
                 continue;
@@ -881,6 +1341,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     /// - 채집 처리 중이 아닐 것
     /// - 범위 안에 실제로 채집 가능한 플레이어가 있을 것
     /// </summary>
+
     private bool ShouldShowCollectIndicator()
     {
         if (_canCollectIndicatorObject == null)
@@ -898,34 +1359,13 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             return false;
         }
 
-        if (_hideIndicatorWhileCollecting && _manualCollectRoutine != null)
-        {
-            return false;
-        }
-
-        if (_isProcessing)
+        if (_hideIndicatorWhileCollecting && (_manualCollectRoutine != null || _isProcessing))
         {
             return false;
         }
 
         CleanupCollectors();
-
-        for (int i = 0; i < _nearCollectors.Count; i++)
-        {
-            CPlayerCollector2D collector = _nearCollectors[i];
-
-            if (collector == null)
-            {
-                continue;
-            }
-
-            if (CanCollect(collector, true))
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return _nearCollectors.Count > 0;
     }
 
     private void UpdateIndicatorVisibility()
@@ -935,8 +1375,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             return;
         }
 
-        bool shouldShow = ShouldShowCollectIndicator();
-        ApplyIndicatorActive(shouldShow);
+        ApplyIndicatorActive(ShouldShowCollectIndicator());
     }
 
     private void ApplyIndicatorActive(bool isActive)
@@ -952,6 +1391,139 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         }
 
         _canCollectIndicatorObject.SetActive(isActive);
+    }
+
+    private void ShowToolConditionFailFeedback(EType requiredToolType, bool isRarityLow, string fallbackMessage)
+    {
+        if (_feedbackRelay != null)
+        {
+            if (IsMiningTarget())
+            {
+                if (isRarityLow)
+                {
+                    _feedbackRelay.OnMiningToolRarityLow();
+                    return;
+                }
+
+                if (requiredToolType == EType.PickaxeItem)
+                {
+                    _feedbackRelay.OnMiningNoPickaxe();
+                    return;
+                }
+
+                _feedbackRelay.OnMiningFailed();
+                return;
+            }
+
+            if (isRarityLow)
+            {
+                _feedbackRelay.OnCollectToolRarityLow();
+                return;
+            }
+
+            switch (requiredToolType)
+            {
+                case EType.PickaxeItem:
+                    _feedbackRelay.OnCollectNeedPickaxe();
+                    return;
+
+                case EType.ShovelItem:
+                    _feedbackRelay.OnCollectNeedShovel();
+                    return;
+
+                case EType.SickleItem:
+                    _feedbackRelay.OnCollectNeedSickle();
+                    return;
+
+                case EType.AxeItem:
+                    _feedbackRelay.OnCollectNeedAxe();
+                    return;
+            }
+
+            _feedbackRelay.OnCollectFailed();
+            return;
+        }
+
+        NotifyWarningFeedback(fallbackMessage);
+    }
+
+    private void ShowInventoryFullFeedback()
+    {
+        if (_feedbackRelay != null)
+        {
+            _feedbackRelay.OnInventoryFull();
+            return;
+        }
+
+        NotifyFailureFeedback("인벤토리가 가득 찼습니다.");
+    }
+
+    private void ShowGeneralCollectFailFeedback()
+    {
+        if (_feedbackRelay != null)
+        {
+            if (IsMiningTarget())
+            {
+                _feedbackRelay.OnMiningFailed();
+            }
+            else
+            {
+                _feedbackRelay.OnCollectFailed();
+            }
+
+            return;
+        }
+
+        if (IsMiningTarget())
+        {
+            NotifyFailureFeedback("채광에 실패하였습니다.");
+        }
+        else
+        {
+            NotifyFailureFeedback("채집에 실패하였습니다.");
+        }
+    }
+
+    private void NotifyWarningFeedback(string message)
+    {
+        if (string.IsNullOrWhiteSpace(message))
+        {
+            return;
+        }
+
+        if (_logEnabled)
+        {
+            Debug.Log("[Collectable][Warning] " + message);
+        }
+
+        if (_feedbackRelay != null)
+        {
+            _feedbackRelay.ShowWarningFeedback(message);
+            return;
+        }
+
+        _onFeedbackMessage?.Invoke(message);
+    }
+
+    private void NotifyFailureFeedback(string message)
+    {
+        if (string.IsNullOrWhiteSpace(message))
+        {
+            return;
+        }
+
+        if (_logEnabled)
+        {
+            Debug.Log("[Collectable][Failure] " + message);
+        }
+
+        if (_feedbackRelay != null)
+        {
+            _feedbackRelay.ShowFailureFeedback(message);
+            return;
+        }
+
+        _onFeedbackMessage?.Invoke(message);
     }
     #endregion
 
@@ -991,7 +1563,6 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
         UpdateIndicatorVisibility();
 
-        // ButtonOnly면 자동 채집 시작 금지
         if (CanAutoCollect)
         {
             StartAutoCollect();
@@ -1043,14 +1614,13 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         CancelManualCollectInternal(string.Empty, false);
 
         StopAutoCollect();
+        ApplyIndicatorActive(false);
 
         if (_respawnRoutine != null)
         {
             StopCoroutine(_respawnRoutine);
             _respawnRoutine = null;
         }
-
-        ApplyIndicatorActive(false);
     }
     #endregion
 }

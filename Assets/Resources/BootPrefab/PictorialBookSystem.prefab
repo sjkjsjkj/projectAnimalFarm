@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4458165981372178015}
   - component: {fileID: 2097656564103225726}
+  - component: {fileID: 7990453345677049529}
   m_Layer: 0
   m_Name: PictorialBookSystem
   m_TagString: Untagged
@@ -50,3 +51,17 @@ MonoBehaviour:
   _syncInventoryOnStart: 1
   _useLog: 1
   _inventoryWaitTimeout: 10
+--- !u!114 &7990453345677049529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3015204986721528697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1f63a2b8dba01a439dbf2717f652282, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _uniqueId: 
+  _instanceId: 0

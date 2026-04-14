@@ -15,4 +15,4 @@ MonoBehaviour:
   _id: Bgm_Cave_3
   _type: 22
   _clip: {fileID: 8300000, guid: fdab8d60183f1054ca8ef9634e1cb18f, type: 3}
-  _volume: 0.6
+  _volume: 0.8
