@@ -336,6 +336,8 @@ GameObject:
   - component: {fileID: 4056675139876143209}
   - component: {fileID: 6515383158565180519}
   - component: {fileID: 3199418557427050839}
+  - component: {fileID: 8287624216048362610}
+  - component: {fileID: 7637680482090702389}
   m_Layer: 5
   m_Name: HUDQuickSlot
   m_TagString: Untagged
@@ -431,6 +433,66 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &8287624216048362610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2891571068527179772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7821b349a6c7e0e4395608582895aeab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _uniqueId: 
+  _instanceId: 0
+  _slots:
+  - root: {fileID: 6788387212495194484}
+    background: {fileID: 7632982985018967730}
+    icon: {fileID: 8089147102105969910}
+    selectedObject: {fileID: 0}
+    button: {fileID: 0}
+  - root: {fileID: 6592623186990855126}
+    background: {fileID: 7071082393542778424}
+    icon: {fileID: 8817910163281654020}
+    selectedObject: {fileID: 0}
+    button: {fileID: 0}
+  - root: {fileID: 2531599905375233090}
+    background: {fileID: 1451256965449048020}
+    icon: {fileID: 5462666181348545997}
+    selectedObject: {fileID: 0}
+    button: {fileID: 0}
+  - root: {fileID: 5812227128150324642}
+    background: {fileID: 3585136064944667944}
+    icon: {fileID: 5954082537958651935}
+    selectedObject: {fileID: 0}
+    button: {fileID: 0}
+  - root: {fileID: 8869713960049669095}
+    background: {fileID: 4108804518160706329}
+    icon: {fileID: 4776774798873676407}
+    selectedObject: {fileID: 0}
+    button: {fileID: 0}
+  _normalBackgroundColor: {r: 1, g: 1, b: 1, a: 1}
+  _selectedBackgroundColor: {r: 1, g: 0.9, b: 0.35, a: 1}
+  _hideIconWhenEmpty: 1
+--- !u!114 &7637680482090702389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2891571068527179772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 634b4d7c646e413489e0ebdf16705f76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _uniqueId: 
+  _instanceId: 0
+  _view: {fileID: 8287624216048362610}
+  _syncHeldItemWhenInventoryChanged: 1
+  _logEnabled: 0
 --- !u!1 &4893705435386363041
 GameObject:
   m_ObjectHideFlags: 0

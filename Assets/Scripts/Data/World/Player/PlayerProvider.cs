@@ -184,27 +184,34 @@ public class PlayerProvider
     }
 
     /// <summary>
-    /// 플레이어의 선택한 퀵슬롯을 변경합니다.
+    /// 플레이어의 선택한 퀵슬롯과 손에 든 아이템을 변경합니다.
+    /// 같은 슬롯이어도 itemId가 달라졌으면 손에 든 아이템은 갱신해야 합니다.
     /// </summary>
     /// <param name="slotIndex">변경할 슬롯 번호</param>
     public bool TrySetSlotIndex(int slotIndex, string itemId)
     {
         int index = Mathf.Clamp(slotIndex, 0, 9);
-        // 동일한 슬롯일 경우 생략
-        if (_curSlotIndex == index)
+
+        bool isSlotChanged = (_curSlotIndex != index);
+        bool isHeldItemChanged = (_heldItemId != itemId);
+
+        if (!isSlotChanged && !isHeldItemChanged)
         {
             return false;
         }
-        _curSlotIndex = index;
-        OnPlayerSlotChanged.Publish(index);
-        // 동일한 아이템일 경우 생략
-        if (_heldItemId == itemId)
+
+        if (isSlotChanged)
         {
-            return false;
+            _curSlotIndex = index;
+            OnPlayerSlotChanged.Publish(index);
         }
-        // 아이템 변경
-        _heldItemId = itemId;
-        OnPlayerHeldItemChanged.Publish(itemId);
+
+        if (isHeldItemChanged)
+        {
+            _heldItemId = itemId;
+            OnPlayerHeldItemChanged.Publish(itemId);
+        }
+
         return true;
     }
 
