@@ -48,7 +48,7 @@ public class StorageInteractObject : BaseMono, IInteractable
         _inventoryManager.InventoryUIToggle(_storageIdx, EInventoryType.Storage);
 
         _currentPlayer = player;
-        _isStorageOpen = true;
+        _isStorageOpen = !_isStorageOpen;
 
         //storageUI.SetToggleUI();
     }
