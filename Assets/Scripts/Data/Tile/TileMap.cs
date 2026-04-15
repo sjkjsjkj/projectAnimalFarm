@@ -69,65 +69,65 @@ public class TileMap
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsMoveable(Vector2Int gridPos) => IsMoveable(GridToIndex(gridPos));
 
-    /// <summary>
-    /// 경작이 가능한 타일
-    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsFarmable(Vector2 worldPos) => IsFarmable(WorldToIndex(worldPos));
+    public bool IsCaveFloor(Vector2 worldPos) => IsCaveFloor(WorldToIndex(worldPos));
 
-    /// <summary>
-    /// 경작이 가능한 타일
-    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsFarmable(Vector2Int gridPos) => IsFarmable(GridToIndex(gridPos));
+    public bool IsCaveFloor(Vector2Int gridPos) => IsCaveFloor(GridToIndex(gridPos));
 
-    /// <summary>
-    /// 낚시가 가능한 타일
-    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsFishingable(Vector2 worldPos) => IsFishingable(WorldToIndex(worldPos));
+    public bool IsCaveRail(Vector2 worldPos) => IsCaveRail(WorldToIndex(worldPos));
 
-    /// <summary>
-    /// 낚시가 가능한 타일
-    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsFishingable(Vector2Int gridPos) => IsFishingable(GridToIndex(gridPos));
+    public bool IsCaveRail(Vector2Int gridPos) => IsCaveRail(GridToIndex(gridPos));
 
-    /// <summary>
-    /// 위에 건설이 가능한 타일
-    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsBuildable(Vector2 worldPos) => IsBuildable(WorldToIndex(worldPos));
+    public bool IsForestGrass(Vector2 worldPos) => IsForestGrass(WorldToIndex(worldPos));
 
-    /// <summary>
-    /// 위에 건설이 가능한 타일
-    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsBuildable(Vector2Int gridPos) => IsBuildable(GridToIndex(gridPos));
+    public bool IsForestGrass(Vector2Int gridPos) => IsForestGrass(GridToIndex(gridPos));
 
-    /// <summary>
-    /// 상호작용이 가능한 타일
-    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsInteractable(Vector2 worldPos) => IsInteractable(WorldToIndex(worldPos));
+    public bool IsWoodBridge(Vector2 worldPos) => IsWoodBridge(WorldToIndex(worldPos));
 
-    /// <summary>
-    /// 상호작용이 가능한 타일
-    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsInteractable(Vector2Int gridPos) => IsInteractable(GridToIndex(gridPos));
+    public bool IsWoodBridge(Vector2Int gridPos) => IsWoodBridge(GridToIndex(gridPos));
 
-    /// <summary>
-    /// 바다 낚시가 가능한 타일
-    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsSeaFishingable(Vector2 worldPos) => IsSeaFishingable(WorldToIndex(worldPos));
+    public bool IsTownStoneRoad(Vector2 worldPos) => IsTownStoneRoad(WorldToIndex(worldPos));
 
-    /// <summary>
-    /// 바다 낚시가 가능한 타일
-    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsSeaFishingable(Vector2Int gridPos) => IsSeaFishingable(GridToIndex(gridPos));
+    public bool IsTownStoneRoad(Vector2Int gridPos) => IsTownStoneRoad(GridToIndex(gridPos));
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsTownGrass(Vector2 worldPos) => IsTownGrass(WorldToIndex(worldPos));
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsTownGrass(Vector2Int gridPos) => IsTownGrass(GridToIndex(gridPos));
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsTownFlowerGrass(Vector2 worldPos) => IsTownFlowerGrass(WorldToIndex(worldPos));
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsTownFlowerGrass(Vector2Int gridPos) => IsTownFlowerGrass(GridToIndex(gridPos));
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsTownDirtRoad(Vector2 worldPos) => IsTownDirtRoad(WorldToIndex(worldPos));
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsTownDirtRoad(Vector2Int gridPos) => IsTownDirtRoad(GridToIndex(gridPos));
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsTownFarmDirt(Vector2 worldPos) => IsTownFarmDirt(WorldToIndex(worldPos));
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsTownFarmDirt(Vector2Int gridPos) => IsTownFarmDirt(GridToIndex(gridPos));
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsTownSandRoad(Vector2 worldPos) => IsTownSandRoad(WorldToIndex(worldPos));
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsTownSandRoad(Vector2Int gridPos) => IsTownSandRoad(GridToIndex(gridPos));
     #endregion
 
     #region ─────────────────────────▶ 상태 접근 ◀─────────────────────────
@@ -170,67 +170,102 @@ public class TileMap
         return false;
     }
 
-    /// <summary>
-    /// 경작이 가능한 타일
-    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsFarmable(int index)
+    public bool IsCaveFloor(int index)
     {
         if (IsValid(index))
         {
-            return (_tiles[index].state & ETileState.Farmable) != 0;
+            return (_tiles[index].state & ETileState.CaveFloor) != 0;
         }
         return false;
     }
 
-    /// <summary>
-    /// 낚시가 가능한 타일
-    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsFishingable(int index)
+    public bool IsCaveRail(int index)
     {
         if (IsValid(index))
         {
-            return (_tiles[index].state & ETileState.Fishingable) != 0;
+            return (_tiles[index].state & ETileState.CaveRail) != 0;
         }
         return false;
     }
 
-    /// <summary>
-    /// 위에 건설이 가능한 타일
-    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsBuildable(int index)
+    public bool IsForestGrass(int index)
     {
         if (IsValid(index))
         {
-            return (_tiles[index].state & ETileState.Buildable) != 0;
+            return (_tiles[index].state & ETileState.ForestGrass) != 0;
         }
         return false;
     }
 
-    /// <summary>
-    /// 상호작용이 가능한 타일
-    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsInteractable(int index)
+    public bool IsWoodBridge(int index)
     {
         if (IsValid(index))
         {
-            return (_tiles[index].state & ETileState.Interactable) != 0;
+            return (_tiles[index].state & ETileState.WoodBridge) != 0;
         }
         return false;
     }
 
-    /// <summary>
-    /// 바다 낚시가 가능한 타일
-    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsSeaFishingable(int index)
+    public bool IsTownStoneRoad(int index)
     {
         if (IsValid(index))
         {
-            return (_tiles[index].state & ETileState.SeaFishingable) != 0;
+            return (_tiles[index].state & ETileState.TownStoneRoad) != 0;
+        }
+        return false;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsTownGrass(int index)
+    {
+        if (IsValid(index))
+        {
+            return (_tiles[index].state & ETileState.TownGrass) != 0;
+        }
+        return false;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsTownFlowerGrass(int index)
+    {
+        if (IsValid(index))
+        {
+            return (_tiles[index].state & ETileState.TownFlowerGrass) != 0;
+        }
+        return false;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsTownDirtRoad(int index)
+    {
+        if (IsValid(index))
+        {
+            return (_tiles[index].state & ETileState.TownDirtRoad) != 0;
+        }
+        return false;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsTownFarmDirt(int index)
+    {
+        if (IsValid(index))
+        {
+            return (_tiles[index].state & ETileState.TownFarmDirt) != 0;
+        }
+        return false;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsTownSandRoad(int index)
+    {
+        if (IsValid(index))
+        {
+            return (_tiles[index].state & ETileState.TownSandRoad) != 0;
         }
         return false;
     }
