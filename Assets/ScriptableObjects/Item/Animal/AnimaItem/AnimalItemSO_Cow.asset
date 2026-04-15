@@ -15,11 +15,13 @@ MonoBehaviour:
   _id: Item_Animal_Cow
   _type: 26
   _name: ItemCow
-  _description: ItemCow
+  _description: "\uC18C \uC544\uC774\uD15C \uC785\uB2C8\uB2E4. \uC0AC\uC6A9\uC2DC
+    \uBAA9\uC7A5\uC5D0 \uC18C\uAC00 \uC0DD\uAE41\uB2C8\uB2E4."
   _rarity: 1
-  _image: {fileID: 0}
+  _image: {fileID: -6767372696432820498, guid: 2a3936cf92093314b903a9bc76307fd5, type: 3}
   _prefab: {fileID: 0}
   _sellPrice: 500
   _buyPrice: 400
   _maxStack: 1
-  _itemUseContexts: []
+  _itemUseContexts:
+  - {fileID: 11400000, guid: 300cd83c6a392d74fae05cde193fe553, type: 2}

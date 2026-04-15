@@ -25,11 +25,12 @@ public class NPCObject : Frameable
     private ENpcMoveType _moveType;
 
     private float _actionTimer = 0;       // Idle <> Move 상태를 자연스럽게 변경해줄 때 사용할 타이머
-    private float _actionInterval = 3.0f; // 3초마다 한번씩 Move/Idle일 경우 랜덤하게 Move/Idle로 행동을 변경할 예정.
+    private float _actionInterval = 1.0f; // 3초마다 한번씩 Move/Idle일 경우 랜덤하게 Move/Idle로 행동을 변경할 예정.
 
     private float _dialogTimer = 0;
     private float _dialogInterval = 10.0f;
     private float _dialogMessageTime = 5.0f;
+    private Vector3 _initPos;
 
     [SerializeField] private Animator _animator;
     private NpcMoveTypeBase _moveMaster;
@@ -79,7 +80,9 @@ public class NPCObject : Frameable
         
         _data = new NPCData(_npcSO);
 
-        if(_moveTypeSO == null)
+        _initPos = transform.position;
+
+        if (_moveTypeSO == null)
         {
             UDebug.Print("인스펙터 에러. 모드에 맞는 SO를 넣으세요.", LogType.Assert);
             return;
@@ -95,7 +98,7 @@ public class NPCObject : Frameable
             _moveType = ENpcMoveType.AreaMove;
             UDebug.Print("AreaMove Mode Npc 생성");
             NpcMoveTypeAreaMove tempAreaMoveMode = gameObject.AddComponent<NpcMoveTypeAreaMove>();
-            tempAreaMoveMode.InitSetting(_npcSO.InitPosition, areaMoveSO.MinPos, areaMoveSO.MaxPos, _npcSO.MoveSpeed);
+            tempAreaMoveMode.InitSetting(_initPos, areaMoveSO.MinPos, areaMoveSO.MaxPos, _npcSO.MoveSpeed);
 
             tempAreaMoveMode.GetComponent<NpcMoveTypeAreaMove>().OnNextMove -= Reorganize;
             tempAreaMoveMode.GetComponent<NpcMoveTypeAreaMove>().OnNextMove += Reorganize;
@@ -148,7 +151,7 @@ public class NPCObject : Frameable
         {
             return;
         }
-        _actionInterval = Random.Range(2.0f, 4.0f);
+        _actionInterval = 0.5f;//Random.Range(2.0f, 4.0f);
         _actionTimer = 0;
 
         //랜덤 행동
@@ -222,12 +225,14 @@ public class NPCObject : Frameable
     public override EPriority Priority => EPriority.Last;
     public override void ExecuteFrame()
     {
-        _actionTimer += Time.deltaTime;
+        if(_state == ENpcState.Idle)
+        {
+            _actionTimer += Time.deltaTime;
+        }
         if (_dialog.Length > 0)
         {
             _dialogTimer += Time.deltaTime;
         }
-        
 
         if (_actionTimer >= _actionInterval)
         {

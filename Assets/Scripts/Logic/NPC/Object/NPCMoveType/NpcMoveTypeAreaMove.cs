@@ -41,7 +41,6 @@ public class NpcMoveTypeAreaMove : NpcMoveTypeBase
         _nextMoveTarget = new Vector3(UnityEngine.Random.Range(_minPos.x, _maxPos.x), UnityEngine.Random.Range(_minPos.y, _maxPos.y));
 
         return _nextMoveTarget;
-        
     }
     #endregion
 }
