@@ -73,7 +73,7 @@ public abstract class InventoryUI : BaseMono
             UDebug.Print("Slot 프리팹이 연결되지 않았습니다.", LogType.Warning);
             return;
         }
-        UDebug.Print($"current Inventory : {InventoryIdx} | {_inventorySize}");
+       // UDebug.Print($"current Inventory : {InventoryIdx} | {_inventorySize}");
         _slotList = new UISlot[_inventorySize];
 
         //ClearSlots();
@@ -128,6 +128,7 @@ public abstract class InventoryUI : BaseMono
         _isOpen = !_isOpen;
         if (_isOpen)
         {
+            
             USound.PlaySfx(_sfxId_InventoryOpen);
             ShowUI();
         }

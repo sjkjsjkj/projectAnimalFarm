@@ -51,7 +51,7 @@ public struct InventorySlot
             }
             _stack+= itemStack;
         }
-        UDebug.Print($"아이템 습득 성공 : {_slotIdx}번째 슬롯 | 획득 아이템 : {itemData.Name}");
+        //UDebug.Print($"아이템 습득 성공 : {_slotIdx}번째 슬롯 | 획득 아이템 : {itemData.Name}");
         USound.PlaySfx(_sfxIdITemmoveSound);
     }
     /// <summary>

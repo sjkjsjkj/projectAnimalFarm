@@ -89,12 +89,14 @@ public class Farmland
 
                 break;
             case EFarmlandState.SoiledLand:
+                OnPlayerPlow.Publish();
                 tr = _farmlandObjectProvider.GetFarmlandObject(_pos).transform;
                 USound.PlaySfx(_sfxId_Soiled, tr);
                 OnPlayerCanceled.Publish();
                 OnPlayerShovel.Publish(tr.position, 0.15f);
                 break;
             case EFarmlandState.SeededLand:
+                OnPlayerPlantingSeeds.Publish(_seededId);
                 tr = _farmlandObjectProvider.GetFarmlandObject(_pos).transform;
                 USound.PlaySfx(_sfxId_Seeded, tr);
                 OnPlayerCanceled.Publish();
@@ -267,6 +269,7 @@ public class Farmland
         //ItemSO tempItemSO = DatabaseManager.Ins.Item(_harvestItemId);
         if (ItemCollectionCoordinator.Ins.TryCollectItem(_harvestItemId, 1))
         {
+            OnPlayerHarvesting.Publish(_harvestItemId);
             Vector3 pos = _farmlandObjectProvider.GetFarmlandObject(_pos).transform.position;
             OnPlayerCanceled.Publish();
             OnPlayerSickle.Publish(pos, 0.15f);

@@ -27,7 +27,7 @@ public class Inventory
     #region ─────────────────────────▶   생성자   ◀─────────────────────────
     public Inventory(int inventorySize, EInventoryType inventoryType, int inventoryIdx)
     {
-        UDebug.Print("인벤토리 생성");
+        //UDebug.Print("인벤토리 생성");
         _inventorySize = inventorySize;
         _inventorySlots = new InventorySlot[inventorySize];
         _inventoryType = inventoryType;
@@ -35,7 +35,7 @@ public class Inventory
 
         for(int i=0; i<_inventorySlots.Length;  i++)
         {
-            UDebug.Print($"인벤토리 생성자 체크 : {i}");
+            //UDebug.Print($"인벤토리 생성자 체크 : {i}");
             _inventorySlots[i] = new InventorySlot(i);
         }
         
@@ -53,6 +53,40 @@ public class Inventory
 
     #region ─────────────────────────▶ 외부 공개 ◀─────────────────────────
 
+    public bool TryUseItem(InventorySlot slot)
+    {
+        if(slot.IsEmpty)
+        {
+            return false;
+        }
+        if(slot.ItemSO.ItemUseContext.Length==0)
+        {
+            return false;
+        }
+        slot.ItemSO.Use();
+        slot.RemoveAmount(1);
+
+        OnChangeSlot?.Invoke(EInventoryType.PlayerInventory, slot);
+        return false;
+    }
+    public bool TryuseItem(int invenSlotIdx)
+    {
+        if (_inventorySlots[invenSlotIdx].IsEmpty)
+        {
+            return false;
+        }
+        if (_inventorySlots[invenSlotIdx].ItemSO.ItemUseContext.Length==0)
+        {
+            return false;
+        }
+
+        _inventorySlots[invenSlotIdx].ItemSO.Use();
+        _inventorySlots[invenSlotIdx].RemoveAmount(1);
+
+        OnChangeSlot?.Invoke(EInventoryType.PlayerInventory, _inventorySlots[invenSlotIdx]);
+
+        return false;
+    }
     public virtual bool TryGetItem(ItemSO itemData , int amount = 1)
     {
         if (UDebug.IsNull(itemData))
@@ -64,7 +98,7 @@ public class Inventory
 
         if (itemInputSlot != -1)
         {
-            UDebug.Print("인벤UI 최신화!");
+            //UDebug.Print("인벤UI 최신화!");
             OnChangeSlot?.Invoke(_inventoryType, _inventorySlots[itemInputSlot]);
             return true;
         }
