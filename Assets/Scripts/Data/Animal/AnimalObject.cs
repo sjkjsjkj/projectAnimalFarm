@@ -270,7 +270,6 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
                 break;
             case EAnimalState.Eat:
                 _animator.SetBool("Move", false);
-                _animator.SetBool("Eat", true);
                 StartCoroutine(CoEatFoodCoroutine());
                 break;
             case EAnimalState.MoveToEat:
