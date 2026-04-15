@@ -30,6 +30,7 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
     private bool _isProductFinish;
 
     private FoodBox _foodBox;
+    //private IFoodProvider _
 
     //효과음들
     private string _sfxId_Cry;
@@ -77,11 +78,14 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
 
         this._animator.runtimeAnimatorController = tempSO.AnimController;
         this._foodBoxPos = data.foodBoxPos;
+        this._foodBox = BreedingArea.Ins.FoodBox;
 
         this._moveDir = data.moveDir;
 
         this._productItemId = data.productItemId;
         this._isProductFinish = data.isProductFinish;
+
+        
 
         this._actionInterval = K.ANIMAL_ACTION_INTERVAL;
         this._tickInterval = K.ANIMAL_TICK_INTERVAL;

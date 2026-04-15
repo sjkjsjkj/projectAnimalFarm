@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// 사육장 클래스 입니다.
 /// </summary>
-public class BreedingArea : BaseMono, IFoodProvider
+public class BreedingArea : Singleton<BreedingArea>, IFoodProvider
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("프리팹")]
@@ -17,12 +17,15 @@ public class BreedingArea : BaseMono, IFoodProvider
 
     [Header("테스트")]
     [SerializeField] private string _testId;
+    [SerializeField] private FoodBox _foodBox;
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private Vector3 _foodBoxPos;        // 먹이통의 위치
     private List<AnimalObject> _animals; // 관리하는 동물들의 리스트
-    private FoodBox _foodBox;
+//    private FoodBox _foodBox;
+
+    private bool _isInitialized = false;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -107,12 +110,19 @@ public class BreedingArea : BaseMono, IFoodProvider
         float posY = Random.Range(-_height / 2+2, _height / 2 - 2);
         return new Vector3(posX, posY);
     }
+
+    public override void Initialize()
+    {
+        if (_isInitialized)
+        {
+            return;
+        }
+        // ↑ 필요한 초기화 로직 / 부모 클래스에서 자동 실행
+        _isInitialized = true;
+    }
     #endregion
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
-    protected override void Awake()
-    {
-        base.Awake();
-    }
+
     #endregion
 
     #region ─────────────────────────▶ 중첩 타입 ◀─────────────────────────
