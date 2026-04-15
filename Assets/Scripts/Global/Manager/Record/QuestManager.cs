@@ -119,7 +119,15 @@ public class QuestManager : GlobalSingleton<QuestManager>
     }
     private void PlayerGetItemHandle(OnPlayerGetItem ctx)
     {
-        // 보류
+        DataManager.Ins.Record.AddItemRecord(ctx.itemId, ctx.amount);
+    }
+    private void PlayerFeedBoxOpenHandle(OnFeedBoxOpen ctx)
+    {
+        DataManager.Ins.Record.totalFeedBoxOpenCount++;
+    }
+    private void PlayerBuyAnimalHandle(OnBuyAnimal ctx)
+    {
+        DataManager.Ins.Record.AddItemRecord(ctx.animalId, 1);
     }
     #endregion
 
@@ -147,6 +155,8 @@ public class QuestManager : GlobalSingleton<QuestManager>
         EventBus<OnPictorialOpen>.Subscribe(PlayerPictorialOpenHandle);
         EventBus<OnChestOpen>.Subscribe(PlayerChestOpenHandle);
         EventBus<OnPlayerGetItem>.Subscribe(PlayerGetItemHandle);
+        EventBus<OnFeedBoxOpen>.Subscribe(PlayerFeedBoxOpenHandle);
+        EventBus<OnBuyAnimal>.Subscribe(PlayerBuyAnimalHandle);
     }
 
     // 해제
@@ -172,6 +182,8 @@ public class QuestManager : GlobalSingleton<QuestManager>
         EventBus<OnPictorialOpen>.Unsubscribe(PlayerPictorialOpenHandle);
         EventBus<OnChestOpen>.Unsubscribe(PlayerChestOpenHandle);
         EventBus<OnPlayerGetItem>.Unsubscribe(PlayerGetItemHandle);
+        EventBus<OnFeedBoxOpen>.Unsubscribe(PlayerFeedBoxOpenHandle);
+        EventBus<OnBuyAnimal>.Unsubscribe(PlayerBuyAnimalHandle);
     }
     #endregion
 }

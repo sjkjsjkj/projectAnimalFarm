@@ -266,6 +266,7 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         var player = m.Player;
         SaveData(ref player);
         var record = m.Record;
+        record.SaveBeforeSerialize();
         SaveData(ref record);
         var im = InventoryManager.Ins.Inventories;
         SaveData(ref im);
@@ -284,6 +285,7 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         LoadData(ref farmland);
         var record = m.Record;
         LoadData(ref record);
+        record.LoadAfterDeserialize();
         var im = InventoryManager.Ins.Inventories;
         LoadData(ref im);
     }
