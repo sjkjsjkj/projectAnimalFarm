@@ -264,12 +264,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _uniqueId: 
   _instanceId: 0
-  _inventorySlotUIPrefab: {fileID: 0}
-  _dragIcon: {fileID: 8880842604962857407}
   _slotContainer: {fileID: 5747028632230681564}
   _slotPrefab: {fileID: 8775709780734684913, guid: 01804c1d96173434f85e5f861a2c1637, type: 3}
-  _defaultSlotCount: 15
+  _dragIcon: {fileID: 8880842604962857407}
   _slotList: []
+  TestCurrentId: 0
   _popupRoot: {fileID: 3106655182314838522}
   _actionPopup: {fileID: 1948893586445229718}
   _popupOffsetX: 10
@@ -817,7 +816,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: TRASH
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1efbe1bd3f8077b4b81b5d0fff662f90, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -881,7 +880,7 @@ MonoBehaviour:
   m_margin: {x: 3, y: 3, z: 3, w: 3}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &3135926487520895631
@@ -1094,7 +1093,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: CANCEL
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1efbe1bd3f8077b4b81b5d0fff662f90, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1158,7 +1157,7 @@ MonoBehaviour:
   m_margin: {x: 3, y: 3, z: 3, w: 3}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &4650654159932671212
@@ -1353,10 +1352,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Main Inventory
+  m_text: Main   Inventory
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1efbe1bd3f8077b4b81b5d0fff662f90, type: 2}
+  m_sharedMaterial: {fileID: 8678782425273501019, guid: 1efbe1bd3f8077b4b81b5d0fff662f90, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1627,7 +1626,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: USE
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1efbe1bd3f8077b4b81b5d0fff662f90, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1691,6 +1690,6 @@ MonoBehaviour:
   m_margin: {x: 3, y: 3, z: 3, w: 3}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
