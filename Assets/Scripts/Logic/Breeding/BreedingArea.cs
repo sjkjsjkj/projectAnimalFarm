@@ -101,6 +101,8 @@ public class BreedingArea : Singleton<BreedingArea>, IFoodProvider
 
         tempGo.transform.SetParent(this.transform);
         tempGo.transform.localPosition = GetRandomPos();
+
+        OnBuyAnimal.Publish(id);
     }
 
     //소환되는 동물의 위치를 사육장 내 랜덤한 위치로 조정하기 위함.

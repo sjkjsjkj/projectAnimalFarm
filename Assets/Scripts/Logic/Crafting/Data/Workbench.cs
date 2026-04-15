@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -82,7 +81,7 @@ public class Workbench :  ICraftLogical
     //    public void SetRecipe(RecipeSO recipe)
     public void SetRecipe(ECraftableItemType curCategory, int recipeIdx)
     {
-        UDebug.Print("Set Recipe");
+        
         _recipe = GetCurCategoryRecipe(curCategory, recipeIdx);
         _requiredItems = _recipe.RequiedItems;
         _canMake = true;
@@ -116,7 +115,7 @@ public class Workbench :  ICraftLogical
             //TODO : 인벤토리의 아이템 제거
             for (int i = 0; i < _requiredItems.Length; i++)
             {
-                UDebug.Print($"현재 필요한 아이템 : {_requiredItems[i].RequireItem.Name}");
+                //UDebug.Print($"현재 필요한 아이템 : {_requiredItems[i].RequireItem.Name}");
                 _playerInventory.TryRemoveItem(_requiredItems[i].RequireItem.Id, _requiredItems[i].Count);
             }
         }
@@ -135,7 +134,7 @@ public class Workbench :  ICraftLogical
         
         if(DataManager.Ins == null)
         {
-            UDebug.Print("Fucking idiot",UnityEngine.LogType.Assert);
+            UDebug.Print("데이터 오류",UnityEngine.LogType.Assert);
             return;
         }
 
@@ -197,7 +196,7 @@ public class Workbench :  ICraftLogical
     /// <returns></returns>
     public List<RecipeSO> SelectCategory(ECraftableItemType eType)
     {
-        UDebug.Print($"{eType.ToString()} | {_axeRecipies.Count}");
+       // UDebug.Print($"{eType.ToString()} | {_axeRecipies.Count}");
         switch (eType)
         {
             case ECraftableItemType.Axe:
@@ -260,44 +259,3 @@ public class Workbench :  ICraftLogical
     }
     #endregion
 }
-
-
-
-
-
-//private IEnumerator CoWaitInventoryLoading()
-//{
-//    //bool check1 = false, check2= false;
-//    int count=0;
-//    while (true)
-//    {
-//        count++;
-
-
-//        if(count >=100)
-//        {
-//            break;
-//        }
-//        //if(InventoryManager.Ins == null)
-//        //{
-//        //    UDebug.Print("fuck Inven");
-//        //    check1 = true;
-//        //}
-
-//        //if(DatabaseManager.Ins == null)
-//        //{
-//        //    UDebug.Print("fuck Data");
-//        //    check2 = true;
-//        //}
-
-//        //if(check1 && check2)
-//        //{
-//        //    break;
-//        //}
-//        yield return null;
-
-//    }
-//    //Initialize();
-//    //SetAllRecipe();
-
-//}
