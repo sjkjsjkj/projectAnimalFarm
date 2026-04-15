@@ -53,6 +53,7 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
         data.tickTimer = _tickTimer;
         data.actionTimer = _actionTimer;
         data.moveDir = _moveDir;
+        data.foodBoxPos = _foodBoxPos;
 
         data.productItemId = _productItemId;
         data.isProductFinish = _isProductFinish;
@@ -75,7 +76,7 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
         AnimalWorldSO tempSO = DatabaseManager.Ins.AnimalWorld(data.id);
 
         this._animator.runtimeAnimatorController = tempSO.AnimController;
-        this._foodBoxPos = new Vector3(K.FOOD_BOX_POS_X, K.FOOD_BOX_POS_Y, 0);
+        this._foodBoxPos = data.foodBoxPos;
 
         this._moveDir = data.moveDir;
 
@@ -443,6 +444,7 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
         public float actionInterval;
         
         public Vector3 moveDir;
+        public Vector3 foodBoxPos;
 
         public Vector3 pos;
         public Quaternion rot;
