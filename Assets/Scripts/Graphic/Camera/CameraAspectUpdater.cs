@@ -30,6 +30,7 @@ public class CameraAspectUpdater : Frameable
             screen.Width = Screen.width;
             screen.Height = Screen.height;
             UCamera.SetCameraAspect(_cam, screen.Width, screen.Height);
+            OnResolutionChanged.Publish(screen.Width, screen.Height);
         }
     }
     #endregion

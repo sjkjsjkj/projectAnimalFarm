@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1820454598466815044}
   - component: {fileID: 9142913905800187717}
   m_Layer: 5
-  m_Name: Toggle_3840
+  m_Name: Toggle_etc
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -193,7 +193,7 @@ GameObject:
   - component: {fileID: 4842879742479219286}
   - component: {fileID: 6870484317700165329}
   m_Layer: 5
-  m_Name: Toggle_1920
+  m_Name: Toggle_2560
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -678,7 +678,7 @@ GameObject:
   - component: {fileID: 997359593558004960}
   - component: {fileID: 8348218994718064677}
   m_Layer: 5
-  m_Name: Toggle_1280
+  m_Name: Toggle_1920
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1566,7 +1566,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1920*1080
+  m_text: 2560*1440
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1efbe1bd3f8077b4b81b5d0fff662f90, type: 2}
   m_sharedMaterial: {fileID: 8678782425273501019, guid: 1efbe1bd3f8077b4b81b5d0fff662f90, type: 2}
@@ -1845,7 +1845,7 @@ GameObject:
   - component: {fileID: 437747010234226186}
   - component: {fileID: 869312186306186436}
   m_Layer: 5
-  m_Name: Toggle_2560
+  m_Name: Toggle_3840
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2004,7 +2004,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 3840*2160
+  m_text: "\uC0AC\uC6A9\uC790 \uC815\uC758"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1efbe1bd3f8077b4b81b5d0fff662f90, type: 2}
   m_sharedMaterial: {fileID: 8678782425273501019, guid: 1efbe1bd3f8077b4b81b5d0fff662f90, type: 2}
@@ -2405,7 +2405,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1280*720
+  m_text: 1920*1080
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1efbe1bd3f8077b4b81b5d0fff662f90, type: 2}
   m_sharedMaterial: {fileID: 8678782425273501019, guid: 1efbe1bd3f8077b4b81b5d0fff662f90, type: 2}
@@ -6012,7 +6012,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 2560*1440
+  m_text: 3840*2160
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1efbe1bd3f8077b4b81b5d0fff662f90, type: 2}
   m_sharedMaterial: {fileID: 8678782425273501019, guid: 1efbe1bd3f8077b4b81b5d0fff662f90, type: 2}

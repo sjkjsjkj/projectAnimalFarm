@@ -16,7 +16,7 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
-    public bool IsFirst => _isFirst;
+    public bool IsFirst { get => _isFirst; set => _isFirst = value; }
 
     /// <summary>
     /// 글로벌 데이터와 현재 씬 정보를 저장합니다.
@@ -124,7 +124,6 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         }
         ReadJsonAndLoadObjects(ctx.nextScene);
         LoadDynamicData(ctx.nextScene);
-        _isFirst = false;
     }
     #endregion
 

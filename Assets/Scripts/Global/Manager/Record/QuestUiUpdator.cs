@@ -66,6 +66,12 @@ public class QuestUiUpdator : Frameable
     private void QuestChangedHandle(OnQuestChanged data)
     {
         var record = DataManager.Ins.Record;
+        if(record.goalIndex >= QuestContainer.list.Count)
+        {
+            _title.text = "게임을 플레이해주셔서 감사드립니다!";
+            _condition.text = null;
+            return;
+        }
         var curQuest = QuestContainer.list[record.goalIndex];
         _title.text = curQuest.Description;
     }

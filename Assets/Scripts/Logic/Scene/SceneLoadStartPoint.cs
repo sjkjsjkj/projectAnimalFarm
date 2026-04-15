@@ -31,7 +31,7 @@ public class SceneLoadStartPoint : BaseMono
         // 게임 내에서 맵 이동
         if (spawnIndex != -1)
         {
-            if(_spawnPoints == null)
+            if (_spawnPoints == null)
             {
                 UDebug.Print($"스폰 포인트가 비어있습니다.", LogType.Error);
                 return;
