@@ -6,6 +6,7 @@
 public abstract class NpcMoveTypeBase : BaseMono
 {
     protected NPCObject _npc;
+    protected Vector3 _initPosition;
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
     public abstract void Move();
     public abstract Vector3 NextTargetFind();
