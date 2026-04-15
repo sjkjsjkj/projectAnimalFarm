@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1160eebecdf5f47438a6ef5f39ac01a8, type: 3}
-  m_Name: ShopSO_FishShop
+  m_Name: ShopSO_FishingShop
   m_EditorClassIdentifier: 
   _id: World_Shop_FIshShop
   _type: 10
-  _name: "\uC0DD\uC120\uAC00\uAC8C\uC544\uC800\uC528"
-  _description: "\uC0DD\uC120\uAC00\uAC8C\uC544\uC800\uC528"
+  _name: Fishing_Shop
+  _description: "\uC0DD\uC120\uAC00\uAC8C"
   _rarity: 1
   _image: {fileID: 0}
   _prefab: {fileID: 0}
@@ -35,3 +35,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f103c827a9583e941af2ac9ab5feb50a, type: 2}
   - {fileID: 11400000, guid: 043035f0616e66d4f997828b7dd0d52a, type: 2}
   - {fileID: 11400000, guid: 4531840fdd94640448a0c47228ce41d2, type: 2}
+  - {fileID: 11400000, guid: a75bb7eb2d4f78f4f818962fbf793f1a, type: 2}
+  - {fileID: 11400000, guid: f687f0d377a1a004c99b1a20af8fbe53, type: 2}
+  - {fileID: 11400000, guid: b1eee196e9857394b8106158a898bdb5, type: 2}
+  - {fileID: 11400000, guid: 789a649a12a467c4ba49c9399935e03a, type: 2}
+  - {fileID: 11400000, guid: d63afa354a94f6047b9771095d6db5cc, type: 2}

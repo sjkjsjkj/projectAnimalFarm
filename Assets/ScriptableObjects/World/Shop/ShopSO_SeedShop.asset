@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: ShopSO_SeedShop
   m_EditorClassIdentifier: 
   _id: World_Shop_SeedShop
-  _type: 0
-  _name: "\uC774\uB984"
-  _description: "\uC124\uBA85"
+  _type: 10
+  _name: Seed_Shop
+  _description: "\uC528\uC557 \uC0C1\uC810"
   _rarity: 1
   _image: {fileID: 0}
   _prefab: {fileID: 0}
