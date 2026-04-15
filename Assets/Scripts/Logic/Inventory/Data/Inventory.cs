@@ -134,6 +134,7 @@ public class Inventory
                 }
             }
             //인벤토리에 빈자리 없음.
+
             UDebug.Print("인벤토리가 가득 찼습니다.");
 
             //TODO : 풀인벤토리 이슈와 관련된 UI 호출 요청.
@@ -166,7 +167,8 @@ public class Inventory
                         continue;
                     }
                     //같은 아이템이고, 슬롯이 꽉차지도 않았다면 아이템 획득 후, 성공 반환.
-                    _inventorySlots[i].SetItem(itemData, itemStack);
+                    _inventorySlots[i].SetItem(itemData);
+                    //OnPlayerGetItem.Publish(itemData.Id, itemStack);
                     return i;//성공시 해당 슬롯의 번호를 반환.
                 }
             }
@@ -174,7 +176,8 @@ public class Inventory
             if (emptySlotIndex != -1)
             {
                 //그냥 빈 자리에 넣음.
-                _inventorySlots[emptySlotIndex].SetItem(itemData, itemStack);
+                _inventorySlots[emptySlotIndex].SetItem(itemData);
+                //OnPlayerGetItem.Publish(itemData.Id, itemStack);
                 return emptySlotIndex;
             }
             //인벤토리에 겹치는 아이템도 없고, 빈자리도 없다면.
