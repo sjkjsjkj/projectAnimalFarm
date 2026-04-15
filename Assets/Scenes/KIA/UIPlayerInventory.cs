@@ -111,8 +111,17 @@ public class UIPlayerInventory : InventoryUI, IEscClosable
 
     public override void SetToggleUI()
     {
-        
-            base.SetToggleUI();
+
+        bool wasActive = gameObject.activeSelf;
+
+        base.SetToggleUI();
+
+        bool isActive = gameObject.activeSelf;
+
+        if (wasActive == false && isActive == true)
+        {
+            OnInventoryOpen.Publish();
+        }
     }
     /// <summary>
     /// 슬롯 클릭 시 선택 상태를 갱신합니다.
