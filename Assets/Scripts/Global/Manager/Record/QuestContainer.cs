@@ -8,6 +8,45 @@ public static class QuestContainer
     public static readonly IReadOnlyList<QuestInfo> list = new List<QuestInfo>
     {
         new QuestInfo(
+            description: "도구 지급용 퀘스트 1",
+            rewardGold: 500,
+            rewardItemId: Id.Item_Tool_BasicFishingRod,
+            rewardItemAmount: 1,
+            new QuestCondition(
+                subtopic: "이동량",
+                condition: (data) =>
+                    data.totalWalkingDistance >= 1f,
+                progress: (data) =>
+                    (data.totalWalkingDistance, 1f)
+            )
+        ),
+        new QuestInfo(
+            description: "도구 지급용 퀘스트 2",
+            rewardGold: 500,
+            rewardItemId: Id.Item_Tool_BasicSickle,
+            rewardItemAmount: 1,
+            new QuestCondition(
+                subtopic: "이동량",
+                condition: (data) =>
+                    data.totalWalkingDistance >= 2f,
+                progress: (data) =>
+                    (data.totalWalkingDistance, 2f)
+            )
+        ),
+        new QuestInfo(
+            description: "도구 지급용 퀘스트 3",
+            rewardGold: 500,
+            rewardItemId: Id.Item_Tool_BasicPickAxe,
+            rewardItemAmount: 1,
+            new QuestCondition(
+                subtopic: "이동량",
+                condition: (data) =>
+                    data.totalWalkingDistance >= 3f,
+                progress: (data) =>
+                    (data.totalWalkingDistance, 3f)
+            )
+        ),
+        new QuestInfo(
             description: "마을 걸어보기 (이동 : WASD)",
             rewardGold: 500,
             rewardItemId: Id.Item_Tool_BasicShovel,

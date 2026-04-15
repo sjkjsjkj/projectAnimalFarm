@@ -135,8 +135,8 @@ MonoBehaviour:
     _fishing:
       _castingWeight: 6
       _waitWeight: 10
-      _hookedWeight: 5
-      _rollWeight: 8
+      _hookedWeight: 0
+      _rollWeight: 10
       _capturedYesWeight: 12
       _capturedNoWeight: 12
 --- !u!114 &9075371350282008030
@@ -191,10 +191,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _uniqueId: 
   _instanceId: 0
-  _consumeHungerInterval: 0.75
-  _consumeHungerAmount: 0.6
-  _consumeThirstInterval: 0.75
-  _consumeThirstAmount: 0.6
+  _consumeHungerInterval: 1
+  _consumeHungerAmount: 0.05
+  _consumeThirstInterval: 1
+  _consumeThirstAmount: 0.05
 --- !u!114 &4884490174820747038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,6 +224,11 @@ MonoBehaviour:
   _consumeBaitOnSuccess: 1
   _limitCatchByBaitRarity: 1
   _bypassRequiredFishingItemsForTest: 1
+  _freshWaterAllowedRodIds: []
+  _seaWaterAllowedRodIds: []
+  _freshWaterAllowedBaitIds: []
+  _seaWaterAllowedBaitIds: []
+  _manualSpotSearchRadius: 0.6
   _feedbackRelay: {fileID: 0}
   _motionStartIsSuccessValue: 1
   _fishingMotionDuration: 3
@@ -256,6 +261,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  _showCatchSuccessFeedback: 1
+  _fishCatchSuccessSingleFormat: "{0} \uD68D\uB4DD"
+  _fishCatchSuccessMultipleFormat: "{0} x{1} \uD68D\uB4DD"
   _onFishingStarted:
     m_PersistentCalls:
       m_Calls:
