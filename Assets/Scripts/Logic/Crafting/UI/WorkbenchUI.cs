@@ -105,19 +105,18 @@ public class WorkbenchUI : BaseMono, ICraftUI, IEscClosable
         _isOpen = !_isOpen;
         if (_isOpen)
         {
-            OnCraftingOpen.Publish();
-            USound.PlaySfx(Id.Sfx_Ui_ChestOpen_2);
+            OnCraftingOpen.Publish();   
             ShowUI();
         }
         else
         {
-            USound.PlaySfx(Id.Sfx_Ui_ChestClosed_2);
             CloseUI();
         }
         //UDebug.Print($"current Stats : {_isOpen}");
     }
     public void ShowUI()
     {
+        USound.PlaySfx(Id.Sfx_Ui_ChestOpen_2);
         CategoryBtnClick(ECraftableItemType.Axe);
         RecipeBtnClick(_currentChoiceCategory, 0);
         gameObject.SetActive(true);
@@ -125,6 +124,7 @@ public class WorkbenchUI : BaseMono, ICraftUI, IEscClosable
     }
     public virtual void CloseUI()
     {
+        USound.PlaySfx(Id.Sfx_Ui_ChestClosed_2);
         EscManager.Ins.Exit(this);
         gameObject.SetActive(false);
     }
