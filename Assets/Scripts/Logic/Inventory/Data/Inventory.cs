@@ -10,9 +10,7 @@ public class Inventory
     protected int _inventoryIdx;
     protected int _inventorySize;
     protected InventorySlot[] _inventorySlots;
-    protected EInventoryType _inventoryType;
-
-    
+    protected EInventoryType _inventoryType;    
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -42,13 +40,12 @@ public class Inventory
     }
     #endregion
 
-    #region 내부
+    #region ─────────────────────────▶ 내부 ◀─────────────────────────
 
     protected virtual void OnChangeSlotEvent(EInventoryType invenType, InventorySlot slot )
     {
         OnChangeSlot?.Invoke(invenType, slot);
     }
-
     #endregion
 
     #region ─────────────────────────▶ 외부 공개 ◀─────────────────────────
@@ -100,6 +97,13 @@ public class Inventory
         {
             //UDebug.Print("인벤UI 최신화!");
             OnChangeSlot?.Invoke(_inventoryType, _inventorySlots[itemInputSlot]);
+
+            if (_inventoryType == EInventoryType.PlayerInventory)
+            {
+                //UDebug.Print($"OnPlayerGetItem 발행 | id = {itemData.Id}, amount = {amount}");
+                OnPlayerGetItem.Publish(itemData.Id, amount);
+            }
+
             return true;
         }
         return false;
@@ -130,7 +134,9 @@ public class Inventory
                 }
             }
             //인벤토리에 빈자리 없음.
+
             UDebug.Print("인벤토리가 가득 찼습니다.");
+
             //TODO : 풀인벤토리 이슈와 관련된 UI 호출 요청.
             return -1; //실패 반환
         }
@@ -162,6 +168,7 @@ public class Inventory
                     }
                     //같은 아이템이고, 슬롯이 꽉차지도 않았다면 아이템 획득 후, 성공 반환.
                     _inventorySlots[i].SetItem(itemData);
+                    //OnPlayerGetItem.Publish(itemData.Id, itemStack);
                     return i;//성공시 해당 슬롯의 번호를 반환.
                 }
             }
@@ -170,6 +177,7 @@ public class Inventory
             {
                 //그냥 빈 자리에 넣음.
                 _inventorySlots[emptySlotIndex].SetItem(itemData);
+                //OnPlayerGetItem.Publish(itemData.Id, itemStack);
                 return emptySlotIndex;
             }
             //인벤토리에 겹치는 아이템도 없고, 빈자리도 없다면.
