@@ -998,7 +998,7 @@ public class CFishingController2D : BaseMono
 
     private bool TryGetFishingAreaType(CPlayerCollector2D collector, out EFishingAreaType areaType, out Vector2 checkWorldPos)
     {
-        areaType = EFishingAreaType.None;
+        /*areaType = EFishingAreaType.None;
         checkWorldPos = Vector2.zero;
 
         if (collector == null)
@@ -1023,9 +1023,6 @@ public class CFishingController2D : BaseMono
         Vector2 facingDir = GetCardinalFacingDirection();
         checkWorldPos = (Vector2)collector.transform.position + _checkOffset + facingDir * _checkDistance;
 
-        bool fresh = map.IsFishingable(checkWorldPos);
-        bool sea = _allowSeaFishing && map.IsSeaFishingable(checkWorldPos);
-
         if (_logEnabled)
         {
             Debug.Log("[FishingController] 판정 위치 = " + checkWorldPos +
@@ -1045,9 +1042,10 @@ public class CFishingController2D : BaseMono
         {
             areaType = EFishingAreaType.SeaWater;
             return true;
-        }
-
-        return false;
+        }*/
+        checkWorldPos = Vector2.zero;
+        areaType = EFishingAreaType.FreshWater;
+        return true;
     }
 
     private Vector2 GetCardinalFacingDirection()

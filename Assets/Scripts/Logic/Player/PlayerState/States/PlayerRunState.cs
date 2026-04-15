@@ -55,7 +55,7 @@ public class PlayerRunState : IPlayerState
             UPlayer.SetSpriteFacing(context.sprite, dir);
         }
         // 발자국 소리 재생
-        UPlayer.TryPlayStepSound(ref _nextStepTime, _stepSoundInterval);
+        UPlayer.TryPlayStepSound(ref _nextStepTime, _stepSoundInterval, pos);
         return false;
     }
 
