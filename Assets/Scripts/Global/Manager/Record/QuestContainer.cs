@@ -9,9 +9,9 @@ public static class QuestContainer
     {
         new QuestInfo(
             description: "마을 걸어보기 (이동 : WASD)",
-            rewardGold: 100,
-            rewardItemId: null,
-            rewardItemAmount: 0,
+            rewardGold: 500,
+            rewardItemId: Id.Item_Tool_BasicShovel,
+            rewardItemAmount: 1,
             new QuestCondition(
                 subtopic: "이동량",
                 condition: (data) =>
@@ -22,9 +22,9 @@ public static class QuestContainer
         ),
         new QuestInfo(
             description: "마을 달려보기 (달리기 : Shift)",
-            rewardGold: 100,
-            rewardItemId: null,
-            rewardItemAmount: 0,
+            rewardGold: 500,
+            rewardItemId: Id.Item_Tool_BasicWateringCan,
+            rewardItemAmount: 1,
             new QuestCondition(
                 subtopic: "이동량",
                 condition: (data) =>
@@ -35,9 +35,9 @@ public static class QuestContainer
         ),
         new QuestInfo(
             description: "마을에서 NPC에게 씨앗을 구매해보세요. (상호작용 : F)",
-            rewardGold: 200,
-            rewardItemId: null,
-            rewardItemAmount: 0,
+            rewardGold: 500,
+            rewardItemId: Id.Item_Tool_BasicSickle,
+            rewardItemAmount: 1,
             new QuestCondition(
                 subtopic: "구매한 씨앗",
                 condition: (data) => data.GetTypeRecord(EType.SeedItem) >= 1,
@@ -47,8 +47,8 @@ public static class QuestContainer
         new QuestInfo(
             description: "인벤토리 열어보기 (인벤토리 : I)",
             rewardGold: 100,
-            rewardItemId: null,
-            rewardItemAmount: 0,
+            rewardItemId: Id.Item_Seed_BlueBerry,
+            rewardItemAmount: 4,
             new QuestCondition(
                 subtopic: "인벤토리를 연 횟수",
                 condition: (data) => data.totalInventoryOpenCount >= 1,
@@ -95,8 +95,8 @@ public static class QuestContainer
         new QuestInfo(
             description: "채집가",
             rewardGold: 200,
-            rewardItemId: null,
-            rewardItemAmount: 0,
+            rewardItemId: Id.Item_Tool_BasicPickAxe,
+            rewardItemAmount: 1,
             new QuestCondition(
                 subtopic: "채집 횟수",
                 condition: (data) => data.totalGatheringCount >= 5,
@@ -106,8 +106,8 @@ public static class QuestContainer
         new QuestInfo(
             description: "첫 광산",
             rewardGold: 400,
-            rewardItemId: null,
-            rewardItemAmount: 0,
+            rewardItemId: Id.Item_Tool_BasicFishingRod,
+            rewardItemAmount: 1,
             new QuestCondition(
                 subtopic: "채광 횟수",
                 condition: (data) => data.totalOreMinedCount >= 10,

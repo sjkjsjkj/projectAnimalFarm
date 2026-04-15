@@ -44,7 +44,7 @@ public class TileDataExporter : EditorWindow
         // 파일 이름, 덮어쓰기 / 이어쓰기, 인코딩
         using (StreamWriter sw = new StreamWriter($"{exportPath}/{fileName}", false, Encoding.UTF8))
         {
-            sw.WriteLine("ID,이름,태그,이동 가능,경작 가능,낚시 가능,건설 가능,상호작용 가능,바다 낚시 가능");
+            sw.WriteLine("ID,이름,태그,이동 가능,동굴 바닥,동굴 레일,숲 잔디,목재 다리,타운 돌 길,타운 잔디,타운 꽃 잔디,타운 일반 흙,타운 밭 흙,타운 모래");
             int length = filePaths.Length;
             int id = 0;
             for (int i = 0; i < length; ++i)
