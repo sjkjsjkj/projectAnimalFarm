@@ -10,8 +10,20 @@ public class StorageInteractObject : BaseMono, IInteractable
     [Header("창고 정보")]
     [SerializeField] private int _storageIdx; //테스트용
 
-    private InventoryManager _inventoryManager;
+    [Header("자동 닫힘")]
+    [SerializeField] private float _autoCloseDistance = 3.0f; // 우선 3으로 임의 설정했슴다. 
 
+    #endregion
+
+    #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
+
+    private GameObject _currentPlayer;
+    private bool _isStorageOpen;
+
+    private InventoryManager _inventoryManager;
+    #endregion
+
+    #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     public bool CanInteract(GameObject player)
     {
         //throw new System.NotImplementedException();
@@ -32,18 +44,14 @@ public class StorageInteractObject : BaseMono, IInteractable
 
         UDebug.Print($"{_storageIdx}번째 인벤토리(창고) 오픈!");
 
-        
+
         _inventoryManager.InventoryUIToggle(_storageIdx, EInventoryType.Storage);
+
+        _currentPlayer = player;
+        _isStorageOpen = true;
+
         //storageUI.SetToggleUI();
     }
-    #endregion
-
-    #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
-
-    #endregion
-
-    #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
-
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
@@ -60,7 +68,39 @@ public class StorageInteractObject : BaseMono, IInteractable
 
             _storageIdx = _inventoryManager.RequestNewInventory(K.STORAGE_INVENTORY_SIZE, EInventoryType.Storage);
         }
-        
+    }
+
+    private void CheckAutoClose()
+    {
+        if (_isStorageOpen == false)
+        {
+            return;
+        }
+
+        if (_currentPlayer == null)
+        {
+            ForceCloseStorage();
+            return;
+        }
+
+        float distance = Vector3.Distance(transform.position, _currentPlayer.transform.position);
+        if (distance > _autoCloseDistance)
+        {
+            ForceCloseStorage();
+        }
+    }
+
+    private void ForceCloseStorage()
+    {
+        if (_isStorageOpen == false)
+        {
+            return;
+        }
+
+        _inventoryManager.InventoryUIToggle(_storageIdx, EInventoryType.Storage);
+
+        _isStorageOpen = false;
+        _currentPlayer = null;
     }
     #endregion
 
@@ -68,6 +108,11 @@ public class StorageInteractObject : BaseMono, IInteractable
     protected override void Awake()
     {
         StartCoroutine(CoWaitLoadInventoryManagerSetting());
+    }
+
+    private void Update()
+    {
+        CheckAutoClose();
     }
     #endregion
 
