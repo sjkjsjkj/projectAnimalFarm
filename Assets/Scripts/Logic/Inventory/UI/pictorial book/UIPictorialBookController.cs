@@ -135,6 +135,8 @@ public class UIPictorialBookController : BaseMono, IEscClosable
             return;
         }
 
+        bool wasOpen = IsOpen;
+
         if (_bookPage != null)
         {
             _bookPage.SetCategory(_currentCategory, false);
@@ -145,6 +147,11 @@ public class UIPictorialBookController : BaseMono, IEscClosable
         _bookRoot.transform.SetAsLastSibling();
         SetBookVisible(true);
         RegisterEscClose();
+
+        if (!wasOpen)
+        {
+            OnPictorialOpen.Publish();
+        }
 
         if (_logEnabled)
         {

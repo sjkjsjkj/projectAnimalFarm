@@ -17,9 +17,10 @@ MonoBehaviour:
   _name: "\uD1A0\uB07C \uBA39\uC774"
   _description: "\uD1A0\uB07C\uC758 \uBA39\uC774"
   _rarity: 1
-  _image: {fileID: 21300000, guid: 9bd0d5a6d1d4b3844839935ffc8bd544, type: 2}
+  _image: {fileID: -7114209188953169466, guid: f399c6604bddb4247846feae77662616, type: 3}
   _prefab: {fileID: 0}
   _sellPrice: 80
   _buyPrice: 0
   _maxStack: 64
+  _itemUseContexts: []
   _amount: 50

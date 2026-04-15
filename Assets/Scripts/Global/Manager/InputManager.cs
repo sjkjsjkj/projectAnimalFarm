@@ -52,7 +52,7 @@ public sealed class InputManager : GlobalSingleton<InputManager>, InputDispatche
     {
         if (context.performed)
         {
-            OnPlayerInventory.Publish();
+            OnPlayerPictorial.Publish();
         }
     }
     public void OnRun(InputAction.CallbackContext context)

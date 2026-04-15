@@ -80,6 +80,15 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     [Tooltip("버튼 채집 시 실제 보상 지급까지 대기 시간")]
     [SerializeField] private float _manualCollectDelay = 1.0f;
 
+    [Tooltip("도구 등급이 요구 등급보다 높을수록 상호작용 시간을 줄일지 여부")]
+    [SerializeField] private bool _useToolRarityBasedDuration = true;
+
+    [Tooltip("도구 등급이 요구 등급보다 1단계 높을 때마다 감소할 시간")]
+    [SerializeField] private float _manualCollectDurationReducePerRarityStep = 0.15f;
+
+    [Tooltip("도구 등급 보정으로 줄어들 수 있는 최소 상호작용 시간")]
+    [SerializeField] private float _manualCollectMinDuration = 0.35f;
+
     [Tooltip("버튼 채집 중 플레이어를 Busy 상태로 묶을지")]
     [SerializeField] private bool _setPlayerBusyDuringManualCollect = true;
 
@@ -402,6 +411,8 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             return;
         }
 
+        float manualCollectDuration = GetManualCollectDuration();
+
         _manualCollectCollector = collector;
         _manualCollectStartPosition = collector.transform.position;
 
@@ -413,11 +424,16 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             ApplyIndicatorActive(false);
         }
 
-        _manualCollectRoutine = StartCoroutine(CoManualCollect(collector));
+        if (_logEnabled)
+        {
+            Debug.Log($"[CCollectableInteractObject2D] 수동 채집 시작. object={name}, duration={manualCollectDuration:0.00}");
+        }
+
+        _manualCollectRoutine = StartCoroutine(CoManualCollect(collector, manualCollectDuration));
     }
 
 
-    private IEnumerator CoManualCollect(CPlayerCollector2D collector)
+    private IEnumerator CoManualCollect(CPlayerCollector2D collector, float manualCollectDuration)
     {
         if (_isProcessing)
         {
@@ -445,8 +461,9 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         }
 
         _isProcessing = true;
+        manualCollectDuration = Mathf.Max(0f, manualCollectDuration);
 
-        PublishManualCollectAction(rewardItemSo);
+        PublishManualCollectAction(rewardItemSo, manualCollectDuration);
 
         if (_setPlayerBusyDuringManualCollect)
         {
@@ -455,9 +472,9 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
         collector.PlayGatherAnimation();
 
-        if (_manualCollectDelay > 0f)
+        if (manualCollectDuration > 0f)
         {
-            yield return new WaitForSeconds(_manualCollectDelay);
+            yield return new WaitForSeconds(manualCollectDuration);
         }
 
         if (HasCollectorMovedSinceStart(collector))
@@ -504,26 +521,28 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         CompleteCollect();
     }
 
-    private void PublishManualCollectAction(ItemSO rewardItemSo)
+    private void PublishManualCollectAction(ItemSO rewardItemSo, float interactionDuration)
     {
         if (rewardItemSo == null)
         {
             return;
         }
 
+        float safeDuration = Mathf.Max(0f, interactionDuration);
+
         switch (rewardItemSo.Type)
         {
             case EType.WoodItem:
-                OnPlayerLogging.Publish(transform.position, _manualCollectDelay);
+                OnPlayerLogging.Publish(transform.position, safeDuration);
                 break;
 
             case EType.SeedItem:
             case EType.FeedItem:
-                OnPlayerShovel.Publish(transform.position, _manualCollectDelay);
+                OnPlayerShovel.Publish(transform.position, safeDuration);
                 break;
 
             case EType.OreItem:
-                OnPlayerMining.Publish(transform.position, _manualCollectDelay);
+                OnPlayerMining.Publish(transform.position, safeDuration);
                 break;
         }
     }
@@ -645,6 +664,23 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         return DatabaseManager.Ins.Item(_itemId);
     }
 
+    private void PublishRecordEventByReward()
+    {
+        if (string.IsNullOrWhiteSpace(_itemId))
+        {
+            return;
+        }
+
+        if (IsMiningTarget())
+        {
+            OnPlayerMined.Publish(_itemId);
+        }
+        else
+        {
+            OnPlayerCollected.Publish(_itemId);
+        }
+    }
+
     private bool IsMiningTarget()
     {
         ItemSO rewardItemSo = ResolveRewardItemSO();
@@ -712,6 +748,66 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         }
 
         return _requiredToolMinRarity == ERarity.None ? ERarity.Basic : _requiredToolMinRarity;
+    }
+
+    private float GetManualCollectDuration()
+    {
+        float baseDuration = Mathf.Max(0f, _manualCollectDelay);
+
+        if (!_useToolRarityBasedDuration)
+        {
+            return baseDuration;
+        }
+
+        EType requiredToolType = ResolveRequiredToolType();
+        if (requiredToolType == EType.None)
+        {
+            return baseDuration;
+        }
+
+        if (!TryGetBestToolInInventory(requiredToolType, out ToolItemSO bestTool) || bestTool == null)
+        {
+            return baseDuration;
+        }
+
+        ERarity requiredRarity = ResolveRequiredToolRarity();
+        return CalculateManualCollectDuration(requiredRarity, bestTool.Rarity);
+    }
+
+    private float CalculateManualCollectDuration(ERarity targetRarity, ERarity toolRarity)
+    {
+        float baseDuration = Mathf.Max(0f, _manualCollectDelay);
+        float minDuration = Mathf.Clamp(_manualCollectMinDuration, 0f, baseDuration);
+        float reducePerStep = Mathf.Max(0f, _manualCollectDurationReducePerRarityStep);
+
+        int rarityGap = Mathf.Max(0, GetComparableRarityValue(toolRarity) - GetComparableRarityValue(targetRarity));
+        float calculatedDuration = baseDuration - reducePerStep * rarityGap;
+
+        return Mathf.Max(minDuration, calculatedDuration);
+    }
+
+    private int GetComparableRarityValue(ERarity rarity)
+    {
+        switch (rarity)
+        {
+            case ERarity.Basic:
+                return 1;
+
+            case ERarity.Solid:
+                return 2;
+
+            case ERarity.Superior:
+                return 3;
+
+            case ERarity.Prime:
+                return 4;
+
+            case ERarity.Masterwork:
+                return 5;
+
+            default:
+                return 0;
+        }
     }
 
     private bool TryValidateRequiredTool(
@@ -1068,6 +1164,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             return false;
         }
 
+        PublishRecordEventByReward();
         return true;
     }
 
@@ -1172,7 +1269,9 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             Debug.Log($"[CCollectableInteractObject2D] 획득 완료. itemId={_itemId}, amount={_amount}, object={name}");
         }
 
+        QueueCollectedSuccessFeedbackMessage();
         _onCollected?.Invoke();
+        InteractionFeedbackRelay.ClearQueuedCollectSuccessMessages();
 
         if (_useRespawn)
         {
@@ -1319,6 +1418,43 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     /// 지금은 로그 + 이벤트만 호출
     /// 나중에 UI 스크립트가 생기면 Inspector에서 바로 연결 가능
     /// </summary>
+    private void QueueCollectedSuccessFeedbackMessage()
+    {
+        string itemName = ResolveCollectedFeedbackItemName();
+
+        if (string.IsNullOrWhiteSpace(itemName))
+        {
+            return;
+        }
+
+        if (IsMiningTarget())
+        {
+            InteractionFeedbackRelay.QueueMiningSuccessMessage(itemName);
+            return;
+        }
+
+        InteractionFeedbackRelay.QueueCollectSuccessMessage(itemName);
+    }
+
+    private string ResolveCollectedFeedbackItemName()
+    {
+        if (!string.IsNullOrWhiteSpace(_itemId) && DatabaseManager.Ins != null)
+        {
+            ItemSO itemSo = DatabaseManager.Ins.Item(_itemId);
+            if (itemSo != null && !string.IsNullOrWhiteSpace(itemSo.Name))
+            {
+                return itemSo.Name.Trim();
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(_itemId))
+        {
+            return _itemId.Trim();
+        }
+
+        return IsMiningTarget() ? "광석" : "채집물";
+    }
+
     private void ShowReservedFeedback(string message)
     {
         if (string.IsNullOrWhiteSpace(message))
