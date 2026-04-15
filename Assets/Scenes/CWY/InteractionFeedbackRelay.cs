@@ -48,6 +48,10 @@ public class InteractionFeedbackRelay : BaseMono
         MiningToolRarityLow,
     }
 
+    private static string s_pendingFishingSuccessMessage;
+    private static string s_pendingCollectSuccessMessage;
+    private static string s_pendingMiningSuccessMessage;
+
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("사운드 출력 위치")]
     [SerializeField] private Transform _soundTarget;
@@ -222,6 +226,7 @@ public class InteractionFeedbackRelay : BaseMono
     public void ShowSuccessFeedback(string message)
     {
         PublishFeedback(message, EFeedbackMessageType.Success, _successDuration);
+        PlayRandom(_collectSuccessSoundIds);
     }
 
     /// <summary>
@@ -241,7 +246,16 @@ public class InteractionFeedbackRelay : BaseMono
 
     #region ─────────────────────────▶ 낚시 이벤트 ◀─────────────────────────
     public void OnFishingStarted() => ShowFeedback(EInteractionFeedbackKey.FishingStart);
-    public void OnFishingSucceeded() => ShowFeedback(EInteractionFeedbackKey.FishingSuccess);
+    public void OnFishingSucceeded()
+    {
+        if (TryConsumePendingMessage(ref s_pendingFishingSuccessMessage, out string message))
+        {
+            PublishCustomSuccessFeedback(message, _fishingSuccessSoundIds);
+            return;
+        }
+
+        ShowFeedback(EInteractionFeedbackKey.FishingSuccess);
+    }
     public void OnFishingFailed() => ShowFeedback(EInteractionFeedbackKey.FishingFail);
     public void OnFishingCanceled() => ShowFeedback(EInteractionFeedbackKey.FishingCancel);
 
@@ -254,7 +268,22 @@ public class InteractionFeedbackRelay : BaseMono
 
     #region ─────────────────────────▶ 채집 이벤트 ◀─────────────────────────
     public void OnCollectStarted() => ShowFeedback(EInteractionFeedbackKey.CollectStart);
-    public void OnCollected() => ShowFeedback(EInteractionFeedbackKey.CollectSuccess);
+    public void OnCollected()
+    {
+        if (TryConsumePendingMessage(ref s_pendingMiningSuccessMessage, out string message))
+        {
+            PublishCustomSuccessFeedback(message, _collectSuccessSoundIds);
+            return;
+        }
+
+        if (TryConsumePendingMessage(ref s_pendingCollectSuccessMessage, out message))
+        {
+            PublishCustomSuccessFeedback(message, _collectSuccessSoundIds);
+            return;
+        }
+
+        ShowFeedback(EInteractionFeedbackKey.CollectSuccess);
+    }
     public void OnCollectFailed() => ShowFeedback(EInteractionFeedbackKey.CollectFail);
     public void OnCollectCanceled() => ShowFeedback(EInteractionFeedbackKey.CollectCancel);
 
@@ -275,7 +304,81 @@ public class InteractionFeedbackRelay : BaseMono
     public void OnInventoryFull() => ShowFeedback(EInteractionFeedbackKey.InventoryFull);
     #endregion
 
+    #region ─────────────────────────▶ 성공 메시지 큐 ◀─────────────────────────
+    public static void QueueFishingSuccessMessage(string itemName)
+    {
+        QueueFishingSuccessMessageText(BuildAcquireMessage("낚시", itemName));
+    }
+
+    public static void QueueFishingSuccessMessageText(string message)
+    {
+        s_pendingFishingSuccessMessage = SanitizePendingMessage(message);
+    }
+
+    public static void QueueCollectSuccessMessage(string itemName)
+    {
+        QueueCollectSuccessMessageText(BuildAcquireMessage("채집", itemName));
+    }
+
+    public static void QueueCollectSuccessMessageText(string message)
+    {
+        s_pendingCollectSuccessMessage = SanitizePendingMessage(message);
+    }
+
+    public static void QueueMiningSuccessMessage(string itemName)
+    {
+        QueueMiningSuccessMessageText(BuildAcquireMessage("채광", itemName));
+    }
+
+    public static void QueueMiningSuccessMessageText(string message)
+    {
+        s_pendingMiningSuccessMessage = SanitizePendingMessage(message);
+    }
+
+    public static void ClearQueuedFishingSuccessMessage()
+    {
+        s_pendingFishingSuccessMessage = null;
+    }
+
+    public static void ClearQueuedCollectSuccessMessages()
+    {
+        s_pendingCollectSuccessMessage = null;
+        s_pendingMiningSuccessMessage = null;
+    }
+    #endregion
+
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
+    private void PublishCustomSuccessFeedback(string message, string[] soundIds)
+    {
+        PublishFeedback(message, EFeedbackMessageType.Success, _successDuration);
+        PlayRandom(soundIds);
+    }
+
+    private static bool TryConsumePendingMessage(ref string pendingMessage, out string message)
+    {
+        message = pendingMessage;
+        pendingMessage = null;
+
+        return !string.IsNullOrWhiteSpace(message);
+    }
+
+    private static string BuildAcquireMessage(string prefix, string itemName)
+    {
+        string safePrefix = string.IsNullOrWhiteSpace(prefix) ? "획득" : prefix.Trim();
+        string safeItemName = string.IsNullOrWhiteSpace(itemName) ? "아이템" : itemName.Trim();
+        return $"{safePrefix}: {safeItemName} 획득";
+    }
+
+    private static string SanitizePendingMessage(string message)
+    {
+        if (string.IsNullOrWhiteSpace(message))
+        {
+            return null;
+        }
+
+        return message.Trim();
+    }
+
     private bool TryResolvePreset(
         EInteractionFeedbackKey key,
         out string message,
