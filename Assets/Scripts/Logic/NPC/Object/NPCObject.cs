@@ -110,39 +110,7 @@ public class NPCObject : Frameable
             tempPatrolMode.GetComponent<NpcMoveTypePatrolMove>().OnNextMove -= Reorganize;
             tempPatrolMode.GetComponent<NpcMoveTypePatrolMove>().OnNextMove += Reorganize;
         }
-        //switch (_moveType)
-        //{
-        //    case ENpcMoveType.DontMove:
-        //        gameObject.AddComponent<NpcMoveTypeDontMove>();
-        //        break;
-        //    case ENpcMoveType.AreaMove:
-        //        //if (!(_npcSO is NpcWorldAreaMoveSO areaMoveSO))
-        //        if (!(_moveTypeSO is NpcWorldAreaMoveSO areaMoveSO))
-        //        {
-        //            UDebug.Print("인스펙터 에러. 모드에 맞는 SO를 넣으세요.", LogType.Assert);
-        //            return; 
-        //        }
-        //        UDebug.Print("AreaMove Mode Npc 생성");
-        //        NpcMoveTypeAreaMove tempAreaMoveMode = gameObject.AddComponent<NpcMoveTypeAreaMove>();
-        //        tempAreaMoveMode.InitSetting(_npcSO.InitPosition, areaMoveSO.MinPos, areaMoveSO.MaxPos, _npcSO.MoveSpeed);
-
-        //        tempAreaMoveMode.GetComponent<NpcMoveTypeAreaMove>().OnNextMove -= Reorganize;
-        //        tempAreaMoveMode.GetComponent<NpcMoveTypeAreaMove>().OnNextMove += Reorganize;
-        //        break;
-        //    case ENpcMoveType.PatrolMove:
-        //        if (!(_moveTypeSO is NpcWorldPatrolMoveSo patrolMoveSO))
-        //        {
-        //            UDebug.Print("인스펙터 에러. 모드에 맞는 SO를 넣으세요.", LogType.Assert);
-        //            return;
-        //        }
-        //        NpcMoveTypePatrolMove tempPatrolMode = gameObject.AddComponent<NpcMoveTypePatrolMove>();
-        //        tempPatrolMode.InitSetting(patrolMoveSO.PatrolPoints, _npcSO.MoveSpeed);
-
-        //        tempPatrolMode.GetComponent<NpcMoveTypePatrolMove>().OnNextMove -= Reorganize;
-        //        tempPatrolMode.GetComponent<NpcMoveTypePatrolMove>().OnNextMove += Reorganize;
-        //        break;
-        //}
-
+        
         _moveMaster = GetComponent<NpcMoveTypeBase>();
         //TODO: 이벤트 연결
         _animator.runtimeAnimatorController = _npcSO.AnimController;

@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1160eebecdf5f47438a6ef5f39ac01a8, type: 3}
+  m_Name: ShopSO_AnimalShop
+  m_EditorClassIdentifier: 
+  _id: World_Shop_AnimalShop
+  _type: 10
+  _name: Animal_Shop
+  _description: "\uB3D9\uBB3C\uAC00\uAC8C"
+  _rarity: 1
+  _image: {fileID: 0}
+  _prefab: {fileID: 0}
+  _size: {x: 1, y: 1}
+  _shopItems:
+  - {fileID: 11400000, guid: e226c9273de4f2f469adb4fa74d574d2, type: 2}
+  - {fileID: 11400000, guid: 91d93f30629847c4883f057500094591, type: 2}
+  - {fileID: 11400000, guid: a6325f98bed711448a8affca6e2bdd1c, type: 2}
+  - {fileID: 11400000, guid: 59cd48b2ecbcf7a40ac481004b445cc2, type: 2}
+  - {fileID: 11400000, guid: 0b738a8bfd25ba548a19dc34ab7d2c93, type: 2}
+  - {fileID: 11400000, guid: 30ec3c61d708c0a4bb3fad8a22095485, type: 2}
+  - {fileID: 11400000, guid: e3a3bd04bafe8da4e87bbecef1d5fcf7, type: 2}
+  - {fileID: 11400000, guid: eb762257c29c262478cfffe9513da8cf, type: 2}

@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: World_Shop_HarvestShop
   _type: 10
-  _name: "\uC57C\uCC44\uAC00\uAC8C\uC544\uC800\uC528"
-  _description: "\uC57C\uCC44\uAC00\uAC8C\uC544\uC800\uC528 \uC785\uB2C8\uB2E4."
+  _name: Harvest_Shop
+  _description: "\uC57C\uCC44\uAC00\uAC8C"
   _rarity: 1
   _image: {fileID: 0}
   _prefab: {fileID: 0}

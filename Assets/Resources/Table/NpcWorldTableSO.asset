@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: NpcWorldTableSO
   m_EditorClassIdentifier: 
   _elements:
+  - {fileID: 11400000, guid: cdfa71cf3c7428840a8f0f6a066081b8, type: 2}
+  - {fileID: 11400000, guid: 924e580ea372a1c40863ac683d5c4bc5, type: 2}
   - {fileID: 11400000, guid: 57264a195f3511b4ca5c5debb4629af4, type: 2}
   - {fileID: 11400000, guid: 6aaab57ab0e3b7e4895c078c32902f42, type: 2}
   - {fileID: 11400000, guid: 7cccebf12c1a32e4facf3d5f9e650436, type: 2}
+  - {fileID: 11400000, guid: 3afdd1cb566d8c74599f1d874f86cf28, type: 2}
   - {fileID: 11400000, guid: 2c7febe9e9c30ea4fb4a0e5aebb4356c, type: 2}

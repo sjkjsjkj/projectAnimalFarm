@@ -142,7 +142,7 @@ GameObject:
   - component: {fileID: 7734382854501238766}
   - component: {fileID: 732065978549157357}
   - component: {fileID: 2377559178042801919}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: DialogCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -244,7 +244,7 @@ GameObject:
   - component: {fileID: 835228650449279534}
   - component: {fileID: 2686070527014284165}
   - component: {fileID: 1949936168043572905}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: DialogText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -394,7 +394,7 @@ GameObject:
   - component: {fileID: 7193571130814027046}
   - component: {fileID: 5193244617945106919}
   - component: {fileID: 4124890361525789053}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: DialogBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
