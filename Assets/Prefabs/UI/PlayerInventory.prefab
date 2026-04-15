@@ -400,7 +400,7 @@ MonoBehaviour:
   _instanceId: 0
   _slotContainer: {fileID: 8683450575568413330}
   _slotPrefab: {fileID: 8775709780734684913, guid: 5c58b6d882b88a744958e52fd197fb09, type: 3}
-  _defaultSlotCount: 15
+  _dragIcon: {fileID: 0}
   _slotList:
   - {fileID: 8775709780734684913, guid: 5c58b6d882b88a744958e52fd197fb09, type: 3}
   - {fileID: 8775709780734684913, guid: 5c58b6d882b88a744958e52fd197fb09, type: 3}
@@ -417,6 +417,7 @@ MonoBehaviour:
   - {fileID: 8775709780734684913, guid: 5c58b6d882b88a744958e52fd197fb09, type: 3}
   - {fileID: 8775709780734684913, guid: 5c58b6d882b88a744958e52fd197fb09, type: 3}
   - {fileID: 8775709780734684913, guid: 5c58b6d882b88a744958e52fd197fb09, type: 3}
+  TestCurrentId: 0
   _popupRoot: {fileID: 0}
   _actionPopup: {fileID: 0}
   _popupOffsetX: 10
@@ -572,8 +573,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Main Inventory
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1efbe1bd3f8077b4b81b5d0fff662f90, type: 2}
+  m_sharedMaterial: {fileID: 8678782425273501019, guid: 1efbe1bd3f8077b4b81b5d0fff662f90, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
