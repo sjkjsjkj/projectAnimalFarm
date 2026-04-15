@@ -10,13 +10,24 @@ public abstract class ItemSO : UnitSO
     [SerializeField] protected int _sellPrice = 100; // 판매 가격
     [SerializeField] protected int _buyPrice = 200; // 구매 가격
     [SerializeField] protected int _maxStack = 64; // 최대 중첩 수
+
+    // 인터페이스가 아닌 SO인 이유는 SO는 인스펙터창에서 넣고 빼는게 가능하기 때문에 개발 기간을 줄이기 위함.
+    [SerializeField] protected ItemUseContextSO[] _itemUseContexts; 
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
+    public ItemUseContextSO[] ItemUseContext => _itemUseContexts;
     public int SellPrice => _sellPrice;
     public int BuyPrice => _buyPrice;
     public int MaxStack => _maxStack;
 
+    public void Use()
+    {
+        for (int i = 0; i < _itemUseContexts.Length; i++)
+        {
+            //_itemUseContexts[i].Use();
+        }
+    }
     // 정상 값을 가지는지 검사
     public override bool IsValid()
     {
