@@ -10,9 +10,7 @@ public class Inventory
     protected int _inventoryIdx;
     protected int _inventorySize;
     protected InventorySlot[] _inventorySlots;
-    protected EInventoryType _inventoryType;
-
-    
+    protected EInventoryType _inventoryType;    
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -42,13 +40,12 @@ public class Inventory
     }
     #endregion
 
-    #region 내부
+    #region ─────────────────────────▶ 내부 ◀─────────────────────────
 
     protected virtual void OnChangeSlotEvent(EInventoryType invenType, InventorySlot slot )
     {
         OnChangeSlot?.Invoke(invenType, slot);
     }
-
     #endregion
 
     #region ─────────────────────────▶ 외부 공개 ◀─────────────────────────
@@ -100,6 +97,13 @@ public class Inventory
         {
             //UDebug.Print("인벤UI 최신화!");
             OnChangeSlot?.Invoke(_inventoryType, _inventorySlots[itemInputSlot]);
+
+            if (_inventoryType == EInventoryType.PlayerInventory)
+            {
+                //UDebug.Print($"OnPlayerGetItem 발행 | id = {itemData.Id}, amount = {amount}");
+                OnPlayerGetItem.Publish(itemData.Id, amount);
+            }
+
             return true;
         }
         return false;
@@ -132,6 +136,7 @@ public class Inventory
             //인벤토리에 빈자리 없음.
 
             UDebug.Print("인벤토리가 가득 찼습니다.");
+
             //TODO : 풀인벤토리 이슈와 관련된 UI 호출 요청.
             return -1; //실패 반환
         }
