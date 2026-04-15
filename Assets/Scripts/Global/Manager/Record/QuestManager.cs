@@ -95,7 +95,6 @@ public class QuestManager : GlobalSingleton<QuestManager>
     private void PlayerWalkingHandle(OnPlayerWalking ctx)
     {
         DataManager.Ins.Record.totalWalkingDistance += ctx.movement;
-        UDebug.Print($"총 걷기 거리: {DataManager.Ins.Record.totalWalkingDistance}");
     }
     private void PlayerRunningHandle(OnPlayerRunning ctx)
     {
