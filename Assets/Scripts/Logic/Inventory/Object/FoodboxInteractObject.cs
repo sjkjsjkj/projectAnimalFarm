@@ -182,8 +182,6 @@ public class FoodboxInteractObject : BaseMono, IInteractable
     {
         base.Awake();
         StartCoroutine(CoWaitLoadInventoryManagerSetting());
-
-       
     }
     #endregion
 }

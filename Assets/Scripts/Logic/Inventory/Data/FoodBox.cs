@@ -1,6 +1,9 @@
-﻿/// <summary>
+﻿using System;
+
+/// <summary>
 /// 클래스의 설계 의도입니다.
 /// </summary>
+[Serializable]
 public class FoodBox : Inventory
 {
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
