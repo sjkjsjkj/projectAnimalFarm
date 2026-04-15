@@ -38,6 +38,15 @@ public class DataManager : GlobalSingleton<DataManager>
     /// 게임 기록에 접근합니다.
     /// </summary>
     public RecordData Record => _record;
+
+    public void ResetGameData()
+    {
+        _gameOption = new();
+        PlayerWorldSO playerSO = DatabaseManager.Ins.Player(Id.World_Player);
+        _playerProvider = new(playerSO);
+        _farmlands = new();
+        _record = new();
+    }
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
@@ -45,11 +54,7 @@ public class DataManager : GlobalSingleton<DataManager>
     {
         if (_isInitialized) return;
         // 옵션 초기화
-        _gameOption = new();
-        PlayerWorldSO playerSO = DatabaseManager.Ins.Player(Id.World_Player);
-        _playerProvider = new(playerSO);
-        _farmlands = new();
-        _record = new();
+        ResetGameData();
         // 완료
         _isInitialized = true;
         UDebug.Print("데이터 매니저 초기화가 완료되었습니다.");

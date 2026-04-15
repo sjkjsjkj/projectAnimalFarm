@@ -31,7 +31,7 @@ public class SceneLoadStartPoint : BaseMono
         // 게임 내에서 맵 이동
         if (spawnIndex != -1)
         {
-            if(_spawnPoints == null)
+            if (_spawnPoints == null)
             {
                 UDebug.Print($"스폰 포인트가 비어있습니다.", LogType.Error);
                 return;
@@ -49,10 +49,14 @@ public class SceneLoadStartPoint : BaseMono
             }
             SetPlayerPosition(_spawnPoints[spawnIndex]);
             game.NextSpawnPointIndex = -1;
+            UDebug.Print($"씬 로드 : {spawnIndex}번 스폰 포인트에 플레이어 등장");
         }
         else // 게임 로드 (시작)
         {
             Vector2 pos = (player.Position == Vector2.zero) ? _defaultSpawnPoints.position : player.Position;
+            UDebug.Print($"씬 로드 : 초기 위치에서 플레이어 등장" +
+                $"\n게임 시작 위치: {pos}, 플레이어 : {player.Position}");
+            UDebug.Print($"");
             SetPlayerPosition(pos);
         }
     }

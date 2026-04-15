@@ -14,7 +14,6 @@ public class GameMenuScreen : BaseMono, IEscClosable
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private readonly Vector2Int[] _resolutions =
     {
-        new Vector2Int(1280, 720),
         new Vector2Int(1920, 1080),
         new Vector2Int(2560, 1440),
         new Vector2Int(3840, 2160),
@@ -36,38 +35,81 @@ public class GameMenuScreen : BaseMono, IEscClosable
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
     private void ResolutionToggleHandle(int index)
     {
-        int safe = Mathf.Clamp(index, 0, _resolutionField.Length - 1);
+        // 정의되지 않은 해상도
+        if (index < 0 || index >= _resolutions.Length - 1) // 마지막 인덱스 포함
+        {
+            return;
+        }
+        // 
+        int safe = Mathf.Clamp(index, 0, _resolutions.Length - 1);
         int x = _resolutions[safe].x;
         int y = _resolutions[safe].y;
-        Screen.SetResolution(x, y, Screen.fullScreen);
+        // bool이 아닌 Mode로 직접 설정해야 안정적
+        FullScreenMode mode = _fullScreen.isOn ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
+        Screen.SetResolution(x, y, mode);
     }
 
     // 풀스크린 전환
     private void FullScreenToggleHandle(bool isFullScreen)
     {
-        Screen.fullScreen = isFullScreen;
+        FullScreenMode mode = isFullScreen ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
+        // 전체화면으로 전환 → 현재 모니터 해상도 반영
+        if (isFullScreen)
+        {
+            Resolution curResolution = Screen.currentResolution;
+            Screen.SetResolution(curResolution.width, curResolution.height, mode);
+        }
+        // 창 모드로 전환
+        else
+        {
+            int curIndex = GetCurResolutionIndex();
+            // 사용자 정의 해상도
+            if (curIndex < 0 || curIndex >= _resolutionField.Length - 1)
+            {
+                Screen.fullScreenMode = mode;
+            }
+            // 정의된 해상도
+            else
+            {
+                Screen.SetResolution(_resolutions[curIndex].x, _resolutions[curIndex].y, mode);
+            }
+        }
     }
 
     // 현재 화면 해상도와 일치하는 번호를 반환
     private int GetCurResolutionIndex()
     {
-        for (int i = 0; i < _resolutionField.Length; ++i)
+        for (int i = 0; i < _resolutions.Length; ++i)
         {
             var resolution = _resolutions[i];
             if (Screen.width != resolution.x) continue;
             if (Screen.height != resolution.y) continue;
             return i;
         }
-        return _resolutions.Length - 1; // 전체화면
+        return _resolutionField.Length - 1; // 사용자 정의
+    }
+
+    // 새로 갱신
+    private void RefreshResolutionUi(OnResolutionChanged ctx)
+    {
+        int curIndex = GetCurResolutionIndex();
+        for (int i = 0; i < _resolutionField.Length; i++)
+        {
+            _resolutionField[i].SetIsOnWithoutNotify(i == curIndex);
+        }
     }
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
     private void OnEnable()
     {
+        // 해상도 변화 구독
+        EventBus<OnResolutionChanged>.Subscribe(RefreshResolutionUi);
+        // EscManager에 등록
         EscManager.Ins.Enter(this);
         // 초기 세팅
-        _fullScreen.isOn = Screen.fullScreen;
+        bool isFullScreen = Screen.fullScreenMode != FullScreenMode.Windowed;
+        _fullScreen.SetIsOnWithoutNotify(isFullScreen);
         int curIndex = GetCurResolutionIndex();
         // 구독하기
         for (int i = 0; i < _resolutionField.Length; i++)
@@ -77,6 +119,7 @@ public class GameMenuScreen : BaseMono, IEscClosable
             _resolutionField[i].onValueChanged.AddListener(
                 (isOn) =>
                 {
+                    if (!isOn) return; // 토글이 켜질 때만 반응
                     ResolutionToggleHandle(index);
                 }
             );
@@ -86,6 +129,7 @@ public class GameMenuScreen : BaseMono, IEscClosable
 
     private void OnDisable()
     {
+        EventBus<OnResolutionChanged>.Unsubscribe(RefreshResolutionUi);
         // 구독 해제
         for (int i = 0; i < _resolutionField.Length; i++)
         {
