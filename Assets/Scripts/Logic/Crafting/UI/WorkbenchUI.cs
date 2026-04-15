@@ -32,7 +32,7 @@ public class WorkbenchUI : BaseMono, ICraftUI, IEscClosable
     //private Workbench _workbench;
     private ECraftableItemType _currentChoiceCategory = ECraftableItemType.Axe;
     private bool _isOpen;
-    private int _lastestChoicedBtnIdx=-1;
+    private int _lastestChoicedBtnIdx=0;
     //private List<RecipeSO> _currentSelectCategoryRecipies;
     #endregion
 
