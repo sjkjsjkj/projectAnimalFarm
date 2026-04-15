@@ -237,11 +237,17 @@ public class PlayerProvider
             int remain = amount - (K.PLAYER_MAX_MONEY - _money); // 지급하지 못한 돈
             _money = K.PLAYER_MAX_MONEY; // 최대치로 설정
             OnPlayerMoneyChanged.Publish(_money);
+            string failMsg = string.Format("돈은 최대 {0}원까지 소지할 수 있습니다.", K.PLAYER_MAX_MONEY);
+            OnFeedbackMessageRequested.Publish(failMsg, EFeedbackMessageType.Warning);
+            PlayMoneySound();
             return remain;
         }
         // 정상 처리
         _money += amount;
         OnPlayerMoneyChanged.Publish(_money);
+        string normalMsg = string.Format("{0}원을 획득했습니다.", amount);
+        OnFeedbackMessageRequested.Publish(normalMsg, EFeedbackMessageType.Success);
+        PlayMoneySound();
         return 0;
     }
 
@@ -306,6 +312,9 @@ public class PlayerProvider
         // 적용
         _curStamina = Mathf.Min(_curStamina + amount, _maxStamina);
         OnPlayerStaminaChanged.Publish(_curStamina, _maxStamina);
+        string normalMsg = string.Format("스태미나가 {0}만큼 회복되었습니다.", amount);
+        OnFeedbackMessageRequested.Publish(normalMsg, EFeedbackMessageType.Success);
+        PlayEatSound();
         return true;
     }
 
@@ -343,6 +352,9 @@ public class PlayerProvider
         // 적용
         _curHunger = Mathf.Min(_curHunger + amount, _maxHunger);
         OnPlayerHungerChanged.Publish(_curHunger, _maxHunger);
+        string normalMsg = string.Format("만복도가 {0}만큼 회복되었습니다.", amount);
+        OnFeedbackMessageRequested.Publish(normalMsg, EFeedbackMessageType.Success);
+        PlayEatSound();
         return true;
     }
 
@@ -379,6 +391,9 @@ public class PlayerProvider
         // 적용
         _curThirst = Mathf.Min(_curThirst + amount, _maxThirst);
         OnPlayerThirstChanged.Publish(_curThirst, _maxThirst);
+        string normalMsg = string.Format("목마름이 {0}만큼 회복되었습니다.", amount);
+        OnFeedbackMessageRequested.Publish(normalMsg, EFeedbackMessageType.Success);
+        PlayDrinkSound();
         return true;
     }
 
@@ -423,6 +438,48 @@ public class PlayerProvider
         {
             OnPlayerSkillLevelUp.Publish(skill, _skillLevels[index]);
         }
+    }
+
+    private static readonly string[] _moneySound =
+    {
+        Id.Sfx_Ui_Money_1,
+        Id.Sfx_Ui_Money_2,
+        Id.Sfx_Ui_Money_3,
+        Id.Sfx_Ui_Money_4,
+        Id.Sfx_Ui_Money_5,
+        Id.Sfx_Ui_Money_6,
+    };
+    private void PlayMoneySound()
+    {
+        int index = UnityEngine.Random.Range(0, _moneySound.Length);
+        USound.PlaySfx(_moneySound[index], _position);
+    }
+
+    private static readonly string[] _eatSound =
+    {
+        Id.Sfx_Player_Eat_1,
+        Id.Sfx_Player_Eat_2,
+        Id.Sfx_Player_Eat_3,
+        Id.Sfx_Player_Eat_4,
+        Id.Sfx_Player_Eat_5,
+    };
+    private void PlayEatSound()
+    {
+        int index = UnityEngine.Random.Range(0, _eatSound.Length);
+        USound.PlaySfx(_eatSound[index], _position);
+    }
+
+    private static readonly string[] _drinkSound =
+    {
+        Id.Sfx_Player_Drink_1,
+        Id.Sfx_Player_Drink_2,
+        Id.Sfx_Player_Drink_3,
+        Id.Sfx_Player_Drink_4,
+    };
+    private void PlayDrinkSound()
+    {
+        int index = UnityEngine.Random.Range(0, _drinkSound.Length);
+        USound.PlaySfx(_drinkSound[index], _position);
     }
     #endregion
 }
