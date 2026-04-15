@@ -22,3 +22,5 @@ MonoBehaviour:
   _sellPrice: 800
   _buyPrice: 1000
   _maxStack: 1
+  _itemUseContexts:
+  - {fileID: 11400000, guid: 6fb1d1f334154c149a6ff9cf460a10d3, type: 2}
