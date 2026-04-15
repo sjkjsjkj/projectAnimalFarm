@@ -426,6 +426,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 430608965904761672}
+  - component: {fileID: 1913180703698593076}
+  - component: {fileID: -1921708455105856361}
   m_Layer: 5
   m_Name: HUDRoot
   m_TagString: Untagged
@@ -453,6 +455,38 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 350, y: 200}
   m_Pivot: {x: 0, y: 1}
+--- !u!114 &1913180703698593076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5275502965900006203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3e5c6c79e7eda343b2840e9c0c0342a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _uniqueId: 
+  _instanceId: 0
+  _view: {fileID: -1921708455105856361}
+--- !u!114 &-1921708455105856361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5275502965900006203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 269ebb1e608501547b5f4d7a832b1264, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _uniqueId: 
+  _instanceId: 0
+  _hungerFill: {fileID: 2787983004981637056}
+  _thirstFill: {fileID: 2764305560048305497}
+  _goldText: {fileID: 8372617931909630443}
 --- !u!1 &5393145411683986374
 GameObject:
   m_ObjectHideFlags: 0
