@@ -111,8 +111,17 @@ public class UIPlayerInventory : InventoryUI, IEscClosable
 
     public override void SetToggleUI()
     {
-        
-            base.SetToggleUI();
+
+        bool wasActive = gameObject.activeSelf;
+
+        base.SetToggleUI();
+
+        bool isActive = gameObject.activeSelf;
+
+        if (wasActive == false && isActive == true)
+        {
+            OnInventoryOpen.Publish();
+        }
     }
     /// <summary>
     /// 슬롯 클릭 시 선택 상태를 갱신합니다.
@@ -171,7 +180,7 @@ public class UIPlayerInventory : InventoryUI, IEscClosable
         {
             return;
         }
-
+        UDebug.Print("Use Btn Click");
         OnRequestUseSlot?.Invoke(_selectedIndex);
         ClearSelection();
     }
@@ -202,11 +211,6 @@ public class UIPlayerInventory : InventoryUI, IEscClosable
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-
-    /// <summary>
-    /// 슬롯 프리팹을 기본 개수만큼 자동 생성합니다.
-    /// </summary>
-
 
     /// <summary>
     /// 선택 슬롯 기준으로 팝업 위치를 계산합니다.

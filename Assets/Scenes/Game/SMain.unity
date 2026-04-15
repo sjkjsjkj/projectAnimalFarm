@@ -685,11 +685,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8637693700152055993, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 8637693700152055993, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 8637693700152055993, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
       propertyPath: m_LocalPosition.z
@@ -14512,11 +14512,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2670991607978610928, guid: f567a5a6fd3da2640a14e8955bce46f2, type: 3}
       propertyPath: _uniqueId
-      value: 0fa95c20-9f20-43cf-b01c-207d767ba7b5
+      value: fe575ca6-3c7c-4852-8254-ffa298d133ea
       objectReference: {fileID: 0}
     - target: {fileID: 2670991607978610928, guid: f567a5a6fd3da2640a14e8955bce46f2, type: 3}
       propertyPath: _instanceId
-      value: -90590
+      value: -361504
       objectReference: {fileID: 0}
     - target: {fileID: 5872398401347135003, guid: f567a5a6fd3da2640a14e8955bce46f2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -15262,8 +15262,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7116f37a184de894bbf48bc13d0bdd00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: d4d03fc9-423f-4ebd-b1ed-af49849b4069
-  _instanceId: 111664
+  _uniqueId: ca7d1611-f6cf-4167-983b-cea81cf90d74
+  _instanceId: 168246
   _testTileID: 10000
   _animalID: World_Animal_Cow
   _breedingArea: {fileID: 2060048076}
@@ -15288,8 +15288,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3d637a0af3f6dd42855b5bf6243446d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: f0f3af91-4116-49e7-9e32-c7765d01f80a
-  _instanceId: 111666
+  _uniqueId: c3346b0a-c992-4037-97fd-0df22950c3f9
+  _instanceId: 168248
   _breedingArea: {fileID: 2060048076}
 --- !u!1 &1359072175
 GameObject:

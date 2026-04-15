@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5383b4c908cb049468393f366cb3770d, type: 3}
+  m_Name: AnimalItemSO_Chicken
+  m_EditorClassIdentifier: 
+  _id: Item_Animal_Chicken
+  _type: 26
+  _name: ItemChicken
+  _description: "\uB2ED \uC544\uC774\uD15C \uC785\uB2C8\uB2E4. \uC0AC\uC6A9\uC2DC
+    \uBAA9\uC7A5\uC5D0 \uB2ED\uC774 \uC0DD\uAE41\uB2C8\uB2E4."
+  _rarity: 1
+  _image: {fileID: 9200811477312291962, guid: 7531ebd30f4812f41a9aa3850515d394, type: 3}
+  _prefab: {fileID: 0}
+  _sellPrice: 200
+  _buyPrice: 160
+  _maxStack: 1
+  _itemUseContexts:
+  - {fileID: 11400000, guid: 5859557d67b2374498f9e6a5aed93925, type: 2}
