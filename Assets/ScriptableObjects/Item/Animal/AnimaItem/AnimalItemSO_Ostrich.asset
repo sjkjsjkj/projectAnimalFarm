@@ -12,14 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5383b4c908cb049468393f366cb3770d, type: 3}
   m_Name: AnimalItemSO_Ostrich
   m_EditorClassIdentifier: 
-  _id: Item_Animal_Cow
+  _id: Item_Animal_Ostrich
   _type: 26
-  _name: ItemCow
-  _description: ItemCow
+  _name: ItemOstrich
+  _description: "\uD0C0\uC870 \uC544\uC774\uD15C \uC785\uB2C8\uB2E4. \uC0AC\uC6A9\uC2DC
+    \uBAA9\uC7A5\uC5D0 \uD0C0\uC870\uAC00 \uC0DD\uAE41\uB2C8\uB2E4."
   _rarity: 1
-  _image: {fileID: 0}
+  _image: {fileID: 4161327802822911057, guid: 52c0fab4efc267e468ae64ec5ae5d37b, type: 3}
   _prefab: {fileID: 0}
-  _sellPrice: 500
-  _buyPrice: 400
+  _sellPrice: 1000
+  _buyPrice: 800
   _maxStack: 1
-  _itemUseContexts: []
+  _itemUseContexts:
+  - {fileID: 11400000, guid: 6fb1d1f334154c149a6ff9cf460a10d3, type: 2}

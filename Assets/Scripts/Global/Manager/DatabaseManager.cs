@@ -17,6 +17,7 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
     private SpecialItemTableSO[] _specialItemTables;
     private StaticItemTableSO[] _staticItemTables;
     private ToolItemTableSO[] _toolItemTables;
+    private AnimalItemTableSO[] _animalItemTables;
     private AnimalWorldTableSO[] _animalWorldTables;
     private CropWorldTableSO[] _cropWorldTables;
     private FieldWorldTableSO[] _fieldWorldTables;
@@ -181,6 +182,13 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
         => FindData<ProductTableSO, ProductSO>(_productTables, id);
 
     /// <summary>
+    /// 동물 정적 아이템을 반환합니다.
+    /// </summary>
+    /// <param name="id">아이템 ID</param>
+    public AnimalItemSO AnimalItem(string id)
+        => FindData<AnimalItemTableSO, AnimalItemSO>(_animalItemTables, id);
+
+    /// <summary>
     /// 레시피 정적 데이터를 반환합니다.
     /// </summary>
     /// <param name="id"></param>
@@ -216,6 +224,8 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
         SettingUnitDict<StaticItemTableSO, StaticItemSO>(_staticItemTables);
         _toolItemTables = LoadTables<ToolItemTableSO, ToolItemSO>();
         SettingUnitDict<ToolItemTableSO, ToolItemSO>(_toolItemTables);
+        _animalItemTables = LoadTables<AnimalItemTableSO, AnimalItemSO>();
+        SettingUnitDict<AnimalItemTableSO, AnimalItemSO>(_animalItemTables);
         _animalWorldTables = LoadTables<AnimalWorldTableSO, AnimalWorldSO>();
         SettingUnitDict<AnimalWorldTableSO, AnimalWorldSO>(_animalWorldTables);
         _cropWorldTables = LoadTables<CropWorldTableSO, CropWorldSO>();
@@ -388,6 +398,9 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
                 break;
             case EType.FeedItem:
                 tempSO = DatabaseManager.Ins.FeedItem(unitSO.Id);
+                break;
+            case EType.AnimalItem:
+                tempSO = DatabaseManager.Ins.AnimalItem(unitSO.Id);
                 break;
             case EType.HarvestItem:
             case EType.WoodItem:

@@ -12,14 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5383b4c908cb049468393f366cb3770d, type: 3}
   m_Name: AnimalItemSO_Duck
   m_EditorClassIdentifier: 
-  _id: Item_Animal_Cow
+  _id: Item_Animal_Duck
   _type: 26
-  _name: ItemCow
-  _description: ItemCow
+  _name: ItemDuck
+  _description: "\uC624\uB9AC \uC544\uC774\uD15C \uC785\uB2C8\uB2E4. \uC0AC\uC6A9\uC2DC
+    \uBAA9\uC7A5\uC5D0 \uC624\uB9AC\uAC00 \uC0DD\uAE41\uB2C8\uB2E4."
   _rarity: 1
-  _image: {fileID: 0}
+  _image: {fileID: -3769649816904853976, guid: bb06fe47fdbd33149bddf5ea6ca61a39, type: 3}
   _prefab: {fileID: 0}
-  _sellPrice: 500
-  _buyPrice: 400
+  _sellPrice: 300
+  _buyPrice: 240
   _maxStack: 1
-  _itemUseContexts: []
+  _itemUseContexts:
+  - {fileID: 11400000, guid: 8db1a7a9704550840ab8127a8c7857ad, type: 2}

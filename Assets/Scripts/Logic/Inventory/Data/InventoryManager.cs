@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -50,6 +51,9 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
     public bool CanReUse => _reUseTimer >= 0.5f;
     public bool IsSettingFinish => _isSettingFinish;
     public Transform GlobalCanvas => _inventoriesCanvasTr;
+
+
+    public event Action<int> OnRequestItemUse;
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
@@ -97,6 +101,7 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
         }
         MakeInventoryUIs();//인벤토리 UI들 생성 (인벤 / 창고 / 상점 각각 하나씩)
         MakeNewInventory(_inventorySize, EInventoryType.PlayerInventory); // 가장 먼저 플레이어의 인벤토리 생성.
+
         _isSettingFinish = true;
     }
 
@@ -123,6 +128,10 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
         //인벤토리 UI 활성화
         _playerInventoryUI = Instantiate(_playerInventoryPrefab);
         _playerInventoryUI.SetSize(K.PLAYER_INVENTORY_SIZE);
+
+        _playerInventoryUI.OnRequestUseSlot -= NotifyItemUseHandler;
+        _playerInventoryUI.OnRequestUseSlot += NotifyItemUseHandler;
+
         _playerInventoryUI.transform.SetParent(_inventoriesCanvasTr);
         _playerInventoryUI.transform.localPosition = new Vector3(-450, 0);
         _playerInventoryUI.gameObject.SetActive(false);
@@ -233,6 +242,9 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
                 Inventory playerInventory = new Inventory(newInventorySize, EInventoryType.PlayerInventory, 0);
                 //리스트 0번에 플레이어 인벤토리 넣기.
                 _inventoryList.Add(playerInventory);
+
+                OnRequestItemUse -= PlayerInventory.NotifyUseItem;
+                OnRequestItemUse += PlayerInventory.NotifyUseItem;
                 //Debug.Log($"플레이어 인벤토리 생성 | CurInvenCount : {_inventoryCount}");
                 //타입에 맞는 UI에 데이터 넣기.
                 //플레이어의 인벤토리는 세상에 단 한개임으로 바로 데이터를 집어 넣는 것이 관리하기 편할 것이라고 판단.
@@ -297,6 +309,12 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
         }
     }
 
+    public void NotifyItemUseHandler(int invenSlotIdx)
+    {
+        UDebug.Print($"Connect Inventorymanager | inven idx : {invenSlotIdx}");
+        //PlayerInventory.InventorySlots[invenSlotIdx]
+        OnRequestItemUse?.Invoke(invenSlotIdx);
+    }
 
     /// <summary>
     /// //여기서 실제 인벤토리들의 UI On / Off 호출
