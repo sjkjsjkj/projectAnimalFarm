@@ -32,33 +32,9 @@ public class NpcMoveTypePatrolMove : NpcMoveTypeBase
 
     public override Vector3 NextTargetFind()
     {
-        //UDebug.Print("AreaMoveNPC : NextTargetFind");
         _currentPatrolIndex = _currentPatrolIndex == _patrolTarget.Length - 1? 0 : _currentPatrolIndex + 1;
 
         return _patrolTarget[_currentPatrolIndex];
     }
     #endregion
 }
-
-/*int resultDir;
-        int diffX, diffY;
-        diffX = (int)(Mathf.Abs(transform.position.x - _nextMoveTarget.x));
-        diffY = (int)(Mathf.Abs(transform.position.y - _nextMoveTarget.y));
-        //diffX = (int)(Mathf.Abs(transform.position.x)- Mathf.Abs(_nextMoveTarget.x));
-        //diffY = (int)(Mathf.Abs(transform.position.y) - Mathf.Abs(_nextMoveTarget.y));
-
-        if (Mathf.Abs(diffX) >= Mathf.Abs(diffY))
-        {
-            resultDir = 1;
-            if (_nextMoveTarget.x >= 0.0f)
-            {
-                resultDir = 0;// _spRenderer.flipX = true;
-            }
-        }
-        else
-        {
-            resultDir = _nextMoveTarget.y >= 0.0f ? 3 : 2;
-        }
-        //UDebug.Print($"NextFaceDir : {resultDir}");
-        return resultDir;
-*/
