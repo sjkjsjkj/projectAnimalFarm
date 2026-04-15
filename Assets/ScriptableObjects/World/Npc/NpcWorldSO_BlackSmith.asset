@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00221066813a3a64a875cf667bf35ab0, type: 3}
+  m_Name: NpcWorldSO_BlackSmith
+  m_EditorClassIdentifier: 
+  _id: World_Npc_BlackSmith
+  _type: 0
+  _name: BlackSmith
+  _description: Npc BlackSmith
+  _rarity: 1
+  _image: {fileID: 4723107735738678597, guid: 27b5964dd2d9dbb48b668d3db7bbd402, type: 3}
+  _prefab: {fileID: 0}
+  _size: {x: 1, y: 1}
+  _animController: {fileID: 9100000, guid: 5015e7d1aeec722479df59f210b4a39a, type: 2}
+  _dialog: []
+  _initPosition: {x: 0, y: 0}
+  _moveSpeed: 0
+  _eNpcMoveType: 1
+  _sfxId_footStepSound: Sfx_Environment_StepTuff_01
+  _sfxId_buzzing: Sfx_Creature_Human_Idle_02

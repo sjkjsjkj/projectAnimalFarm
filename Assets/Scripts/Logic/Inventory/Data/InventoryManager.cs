@@ -131,7 +131,7 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
         if (rectTr != null)
         {
             rectTr.localScale = Vector3.one;
-            rectTr.anchoredPosition = Vector2.zero;
+            //rectTr.anchoredPosition = Vector2.zero;
         }
 
         //창고 UI 활성화
@@ -145,7 +145,7 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
         if (rectTr != null)
         {
             rectTr.localScale = Vector3.one;
-            rectTr.anchoredPosition = Vector2.zero;
+            //rectTr.anchoredPosition = Vector2.zero;
         }
 
         //먹이통 UI 활성화
@@ -159,14 +159,14 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
         if (rectTr != null)
         {
             rectTr.localScale = Vector3.one;
-            rectTr.anchoredPosition = Vector2.zero;
+            //rectTr.anchoredPosition = Vector2.zero;
         }
     }
     //각종 InteractObject에서 새로운 인벤토리 생성요청이 들어오면 이것을 실행하여 새로운 인벤토리를 생성함.
     public int RequestNewInventory(int newInventorySize, EInventoryType newInventoryType)
     {
         MakeNewInventory(newInventorySize, newInventoryType);
-        UDebug.Print($"current InventoryManager's Size : {_inventoryList.Count}");
+        //UDebug.Print($"current InventoryManager's Size : {_inventoryList.Count}");
         return _inventoryList.Count-1;
     }
     // 새로운 인벤토리를 만드는 메서드 (새로운 창고나 저장공간이 생길 때 마다 이것으로 추가)
@@ -182,7 +182,7 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
                 Inventory playerInventory = new Inventory(newInventorySize, EInventoryType.PlayerInventory, 0);
                 //리스트 0번에 플레이어 인벤토리 넣기.
                 _inventoryList.Add(playerInventory);
-                Debug.Log($"플레이어 인벤토리 생성 | CurInvenCount : {_inventoryCount}");
+                //Debug.Log($"플레이어 인벤토리 생성 | CurInvenCount : {_inventoryCount}");
                 //타입에 맞는 UI에 데이터 넣기.
                 //플레이어의 인벤토리는 세상에 단 한개임으로 바로 데이터를 집어 넣는 것이 관리하기 편할 것이라고 판단.
                 break;
@@ -190,12 +190,12 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
 
                 Inventory storageInventory = new Inventory(newInventorySize, EInventoryType.Storage, _inventoryList.Count);
                 _inventoryList.Add(storageInventory);
-                Debug.Log($"플레이어 창고 생성 | : {_inventoryList .Count-1+ "번째 인벤토리"}");
+                //Debug.Log($"플레이어 창고 생성 | : {_inventoryList .Count-1+ "번째 인벤토리"}");
                 break;
             case EInventoryType.FoodBox:
                 FoodBox foodBoxInventory = new FoodBox(newInventorySize, EInventoryType.FoodBox, _inventoryList.Count);
                 _inventoryList.Add(foodBoxInventory);
-                Debug.Log($"플레이어 창고 생성 | : {_inventoryList.Count - 1 + "번째 인벤토리"}");
+                //Debug.Log($"플레이어 창고 생성 | : {_inventoryList.Count - 1 + "번째 인벤토리"}");
                 break;
             default:
                 _inventoryList.Add(new Inventory(newInventorySize, invenType, _inventoryList.Count));
@@ -267,12 +267,14 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
                 _playerInventoryUI.SetToggleUI();
                 break;
             case EInventoryType.Storage:
+                OnChestOpen.Publish();
                 _currentOtherInventoryeId = id;
                 _storageUI.SetCurrentOpenInventoryId(id);
                 _storageUI.RefreshInventoryUI(_inventoryList[id]);
                 _storageUI.SetToggleUI();
                 break;
             case EInventoryType.FoodBox:
+                OnFeedBoxOpen.Publish();
                 _currentOtherInventoryeId = id;
                 _foodBoxUI.SetCurrentOpenInventoryId(id);
                 _foodBoxUI.RefreshInventoryUI(_inventoryList[id]);

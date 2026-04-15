@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 729023b480859c8409b1b43d501c8d63, type: 3}
   m_Name: NpcMoveTypeAreaSO_33
   m_EditorClassIdentifier: 
-  _minPos: {x: -3, y: -3}
-  _maxPos: {x: 3, y: 3}
+  _minPos: {x: -2, y: -1.5}
+  _maxPos: {x: 2, y: 1.5}

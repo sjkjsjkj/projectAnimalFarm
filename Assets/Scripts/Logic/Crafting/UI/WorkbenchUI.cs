@@ -42,7 +42,7 @@ public class WorkbenchUI : BaseMono, ICraftUI, IEscClosable
 
     public void SetInfo(Workbench workbench)
     {
-        UDebug.Print("셋인포");
+        //UDebug.Print("셋인포");
         _workbench = workbench;
 
         _workbench.OnChenageRecipe -= SetInfoPage;
@@ -105,6 +105,7 @@ public class WorkbenchUI : BaseMono, ICraftUI, IEscClosable
         _isOpen = !_isOpen;
         if (_isOpen)
         {
+            OnCraftingOpen.Publish();
             USound.PlaySfx(Id.Sfx_Ui_ChestOpen_2);
             ShowUI();
         }
@@ -173,31 +174,7 @@ public class WorkbenchUI : BaseMono, ICraftUI, IEscClosable
             Destroy(buttonClearTr.GetChild(i).gameObject);
         }
     }
-    //public void CloseUi()
-    //{
-    //    CloseUI();
-    //}
-    #endregion
-
-    #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
-    // ★ ShowUI/CloseUI에서 직접 Enter/Exit 처리하므로 OnEnable/OnDisable 제거
-    //private void OnEnable()
-    //{
-    //    EscManager.Ins.Enter(this);
-    //}
-    //
-    //// ★ SetActive(false) → EscManager 자동 해제
-    //private void OnDisable()
-    //{
-    //    EscManager.Ins.Exit(this);
-    //}
-
-    #endregion
-
-    #region ─────────────────────────▶ 중첩 타입 ◀─────────────────────────
-
-    #endregion
-
+    #endregion  
 
 
 }
