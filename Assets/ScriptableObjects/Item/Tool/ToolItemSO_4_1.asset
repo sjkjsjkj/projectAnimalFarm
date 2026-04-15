@@ -21,7 +21,8 @@ MonoBehaviour:
   _prefab: {fileID: 0}
   _sellPrice: 480
   _buyPrice: 0
-  _maxStack: 64
+  _maxStack: 1
+  _itemUseContexts: []
   _maxDurability: 300
   _currentLv: 1
   _range: 2
