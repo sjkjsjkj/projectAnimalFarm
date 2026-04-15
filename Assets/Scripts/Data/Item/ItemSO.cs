@@ -25,7 +25,7 @@ public abstract class ItemSO : UnitSO
     {
         for (int i = 0; i < _itemUseContexts.Length; i++)
         {
-            //_itemUseContexts[i].Use();
+            _itemUseContexts[i].TryUse();
         }
     }
     // 정상 값을 가지는지 검사

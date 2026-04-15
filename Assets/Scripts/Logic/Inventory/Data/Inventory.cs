@@ -53,30 +53,21 @@ public class Inventory
 
     #region ─────────────────────────▶ 외부 공개 ◀─────────────────────────
 
-    public bool TryUseItem(InventorySlot slot)
+    public void NotifyUseItem(int invenSlotIdx)
     {
-        if(slot.IsEmpty)
-        {
-            return false;
-        }
-        if(slot.ItemSO.ItemUseContext.Length==0)
-        {
-            return false;
-        }
-        slot.ItemSO.Use();
-        slot.RemoveAmount(1);
-
-        OnChangeSlot?.Invoke(EInventoryType.PlayerInventory, slot);
-        return false;
+        TryUseItem(invenSlotIdx);
     }
-    public bool TryuseItem(int invenSlotIdx)
+
+    public bool TryUseItem(int invenSlotIdx)
     {
         if (_inventorySlots[invenSlotIdx].IsEmpty)
         {
+            UDebug.Print("설마");
             return false;
         }
         if (_inventorySlots[invenSlotIdx].ItemSO.ItemUseContext.Length==0)
         {
+            UDebug.Print("여기라고?");
             return false;
         }
 
