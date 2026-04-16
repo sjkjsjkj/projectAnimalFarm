@@ -54,6 +54,7 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
 
 
     public event Action<int> OnRequestItemUse;
+    public event Action<int> OnRequestItemTrash;
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
@@ -131,6 +132,9 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
 
         _playerInventoryUI.OnRequestUseSlot -= NotifyItemUseHandler;
         _playerInventoryUI.OnRequestUseSlot += NotifyItemUseHandler;
+
+        _playerInventoryUI.OnRequestTrashSlot -= NotifyItemTrashHandler;
+        _playerInventoryUI.OnRequestTrashSlot += NotifyItemTrashHandler;
 
         _playerInventoryUI.transform.SetParent(_inventoriesCanvasTr);
         _playerInventoryUI.transform.localPosition = new Vector3(-450, 0);
@@ -245,6 +249,9 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
 
                 OnRequestItemUse -= PlayerInventory.NotifyUseItem;
                 OnRequestItemUse += PlayerInventory.NotifyUseItem;
+
+                OnRequestItemTrash -= PlayerInventory.NotifyTrashItem;
+                OnRequestItemTrash += PlayerInventory.NotifyTrashItem;
                 //Debug.Log($"플레이어 인벤토리 생성 | CurInvenCount : {_inventoryCount}");
                 //타입에 맞는 UI에 데이터 넣기.
                 //플레이어의 인벤토리는 세상에 단 한개임으로 바로 데이터를 집어 넣는 것이 관리하기 편할 것이라고 판단.
@@ -309,11 +316,21 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="invenSlotIdx"></param>
     public void NotifyItemUseHandler(int invenSlotIdx)
     {
         UDebug.Print($"Connect Inventorymanager | inven idx : {invenSlotIdx}");
         //PlayerInventory.InventorySlots[invenSlotIdx]
         OnRequestItemUse?.Invoke(invenSlotIdx);
+    }
+    public void NotifyItemTrashHandler(int invenSlotIdx)
+    {
+        UDebug.Print($"Connect Inventorymanager | inven idx : {invenSlotIdx}");
+        //PlayerInventory.InventorySlots[invenSlotIdx]
+        OnRequestItemTrash?.Invoke(invenSlotIdx);
     }
 
     /// <summary>
@@ -390,6 +407,7 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
             InventoryUIToggle(0, EInventoryType.PlayerInventory);
         }
     }
+    
     #endregion
 
     private void Update()
