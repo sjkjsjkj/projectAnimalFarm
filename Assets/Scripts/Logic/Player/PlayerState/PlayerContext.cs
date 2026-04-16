@@ -21,6 +21,7 @@ public readonly struct PlayerContext
     public readonly bool inputEating;
     public readonly bool inputWatering;
     public readonly bool inputCrouching;
+    public readonly bool inputWakeUp;
     // 부가 데이터
     public readonly Vector2 targetPos; // 바라봐야 할 좌표
     public readonly float duration; // 단발성 애니메이션 지속시간
@@ -31,7 +32,7 @@ public readonly struct PlayerContext
     public PlayerContext( Rigidbody2D rb, Transform tr, SpriteRenderer sprite, Animator anim,
         Vector2 inputMove, bool inputRun, bool inputFishing, bool inputMining, bool inputLogging,
         bool inputShovel, bool inputSickle, bool inputDrinking, bool inputEating, bool inputWatering,
-        bool inputCrouching, Vector2 targetPos, float duration, bool isSuccess, bool isCanceled)
+        bool inputCrouching, bool inputWakeUp, Vector2 targetPos, float duration, bool isSuccess, bool isCanceled)
     {
         this.rb = rb;
         this.tr = tr;
@@ -48,6 +49,7 @@ public readonly struct PlayerContext
         this.inputEating = inputEating;
         this.inputWatering = inputWatering;
         this.inputCrouching = inputCrouching;
+        this.inputWakeUp = inputWakeUp;
         this.targetPos = targetPos;
         this.duration = duration;
         this.isSuccess = isSuccess;

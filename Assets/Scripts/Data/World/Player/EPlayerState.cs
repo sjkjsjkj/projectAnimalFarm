@@ -16,4 +16,5 @@ public enum EPlayerState : byte
     Shovel = 10,
     Watering = 11,
     Crouching = 12,
+    WakeUp = 13,
 }

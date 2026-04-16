@@ -20,6 +20,8 @@ public class GameManager : GlobalSingleton<GameManager>
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
+    public bool IsSceneLoading { get; private set; }
+    public bool IsPlayerWakeUp { get; set; }
     public EScene Scene => _curScene;
     public int NextSpawnPointIndex { get; set; } = -1;
     public void BootComplete() => _isBooted = true;
@@ -195,6 +197,7 @@ public class GameManager : GlobalSingleton<GameManager>
         EScene nextScene = (EScene)SceneUtility.GetBuildIndexByScenePath(nextScenePath);
         OnSceneLoadStart.Publish(prevScene, nextScene);
         _curScene = nextScene;
+        IsSceneLoading = true;
     }
     // 씬 로드 후처리
     private void PostProcessing(EScene prevScene, string nextScenePath)
@@ -215,6 +218,7 @@ public class GameManager : GlobalSingleton<GameManager>
         }
         PublishLoadEnd(prevScene, nextScene);
         _curScene = nextScene;
+        IsSceneLoading = false;
     }
 
     // 씬 유효성 검증

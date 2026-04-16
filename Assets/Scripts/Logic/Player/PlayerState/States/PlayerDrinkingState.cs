@@ -2,7 +2,7 @@
 
 public class PlayerDrinkingState : PlayerOneTime
 {
-    private const string DRINKING_PARAM = "Eating";
+    private const string DRINKING_PARAM = "Drinking";
     private const float CLIP_LENGTH = 1f;
 
     private readonly int _hashDrinking = Animator.StringToHash(DRINKING_PARAM);

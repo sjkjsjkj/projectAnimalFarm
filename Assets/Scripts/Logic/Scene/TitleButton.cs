@@ -12,7 +12,9 @@ public class TitleButton : BaseMono
         UDebug.Print($"게임 스타트 버튼을 클릭했습니다.");
         ClearAllSaveData();
         DataManager.Ins.ResetGameData();
-        GameManager.Ins.LoadSceneAsyncWithFade((int)EScene.Main);
+        var game = GameManager.Ins;
+        game.LoadSceneAsyncWithFade((int)EScene.Main);
+        game.IsPlayerWakeUp = true;
     }
 
     public void GameLoad()
