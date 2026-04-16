@@ -740,6 +740,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         TryResolveFeedbackRelayIfMissing();
 
         string progressMessage = GetProgressFeedbackMessage();
+        bool handledByRelay = false;
 
         if (_feedbackRelay != null)
         {
@@ -748,17 +749,17 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
                 if (!string.IsNullOrWhiteSpace(progressMessage))
                 {
                     _feedbackRelay.ShowWarningFeedback(progressMessage);
-                    return;
+                    handledByRelay = true;
                 }
             }
             else
             {
                 _feedbackRelay.OnCollectStarted();
-                return;
+                handledByRelay = true;
             }
         }
 
-        if (!string.IsNullOrWhiteSpace(progressMessage))
+        if (!handledByRelay && !string.IsNullOrWhiteSpace(progressMessage))
         {
             if (_onFeedbackMessage != null)
             {
@@ -781,6 +782,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         {
             _feedbackRelay.OnCollected();
             _pendingLocalCollectedSuccessMessage = string.Empty;
+            _onCollected?.Invoke();
             return;
         }
 
@@ -788,6 +790,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         {
             NotifySuccessFeedback(_pendingLocalCollectedSuccessMessage);
             _pendingLocalCollectedSuccessMessage = string.Empty;
+            _onCollected?.Invoke();
             return;
         }
 
@@ -803,6 +806,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         if (_feedbackRelay != null)
         {
             _feedbackRelay.ShowWarningFeedback(resolvedMessage);
+            _onCollectCanceled?.Invoke();
             return;
         }
 
@@ -1819,22 +1823,26 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
                 if (isRarityLow)
                 {
                     _feedbackRelay.OnMiningToolRarityLow();
+                    _onCollectFailed?.Invoke();
                     return;
                 }
 
                 if (requiredToolType == EType.PickaxeItem)
                 {
                     _feedbackRelay.OnMiningNoPickaxe();
+                    _onCollectFailed?.Invoke();
                     return;
                 }
 
                 _feedbackRelay.OnMiningFailed();
+                _onCollectFailed?.Invoke();
                 return;
             }
 
             if (isRarityLow)
             {
                 _feedbackRelay.OnCollectToolRarityLow();
+                _onCollectFailed?.Invoke();
                 return;
             }
 
@@ -1842,22 +1850,27 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             {
                 case EType.PickaxeItem:
                     _feedbackRelay.OnCollectNeedPickaxe();
+                    _onCollectFailed?.Invoke();
                     return;
 
                 case EType.ShovelItem:
                     _feedbackRelay.OnCollectNeedShovel();
+                    _onCollectFailed?.Invoke();
                     return;
 
                 case EType.SickleItem:
                     _feedbackRelay.OnCollectNeedSickle();
+                    _onCollectFailed?.Invoke();
                     return;
 
                 case EType.AxeItem:
                     _feedbackRelay.OnCollectNeedAxe();
+                    _onCollectFailed?.Invoke();
                     return;
             }
 
             _feedbackRelay.OnCollectFailed();
+            _onCollectFailed?.Invoke();
             return;
         }
 
@@ -1872,10 +1885,12 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         if (_feedbackRelay != null)
         {
             _feedbackRelay.OnInventoryFull();
+            _onCollectFailed?.Invoke();
             return;
         }
 
         NotifyFailureFeedback("인벤토리가 가득 찼습니다.");
+        _onCollectFailed?.Invoke();
     }
 
     private void ShowGeneralCollectFailFeedback()
@@ -1893,6 +1908,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
                 _feedbackRelay.OnCollectFailed();
             }
 
+            _onCollectFailed?.Invoke();
             return;
         }
 
