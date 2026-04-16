@@ -112,6 +112,7 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         }
         _isSaving = true;
         CollectObjectsAndSaveJson(ctx.prevScene);
+        SaveDataManager();
         SaveDynamicData(ctx.prevScene);
         _isSaving = false;
     }

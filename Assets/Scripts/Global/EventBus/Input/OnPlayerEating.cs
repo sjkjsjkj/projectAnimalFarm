@@ -4,18 +4,15 @@
 public readonly struct OnPlayerEating
 {
     public readonly float eatingTime;
-    public readonly float duration;
 
-    public OnPlayerEating(float eatingTime, float duration)
+    public OnPlayerEating(float eatingTime)
     {
         this.eatingTime = eatingTime;
-        this.duration = duration;
     }
 
-    /// <param name="eatingTime">나무 좌표</param>
-    /// /// <param name="duration">애니메이션 지속시간</param>
-    public static void Publish(float eatingTime, float duration)
+    /// <param name="eatingTime">애니메이션 지속 시간</param>
+    public static void Publish(float eatingTime)
     {
-        EventBus<OnPlayerEating>.Publish(new OnPlayerEating(eatingTime, duration));
+        EventBus<OnPlayerEating>.Publish(new OnPlayerEating(eatingTime));
     }
 }
