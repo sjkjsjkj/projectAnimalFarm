@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: Item_Seed_Broccoli
   _type: 3
-  _name: "\uBE0C\uB85C\uCF5C\uB9AC"
+  _name: "\uBE0C\uB85C\uCF5C\uB9AC \uC528\uC557"
   _description: "\uD48D\uC131\uD558\uACE0 \uC9D9\uC740 \uB179\uC0C9 \uAF43\uBD09\uC624\uB9AC\uAC00
     \uC790\uB77C\uB0A9\uB2C8\uB2E4."
   _rarity: 5

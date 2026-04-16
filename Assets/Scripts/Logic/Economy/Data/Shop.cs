@@ -49,6 +49,7 @@ public class Shop : IShopLogical
 
         if (!(playerInven.CheckSlots()))
         {
+            OnFeedbackMessageRequested.Publish("인벤토리가 가득 찼습니다.", EFeedbackMessageType.Failure, 1.5f);
             message = "인벤토리가 가득 찼습니다.";
             UDebug.Print(message);
             return false;
@@ -58,7 +59,7 @@ public class Shop : IShopLogical
 
         ItemSO tempItemSO = DatabaseManager.Ins.Item(itemId);
         ItemCollectionCoordinator.Ins.TryCollectItem(tempItemSO, amount);
-
+        OnFeedbackMessageRequested.Publish($"{tempItemSO.Name} 구매 성공!", EFeedbackMessageType.Success, 1.5f);
         message = "구매 성공";
         UDebug.Print(message);
         return true;
@@ -74,12 +75,13 @@ public class Shop : IShopLogical
 
         if(!(playerInven.TryRemoveItem(itemId)))
         {
+            OnFeedbackMessageRequested.Publish("해당 아이템이 인벤토리에 없습니다.", EFeedbackMessageType.Failure, 1.5f);
             failMessage = "해당 아이템이 인벤토리에 없습니다.";
             return false;
 
         }
         failMessage = "판매 성공";
-
+        //OnFeedbackMessageRequested.Publish($"판매 성공!", EFeedbackMessageType.Success, 1.5f);
         DataManager.Ins.Player.AddMoney(sellPrice);
         return true;
     }

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: Item_Seed_Radish
   _type: 3
-  _name: "\uBB34"
+  _name: "\uBB34 \uC528\uC557"
   _description: "\uC218\uBD84\uC744 \uB4EC\uBFCD \uBA38\uAE08\uC740 \uAD75\uACE0
     \uC544\uC0AD\uD55C \uBFCC\uB9AC\uCC44\uC18C\uC785\uB2C8\uB2E4."
   _rarity: 3

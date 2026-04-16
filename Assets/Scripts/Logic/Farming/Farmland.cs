@@ -139,8 +139,18 @@ public class Farmland
         switch (_state)
         {
             case EFarmlandState.IdleLand:
+                if(InventoryManager.Ins.PlayerInventory.FindItemType(EType.ShovelItem) == -1)
+                {
+                    OnFeedbackMessageRequested.Publish("밭을 갈기 위해선 삽이 필요합니다.", EFeedbackMessageType.Failure, 1.5f);
+                    return false;
+                }
                 return true;
             case EFarmlandState.SeededLand:
+                if (InventoryManager.Ins.PlayerInventory.FindItemType(EType.WateringCan) == -1)
+                {
+                    OnFeedbackMessageRequested.Publish("물을 주기 위해선 물뿌리개가 필요합니다.", EFeedbackMessageType.Failure, 1.5f);
+                    return false;
+                }
                 //Todo:플레이어의 물뿌리개 레벨이..
                 return true;
             case EFarmlandState.SoiledLand:
@@ -154,6 +164,11 @@ public class Farmland
 
                 return false;
             case EFarmlandState.GrownUp:
+                if (InventoryManager.Ins.PlayerInventory.FindItemType(EType.SickleItem) == -1)
+                {
+                    OnFeedbackMessageRequested.Publish("농작물을 수확하기 위해선 낫이 필요합니다.", EFeedbackMessageType.Failure, 1.5f);
+                    return false;
+                }
                 return true;
             default:
                 UDebug.Print("있을 수 없는 일");
@@ -273,6 +288,7 @@ public class Farmland
             Vector3 pos = _farmlandObjectProvider.GetFarmlandObject(_pos).transform.position;
             OnPlayerCanceled.Publish();
             OnPlayerSickle.Publish(pos, 0.15f);
+            OnFeedbackMessageRequested.Publish($"농작물 수확.", EFeedbackMessageType.Success, 1.5f);
         }
         SetClear();
     }
