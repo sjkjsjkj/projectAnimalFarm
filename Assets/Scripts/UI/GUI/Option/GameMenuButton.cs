@@ -1,5 +1,4 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// 게임 메뉴 버튼 로직을 제공합니다.
@@ -7,21 +6,39 @@ using UnityEngine;
 public class GameMenuButton : BaseMono, IEscClosable
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
-    [SerializeField] private GameMenuScreen _resolutionWindow;
-    [SerializeField] private GameMenuAudio _audioWindow;
+    [SerializeField] private GameMenu _gameMenu;
+    //[SerializeField] private GameMenuScreen _resolutionWindow;
+    //[SerializeField] private GameMenuAudio _audioWindow;
     #endregion
 
-    #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
+    #region ─────────────────────────▶ 접근자 ◀─────────────────────────
+    public bool CanCloseWithEsc => true;
+    #endregion
+
+
+    #region ─────────────────────────▶ 외부 메서드 ◀─────────────────────────
     public void ResolutionButton()
     {
         UDebug.Print($"해상도 버튼 클릭");
-        UObject.SetActive(_resolutionWindow.gameObject, true);
+        //UObject.SetActive(_resolutionWindow.gameObject, true);
+        if (_gameMenu == null)
+        {
+            return;
+        }
+
+        _gameMenu.OpenResolutionWindow();
     }
  
     public void AudioButton()
     {
         UDebug.Print($"오디오 버튼 클릭");
-        UObject.SetActive(_audioWindow.gameObject, true);
+        //UObject.SetActive(_audioWindow.gameObject, true);
+        if (_gameMenu == null)
+        {
+            return;
+        }
+
+        _gameMenu.OpenAudioWindow();
     }
 
     public void TitleButton()
@@ -37,18 +54,28 @@ public class GameMenuButton : BaseMono, IEscClosable
 #else
         Application.Quit(); // 게임 종료
 #endif
-        UDebug.Print($"해상도 버튼 클릭");
+        UDebug.Print($"게임 종료 버튼 클릭");
     }
 
     public void CloseUi()
     {
-        UObject.SetActive(gameObject, false);
+        if (_gameMenu != null)
+        {
+            UObject.SetActive(gameObject, false);
+            //_gameMenu.CloseAllWindows();
+            EscManager.Ins.Exit(this);
+            return;
+        }
+
+        //UObject.SetActive(gameObject, false);
+        //EscManager.Ins.Exit(this);
+        _gameMenu.CloseAllWindows();
     }
 
     public void CloseButton()
     {
         CloseUi();
-        EscManager.Ins.Exit(this);
+        //EscManager.Ins.Exit(this);
     }
     #endregion
 

@@ -7,8 +7,13 @@ using UnityEngine.UI;
 public class GameMenuScreen : BaseMono, IEscClosable
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
+    [SerializeField] private GameMenu _gameMenu;
     [SerializeField] private Toggle[] _resolutionField = new Toggle[4];
     [SerializeField] private Toggle _fullScreen;
+    #endregion
+
+    #region ─────────────────────────▶ 접근자 ◀─────────────────────────
+    public bool CanCloseWithEsc => true;
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
@@ -20,15 +25,24 @@ public class GameMenuScreen : BaseMono, IEscClosable
     };
     #endregion
 
-    #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
+    #region ─────────────────────────▶ 외부 메서드 ◀─────────────────────────
     public void CloseUi()
     {
-        UObject.SetActive(gameObject, false);
+        EscManager.Ins.Exit(this);
+
+        if (_gameMenu == null)
+        {
+            UObject.SetActive(gameObject, false);
+            return;
+        }
+
+        _gameMenu.OpenMenu();
     }
+
     public void CloseButton()
     {
         CloseUi();
-        EscManager.Ins.Exit(this);
+        //EscManager.Ins.Exit(this);
     }
     #endregion
 
@@ -101,6 +115,19 @@ public class GameMenuScreen : BaseMono, IEscClosable
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
+    protected override void Awake()
+    {
+        base.Awake();
+
+        UDebug.IsNull(_gameMenu);
+        UDebug.IsNull(_fullScreen);
+
+        for (int i = 0; i < _resolutionField.Length; i++)
+        {
+            UDebug.IsNull(_resolutionField[i]);
+        }
+    }
+
     private void OnEnable()
     {
         // 해상도 변화 구독
@@ -115,15 +142,22 @@ public class GameMenuScreen : BaseMono, IEscClosable
         for (int i = 0; i < _resolutionField.Length; i++)
         {
             _resolutionField[i].SetIsOnWithoutNotify(i == curIndex); // Ui 초기 갱신
+
             int index = i; // 지역 변수에 복사
+
             _resolutionField[i].onValueChanged.AddListener(
                 (isOn) =>
                 {
-                    if (!isOn) return; // 토글이 켜질 때만 반응
+                    if (isOn == false) // 토글이 켜질 때만 반응
+                    {
+                        return;
+                    }
+
                     ResolutionToggleHandle(index);
                 }
             );
         }
+
         _fullScreen.onValueChanged.AddListener(FullScreenToggleHandle);
     }
 
@@ -133,9 +167,18 @@ public class GameMenuScreen : BaseMono, IEscClosable
         // 구독 해제
         for (int i = 0; i < _resolutionField.Length; i++)
         {
+            if (_resolutionField[i] == null)
+            {
+                continue;
+            }
+
             _resolutionField[i].onValueChanged.RemoveAllListeners();
         }
-        _fullScreen.onValueChanged.RemoveAllListeners();
+
+        if (_fullScreen != null)
+        {
+            _fullScreen.onValueChanged.RemoveAllListeners();
+        }
     }
     #endregion
 }

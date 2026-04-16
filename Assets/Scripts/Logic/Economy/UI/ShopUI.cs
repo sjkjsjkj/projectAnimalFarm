@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// 상점의 UI 입니다.
@@ -8,6 +9,8 @@ public class ShopUI : BaseMono, IEscClosable
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [SerializeField] private UIShopSlotItem _sellItemSlotPrefab;
     [SerializeField] private Transform _sellItemSlotTransform;
+
+    [SerializeField] private Button _closeButton;
     #endregion.
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
@@ -15,9 +18,10 @@ public class ShopUI : BaseMono, IEscClosable
     private ItemSO[] _sellItems;
     private Shop _shop;
     private bool _isOpen=false;
+    #endregion
 
+    #region ─────────────────────────▶ 접근자 ◀─────────────────────────────
     public bool IsOpen => _isOpen;
-
     public bool CanCloseWithEsc => true;
     #endregion
 
@@ -33,6 +37,29 @@ public class ShopUI : BaseMono, IEscClosable
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
+    /// <summary>
+    /// 닫기 버튼 클릭 이벤트를 연결합니다.
+    /// </summary>
+    private void BindButton()
+    {
+        if (_closeButton == null)
+        {
+            return;
+        }
+
+        _closeButton.onClick.RemoveListener(HandleClickCloseButton);
+        _closeButton.onClick.AddListener(HandleClickCloseButton);
+    }
+
+    /// <summary>
+    /// 닫기 버튼 클릭 시 호출됩니다.
+    /// ESC 닫기와 동일한 흐름을 사용합니다.
+    /// </summary>
+    private void HandleClickCloseButton()
+    {
+        CloseUi();
+    }
+
     private void SettingSlot()
     {
         for (int i = _sellItemSlotTransform.childCount - 1; i >=0; i--)
@@ -46,6 +73,7 @@ public class ShopUI : BaseMono, IEscClosable
             _uiShopSlotItems[i].Setup(i, _sellItems[i].Image, HandleClickBuy, HandleClickSell, _sellItems[i].SellPrice, _sellItems[i].BuyPrice);
         }
     }
+
     private void HandleClickBuy(int slotIndex)
     {
         if (_shop.TryBuyItem(_sellItems[slotIndex].Id, _sellItems[slotIndex].SellPrice, 1, out string message))
@@ -151,7 +179,21 @@ public class ShopUI : BaseMono, IEscClosable
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
+    protected override void Awake()
+    {
+        base.Awake();
+        BindButton();
+    }
 
+    private void OnDestroy()
+    {
+        if (_closeButton == null)
+        {
+            return;
+        }
+
+        _closeButton.onClick.RemoveListener(HandleClickCloseButton);
+    }
     #endregion
 
     #region ─────────────────────────▶ 중첩 타입 ◀─────────────────────────

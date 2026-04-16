@@ -9,7 +9,7 @@ public abstract class ItemSO : UnitSO
     [Header("아이템 기본 정보")]
     [SerializeField] protected int _sellPrice = 100; // 판매 가격
     [SerializeField] protected int _buyPrice = 200; // 구매 가격
-    [SerializeField] protected int _maxStack = 64; // 최대 중첩 수
+    [SerializeField] protected int _maxStack = 99; // 최대 중첩 수
 
     // 인터페이스가 아닌 SO인 이유는 SO는 인스펙터창에서 넣고 빼는게 가능하기 때문에 개발 기간을 줄이기 위함.
     [SerializeField] protected ItemUseContextSO[] _itemUseContexts; 
