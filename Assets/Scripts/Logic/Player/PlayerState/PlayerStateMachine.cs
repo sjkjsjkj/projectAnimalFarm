@@ -113,7 +113,8 @@ public class PlayerStateMachine
         }
         if (context.inputMove != Vector2.zero) // 걷거나 달리기
         {
-            return context.inputRun ? _run : _walk;
+            var player = DataManager.Ins.Player;
+            return (context.inputRun && player.CurThirst > 0f) ? _run : _walk;
         }
         // 입력이 없을 경우
         return _idle;

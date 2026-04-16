@@ -5,6 +5,8 @@ public class PlayerWalkState : IPlayerState
 {
     [Header("걸음 설정")]
     [SerializeField] private float _stepSoundInterval = 0.2f;
+    [SerializeField] private float _speedRatioThirsty = 0.6f;
+    [SerializeField] private float _animSpeedMultiply = 1f;
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private const string ACTION_SPEED_PARAM = "fActionSpeed";
@@ -19,6 +21,7 @@ public class PlayerWalkState : IPlayerState
 
     private float _nextStepTime;
     private Vector2 _prevPos;
+    private bool _isSlow;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -28,12 +31,25 @@ public class PlayerWalkState : IPlayerState
         context.anim.SetFloat(_hashActionSpeed, 1f);
         context.anim.SetFloat(_hashSpeed, 0.5f); // Walk
         context.anim.Play(_hashLocomotion);
+        context.anim.speed = _animSpeedMultiply;
         _prevPos = context.tr.position; // 기록용
         return false;
     }
 
     public bool Frame(in PlayerContext context)
     {
+        // 목마름 검사
+        var player = DataManager.Ins.Player;
+        if (!_isSlow && player.CurThirst <= 0f)
+        {
+            _isSlow = true;
+            context.anim.speed = _animSpeedMultiply * _speedRatioThirsty;
+        }
+        else if(_isSlow && player.CurThirst > 0f)
+        {
+            _isSlow = false;
+            context.anim.speed = _animSpeedMultiply;
+        }
         // 기록용
         Vector2 curPos = context.tr.position;
         float movement = Vector2.Distance(curPos, _prevPos);
@@ -44,6 +60,10 @@ public class PlayerWalkState : IPlayerState
         Vector2 size = DatabaseManager.Ins.Player(Id.World_Player).Size;
         Vector2 dir = context.inputMove.normalized;
         float speed = DataManager.Ins.Player.CurWalkSpeed;
+        if (_isSlow)
+        {
+            speed *= _speedRatioThirsty;
+        }
         // 실제 속도 적용
         context.rb.velocity = TileManager.Ins.Tile.GetValidVelocity(pos, size, dir, speed);
         // 이동이 있을 경우 방향 설정
@@ -54,10 +74,18 @@ public class PlayerWalkState : IPlayerState
             UPlayer.SetSpriteFacing(context.sprite, dir);
         }
         // 발자국 소리 재생
-        UPlayer.TryPlayStepSound(ref _nextStepTime, _stepSoundInterval, pos);
+        float interval = _stepSoundInterval;
+        if (_isSlow)
+        {
+            interval *= _speedRatioThirsty;
+        }
+        UPlayer.TryPlayStepSound(ref _nextStepTime, interval, pos);
         return false;
     }
 
-    public void Exit(in PlayerContext context) { }
+    public void Exit(in PlayerContext context)
+    {
+        context.anim.speed = 1f;
+    }
     #endregion
 }
