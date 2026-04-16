@@ -54,6 +54,10 @@ public class Inventory
     {
         TryUseItem(invenSlotIdx);
     }
+    public void NotifyTrashItem(int invenSlotIdx)
+    {
+        ItemSlotClear(invenSlotIdx);
+    }
 
     public bool TryUseItem(int invenSlotIdx)
     {
