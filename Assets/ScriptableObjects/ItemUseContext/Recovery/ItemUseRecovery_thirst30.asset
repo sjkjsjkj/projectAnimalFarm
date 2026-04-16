@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8be9aada95de176409f46e55a49f94f8, type: 3}
   m_Name: ItemUseRecovery_thirst30
   m_EditorClassIdentifier: 
-  _hungerRecoveryAmount: 30
-  _thirstRecoveryAmount: 0
+  _hungerRecoveryAmount: 0
+  _thirstRecoveryAmount: 30
+  _isDrink: 0
