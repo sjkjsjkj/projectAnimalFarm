@@ -10,15 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2c022c5127670c48a898afb5e92d602, type: 3}
-  m_Name: StaticItemSO_stone_with_minerals_30
+  m_Name: StaticItemSO_Pig_Pink_0
   m_EditorClassIdentifier: 
-  _id: stone with minerals_30
-  _type: 8
-  _name: "\uD751\uC694\uC11D"
-  _description: "\uB0A0\uCF54\uB85C\uC6B4 \uD654\uC0B0 \uC720\uB9AC"
+  _id: Pig Pink_0
+  _type: 26
+  _name: "\uD551\uD06C \uB3FC\uC9C0"
+  _description: "\uC0AC\uB791\uC2A4\uB7EC\uC6B4 \uBD84\uD64D\uBE5B \uB3FC\uC9C0\uB2E4."
   _rarity: 2
-  _image: {fileID: 21300000, guid: 67317d36cc24dcd408c5466a73e38824, type: 2}
+  _image: {fileID: 21300000, guid: 9712e30661a024d4aa596cd4fc54b7d5, type: 2}
   _prefab: {fileID: 0}
-  _sellPrice: 260
-  _buyPrice: 0
-  _maxStack: 64
+  _sellPrice: 240
+  _buyPrice: 300
+  _maxStack: 1
+  _itemUseContexts:
+  - {fileID: 11400000, guid: 4bf07aeb7aa10794f895cbbb2db4594a, type: 2}

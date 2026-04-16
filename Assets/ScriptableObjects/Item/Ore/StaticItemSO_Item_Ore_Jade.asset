@@ -10,15 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2c022c5127670c48a898afb5e92d602, type: 3}
-  m_Name: StaticItemSO_stone_with_minerals_22
+  m_Name: StaticItemSO_Item_Ore_Jade
   m_EditorClassIdentifier: 
-  _id: stone with minerals_22
+  _id: stone with minerals_26
   _type: 8
-  _name: "\uC2A4\uB9D0\uD0C0\uC774\uD2B8"
-  _description: "\uC8FC\uD669\uBE5B\uC774 \uB3C4\uB294 \uAD11\uC11D"
-  _rarity: 3
-  _image: {fileID: 21300000, guid: 4c8075285b6231e4e80ae2a4cd97ff16, type: 2}
+  _name: "\uBE44\uCDE8"
+  _description: "\uAE4A\uC740 \uBCF4\uB77C\uC0C9\uC758 \uAD11\uBB3C"
+  _rarity: 4
+  _image: {fileID: 21300000, guid: 524d8bcc02ba3fd478088325392d0866, type: 2}
   _prefab: {fileID: 0}
-  _sellPrice: 480
-  _buyPrice: 0
-  _maxStack: 64
+  _sellPrice: 4000
+  _buyPrice: 48
+  _maxStack: 99
+  _itemUseContexts: []

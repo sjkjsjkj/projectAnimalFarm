@@ -12,12 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a73e627a6ff16a848b85db166f5be6b9, type: 3}
   m_Name: AnimalItemTableSO
   m_EditorClassIdentifier: 
-  _elements:
-  - {fileID: 11400000, guid: 453e7da44119f0d4685fa94051cff399, type: 2}
-  - {fileID: 11400000, guid: 1bba29d03f2eaaa4297866a84ff87c20, type: 2}
-  - {fileID: 11400000, guid: 95a5452883253e740a0e513026a7879e, type: 2}
-  - {fileID: 11400000, guid: 43235b1361ce2e942857e4c1f0839da1, type: 2}
-  - {fileID: 11400000, guid: 0ca76c137a251c24fa27738fce45e72d, type: 2}
-  - {fileID: 11400000, guid: d00c8b3becdb6a04eb636a34973588d1, type: 2}
-  - {fileID: 11400000, guid: da3a69a31d9f1ab4fb9823d38c4c41aa, type: 2}
-  - {fileID: 11400000, guid: 67c8a0a4dc17bb942b8365e38930e793, type: 2}
+  _elements: []

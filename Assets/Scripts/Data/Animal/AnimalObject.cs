@@ -59,6 +59,7 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
         data.productItemId = _productItemId;
         data.isProductFinish = _isProductFinish;
 
+
         data.pos = this.transform.position;
         data.rot = this.transform.rotation;
         return JsonUtility.ToJson(data, true);
@@ -85,8 +86,6 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
         this._productItemId = data.productItemId;
         this._isProductFinish = data.isProductFinish;
 
-        
-
         this._actionInterval = K.ANIMAL_ACTION_INTERVAL;
         this._tickInterval = K.ANIMAL_TICK_INTERVAL;
         this.transform.position = data.pos;
@@ -94,7 +93,7 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
 
         ConnectionEvent();
         SetSfxIdSetting();
-        this._productFinishIcon.gameObject.SetActive(data.data.ProductProgress >= K.MAX_PRODUCT_PROGRESS);
+        this._productFinishIcon.gameObject.SetActive(data.data.ProductProgress >= data.data.MaxProductProgress);
     }
     public bool CanInteract(GameObject player)
     {

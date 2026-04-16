@@ -20,7 +20,7 @@ public class AnimalWorldSO : WorldSO
     [SerializeField] protected string _productId = null; // 생산하는 아이템 ID
     [SerializeField] protected int _productMinCount = 1; // 한 번에 생산하는 아이템 최소 개수
     [SerializeField] protected int _productMaxCount = 1; // 한 번에 생산하는 아이템 최대 개수
-    [SerializeField] protected float _productTime = 100f; // 생산에 걸리는 시간
+    [SerializeField] protected int _productTime = 5; // 생산에 걸리는 틱 수
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -32,7 +32,7 @@ public class AnimalWorldSO : WorldSO
     public string ProductId => _productId;
     public int ProductMinCount => _productMinCount;
     public int ProductMaxCount => _productMaxCount;
-    public float ProductTime => _productTime;
+    public int ProductTime => _productTime;
 
 
     // 정상 값을 가지는지 검사

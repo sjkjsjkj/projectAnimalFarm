@@ -405,8 +405,8 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
             case EType.FeedItem:
                 tempSO = DatabaseManager.Ins.FeedItem(unitSO.Id);
                 break;
-            case EType.AnimalItem:
-                tempSO = DatabaseManager.Ins.AnimalItem(unitSO.Id);
+            //case EType.AnimalItem:
+            //    tempSO = DatabaseManager.Ins.AnimalItem(unitSO.Id);
                 break;
             case EType.FoodItem:
                 tempSO  =DatabaseManager.Ins.ConsumeItem(unitSO.Id);
@@ -415,6 +415,7 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
             case EType.WoodItem:
             case EType.FishItem:
             case EType.OreItem:
+            case EType.AnimalItem:
                 tempSO = DatabaseManager.Ins.StaticItem(unitSO.Id);
                 break;
             default:

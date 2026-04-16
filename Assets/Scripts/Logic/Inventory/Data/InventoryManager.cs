@@ -137,7 +137,7 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
         _playerInventoryUI.OnRequestTrashSlot += NotifyItemTrashHandler;
 
         _playerInventoryUI.transform.SetParent(_inventoriesCanvasTr);
-        _playerInventoryUI.transform.localPosition = new Vector3(-450, 0);
+        //_playerInventoryUI.transform.localPosition = new Vector3(-450, 0);
         _playerInventoryUI.gameObject.SetActive(false);
         // 재조정
         RectTransform rectTr = _playerInventoryUI.GetComponent<RectTransform>();
@@ -151,7 +151,7 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
         _storageUI = Instantiate(_storagePrefab);
         _storageUI.SetSize(K.STORAGE_INVENTORY_SIZE);
         _storageUI.transform.SetParent(_inventoriesCanvasTr);
-        _storageUI.transform.localPosition = new Vector3(450, 0);
+        //_storageUI.transform.localPosition = new Vector3(450, 0);
         _storageUI.gameObject.SetActive(false);
         // 재조정
         rectTr = _storageUI.GetComponent<RectTransform>();
@@ -165,7 +165,7 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
         _foodBoxUI = Instantiate(_foodBoxPrefab);
         _foodBoxUI.SetSize(K.FOODBOX_INVENTORY_SIZE);
         _foodBoxUI.transform.SetParent(_inventoriesCanvasTr);
-        _foodBoxUI.transform.localPosition = new Vector3(450, 0);
+        //_foodBoxUI.transform.localPosition = new Vector3(450, 0);
         _foodBoxUI.gameObject.SetActive(false);
         // 재조정
         rectTr = _foodBoxUI.GetComponent<RectTransform>();

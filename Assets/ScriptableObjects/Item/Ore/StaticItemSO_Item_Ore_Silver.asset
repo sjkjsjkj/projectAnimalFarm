@@ -10,17 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2c022c5127670c48a898afb5e92d602, type: 3}
-  m_Name: StaticItemSO_Sheep_Male_0
+  m_Name: StaticItemSO_Item_Ore_Silver
   m_EditorClassIdentifier: 
-  _id: Sheep Male_0
-  _type: 26
-  _name: "\uC591(\u2642)"
-  _description: "\uD2BC\uD2BC\uD55C \uCCB4\uACA9\uC758 \uC218\uCEF7 \uC591\uC774\uB2E4."
+  _id: stone with minerals_25
+  _type: 8
+  _name: "\uC740"
+  _description: "\uBE5B\uB098\uB294 \uAE08\uC18D \uC790\uC6D0"
   _rarity: 1
-  _image: {fileID: 21300000, guid: 68f281ffeab51494982a715b25115f26, type: 2}
+  _image: {fileID: 21300000, guid: 389776d60f1e01b459783b64481666be, type: 2}
   _prefab: {fileID: 0}
-  _sellPrice: 320
-  _buyPrice: 400
-  _maxStack: 1
-  _itemUseContexts:
-  - {fileID: 11400000, guid: bf1ebff0d1ac59f4385aed20fa205a32, type: 2}
+  _sellPrice: 700
+  _buyPrice: 27
+  _maxStack: 99
+  _itemUseContexts: []

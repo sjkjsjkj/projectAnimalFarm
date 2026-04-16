@@ -21,9 +21,9 @@ MonoBehaviour:
   _prefab: {fileID: 0}
   _size: {x: 1, y: 1}
   _shopItems:
-  - {fileID: 11400000, guid: 0de2dcd547dba114481454b3f1abda87, type: 2}
-  - {fileID: 11400000, guid: 439fc30a462d17d44acf3bbb6ba179dd, type: 2}
   - {fileID: 11400000, guid: aa4c76cf42205a14db2085952f657982, type: 2}
   - {fileID: 11400000, guid: ff3ad577b27d67b429562dbc0f40b07d, type: 2}
   - {fileID: 11400000, guid: 64d9c40e39df55648a1c77dc865bbeea, type: 2}
   - {fileID: 11400000, guid: 1fe37401fe36de945a8bf960a9291a7b, type: 2}
+  - {fileID: 11400000, guid: 0de2dcd547dba114481454b3f1abda87, type: 2}
+  - {fileID: 11400000, guid: 439fc30a462d17d44acf3bbb6ba179dd, type: 2}

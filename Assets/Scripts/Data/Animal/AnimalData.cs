@@ -17,6 +17,7 @@ public class AnimalData
     [SerializeField] private float _hunger;            // 현재 허기짐 정도
     [SerializeField] private float _foodConsumeAmount; // 음식을 얼마나 섭취하는지 (1틱당 소모되는 허기짐)
     [SerializeField] private int _productProgress;
+    [SerializeField] private int _maxProductProgress;
     [SerializeField] private Vector2 _size;
     #endregion
 
@@ -26,7 +27,7 @@ public class AnimalData
     public int Age => _age;
     public Vector2 Size => _size;
     public int ProductProgress => _productProgress;
-
+    public int MaxProductProgress => _maxProductProgress;
     public bool IsHungry => _hunger <= K.ANIMAL_HUNGER_CONDITION;
 
     public event Action OnHungry;
@@ -45,7 +46,8 @@ public class AnimalData
         _age = 0;
         _needFood = true;
         _foodConsumeAmount = dataSO.TickFeedAmount;
-        _hunger = 29.0f;
+        _maxProductProgress = dataSO.ProductTime;
+        _hunger = 70.0f;
         _productProgress = 0;
     }
     public AnimalData(AnimalData data)
@@ -57,6 +59,7 @@ public class AnimalData
         _foodConsumeAmount = data._foodConsumeAmount;
         _hunger = data._hunger;
         _productProgress = data._productProgress;
+        _maxProductProgress = data._maxProductProgress;
     }
     #endregion
 
@@ -76,7 +79,7 @@ public class AnimalData
     public void Tick()
     {
         //UDebug.Print($"current Animal Hunger : {_hunger}");
-        if(_productProgress == K.MAX_PRODUCT_PROGRESS)
+        if(_productProgress == _maxProductProgress)
         {
             return;
         }
@@ -100,7 +103,7 @@ public class AnimalData
                 return;
             }
 
-            if(++_productProgress == K.MAX_PRODUCT_PROGRESS)
+            if(++_productProgress == _maxProductProgress)
             {
                 OnProductFinish?.Invoke();
             }

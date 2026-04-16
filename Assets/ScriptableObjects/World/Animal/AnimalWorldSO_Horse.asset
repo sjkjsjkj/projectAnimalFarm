@@ -17,16 +17,16 @@ MonoBehaviour:
   _name: "\uB9D0"
   _description: "\uBC14\uB78C\uC744 \uAC00\uB974\uBA70 \uB2EC\uB9AC\uB294 \uBAA8\uC2B5\uC774
     \uC544\uB984\uB2E4\uC6B4 \uB18D\uC7A5\uC758 \uB3D9\uBC18\uC790\uC785\uB2C8\uB2E4."
-  _rarity: 1
+  _rarity: 5
   _image: {fileID: 5704420531145803721, guid: 0ce19d9b098495d41b7533ca9da60820, type: 3}
   _prefab: {fileID: 7868252610874373284, guid: 1c6426cb86c37b74b8efdf2dbc9409a0, type: 3}
   _size: {x: 1, y: 1}
   _animController: {fileID: 9100000, guid: 1f67b80911394c149a50a4730b9b6d1f, type: 2}
   _needFood: 1
   _feedMinRarity: 1
-  _tickFeedAmount: 0.1
-  _maxFeedAmount: 5000
+  _tickFeedAmount: 10
+  _maxFeedAmount: 100
   _productId: Item_Product_HorseMane
   _productMinCount: 1
   _productMaxCount: 1
-  _productTime: 10
+  _productTime: 7

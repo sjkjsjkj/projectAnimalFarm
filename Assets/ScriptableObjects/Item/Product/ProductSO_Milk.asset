@@ -16,9 +16,10 @@ MonoBehaviour:
   _type: 25
   _name: "\uC6B0\uC720"
   _description: "\uC6B0\uC720"
-  _rarity: 1
+  _rarity: 4
   _image: {fileID: 4257372581223106476, guid: 08dea8c965289a44494aeffda61216d8, type: 3}
   _prefab: {fileID: 0}
   _sellPrice: 100
-  _buyPrice: 80
-  _maxStack: 64
+  _buyPrice: 60
+  _maxStack: 99
+  _itemUseContexts: []

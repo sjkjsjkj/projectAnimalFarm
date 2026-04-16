@@ -10,15 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2c022c5127670c48a898afb5e92d602, type: 3}
-  m_Name: StaticItemSO_stone_with_minerals_27
+  m_Name: StaticItemSO_Item_Ore_Stone
   m_EditorClassIdentifier: 
-  _id: stone with minerals_27
+  _id: stone with minerals_45
   _type: 8
-  _name: "\uB8E8\uBE44"
-  _description: "\uBD89\uAC8C \uBE5B\uB098\uB294 \uBCF4\uC11D"
-  _rarity: 4
-  _image: {fileID: 21300000, guid: c7450c89b0e186c4a9dddaa18042422e, type: 2}
+  _name: "\uB3CC"
+  _description: "\uAE30\uCD08 \uC7AC\uB8CC\uB85C \uC4F0\uC774\uB294 \uAD11\uBB3C"
+  _rarity: 1
+  _image: {fileID: 21300000, guid: caf69745c77b7c049b1390ede81efa40, type: 2}
   _prefab: {fileID: 0}
-  _sellPrice: 710
-  _buyPrice: 0
-  _maxStack: 64
+  _sellPrice: 500
+  _buyPrice: 25
+  _maxStack: 99
+  _itemUseContexts: []

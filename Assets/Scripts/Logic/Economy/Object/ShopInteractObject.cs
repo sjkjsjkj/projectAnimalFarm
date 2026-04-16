@@ -21,6 +21,7 @@ public class ShopInteractObject : BaseMono, IInteractable // 맵에 귀속될 NP
     #region 내부 변수
     private Shop _shop;
     private bool _isOpen = false;
+    private NPCObject _npcObject;
     #endregion
 
     #region 내부메서드
@@ -153,6 +154,8 @@ public class ShopInteractObject : BaseMono, IInteractable // 맵에 귀속될 NP
         //UDebug.Print("상점 인터랙션");
         ShopManager.Ins.SetToggleShopUI(_shopID);
         _shop.ShowShopList();
+        
+        _npcObject.ShowDialog();
 
         if (IsShopUiOpen())
         {
@@ -169,6 +172,7 @@ public class ShopInteractObject : BaseMono, IInteractable // 맵에 귀속될 NP
     {
         _shop = new Shop(_shopData.ShopItems);
         _shopID = ShopManager.Ins.RequestNewShop(_shopData);
+        _npcObject = GetComponent<NPCObject>();
     }
     #endregion
 }
