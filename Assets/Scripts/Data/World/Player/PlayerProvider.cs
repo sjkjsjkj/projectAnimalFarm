@@ -345,7 +345,7 @@ public class PlayerProvider
     public bool RecoverHunger(float amount)
     {
         // 음수 차단 / 이미 배부름
-        if (amount < 0 || _curHunger >= _maxHunger)
+        if (amount <= 0 || _curHunger >= _maxHunger)
         {
             return false;
         }
@@ -384,7 +384,7 @@ public class PlayerProvider
     public bool RecoverThirst(float amount)
     {
         // 음수 차단 / 해갈
-        if (amount < 0 || _curThirst >= _maxThirst)
+        if (amount <= 0 || _curThirst >= _maxThirst)
         {
             return false;
         }

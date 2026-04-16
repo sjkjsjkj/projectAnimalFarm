@@ -17,6 +17,7 @@ public enum EType
     SeedItem = 3, // 씨앗
     FeedItem = 4, // 먹이
     SpecialItem = 21, // 특수 아이템
+    FoodItem = 30, // 음식
     // 재료
     HarvestItem = 5, // 수확물
     WoodItem = 6, // 나무
@@ -24,6 +25,8 @@ public enum EType
     OreItem = 8, // 광물
     ProductItem = 25, // 동물 생산품
     AnimalItem = 26, // 동물 도감용
+    
+
     #endregion
 
     #region ─────────────────────────▶ 월드 ◀─────────────────────────

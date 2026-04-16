@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor.ShaderKeywordFilter;
+using UnityEngine;
 
 /// <summary>
 /// SO 클래스의 설계 의도입니다.
@@ -11,6 +12,8 @@ public class ItemUseRecovery : ItemUseContextSO
     [SerializeField] protected int _hungerRecoveryAmount;
     [SerializeField] protected int _thirstRecoveryAmount;
 
+    [Header("isDrink가 true면 마시는 동작 / false면 먹는 동작")]
+    [SerializeField] bool _isDrink;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -20,7 +23,15 @@ public class ItemUseRecovery : ItemUseContextSO
     {
         DataManager.Ins.Player.RecoverHunger(_hungerRecoveryAmount);
         DataManager.Ins.Player.RecoverThirst(_thirstRecoveryAmount);
-        return true;
+        if(_isDrink)
+        {
+            OnPlayerDrinking.Publish(0.3f);
+        }
+        else
+        {
+            OnPlayerEating.Publish(0.3f);
+        }
+            return true;
     }
     #endregion
 
