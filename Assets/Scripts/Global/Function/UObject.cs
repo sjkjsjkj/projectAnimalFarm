@@ -6,6 +6,16 @@
 public static class UObject
 {
     #region ─────────────────────────▶ 게임 오브젝트 ◀─────────────────────────
+    public static void ResetRect(RectTransform rectTr)
+    {
+        if (rectTr != null)
+        {
+            rectTr.localScale = Vector3.one;
+            rectTr.offsetMin = Vector2.zero;
+            rectTr.offsetMax = Vector2.zero;
+        }
+    }
+
     /// <summary>
     /// 빈 게임 오브젝트를 생성합니다.
     /// </summary>

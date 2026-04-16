@@ -55,7 +55,7 @@ public class BootManager : MonoBehaviour
         canvas.pixelPerfect = false;
         canvas.sortingOrder = 0;
         canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-        canvasScaler.referenceResolution = new Vector2(1920, 1080);
+        canvasScaler.referenceResolution = new Vector2(K.SCREEN_WIDTH, K.SCREEN_HEIGHT);
         canvasScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
         canvasScaler.matchWidthOrHeight = 0.5f;
         graphicRaycaster.ignoreReversedGraphics = true;

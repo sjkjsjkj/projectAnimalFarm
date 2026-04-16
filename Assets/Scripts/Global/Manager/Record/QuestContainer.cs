@@ -1,54 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 /// <summary>
 /// 클래스의 설계 의도입니다.
 /// </summary>
 public static class QuestContainer
 {
+    private const string REWARD_TEXT = "보상 : ";
+    private const string REWARD_COLOR = "<color=#FFD700>";
+    private const string REWARD_SIZE = "<size=80%>";
+
     public static readonly IReadOnlyList<QuestInfo> list = new List<QuestInfo>
     {
         new QuestInfo(
-            description: "도구 지급용 퀘스트 1",
-            rewardGold: 500,
-            rewardItemId: Id.Item_Tool_BasicFishingRod,
-            rewardItemAmount: 1,
-            new QuestCondition(
-                subtopic: "이동량",
-                condition: (data) =>
-                    data.totalWalkingDistance >= 1f,
-                progress: (data) =>
-                    (data.totalWalkingDistance, 1f)
-            )
-        ),
-        new QuestInfo(
-            description: "도구 지급용 퀘스트 2",
-            rewardGold: 500,
-            rewardItemId: Id.Item_Tool_BasicSickle,
-            rewardItemAmount: 1,
-            new QuestCondition(
-                subtopic: "이동량",
-                condition: (data) =>
-                    data.totalWalkingDistance >= 2f,
-                progress: (data) =>
-                    (data.totalWalkingDistance, 2f)
-            )
-        ),
-        new QuestInfo(
-            description: "도구 지급용 퀘스트 3",
-            rewardGold: 500,
-            rewardItemId: Id.Item_Tool_BasicPickAxe,
-            rewardItemAmount: 1,
-            new QuestCondition(
-                subtopic: "이동량",
-                condition: (data) =>
-                    data.totalWalkingDistance >= 3f,
-                progress: (data) =>
-                    (data.totalWalkingDistance, 3f)
-            )
-        ),
-        new QuestInfo(
-            description: "마을 걸어보기 (이동 : WASD)",
-            rewardGold: 500,
+            description: string.Format("마을 걸어보기 (이동 : WASD)" +
+                "{0}{1}{2}{3}기본 삽, 100 골드</size></color>", Environment.NewLine, REWARD_COLOR, REWARD_SIZE, REWARD_TEXT),
+            rewardGold: 100,
             rewardItemId: Id.Item_Tool_BasicShovel,
             rewardItemAmount: 1,
             new QuestCondition(
@@ -60,8 +27,9 @@ public static class QuestContainer
             )
         ),
         new QuestInfo(
-            description: "마을 달려보기 (달리기 : Shift)",
-            rewardGold: 500,
+            description: string.Format("마을 달려보기 (달리기 : Shift)" +
+                "{0}{1}{2}{3}기본 물뿌리개, 100 골드</size></color>", Environment.NewLine, REWARD_COLOR, REWARD_SIZE, REWARD_TEXT),
+            rewardGold: 100,
             rewardItemId: Id.Item_Tool_BasicWateringCan,
             rewardItemAmount: 1,
             new QuestCondition(
@@ -73,21 +41,23 @@ public static class QuestContainer
             )
         ),
         new QuestInfo(
-            description: "마을에서 NPC에게 씨앗을 구매해보세요. (상호작용 : F)",
-            rewardGold: 500,
+            description: string.Format("마을 우측 하단의 NPC에게 씨앗 구매하기 (상호작용 : F)" +
+                "{0}{1}{2}{3}기본 낫, 100 골드</size></color>", Environment.NewLine, REWARD_COLOR, REWARD_SIZE, REWARD_TEXT),
+            rewardGold: 100,
             rewardItemId: Id.Item_Tool_BasicSickle,
             rewardItemAmount: 1,
             new QuestCondition(
                 subtopic: "구매한 씨앗",
-                condition: (data) => data.GetTypeRecord(EType.SeedItem) >= 1,
-                progress: (data) => (data.GetTypeRecord(EType.SeedItem), 1f)
+                condition: (data) => data.GetTypeRecord(EType.SeedItem) >= 3,
+                progress: (data) => (data.GetTypeRecord(EType.SeedItem), 3f)
             )
         ),
         new QuestInfo(
-            description: "인벤토리 열어보기 (인벤토리 : I)",
-            rewardGold: 100,
-            rewardItemId: Id.Item_Seed_BlueBerry,
-            rewardItemAmount: 4,
+            description: string.Format("인벤토리 열어보기 (인벤토리 : I)" +
+                "{0}{1}{2}{3}감자 씨앗 5개</size></color>", Environment.NewLine, REWARD_COLOR, REWARD_SIZE, REWARD_TEXT),
+            rewardGold: 0,
+            rewardItemId: Id.Item_Seed_Potato,
+            rewardItemAmount: 5,
             new QuestCondition(
                 subtopic: "인벤토리를 연 횟수",
                 condition: (data) => data.totalInventoryOpenCount >= 1,
@@ -95,7 +65,8 @@ public static class QuestContainer
             )
         ),
         new QuestInfo(
-            description: "마을 왼측의 농장에서 농사해보기",
+            description: string.Format("마을 왼측의 농장에서 농사하기" +
+                "{0}{1}{2}{3}300 골드</size></color>", Environment.NewLine, REWARD_COLOR, REWARD_SIZE, REWARD_TEXT),
             rewardGold: 300,
             rewardItemId: null,
             rewardItemAmount: 0,
@@ -121,7 +92,8 @@ public static class QuestContainer
             )
         ),
         new QuestInfo(
-            description: "도감 열어보기 (도감 : O)",
+            description: string.Format("도감 열어보기 (도감 : O)" +
+                "{0}{1}{2}{3}100 골드</size></color>", Environment.NewLine, REWARD_COLOR, REWARD_SIZE, REWARD_TEXT),
             rewardGold: 100,
             rewardItemId: null,
             rewardItemAmount: 0,
@@ -132,8 +104,9 @@ public static class QuestContainer
             )
         ),
         new QuestInfo(
-            description: "채집가",
-            rewardGold: 200,
+            description: string.Format("마을 우측의 숲에서 채집하기 (채집 : F)" +
+                "{0}{1}{2}{3}기본 곡괭이</size></color>", Environment.NewLine, REWARD_COLOR, REWARD_SIZE, REWARD_TEXT),
+            rewardGold: 0,
             rewardItemId: Id.Item_Tool_BasicPickAxe,
             rewardItemAmount: 1,
             new QuestCondition(
@@ -142,6 +115,7 @@ public static class QuestContainer
                 progress: (data) => (data.totalGatheringCount, 5f)
             )
         ),
+        /*
         new QuestInfo(
             description: "첫 광산",
             rewardGold: 400,
@@ -186,5 +160,6 @@ public static class QuestContainer
                 progress: (data) => (data.totalFishCaughtCount, 5f)
             )
         )
+        */
     };
 }
