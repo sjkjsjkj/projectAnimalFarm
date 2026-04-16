@@ -79,13 +79,11 @@ public class PlayerController : BaseMono
     {
         _inputDrinking = true;
         _duration = ctx.drinkingTime;
-        _duration = ctx.duration;
     }
     private void PlayerEatingHandle(OnPlayerEating ctx)
     {
         _inputEating = true;
         _duration = ctx.eatingTime;
-        _duration = ctx.duration;
     }
     private void PlayerWateringHandle(OnPlayerWatering ctx)
     {
