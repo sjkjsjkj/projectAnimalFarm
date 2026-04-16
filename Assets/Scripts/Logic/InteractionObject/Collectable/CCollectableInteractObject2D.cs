@@ -18,6 +18,9 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Collider2D))]
 public class CCollectableInteractObject2D : BaseMono, IInteractable
 {
+    private const float DEFAULT_FEEDBACK_DURATION = 1.5f;
+    private const float START_FEEDBACK_DURATION = 1.0f;
+    private const float SUCCESS_FEEDBACK_DURATION = 1.5f;
     [System.Serializable]
     public class StringEvent : UnityEvent<string> { }
 
@@ -136,6 +139,37 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     [Tooltip("채집 취소 시 호출. 나중에 사운드/VFX 연결 가능")]
     [SerializeField] private UnityEvent _onCollectCanceled;
 
+
+    [Header("로컬 폴백 사운드")]
+    [SerializeField] private Transform _feedbackSoundTarget;
+
+    [SerializeField]
+    private string[] _warningFeedbackSoundIds =
+    {
+        Id.Sfx_Ui_No_1,
+        Id.Sfx_Ui_No_2
+    };
+
+    [SerializeField]
+    private string[] _failureFeedbackSoundIds =
+    {
+        Id.Sfx_Ui_No_1,
+        Id.Sfx_Ui_No_2
+    };
+
+    [SerializeField]
+    private string[] _successFeedbackSoundIds =
+    {
+        Id.Sfx_Other_Success_1,
+        Id.Sfx_Other_Success_2
+    };
+
+    [SerializeField]
+    private string[] _cancelFeedbackSoundIds =
+    {
+        Id.Sfx_Ui_Click_1
+    };
+
     [Header("로그")]
     [SerializeField] private bool _logEnabled = true;
     #endregion
@@ -154,6 +188,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     private CPlayerCollector2D _manualCollectCollector = null;
     private Vector2 _manualCollectStartPosition = Vector2.zero;
     private bool _isMoveCancelSubscribed = false;
+    private string _pendingLocalCollectedSuccessMessage = string.Empty;
     #endregion
 
     #region ─────────────────────────▶ 접근자 ◀─────────────────────────
@@ -182,6 +217,16 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             collector = player.GetComponent<CPlayerCollector2D>();
         }
 
+        if (collector == null)
+        {
+            return false;
+        }
+
+        if (CanHandleAlreadyCollectingInteraction(collector))
+        {
+            return true;
+        }
+
         return CanCollectBase(collector, true);
     }
 
@@ -204,6 +249,11 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             {
                 Debug.LogWarning($"[CCollectableInteractObject2D] player에서 CPlayerCollector2D를 찾지 못했습니다. object={name}");
             }
+            return;
+        }
+
+        if (TryHandleAlreadyCollectingInteraction(collector))
+        {
             return;
         }
 
@@ -302,9 +352,77 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         return true;
     }
 
+    private bool CanHandleAlreadyCollectingInteraction(CPlayerCollector2D collector)
+    {
+        if (collector == null)
+        {
+            return false;
+        }
+
+        if (!CanManualCollect)
+        {
+            return false;
+        }
+
+        if (_isCollected)
+        {
+            return false;
+        }
+
+        if (_manualCollectRoutine == null)
+        {
+            return false;
+        }
+
+        if (_manualCollectCollector != collector)
+        {
+            return false;
+        }
+
+        if (!IsCollectorWithinDistance(collector, _manualCollectMaxDistance))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    private bool TryHandleAlreadyCollectingInteraction(CPlayerCollector2D collector)
+    {
+        if (!CanHandleAlreadyCollectingInteraction(collector))
+        {
+            return false;
+        }
+
+        ShowAlreadyCollectingFeedback();
+        return true;
+    }
+
+    private void ShowAlreadyCollectingFeedback()
+    {
+        string message = IsMiningTarget()
+            ? "이미 채광 중입니다."
+            : "이미 채집 중입니다.";
+
+        TryResolveFeedbackRelayIfMissing();
+
+        if (_feedbackRelay != null)
+        {
+            _feedbackRelay.ShowWarningFeedback(message);
+            return;
+        }
+
+        NotifyWarningFeedback(message);
+    }
+
     private bool TryCollectInternal(CPlayerCollector2D collector, bool isManualRequest)
     {
         if (collector == null)
+        {
+            return false;
+        }
+
+        if (isManualRequest && TryHandleAlreadyCollectingInteraction(collector))
         {
             return false;
         }
@@ -362,6 +480,13 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
                 return false;
             }
 
+            if (!CanInventoryAcceptReward(collector))
+            {
+                ShowInventoryFullFeedback();
+                UpdateIndicatorVisibility();
+                return false;
+            }
+
             StartManualCollectRoutine(collector);
             return true;
         }
@@ -369,7 +494,6 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         if (!CanInventoryAcceptReward(collector))
         {
             ShowInventoryFullFeedback();
-            _onCollectFailed?.Invoke();
             UpdateIndicatorVisibility();
             return false;
         }
@@ -417,7 +541,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         _manualCollectStartPosition = collector.transform.position;
 
         SubscribeMoveCancel();
-        _onCollectStarted?.Invoke();
+        RaiseCollectStartedFeedback();
 
         if (_hideIndicatorWhileCollecting)
         {
@@ -479,13 +603,13 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
         if (HasCollectorMovedSinceStart(collector))
         {
-            CancelManualCollectInternal(_manualCollectCancelMessage, true);
+            CancelManualCollectInternal(GetMoveCanceledFeedbackMessage(), true);
             yield break;
         }
 
         if (!IsCollectorWithinDistance(collector, _manualCollectMaxDistance))
         {
-            CancelManualCollectInternal("채집 범위를 벗어나 취소됨", true);
+            CancelManualCollectInternal(GetDistanceCanceledFeedbackMessage(), true);
             yield break;
         }
 
@@ -493,7 +617,6 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         {
             ReleaseManualCollectState(collector);
             ShowInventoryFullFeedback();
-            _onCollectFailed?.Invoke();
             yield break;
         }
 
@@ -596,13 +719,147 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
         UnsubscribeMoveCancel();
 
-        if (showFeedback)
+        if (_logEnabled)
         {
-            NotifyWarningFeedback(message);
+            Debug.Log("[CCollectableInteractObject2D] OnPlayerCanceled.Publish");
         }
 
-        _onCollectCanceled?.Invoke();
+        OnPlayerCanceled.Publish();
+
+        if (showFeedback)
+        {
+            RaiseCollectCanceledFeedback(message);
+        }
+
         UpdateIndicatorVisibility();
+    }
+
+
+    private void RaiseCollectStartedFeedback()
+    {
+        TryResolveFeedbackRelayIfMissing();
+
+        string progressMessage = GetProgressFeedbackMessage();
+
+        if (_feedbackRelay != null)
+        {
+            if (IsMiningTarget())
+            {
+                if (!string.IsNullOrWhiteSpace(progressMessage))
+                {
+                    _feedbackRelay.ShowWarningFeedback(progressMessage);
+                    return;
+                }
+            }
+            else
+            {
+                _feedbackRelay.OnCollectStarted();
+                return;
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(progressMessage))
+        {
+            if (_onFeedbackMessage != null)
+            {
+                _onFeedbackMessage.Invoke(progressMessage);
+            }
+            else
+            {
+                PublishDirectFeedback(progressMessage, EFeedbackMessageType.Warning, START_FEEDBACK_DURATION);
+            }
+        }
+
+        _onCollectStarted?.Invoke();
+    }
+
+    private void RaiseCollectedSuccessFeedback()
+    {
+        TryResolveFeedbackRelayIfMissing();
+
+        if (_feedbackRelay != null)
+        {
+            _feedbackRelay.OnCollected();
+            _pendingLocalCollectedSuccessMessage = string.Empty;
+            return;
+        }
+
+        if (!string.IsNullOrWhiteSpace(_pendingLocalCollectedSuccessMessage))
+        {
+            NotifySuccessFeedback(_pendingLocalCollectedSuccessMessage);
+            _pendingLocalCollectedSuccessMessage = string.Empty;
+            return;
+        }
+
+        _onCollected?.Invoke();
+    }
+
+    private void RaiseCollectCanceledFeedback(string message)
+    {
+        string resolvedMessage = ResolveCollectCanceledFeedbackMessage(message);
+
+        TryResolveFeedbackRelayIfMissing();
+
+        if (_feedbackRelay != null)
+        {
+            _feedbackRelay.ShowWarningFeedback(resolvedMessage);
+            return;
+        }
+
+        NotifyWarningFeedback(resolvedMessage);
+        _onCollectCanceled?.Invoke();
+    }
+
+    private string GetProgressFeedbackMessage()
+    {
+        if (IsMiningTarget())
+        {
+            return "채광 중...";
+        }
+
+        return "채집 중...";
+    }
+
+    private string GetMoveCanceledFeedbackMessage()
+    {
+        if (IsMiningTarget())
+        {
+            return "이동하여 채광이 취소되었습니다.";
+        }
+
+        if (!string.IsNullOrWhiteSpace(_manualCollectCancelMessage))
+        {
+            return _manualCollectCancelMessage;
+        }
+
+        return "이동하여 채집이 취소되었습니다.";
+    }
+
+    private string GetDistanceCanceledFeedbackMessage()
+    {
+        if (IsMiningTarget())
+        {
+            return "채광 범위를 벗어나 취소되었습니다.";
+        }
+
+        return "채집 범위를 벗어나 취소되었습니다.";
+    }
+
+    private string GetDefaultCanceledFeedbackMessage()
+    {
+        return IsMiningTarget()
+            ? "채광을 취소했습니다."
+            : "채집을 취소했습니다.";
+    }
+
+    private string ResolveCollectCanceledFeedbackMessage(string message)
+    {
+        if (string.IsNullOrWhiteSpace(message))
+        {
+            return GetDefaultCanceledFeedbackMessage();
+        }
+
+        return message;
     }
 
     private void OnPlayerMoveEvent(OnPlayerMove eventData)
@@ -617,7 +874,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             return;
         }
 
-        CancelManualCollectInternal(_manualCollectCancelMessage, true);
+        CancelManualCollectInternal(GetMoveCanceledFeedbackMessage(), true);
     }
 
     private void SubscribeMoveCancel()
@@ -1270,7 +1527,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         }
 
         QueueCollectedSuccessFeedbackMessage();
-        _onCollected?.Invoke();
+        RaiseCollectedSuccessFeedback();
         InteractionFeedbackRelay.ClearQueuedCollectSuccessMessages();
 
         if (_useRespawn)
@@ -1421,19 +1678,41 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     private void QueueCollectedSuccessFeedbackMessage()
     {
         string itemName = ResolveCollectedFeedbackItemName();
+        _pendingLocalCollectedSuccessMessage = string.Empty;
 
         if (string.IsNullOrWhiteSpace(itemName))
         {
             return;
         }
 
+        TryResolveFeedbackRelayIfMissing();
+
         if (IsMiningTarget())
         {
-            InteractionFeedbackRelay.QueueMiningSuccessMessage(itemName);
+            if (_feedbackRelay != null)
+            {
+                InteractionFeedbackRelay.QueueMiningSuccessMessage(itemName);
+                return;
+            }
+
+            _pendingLocalCollectedSuccessMessage = BuildCollectedSuccessFeedbackMessage("채광", itemName);
             return;
         }
 
-        InteractionFeedbackRelay.QueueCollectSuccessMessage(itemName);
+        if (_feedbackRelay != null)
+        {
+            InteractionFeedbackRelay.QueueCollectSuccessMessage(itemName);
+            return;
+        }
+
+        _pendingLocalCollectedSuccessMessage = BuildCollectedSuccessFeedbackMessage("채집", itemName);
+    }
+
+    private string BuildCollectedSuccessFeedbackMessage(string prefix, string itemName)
+    {
+        string safePrefix = string.IsNullOrWhiteSpace(prefix) ? "획득" : prefix.Trim();
+        string safeItemName = string.IsNullOrWhiteSpace(itemName) ? "아이템" : itemName.Trim();
+        return $"{safePrefix}: {safeItemName} 획득";
     }
 
     private string ResolveCollectedFeedbackItemName()
@@ -1531,6 +1810,8 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
     private void ShowToolConditionFailFeedback(EType requiredToolType, bool isRarityLow, string fallbackMessage)
     {
+        TryResolveFeedbackRelayIfMissing();
+
         if (_feedbackRelay != null)
         {
             if (IsMiningTarget())
@@ -1581,10 +1862,13 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         }
 
         NotifyWarningFeedback(fallbackMessage);
+        _onCollectFailed?.Invoke();
     }
 
     private void ShowInventoryFullFeedback()
     {
+        TryResolveFeedbackRelayIfMissing();
+
         if (_feedbackRelay != null)
         {
             _feedbackRelay.OnInventoryFull();
@@ -1596,6 +1880,8 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
     private void ShowGeneralCollectFailFeedback()
     {
+        TryResolveFeedbackRelayIfMissing();
+
         if (_feedbackRelay != null)
         {
             if (IsMiningTarget())
@@ -1618,6 +1904,8 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         {
             NotifyFailureFeedback("채집에 실패하였습니다.");
         }
+
+        _onCollectFailed?.Invoke();
     }
 
     private void NotifyWarningFeedback(string message)
@@ -1632,13 +1920,24 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             Debug.Log("[Collectable][Warning] " + message);
         }
 
+        TryResolveFeedbackRelayIfMissing();
+
         if (_feedbackRelay != null)
         {
             _feedbackRelay.ShowWarningFeedback(message);
             return;
         }
 
-        _onFeedbackMessage?.Invoke(message);
+        if (_onFeedbackMessage != null)
+        {
+            _onFeedbackMessage.Invoke(message);
+        }
+        else
+        {
+            PublishDirectFeedback(message, EFeedbackMessageType.Warning, DEFAULT_FEEDBACK_DURATION);
+        }
+
+        PlayRandomFeedbackSound(_warningFeedbackSoundIds);
     }
 
     private void NotifyFailureFeedback(string message)
@@ -1653,13 +1952,149 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             Debug.Log("[Collectable][Failure] " + message);
         }
 
+        TryResolveFeedbackRelayIfMissing();
+
         if (_feedbackRelay != null)
         {
             _feedbackRelay.ShowFailureFeedback(message);
             return;
         }
 
-        _onFeedbackMessage?.Invoke(message);
+        if (_onFeedbackMessage != null)
+        {
+            _onFeedbackMessage.Invoke(message);
+        }
+        else
+        {
+            PublishDirectFeedback(message, EFeedbackMessageType.Failure, DEFAULT_FEEDBACK_DURATION);
+        }
+
+        PlayRandomFeedbackSound(_failureFeedbackSoundIds);
+    }
+
+    private void NotifySuccessFeedback(string message)
+    {
+        if (string.IsNullOrWhiteSpace(message))
+        {
+            return;
+        }
+
+        if (_logEnabled)
+        {
+            Debug.Log("[Collectable][Success] " + message);
+        }
+
+        TryResolveFeedbackRelayIfMissing();
+
+        if (_feedbackRelay != null)
+        {
+            _feedbackRelay.ShowSuccessFeedback(message);
+            return;
+        }
+
+        if (_onFeedbackMessage != null)
+        {
+            _onFeedbackMessage.Invoke(message);
+        }
+        else
+        {
+            PublishDirectFeedback(message, EFeedbackMessageType.Success, SUCCESS_FEEDBACK_DURATION);
+        }
+
+        PlayRandomFeedbackSound(_successFeedbackSoundIds);
+    }
+
+    private void PlayRandomFeedbackSound(string[] soundIds)
+    {
+        if (soundIds == null || soundIds.Length <= 0)
+        {
+            return;
+        }
+
+        int validCount = 0;
+
+        for (int i = 0; i < soundIds.Length; i++)
+        {
+            if (!string.IsNullOrWhiteSpace(soundIds[i]))
+            {
+                validCount++;
+            }
+        }
+
+        if (validCount <= 0)
+        {
+            return;
+        }
+
+        int targetIndex = Random.Range(0, validCount);
+        int currentIndex = 0;
+
+        for (int i = 0; i < soundIds.Length; i++)
+        {
+            string soundId = soundIds[i];
+            if (string.IsNullOrWhiteSpace(soundId))
+            {
+                continue;
+            }
+
+            if (currentIndex == targetIndex)
+            {
+                if (_feedbackSoundTarget != null)
+                {
+                    USound.PlaySfx(soundId, _feedbackSoundTarget);
+                }
+                else
+                {
+                    USound.PlaySfx(soundId);
+                }
+
+                return;
+            }
+
+            currentIndex++;
+        }
+    }
+
+    private void TryResolveFeedbackRelayIfMissing()
+    {
+        if (_feedbackRelay != null)
+        {
+            return;
+        }
+
+        _feedbackRelay = FindObjectOfType<InteractionFeedbackRelay>();
+
+        if (_feedbackRelay != null && _logEnabled)
+        {
+            Debug.Log($"[CCollectableInteractObject2D] InteractionFeedbackRelay 자동 연결. object={name}, relay={_feedbackRelay.name}");
+        }
+    }
+
+    private void PublishDirectFeedback(string message, EFeedbackMessageType messageType, float duration)
+    {
+        if (string.IsNullOrWhiteSpace(message))
+        {
+            return;
+        }
+
+        if (messageType == EFeedbackMessageType.None)
+        {
+            return;
+        }
+
+        string safeMessage = message.Trim();
+
+        if (safeMessage.Length <= 0)
+        {
+            return;
+        }
+
+        if (safeMessage.Length > 30)
+        {
+            safeMessage = safeMessage.Substring(0, 30);
+        }
+
+        OnFeedbackMessageRequested.Publish(safeMessage, messageType, Mathf.Max(0f, duration));
     }
     #endregion
 
@@ -1669,6 +2104,12 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         base.Awake();
 
         _triggerCollider = GetComponent<Collider2D>();
+        TryResolveFeedbackRelayIfMissing();
+
+        if (_feedbackSoundTarget == null)
+        {
+            _feedbackSoundTarget = transform;
+        }
 
         if (_triggerCollider != null && !_triggerCollider.isTrigger)
         {
