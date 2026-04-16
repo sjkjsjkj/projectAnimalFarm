@@ -32,7 +32,7 @@ public class Shop : IShopLogical
         
         if(player.Money < buyPrice)
         {
-            
+            OnFeedbackMessageRequested.Publish("플레이어의 소지금이 부족합니다.", EFeedbackMessageType.Failure,1.5f);
             message = "플레이어의 소지금이 부족합니다.";
             UDebug.Print(message);
             return false;

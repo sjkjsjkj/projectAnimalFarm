@@ -138,7 +138,7 @@ public class UIShopSlotItem : BaseMono
         }
         if(_buyPriceText != null)
         {
-            _sellPriceText.text = sellPrice.ToString();
+            _buyPriceText.text = sellPrice.ToString();
         }
         if(_sellPriceText != null)
         {
@@ -146,7 +146,7 @@ public class UIShopSlotItem : BaseMono
             {
                 buyPrice = (sellPrice / 5) * 4;
             }
-            _buyPriceText.text = buyPrice.ToString();
+            _sellPriceText.text = buyPrice.ToString();
         }
 
         BindButtons();
