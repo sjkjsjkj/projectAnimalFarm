@@ -18,7 +18,14 @@ public class TitleButton : BaseMono
     public void GameLoad()
     {
         UDebug.Print($"게임 로드 버튼을 클릭했습니다.");
-        GameManager.Ins.LoadSceneAsyncWithFade((int)EScene.Main);
+        if (HasSaveData())
+        {
+            GameManager.Ins.LoadSceneAsyncWithFade((int)EScene.Main);
+        }
+        else
+        {
+            USound.PlaySfx(Id.Sfx_Ui_Select_05);
+        }
     }
 
     public void GameEnd()
@@ -50,5 +57,18 @@ public class TitleButton : BaseMono
             UDebug.Print($"글로벌 데이터 삭제 완료: {Path.GetFileName(file)}");
         }
         UDebug.Print($"세이브 데이터를 모두 삭제했습니다.");
+    }
+
+    private static bool HasSaveData()
+    {
+        string persistentPath = Application.persistentDataPath;
+        if (Directory.Exists(persistentPath))
+        {
+            if (File.Exists($"{persistentPath}/PlayerProvider.json"))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
