@@ -19,6 +19,7 @@ public class PlayerStateMachine
     [SerializeField] private PlayerDrinkingState _drinking = new();
     [SerializeField] private PlayerEatingState _eating = new();
     [SerializeField] private PlayerCrouchingState _crouching = new();
+    [SerializeField] private PlayerWakeUpState _wakeUp = new();
 
     private IPlayerState _curState;
     private bool _lockStateTransition;
@@ -70,6 +71,10 @@ public class PlayerStateMachine
     // 다음 상태를 결정
     private IPlayerState BuildNextState(in PlayerContext context)
     {
+        if (context.inputWakeUp) // 일어남 애니메이션 확정
+        {
+            return _wakeUp;
+        }
         if (context.inputLogging) // 벌목 애니메이션 확정
         {
             return _logging;

@@ -120,10 +120,12 @@ public class PlayerController : BaseMono
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
     private void FixedUpdate() // 구조체를 작성하여 상태 머신에 전달
     {
+        bool wakeUp = GameManager.Ins.IsPlayerWakeUp;
+        GameManager.Ins.IsPlayerWakeUp = false;
         PlayerContext context = new(_rb, transform, _sprite, _anim,
             _inputMove, _inputRun, _inputFishing, _inputMining, _inputLogging,
             _inputShovel, _inputSickle, _inputDrinking, _inputEating, _inputWatering,
-            _inputCrouching, _targetPos, _duration, _isSuccess, _isCanceled);
+            _inputCrouching, wakeUp, _targetPos, _duration, _isSuccess, _isCanceled);
         _fsm.UpdateState(in context);
         ClearInput();
         SavePosition();
