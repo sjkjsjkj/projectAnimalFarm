@@ -16,9 +16,10 @@ MonoBehaviour:
   _type: 25
   _name: "\uC591\uD138"
   _description: "\uC591\uD138 \uC785\uB2C8\uB2E4."
-  _rarity: 1
+  _rarity: 3
   _image: {fileID: -473895828499156271, guid: 08dea8c965289a44494aeffda61216d8, type: 3}
   _prefab: {fileID: 0}
   _sellPrice: 100
-  _buyPrice: 80
-  _maxStack: 64
+  _buyPrice: 25
+  _maxStack: 99
+  _itemUseContexts: []

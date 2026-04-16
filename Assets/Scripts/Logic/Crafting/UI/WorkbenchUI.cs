@@ -98,7 +98,7 @@ public class WorkbenchUI : BaseMono, ICraftUI, IEscClosable
             tempCraftRecipeBtn.OnRecipeButtonClick -= RecipeButtonHandler;
             tempCraftRecipeBtn.OnRecipeButtonClick += RecipeButtonHandler;
         }
-
+        RecipeButtonHandler(0);
     }
     public void SetToggleUI()
     {

@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2c022c5127670c48a898afb5e92d602, type: 3}
-  m_Name: StaticItemSO_Baby_Cow_Black_0
+  m_Name: StaticItemSO_Goat_Male_Black_0
   m_EditorClassIdentifier: 
-  _id: Baby Cow Black_0
+  _id: Goat Male Black_0
   _type: 26
-  _name: "\uAC80\uC740 \uC813\uC18C"
-  _description: "\uC6B0\uC720\uB97C \uC0DD\uC0B0\uD558\uB294 \uC5B4\uB450\uC6B4 \uD138\uBE5B\uC758
-    \uC816\uC18C\uB2E4."
-  _rarity: 1
-  _image: {fileID: 21300000, guid: d88b6b7d38f500e49ad5ba3a896c74c7, type: 2}
+  _name: "\uAC80\uC815 \uC5FC\uC18C(\u2642)"
+  _description: "\uC9D9\uC740 \uD138\uBE5B\uC774 \uC778\uC0C1\uC801\uC778 \uC218\uCEF7
+    \uC5FC\uC18C\uB2E4."
+  _rarity: 3
+  _image: {fileID: 21300000, guid: 049f823e3a6294a4688986fe2e27c7a7, type: 2}
   _prefab: {fileID: 0}
-  _sellPrice: 400
-  _buyPrice: 500
+  _sellPrice: 450
+  _buyPrice: 360
   _maxStack: 1
   _itemUseContexts:
-  - {fileID: 11400000, guid: 300cd83c6a392d74fae05cde193fe553, type: 2}
+  - {fileID: 11400000, guid: affd9b08ea05a054da1f21f06ba83fd9, type: 2}

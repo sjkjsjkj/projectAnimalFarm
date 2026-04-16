@@ -37,12 +37,23 @@ public class NPCObject : Frameable
 
     private string _sfxId_footStepSound;
     private string _stxId_buzzingSound;
+
+    private bool _isTalked;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     public NPCData Data => _data;
     public SpriteRenderer SpRenderer => _spRenderer;
     public Animator Animator => _animator;
+
+    public void ShowDialog()
+    {
+        if (_dialog.Length == 0)
+        {
+            return;
+        }
+        RandomDialog(1);
+    }
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
@@ -121,6 +132,8 @@ public class NPCObject : Frameable
         _sfxId_footStepSound = _npcSO.FootStepSoundId;
         _stxId_buzzingSound = _npcSO.BuzzingSoundId;
 
+        _animator.SetInteger("FaceDir", 2);
+
         SetState(ENpcState.Idle);
     }
     private void Reorganize()
@@ -174,11 +187,15 @@ public class NPCObject : Frameable
             USound.PlaySfx(_stxId_buzzingSound, transform);
         }
     }
-    private bool RandomDialog()
+    private bool RandomDialog(float percentage = 0.5f)
     {
+        if(_isTalked)
+        {
+            return false;
+        }
         float tempRandNum = Random.Range(0.0f, 1.0f);
 
-        if(tempRandNum >= 0.5f)
+        if(tempRandNum >= percentage)
         {
             return false;
         }
@@ -191,13 +208,15 @@ public class NPCObject : Frameable
     }
     private IEnumerator CoDialog(string dialog)
     {
+        _isTalked = true;
         _dialogBack.localScale = new Vector3(0.6f , 0.7f, 1);
         _dialogCanvas.SetActive(true);
         _dialogText.text = dialog;
         yield return new WaitForSeconds(_dialogMessageTime);
         _dialogCanvas.SetActive(false);
+        _isTalked = false;
     }
-   
+
     private void SetFaceDir(Vector3 targetDir)
     {
         Vector3 moveDir = targetDir - transform.position;
@@ -264,7 +283,6 @@ public class NPCObject : Frameable
             default:
                 break;
         }
-
     }
     #endregion
 

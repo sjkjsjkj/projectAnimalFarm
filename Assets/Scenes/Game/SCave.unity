@@ -162,8 +162,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b28f46598ec31324a908a1a14da566eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: 1edb5c58-4281-4ba2-87d2-f6fe5380adbd
-  _instanceId: 188104
+  _uniqueId: f7dba0dd-f187-46e6-ba1f-5cd7ace6f00c
+  _instanceId: 100042
   _testTileID: 0
   _animalID: 
   _breedingArea: {fileID: 0}
@@ -1539,12 +1539,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3988478290005876257, guid: 4213c3aaefb148946ad2a5ce45579ff6, type: 3}
+      propertyPath: _playerTr
+      value: 
+      objectReference: {fileID: 1543160797}
+    - target: {fileID: 3988478290005876257, guid: 4213c3aaefb148946ad2a5ce45579ff6, type: 3}
       propertyPath: _uniqueId
-      value: 9840674c-69b0-4d68-9543-283abac1ae65
+      value: 8cfd8bbd-fefd-496a-b95d-e815faea615a
       objectReference: {fileID: 0}
     - target: {fileID: 3988478290005876257, guid: 4213c3aaefb148946ad2a5ce45579ff6, type: 3}
       propertyPath: _instanceId
-      value: -211378
+      value: -198218
       objectReference: {fileID: 0}
     - target: {fileID: 4632964507048751405, guid: 4213c3aaefb148946ad2a5ce45579ff6, type: 3}
       propertyPath: _uniqueId
@@ -3305,6 +3309,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
+--- !u!4 &1543160797 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8637693700152055993, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
+  m_PrefabInstance: {fileID: 1543160796}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1549273350
 PrefabInstance:
   m_ObjectHideFlags: 0

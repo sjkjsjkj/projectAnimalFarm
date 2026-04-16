@@ -17,16 +17,16 @@ MonoBehaviour:
   _name: "\uB3FC\uC9C0"
   _description: "\uD081\uD081\uAC70\uB9AC\uBA70 \uB545\uC18D\uC744 \uD0D0\uC0C9\uD558\uB294
     \uB370 \uCC9C\uBD80\uC801\uC778 \uC7AC\uB2A5\uC774 \uC788\uC2B5\uB2C8\uB2E4."
-  _rarity: 1
+  _rarity: 2
   _image: {fileID: 21300000, guid: de19e65062b4aff47a09928b1dee4046, type: 2}
   _prefab: {fileID: 7868252610874373284, guid: 1c6426cb86c37b74b8efdf2dbc9409a0, type: 3}
   _size: {x: 1, y: 1}
   _animController: {fileID: 9100000, guid: 4ebe5da94f71c2d4b8e8c4f295713e57, type: 2}
   _needFood: 1
   _feedMinRarity: 1
-  _tickFeedAmount: 0.1
-  _maxFeedAmount: 5000
+  _tickFeedAmount: 5
+  _maxFeedAmount: 100
   _productId: Item_Product_PigPoop
   _productMinCount: 1
   _productMaxCount: 1
-  _productTime: 9999
+  _productTime: 5

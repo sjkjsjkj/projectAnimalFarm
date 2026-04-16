@@ -24,7 +24,7 @@ MonoBehaviour:
   _needFood: 1
   _feedMinRarity: 1
   _tickFeedAmount: 0.1
-  _maxFeedAmount: 5000
+  _maxFeedAmount: 100
   _productId: 
   _productMinCount: 1
   _productMaxCount: 1

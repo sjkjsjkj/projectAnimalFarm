@@ -23,9 +23,9 @@ MonoBehaviour:
   _animController: {fileID: 9100000, guid: 64aebb88fc4e75b46b8e80fe8055c26d, type: 2}
   _needFood: 1
   _feedMinRarity: 1
-  _tickFeedAmount: 0.1
-  _maxFeedAmount: 5000
+  _tickFeedAmount: 2
+  _maxFeedAmount: 100
   _productId: Item_Product_Egg
   _productMinCount: 1
   _productMaxCount: 1
-  _productTime: 100
+  _productTime: 4

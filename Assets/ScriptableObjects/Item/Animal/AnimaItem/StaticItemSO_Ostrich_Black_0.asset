@@ -10,18 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2c022c5127670c48a898afb5e92d602, type: 3}
-  m_Name: StaticItemSO_Baby_Duck_Green_0
+  m_Name: StaticItemSO_Ostrich_Black_0
   m_EditorClassIdentifier: 
-  _id: Baby Duck Green_0
+  _id: Ostrich Black_0
   _type: 26
-  _name: "\uB179\uC0C9 \uC624\uB9AC"
-  _description: "\uB3C5\uD2B9\uD55C \uC0C9\uAC10\uC774 \uB208\uC5D0 \uB744\uB294
-    \uC624\uB9AC\uB2E4."
-  _rarity: 1
-  _image: {fileID: 21300000, guid: cf93b34d0dffba94a9a47f3358751b65, type: 2}
+  _name: "\uAC80\uC815 \uD0C0\uC870"
+  _description: "\uC9D9\uC740 \uAE43\uD138\uC0C9\uC774 \uD2B9\uC9D5\uC778 \uD0C0\uC870\uB2E4."
+  _rarity: 4
+  _image: {fileID: 21300000, guid: 46e874e7cd15beb46a12cb27f5b8fcd1, type: 2}
   _prefab: {fileID: 0}
-  _sellPrice: 240
-  _buyPrice: 300
+  _sellPrice: 600
+  _buyPrice: 480
   _maxStack: 1
   _itemUseContexts:
-  - {fileID: 11400000, guid: 8db1a7a9704550840ab8127a8c7857ad, type: 2}
+  - {fileID: 11400000, guid: 6fb1d1f334154c149a6ff9cf460a10d3, type: 2}
