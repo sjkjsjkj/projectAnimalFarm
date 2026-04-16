@@ -117,7 +117,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &9073495523406352999
+--- !u!1 &6953673493226175294
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -125,40 +125,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1138423636584025457}
-  - component: {fileID: 3419709846111824095}
-  - component: {fileID: 8697816789713716331}
-  - component: {fileID: 1096313282354423320}
+  - component: {fileID: 3076685961227110452}
+  - component: {fileID: 8797431676963289804}
+  - component: {fileID: 6586493024419278378}
   m_Layer: 3
-  m_Name: Ore_Stone10
+  m_Name: InteractRange
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1138423636584025457
+--- !u!4 &3076685961227110452
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9073495523406352999}
+  m_GameObject: {fileID: 6953673493226175294}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -5.98, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 8207054024346362285}
-  m_Father: {fileID: 0}
+  m_Children: []
+  m_Father: {fileID: 1138423636584025457}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &3419709846111824095
+--- !u!61 &8797431676963289804
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9073495523406352999}
+  m_GameObject: {fileID: 6953673493226175294}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -197,13 +195,13 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &8697816789713716331
+--- !u!114 &6586493024419278378
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9073495523406352999}
+  m_GameObject: {fileID: 6953673493226175294}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 054fab881b63df74fbfad1a2a3653cdf, type: 3}
@@ -226,6 +224,9 @@ MonoBehaviour:
   _requiredToolMinRarity: 1
   _useInteractionMotion: 1
   _manualCollectDelay: 1
+  _useToolRarityBasedDuration: 1
+  _manualCollectDurationReducePerRarityStep: 0.15
+  _manualCollectMinDuration: 0.35
   _setPlayerBusyDuringManualCollect: 1
   _gatherSkillExp: 2
   _moveCancelInputThreshold: 0.0001
@@ -314,6 +315,232 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  _feedbackSoundTarget: {fileID: 0}
+  _warningFeedbackSoundIds:
+  - Sfx_Ui_No_1
+  - Sfx_Ui_No_2
+  _failureFeedbackSoundIds:
+  - Sfx_Ui_No_1
+  - Sfx_Ui_No_2
+  _successFeedbackSoundIds:
+  - Sfx_Other_Success_1
+  - Sfx_Other_Success_2
+  _cancelFeedbackSoundIds:
+  - Sfx_Ui_Click_1
+  _logEnabled: 1
+--- !u!1 &9073495523406352999
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1138423636584025457}
+  - component: {fileID: 3419709846111824095}
+  - component: {fileID: 8697816789713716331}
+  - component: {fileID: 1096313282354423320}
+  m_Layer: 3
+  m_Name: Ore_Stone10
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1138423636584025457
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9073495523406352999}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -5.98, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8207054024346362285}
+  - {fileID: 3076685961227110452}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &3419709846111824095
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9073495523406352999}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
+--- !u!114 &8697816789713716331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9073495523406352999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 054fab881b63df74fbfad1a2a3653cdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _uniqueId: 
+  _instanceId: 0
+  _itemId: stone with minerals_28
+  _amount: 1
+  _displayName: "\uC624\uB9AC\uD558\uB974\uCF58"
+  _collectMode: 1
+  _autoCollectDelay: 0.15
+  _manualCollectMaxDistance: 1
+  _autoCollectMaxDistance: 0.8
+  _canCollectIndicatorObject: {fileID: 9093076783217074604}
+  _hideIndicatorWhileCollecting: 1
+  _requireEquippedTool: 1
+  _requiredToolType: 0
+  _useRewardItemRarityAsRequiredToolRarity: 1
+  _requiredToolMinRarity: 1
+  _useInteractionMotion: 1
+  _manualCollectDelay: 1
+  _useToolRarityBasedDuration: 1
+  _manualCollectDurationReducePerRarityStep: 0.15
+  _manualCollectMinDuration: 0.35
+  _setPlayerBusyDuringManualCollect: 1
+  _gatherSkillExp: 2
+  _moveCancelInputThreshold: 0.0001
+  _moveCancelPositionThreshold: 0.0001
+  _manualCollectCancelMessage: "\uC774\uB3D9\uD558\uC5EC \uCC44\uC9D1\uC774 \uCDE8\uC18C\uB418\uC5C8\uC2B5\uB2C8\uB2E4."
+  _feedbackRelay: {fileID: 7797453658371809061, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
+  _destroyOnCollected: 0
+  _disableTargetAfterCollected: {fileID: 1070942201902375190}
+  _useRespawn: 1
+  _respawnDelay: 10
+  _onCollectStarted:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4625340644950009177, guid: 4a11d53e7ec8a8b469cc75725a45b744, type: 3}
+        m_TargetAssemblyTypeName: InteractionFeedbackRelay, Assembly-CSharp
+        m_MethodName: OnCollectStarted
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onCollected:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4625340644950009177, guid: 4a11d53e7ec8a8b469cc75725a45b744, type: 3}
+        m_TargetAssemblyTypeName: InteractionFeedbackRelay, Assembly-CSharp
+        m_MethodName: OnCollected
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onRespawned:
+    m_PersistentCalls:
+      m_Calls: []
+  _onFeedbackMessage:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4625340644950009177, guid: 4a11d53e7ec8a8b469cc75725a45b744, type: 3}
+        m_TargetAssemblyTypeName: InteractionFeedbackRelay, Assembly-CSharp
+        m_MethodName: ShowWarningFeedback
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onCollectFailed:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4625340644950009177, guid: 4a11d53e7ec8a8b469cc75725a45b744, type: 3}
+        m_TargetAssemblyTypeName: InteractionFeedbackRelay, Assembly-CSharp
+        m_MethodName: OnMiningFailed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onCollectCanceled:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4625340644950009177, guid: 4a11d53e7ec8a8b469cc75725a45b744, type: 3}
+        m_TargetAssemblyTypeName: InteractionFeedbackRelay, Assembly-CSharp
+        m_MethodName: OnCollectCanceled
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _feedbackSoundTarget: {fileID: 0}
+  _warningFeedbackSoundIds:
+  - Sfx_Ui_No_1
+  - Sfx_Ui_No_2
+  _failureFeedbackSoundIds:
+  - Sfx_Ui_No_1
+  - Sfx_Ui_No_2
+  _successFeedbackSoundIds:
+  - Sfx_Other_Success_1
+  - Sfx_Other_Success_2
+  _cancelFeedbackSoundIds:
+  - Sfx_Ui_Click_1
   _logEnabled: 1
 --- !u!114 &1096313282354423320
 MonoBehaviour:
