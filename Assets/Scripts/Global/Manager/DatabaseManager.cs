@@ -18,6 +18,7 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
     private StaticItemTableSO[] _staticItemTables;
     private ToolItemTableSO[] _toolItemTables;
     private AnimalItemTableSO[] _animalItemTables;
+    private ConsumeItemTableSO[] _consumeItemTable;
     private AnimalWorldTableSO[] _animalWorldTables;
     private CropWorldTableSO[] _cropWorldTables;
     private FieldWorldTableSO[] _fieldWorldTables;
@@ -188,6 +189,9 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
     public AnimalItemSO AnimalItem(string id)
         => FindData<AnimalItemTableSO, AnimalItemSO>(_animalItemTables, id);
 
+    public ConsumeItemSO ConsumeItem(string id)
+        => FindData<ConsumeItemTableSO, ConsumeItemSO>(_consumeItemTable, id);
+
     /// <summary>
     /// 레시피 정적 데이터를 반환합니다.
     /// </summary>
@@ -228,6 +232,8 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
         SettingUnitDict<AnimalItemTableSO, AnimalItemSO>(_animalItemTables);
         _animalWorldTables = LoadTables<AnimalWorldTableSO, AnimalWorldSO>();
         SettingUnitDict<AnimalWorldTableSO, AnimalWorldSO>(_animalWorldTables);
+        _consumeItemTable = LoadTables<ConsumeItemTableSO, ConsumeItemSO>();
+        SettingUnitDict<ConsumeItemTableSO, ConsumeItemSO>(_consumeItemTable);
         _cropWorldTables = LoadTables<CropWorldTableSO, CropWorldSO>();
         SettingUnitDict<CropWorldTableSO, CropWorldSO>(_cropWorldTables);
         _fieldWorldTables = LoadTables<FieldWorldTableSO, FieldWorldSO>();
@@ -401,6 +407,9 @@ public class DatabaseManager : GlobalSingleton<DatabaseManager>
                 break;
             case EType.AnimalItem:
                 tempSO = DatabaseManager.Ins.AnimalItem(unitSO.Id);
+                break;
+            case EType.FoodItem:
+                tempSO  =DatabaseManager.Ins.ConsumeItem(unitSO.Id);
                 break;
             case EType.HarvestItem:
             case EType.WoodItem:

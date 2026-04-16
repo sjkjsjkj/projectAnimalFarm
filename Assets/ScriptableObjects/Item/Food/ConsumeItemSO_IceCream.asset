@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3817af9ef7fab9847b763eb27d4b4714, type: 3}
+  m_Name: ConsumeItemSO_IceCream
+  m_EditorClassIdentifier: 
+  _id: Item_Consume_IceCream
+  _type: 0
+  _name: IceCream
+  _description: "\uC2DC\uC6D0\uD55C \uC544\uC774\uC2A4\uD06C\uB9BC. \uBAA9\uB9C8\uB984\uC744
+    30 \uD68C\uBCF5\uC2DC\uCF1C\uC900\uB2E4."
+  _rarity: 1
+  _image: {fileID: 4205159524268083121, guid: 2798db5461a4b2441954bffce885437b, type: 3}
+  _prefab: {fileID: 0}
+  _sellPrice: 50
+  _buyPrice: 40
+  _maxStack: 99
+  _itemUseContexts:
+  - {fileID: 11400000, guid: d35affd8988c92c42bf93bdd413f605a, type: 2}
