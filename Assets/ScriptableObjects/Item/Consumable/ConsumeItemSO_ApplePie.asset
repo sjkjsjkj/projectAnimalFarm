@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3817af9ef7fab9847b763eb27d4b4714, type: 3}
+  m_Name: ConsumeItemSO_ApplePie
+  m_EditorClassIdentifier: 
+  _id: Item_Consume_ApplePie
+  _type: 0
+  _name: ApplePie
+  _description: "\uC724\uAE30\uAC00 \uD750\uB974\uB294 \uC0AC\uACFC\uD30C\uC774.
+    \uD5C8\uAE30\uC9D0\uC744 70\uB9CC\uD07C \uD68C\uBCF5\uC2DC\uCF1C\uC900\uB2E4."
+  _rarity: 1
+  _image: {fileID: -3282571327432279318, guid: 2798db5461a4b2441954bffce885437b, type: 3}
+  _prefab: {fileID: 0}
+  _sellPrice: 150
+  _buyPrice: 120
+  _maxStack: 99
+  _itemUseContexts:
+  - {fileID: 11400000, guid: 9e157f844d8dc0047830f195c441a1df, type: 2}

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: NpcWorldSO_Mermaid
   m_EditorClassIdentifier: 
   _id: World_Npc_Mermaid
-  _type: 0
+  _type: 10
   _name: Mermaid
   _description: Npc Mermaid
   _rarity: 1
