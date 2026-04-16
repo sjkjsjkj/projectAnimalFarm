@@ -15,6 +15,9 @@ public class UIShopSlotItem : BaseMono
     [SerializeField] private Button _sellButton;
     [SerializeField] private TextMeshProUGUI _buyText;
     [SerializeField] private TextMeshProUGUI _sellText;
+
+    [SerializeField] private TextMeshProUGUI _buyPriceText;
+    [SerializeField] private TextMeshProUGUI _sellPriceText;
     #endregion
 
     #region ─────────────────────────▶ 접근자 ◀─────────────────────────
@@ -110,7 +113,7 @@ public class UIShopSlotItem : BaseMono
     /// <param name="iconSprite">아이콘 스프라이트</param>
     /// <param name="onClickBuy">구매 콜백</param>
     /// <param name="onClickSell">판매 콜백</param>
-    public void Setup(int slotIndex, Sprite iconSprite, Action<int> onClickBuy, Action<int> onClickSell)
+    public void Setup(int slotIndex, Sprite iconSprite, Action<int> onClickBuy, Action<int> onClickSell, int sellPrice, int buyPrice)
     {
         _isSetup = false;
 
@@ -132,6 +135,18 @@ public class UIShopSlotItem : BaseMono
         if (_sellText != null)
         {
             _sellText.text = "판매";
+        }
+        if(_buyPriceText != null)
+        {
+            _sellPriceText.text = sellPrice.ToString();
+        }
+        if(_sellPriceText != null)
+        {
+            if (buyPrice <= 0)
+            {
+                buyPrice = (sellPrice / 5) * 4;
+            }
+            _buyPriceText.text = buyPrice.ToString();
         }
 
         BindButtons();

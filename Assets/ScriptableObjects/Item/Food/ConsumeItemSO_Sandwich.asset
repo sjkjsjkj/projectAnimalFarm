@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ConsumeItemSO_Sandwich
   m_EditorClassIdentifier: 
   _id: Item_Consume_Sandwith
-  _type: 0
+  _type: 30
   _name: Sandwith
   _description: "\uC57C\uCC44\uAC00 \uB4EC\uBFCD \uB4E4\uC5B4\uAC04 \uC0CC\uB4DC\uC704\uCE58\uB2E4.
     \uD5C8\uAE30\uC9D0\uC744 50\uB9CC\uD07C \uD68C\uBCF5\uC2DC\uCF1C\uC900\uB2E4."

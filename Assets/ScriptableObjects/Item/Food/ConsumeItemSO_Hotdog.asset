@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ConsumeItemSO_Hotdog
   m_EditorClassIdentifier: 
   _id: Item_Consume_Hotdog
-  _type: 0
+  _type: 30
   _name: Hotdog
   _description: "\uB178\uB987\uD558\uAC8C \uAD6C\uC6CC\uC9C4 \uD56B\uB3C4\uADF8.
     \uD5C8\uAE30\uC9D0\uC744 30\uB9CC\uD07C \uD68C\uBCF5\uC2DC\uCF1C\uC900\uB2E4."

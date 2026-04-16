@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ConsumeItemSO_ApplePie
   m_EditorClassIdentifier: 
   _id: Item_Consume_ApplePie
-  _type: 0
+  _type: 30
   _name: ApplePie
   _description: "\uC724\uAE30\uAC00 \uD750\uB974\uB294 \uC0AC\uACFC\uD30C\uC774.
     \uD5C8\uAE30\uC9D0\uC744 70\uB9CC\uD07C \uD68C\uBCF5\uC2DC\uCF1C\uC900\uB2E4."

@@ -43,7 +43,7 @@ public class ShopUI : BaseMono, IEscClosable
         for (int i = 0; i < _sellItems.Length; i++)
         {
             _uiShopSlotItems[i] = Instantiate(_sellItemSlotPrefab, _sellItemSlotTransform);
-            _uiShopSlotItems[i].Setup(i, _sellItems[i].Image, HandleClickBuy, HandleClickSell);
+            _uiShopSlotItems[i].Setup(i, _sellItems[i].Image, HandleClickBuy, HandleClickSell, _sellItems[i].SellPrice, _sellItems[i].BuyPrice);
         }
     }
     private void HandleClickBuy(int slotIndex)

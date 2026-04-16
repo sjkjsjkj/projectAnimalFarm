@@ -29,6 +29,34 @@ public class SeedItemSO : ItemSO
         if (_needFarmingLevel < 1) return false;
         return true;
     }
+
+    //public void SetValue()
+    //{
+    //    switch(_rarity)
+    //    {
+    //        case ERarity.Basic:
+    //            _sellPrice = 20;
+    //            _buyPrice = 16;
+    //            break;
+    //        case ERarity.Solid:
+    //            _sellPrice = 40;
+    //            _buyPrice = 32;
+    //            break;
+    //        case ERarity.Superior:
+    //            _sellPrice = 70;
+    //            _buyPrice = 56;
+    //            break;
+    //        case ERarity.Prime:
+    //            _sellPrice = 120;
+    //            _buyPrice = 96;
+    //            break;
+    //        case ERarity.Masterwork:
+    //            _sellPrice = 150;
+    //            _buyPrice = 120;
+    //            break;
+    //    }
+    //}
+
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────

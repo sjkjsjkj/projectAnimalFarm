@@ -17,12 +17,13 @@ MonoBehaviour:
   _name: "\uBB34"
   _description: "\uC218\uBD84\uC744 \uB4EC\uBFCD \uBA38\uAE08\uC740 \uAD75\uACE0
     \uC544\uC0AD\uD55C \uBFCC\uB9AC\uCC44\uC18C\uC785\uB2C8\uB2E4."
-  _rarity: 1
+  _rarity: 3
   _image: {fileID: -1033185740, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
   _prefab: {fileID: 0}
-  _sellPrice: 100
-  _buyPrice: 200
-  _maxStack: 64
+  _sellPrice: 70
+  _buyPrice: 56
+  _maxStack: 99
+  _itemUseContexts: []
   _placeCropId: 
   _needFarmingLevel: 1
   _harvestItemId: Daikon_0
