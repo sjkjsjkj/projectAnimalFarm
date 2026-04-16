@@ -174,14 +174,23 @@ public class HUDQuickSlotView : BaseMono
         base.Awake();
         BindButtons();
     }
-
-    private void OnValidate()
+    protected override void OnValidate()
     {
+        base.OnValidate();
+
         if (_slots == null || _slots.Length != ToolQuickSlotUtility.QUICK_SLOT_COUNT)
         {
             _slots = new QuickSlotUI[ToolQuickSlotUtility.QUICK_SLOT_COUNT];
         }
     }
+
+    //private void OnValidate()
+    //{
+    //    if (_slots == null || _slots.Length != ToolQuickSlotUtility.QUICK_SLOT_COUNT)
+    //    {
+    //        _slots = new QuickSlotUI[ToolQuickSlotUtility.QUICK_SLOT_COUNT];
+    //    }
+    //}
 
     private void Reset()
     {
