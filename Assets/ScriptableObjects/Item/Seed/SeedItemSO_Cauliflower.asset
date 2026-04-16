@@ -17,12 +17,13 @@ MonoBehaviour:
   _name: "\uCF5C\uB9AC\uD50C\uB77C\uC6CC"
   _description: "\uD558\uC597\uACE0 \uD0D0\uC2A4\uB7EC\uC6B4 \uAF43\uC1A1\uC774\uB97C
     \uD53C\uC6C1\uB2C8\uB2E4."
-  _rarity: 1
+  _rarity: 5
   _image: {fileID: 783019644, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
   _prefab: {fileID: 0}
-  _sellPrice: 100
-  _buyPrice: 200
-  _maxStack: 64
+  _sellPrice: 150
+  _buyPrice: 120
+  _maxStack: 99
+  _itemUseContexts: []
   _placeCropId: 
   _needFarmingLevel: 1
   _harvestItemId: Cauliflower_0

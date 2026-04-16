@@ -162,7 +162,7 @@ public class UIShopView : BaseMono, IShopUI
             }
 
             slotItem.name = $"ShopSlotItem_{i + 1:00}";
-            slotItem.Setup(i, defaultIcon, onClickBuy, onClickSell);
+            slotItem.Setup(i, defaultIcon, onClickBuy, onClickSell,0,0);
             _runtimeSlots.Add(slotItem);
         }
 

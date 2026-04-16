@@ -43,8 +43,6 @@ public class ShopManager : GlobalSingleton<ShopManager>
         _shopUI.SetInfo(_shopList[id] );
         //_shopUI.RefreshInventoryUI(_inventoryList[id]);
         _shopUI.SetToggleUI();
-
-
     }
 
 

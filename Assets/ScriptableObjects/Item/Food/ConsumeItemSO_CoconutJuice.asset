@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ConsumeItemSO_CoconutJuice
   m_EditorClassIdentifier: 
   _id: Item_Consume_CoconutJuice
-  _type: 0
+  _type: 30
   _name: CoconutJuice
   _description: "\uC2E0\uC120\uD55C \uCF54\uCF54\uB11B \uC96C\uC2A4. \uBAA9\uB9C8\uB984\uC744
     70 \uD68C\uBCF5\uC2DC\uCF1C\uC900\uB2E4."

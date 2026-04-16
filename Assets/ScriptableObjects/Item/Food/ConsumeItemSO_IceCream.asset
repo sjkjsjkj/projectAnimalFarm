@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ConsumeItemSO_IceCream
   m_EditorClassIdentifier: 
   _id: Item_Consume_IceCream
-  _type: 0
+  _type: 30
   _name: IceCream
   _description: "\uC2DC\uC6D0\uD55C \uC544\uC774\uC2A4\uD06C\uB9BC. \uBAA9\uB9C8\uB984\uC744
     30 \uD68C\uBCF5\uC2DC\uCF1C\uC900\uB2E4."

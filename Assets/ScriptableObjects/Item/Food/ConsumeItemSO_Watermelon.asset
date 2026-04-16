@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ConsumeItemSO_Watermelon
   m_EditorClassIdentifier: 
   _id: Item_Consume_Watermelon
-  _type: 0
+  _type: 30
   _name: Watermelon
   _description: "\uC798 \uC775\uC740 \uB2EC\uB2EC\uD55C \uC218\uBC15. \uBAA9\uB9C8\uB984\uC744
     50\uB9CC\uD07C \uD68C\uBCF5\uC2DC\uCF1C\uC900\uB2E4."

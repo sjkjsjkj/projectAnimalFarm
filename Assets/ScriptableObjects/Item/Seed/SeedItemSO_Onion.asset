@@ -17,12 +17,13 @@ MonoBehaviour:
   _name: "\uC591\uD30C"
   _description: "\uC54C\uC2F8\uD55C \uD5A5\uACFC \uB2E8\uB9DB\uC744 \uB3D9\uC2DC\uC5D0
     \uD488\uC740 \uB465\uADFC \uBFCC\uB9AC \uC791\uBB3C\uC785\uB2C8\uB2E4."
-  _rarity: 1
+  _rarity: 2
   _image: {fileID: -724628908, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
   _prefab: {fileID: 0}
-  _sellPrice: 100
-  _buyPrice: 200
-  _maxStack: 64
+  _sellPrice: 40
+  _buyPrice: 32
+  _maxStack: 99
+  _itemUseContexts: []
   _placeCropId: 
   _needFarmingLevel: 1
   _harvestItemId: Onion_0
