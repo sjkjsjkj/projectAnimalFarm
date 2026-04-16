@@ -436,7 +436,7 @@ public class CFishingController2D : BaseMono
         }
 
         OnPlayerFishing.Publish(motionTargetPos, motionDuration, _motionStartIsSuccessValue);
-        _onFishingStarted?.Invoke();
+        RaiseFishingStartedFeedback();
 
         if (_logEnabled)
         {
@@ -489,9 +489,7 @@ public class CFishingController2D : BaseMono
 
         if (!CanInventoryAcceptItem(playerInventory, rewardItemSo, _amount))
         {
-            NotifyFeedbackByResult(EFishingStartResult.InventoryFull, "인벤토리가 가득 찼습니다.");
-            _onFishingFailed?.Invoke();
-            ReleaseFishingState(true);
+            FailFishingWithResult(EFishingStartResult.InventoryFull, "인벤토리가 가득 찼습니다.", true);
             yield break;
         }
 
@@ -499,9 +497,7 @@ public class CFishingController2D : BaseMono
         {
             if (selectedBait == null)
             {
-                NotifyFeedbackByResult(EFishingStartResult.NoCatchableFishForBait, "현재 스폿에 맞는 미끼가 없거나 미끼 등급이 맞지 않습니다.");
-                _onFishingFailed?.Invoke();
-                ReleaseFishingState(true);
+                FailFishingWithResult(EFishingStartResult.NoCatchableFishForBait, "현재 스폿에 맞는 미끼가 없거나 미끼 등급이 맞지 않습니다.", true);
                 yield break;
             }
 
@@ -510,9 +506,7 @@ public class CFishingController2D : BaseMono
                 bool removed = playerInventory.TryRemoveItem(selectedBait.Id, Mathf.Max(1, _requiredBaitCount));
                 if (!removed)
                 {
-                    NotifyFeedbackByResult(EFishingStartResult.BaitInsufficient, "미끼가 부족합니다.");
-                    _onFishingFailed?.Invoke();
-                    ReleaseFishingState(true);
+                    FailFishingWithResult(EFishingStartResult.BaitInsufficient, "미끼가 부족합니다.", true);
                     yield break;
                 }
             }
@@ -522,9 +516,7 @@ public class CFishingController2D : BaseMono
 
         if (!received)
         {
-            NotifyFeedbackByResult(EFishingStartResult.InventoryFull, "인벤토리가 가득 찼습니다.");
-            _onFishingFailed?.Invoke();
-            ReleaseFishingState(true);
+            FailFishingWithResult(EFishingStartResult.InventoryFull, "인벤토리가 가득 찼습니다.", true);
             yield break;
         }
 
@@ -542,24 +534,14 @@ public class CFishingController2D : BaseMono
 
         QueueCatchSuccessFeedback(fishRow != null ? fishRow.name : string.Empty, _amount);
 
-        _onFishingSucceeded?.Invoke();
+        RaiseFishingSucceededFeedback();
 
         ReleaseFishingState(true);
     }
 
     private void HandleFishingRuntimeFail(string message)
     {
-        InteractionFeedbackRelay.ClearQueuedFishingSuccessMessage();
-        _lastFailMessage = message;
-
-        if (_logEnabled)
-        {
-            Debug.LogWarning("[FishingController] 낚시 실패: " + message);
-        }
-
-        NotifyFallbackFeedback(message);
-        _onFishingFailed?.Invoke();
-        ReleaseFishingState(true);
+        FailFishingWithCustomMessage(message, true);
     }
 
     private bool HandleFishingStartFail(CPlayerCollector2D collector, EFishingStartResult result)
@@ -573,8 +555,97 @@ public class CFishingController2D : BaseMono
         }
 
         NotifyFeedbackByResult(result, _lastFailMessage);
-        _onFishingFailed?.Invoke();
         return false;
+    }
+
+
+    private void FailFishingWithResult(EFishingStartResult result, string fallbackMessage, bool applyCooldown)
+    {
+        InteractionFeedbackRelay.ClearQueuedFishingSuccessMessage();
+
+        _lastFailMessage = string.IsNullOrWhiteSpace(fallbackMessage)
+            ? GetFailMessage(result)
+            : fallbackMessage;
+
+        if (_logEnabled)
+        {
+            Debug.LogWarning("[FishingController] 낚시 실패: " + _lastFailMessage);
+        }
+
+        NotifyFeedbackByResult(result, _lastFailMessage);
+        ReleaseFishingState(applyCooldown);
+    }
+
+    private void FailFishingWithCustomMessage(string message, bool applyCooldown)
+    {
+        InteractionFeedbackRelay.ClearQueuedFishingSuccessMessage();
+
+        _lastFailMessage = string.IsNullOrWhiteSpace(message)
+            ? "낚시에 실패했습니다."
+            : message;
+
+        if (_logEnabled)
+        {
+            Debug.LogWarning("[FishingController] 낚시 실패: " + _lastFailMessage);
+        }
+
+        if (_feedbackRelay != null)
+        {
+            _feedbackRelay.ShowFailureFeedback(_lastFailMessage);
+        }
+        else
+        {
+            NotifyFallbackFeedback(_lastFailMessage);
+        }
+
+        ReleaseFishingState(applyCooldown);
+    }
+
+    private void RaiseFishingStartedFeedback()
+    {
+        if (_feedbackRelay != null)
+        {
+            _feedbackRelay.OnFishingStarted();
+            return;
+        }
+
+        _onFishingStarted?.Invoke();
+    }
+
+    private void RaiseFishingSucceededFeedback()
+    {
+        if (_feedbackRelay != null)
+        {
+            _feedbackRelay.OnFishingSucceeded();
+            return;
+        }
+
+        _onFishingSucceeded?.Invoke();
+    }
+
+    private void RaiseFishingCanceledFeedback(string message)
+    {
+        if (_feedbackRelay != null)
+        {
+            if (!string.IsNullOrWhiteSpace(message))
+            {
+                _feedbackRelay.ShowWarningFeedback(message);
+            }
+            else
+            {
+                _feedbackRelay.OnFishingCanceled();
+            }
+
+            return;
+        }
+
+        if (!string.IsNullOrWhiteSpace(message))
+        {
+            NotifyFallbackFeedback(message);
+            return;
+        }
+
+        _onFishingCanceled?.Invoke();
     }
 
     private void ReleaseFishingState(bool applyCooldown)
@@ -619,7 +690,7 @@ public class CFishingController2D : BaseMono
 
         if (showFeedback)
         {
-            NotifyFallbackFeedback(message);
+            RaiseFishingCanceledFeedback(message);
         }
 
         if (publishMotionCancel && _logEnabled)
@@ -628,7 +699,6 @@ public class CFishingController2D : BaseMono
         }
 
         OnPlayerCanceled.Publish();
-        _onFishingCanceled?.Invoke();
         ReleaseFishingState(false);
     }
 
@@ -1789,6 +1859,13 @@ public class CFishingController2D : BaseMono
         {
             switch (result)
             {
+                case EFishingStartResult.AlreadyFishing:
+                case EFishingStartResult.CollectorBusy:
+                case EFishingStartResult.Cooldown:
+                case EFishingStartResult.NoFishingArea:
+                    _feedbackRelay.ShowWarningFeedback(fallbackMessage);
+                    return;
+
                 case EFishingStartResult.NoBaitInInventory:
                     _feedbackRelay.OnFishingNoBait();
                     return;
@@ -1812,6 +1889,14 @@ public class CFishingController2D : BaseMono
 
                 case EFishingStartResult.InventoryFull:
                     _feedbackRelay.OnInventoryFull();
+                    return;
+
+                case EFishingStartResult.CollectorNull:
+                case EFishingStartResult.DatabaseMissing:
+                case EFishingStartResult.InventoryMissing:
+                case EFishingStartResult.NoCandidateFish:
+                case EFishingStartResult.RewardItemDataMissing:
+                    _feedbackRelay.ShowFailureFeedback(fallbackMessage);
                     return;
 
                 default:
