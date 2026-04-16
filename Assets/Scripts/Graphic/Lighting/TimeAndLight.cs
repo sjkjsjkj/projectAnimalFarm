@@ -21,6 +21,7 @@ public class TimeAndLight : Frameable
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private float _curNormalize = 0f;
     private static bool _isDay = true;
+    private float _time = 0f;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -33,11 +34,21 @@ public class TimeAndLight : Frameable
     // 프레임 매니저가 실행할 메서드
     public override void ExecuteFrame()
     {
+        FlowTime();
         UpdateLight();
     }
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
+    private void FlowTime()
+    {
+        EScene curScene = GameManager.Ins.Scene;
+        if(curScene == EScene.Main || curScene == EScene.Forest || curScene == EScene.Cave)
+        {
+            _time += Time.deltaTime;
+        }
+    }
+
     private void UpdateLight()
     {
         EScene curScene = GameManager.Ins.Scene;
@@ -64,7 +75,7 @@ public class TimeAndLight : Frameable
     private void TimeProgress()
     {
         // 하루의 시간 비율
-        float ratio = Time.time / _dayDurationSeconds + _startTime;
+        float ratio = _startTime + (_time / _dayDurationSeconds);
         _curNormalize = Mathf.PingPong(ratio, 1f);
         // 낮과 밤 구분
         bool curIsDay = _curNormalize > _dayCondition; // 0.5보다 작으면 낮, 크면 밤
@@ -96,8 +107,9 @@ public class TimeAndLight : Frameable
     }
     #endregion
 
-    private new void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         _curNormalize = Mathf.PingPong(_startTime, 1f);
         _isDay = _curNormalize > _dayCondition;
     }

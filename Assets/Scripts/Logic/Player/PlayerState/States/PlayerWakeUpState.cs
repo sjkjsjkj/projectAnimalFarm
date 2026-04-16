@@ -37,7 +37,6 @@ public class PlayerWakeUpState : IPlayerState
             // 씬 로딩중
             if (GameManager.Ins.IsSceneLoading || UFade.IsFading)
             {
-                UDebug.Print($"몇 번 실행되었나요?");
                 return true;
             }
             // 씬 로딩 완료

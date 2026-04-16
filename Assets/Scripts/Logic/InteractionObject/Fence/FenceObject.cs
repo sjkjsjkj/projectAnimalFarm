@@ -4,10 +4,12 @@ using UnityEngine;
 /// <summary>
 /// 인터랙션오브젝트 중 울타리문에게 부착될 스크립트 입니다.
 /// </summary>
-[RequireComponent (typeof(Collider2D))]
-public class FenceObject : BaseMono , IInteractable
+[RequireComponent(typeof(Collider2D))]
+public class FenceObject : BaseMono, IInteractable
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
+    [SerializeField] private Transform _playerTr;
+
     [Header("문 오브젝트")]
     [SerializeField] private SpriteRenderer _mainDoorSpRenderer;
 
@@ -16,8 +18,10 @@ public class FenceObject : BaseMono , IInteractable
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
+    private const float CLOSE_DISTANCE = 1.5f;
     private Collider2D _col;
     private bool _isOpen = false;
+    private Coroutine _coDoor;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -41,6 +45,11 @@ public class FenceObject : BaseMono , IInteractable
     private void OpenDoor()
     {
         _isOpen = true;
+        if(_coDoor != null)
+        {
+            StopCoroutine(_coDoor);
+            _coDoor = null;
+        }
         StartCoroutine(CoDoorCoroutine());
     }
     private void DoorSetting(bool isOpen)
@@ -55,8 +64,24 @@ public class FenceObject : BaseMono , IInteractable
         //UDebug.Print("문 열렸다.");
         DoorSetting(true);
         USound.PlaySfx(Id.Sfx_Player_Door_1, transform);
-        yield return new WaitForSeconds(0.5f);
-
+        if (_playerTr == null)
+        {
+            yield return UCoroutine.GetWait(0.5f);
+        }
+        else
+        {
+            Vector2 doorPos = transform.position;
+            while (true)
+            {
+                Vector2 playerPos = _playerTr.position;
+                Vector2 diff = playerPos - doorPos;
+                if (diff.sqrMagnitude > CLOSE_DISTANCE * CLOSE_DISTANCE)
+                {
+                    break;
+                }
+                yield return null;
+            }
+        }
         //UDebug.Print("문 닫혔다.");
         USound.PlaySfx(Id.Sfx_Player_Door_2, transform);
         DoorSetting(false);
@@ -69,6 +94,7 @@ public class FenceObject : BaseMono , IInteractable
         _isOpen = false;
         _col = GetComponent<Collider2D>();
         DoorSetting(_isOpen);
+        _playerTr = UObject.Find(K.NAME_PLAYER)?.transform;
     }
     #endregion
 
