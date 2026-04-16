@@ -61,7 +61,7 @@ public class ShopUI : BaseMono, IEscClosable
     private void HandleClickSell(int slotIndex)
     {
         
-        if (_shop.TrySellItem(_sellItems[slotIndex].Id, _sellItems[slotIndex].SellPrice, 1, out string message))
+        if (_shop.TrySellItem(_sellItems[slotIndex].Id, _sellItems[slotIndex].BuyPrice, 1, out string message))
         {
             USound.PlaySfx(Id.Sfx_Other_Success_2);
             //ShowFeedback(message, EFeedbackMessageType.Success);
