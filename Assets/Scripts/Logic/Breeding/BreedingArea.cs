@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// 사육장 클래스 입니다.
 /// </summary>
-public class BreedingArea : Singleton<BreedingArea>, IFoodProvider
+public class BreedingArea : GlobalSingleton<BreedingArea>, IFoodProvider
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
     [Header("프리팹")]
@@ -34,7 +34,8 @@ public class BreedingArea : Singleton<BreedingArea>, IFoodProvider
 
     public void SetInfo(int idx, Transform foodboxTr)
     {
-        if(UDebug.IsNull(_foodBoxPrefab))
+        UDebug.Print("breeding Area 초기화");
+        if (UDebug.IsNull(_foodBoxPrefab))
         {
             return;
         }
@@ -101,6 +102,8 @@ public class BreedingArea : Singleton<BreedingArea>, IFoodProvider
 
         tempGo.transform.SetParent(this.transform);
         tempGo.transform.localPosition = GetRandomPos();
+        string animalName = DatabaseManager.Ins.AnimalWorld(id).Name;
+        OnFeedbackMessageRequested.Publish($"{animalName} 이 소환되었습니다.", EFeedbackMessageType.Success);
 
         OnBuyAnimal.Publish(id);
     }
