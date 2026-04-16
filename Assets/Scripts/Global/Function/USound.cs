@@ -244,7 +244,7 @@ public static class USound
         // BGM 재생하기
         var volume = DataManager.Ins.Volume;
         source.clip = so.Clip;
-        source.volume = so.Volume * volume.Bgm * volume.Sfx;
+        source.volume = so.Volume * volume.Bgm * volume.Master;
         source.Play();
         _curBgmId = id;
     }
