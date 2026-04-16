@@ -144,6 +144,7 @@ MonoBehaviour:
   _instanceId: 0
   _sellItemSlotPrefab: {fileID: -3405452576139180731, guid: b699a59b276f6c740bd6aa8c1eb3052d, type: 3}
   _sellItemSlotTransform: {fileID: 9146955262760522161}
+  _closeButton: {fileID: 6095404350952337080}
 --- !u!1 &2433648571083088236
 GameObject:
   m_ObjectHideFlags: 0
