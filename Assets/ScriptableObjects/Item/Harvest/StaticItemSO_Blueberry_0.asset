@@ -19,6 +19,7 @@ MonoBehaviour:
   _rarity: 3
   _image: {fileID: 21300000, guid: 4e98f698f032b6345a7ccf28d1441670, type: 2}
   _prefab: {fileID: 0}
-  _sellPrice: 450
-  _buyPrice: 0
-  _maxStack: 64
+  _sellPrice: 2075
+  _buyPrice: 470
+  _maxStack: 99
+  _itemUseContexts: []

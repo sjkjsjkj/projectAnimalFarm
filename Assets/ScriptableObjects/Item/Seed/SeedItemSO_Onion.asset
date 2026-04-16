@@ -20,8 +20,8 @@ MonoBehaviour:
   _rarity: 2
   _image: {fileID: -724628908, guid: 6fabb76865c2bab4b980b54dc0ccd894, type: 3}
   _prefab: {fileID: 0}
-  _sellPrice: 40
-  _buyPrice: 32
+  _sellPrice: 20
+  _buyPrice: 1
   _maxStack: 99
   _itemUseContexts: []
   _placeCropId: 
