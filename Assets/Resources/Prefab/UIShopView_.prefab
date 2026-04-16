@@ -196,6 +196,7 @@ MonoBehaviour:
   _instanceId: 0
   _sellItemSlotPrefab: {fileID: -3405452576139180731, guid: b699a59b276f6c740bd6aa8c1eb3052d, type: 3}
   _sellItemSlotTransform: {fileID: 4565063377562869003}
+  _closeButton: {fileID: 1326870869761943485}
 --- !u!1 &2397553960260117381
 GameObject:
   m_ObjectHideFlags: 0
@@ -315,7 +316,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4626693091923097551}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3205799762521482963
 GameObject:
   m_ObjectHideFlags: 0
