@@ -17,7 +17,7 @@ public class Workbench :  ICraftLogical
     private WorkbenchReturnStruct[] _curHasItemConditions;
 
 
-    private List<RecipeSO> _axeRecipies;
+    //private List<RecipeSO> _axeRecipies;
     private List<RecipeSO> _fishigRodRecipies;
     private List<RecipeSO> _shovelRecipies;
     private List<RecipeSO> _pickaxeRecipies;
@@ -64,7 +64,7 @@ public class Workbench :  ICraftLogical
         _recipeTables = Resources.Load<RecipeTableSO>("Table/RecipeTableSO");
         _playerInventory = InventoryManager.Ins.PlayerInventory;
 
-        _axeRecipies = new List<RecipeSO>();
+        //_axeRecipies = new List<RecipeSO>();
         _fishigRodRecipies = new List<RecipeSO>();
         _shovelRecipies = new List<RecipeSO>();
         _pickaxeRecipies = new List<RecipeSO>();
@@ -146,9 +146,9 @@ public class Workbench :  ICraftLogical
         {
             switch(tempRecipeSOList[i].TargetItemType)
             {
-                case EType.AxeItem:
-                    _axeRecipies.Add(tempRecipeSOList[i]);
-                    break;
+                //case EType.AxeItem:
+                //    _axeRecipies.Add(tempRecipeSOList[i]);
+                //    break;
                 case EType.WateringCan:
                     _wateringCanRecipe.Add(tempRecipeSOList[i]);
                     break;
@@ -173,8 +173,8 @@ public class Workbench :  ICraftLogical
     {
         switch (curCategory)
         {
-            case ECraftableItemType.Axe:
-                return _axeRecipies[recipeIdx];
+            //case ECraftableItemType.Axe:
+            //    return _axeRecipies[recipeIdx];
             case ECraftableItemType.Sickle:
                 return _sickleRecipies[recipeIdx];
             case ECraftableItemType.Shovel:
@@ -199,8 +199,8 @@ public class Workbench :  ICraftLogical
        // UDebug.Print($"{eType.ToString()} | {_axeRecipies.Count}");
         switch (eType)
         {
-            case ECraftableItemType.Axe:
-                return _axeRecipies;
+            //case ECraftableItemType.Axe:
+            //    return _axeRecipies;
             case ECraftableItemType.Sickle:
                 return _sickleRecipies;
             case ECraftableItemType.Shovel:

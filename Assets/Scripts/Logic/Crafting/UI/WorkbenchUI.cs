@@ -30,7 +30,7 @@ public class WorkbenchUI : BaseMono, ICraftUI, IEscClosable
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     //private Workbench _workbench;
-    private ECraftableItemType _currentChoiceCategory = ECraftableItemType.Axe;
+    private ECraftableItemType _currentChoiceCategory = ECraftableItemType.Shovel;
     private bool _isOpen;
     private int _lastestChoicedBtnIdx=0;
     //private List<RecipeSO> _currentSelectCategoryRecipies;
@@ -83,6 +83,7 @@ public class WorkbenchUI : BaseMono, ICraftUI, IEscClosable
             return;
         }
 
+        UDebug.Print($"eCraftType : {eCraftType.ToString()}");
         _currentChoiceCategory = eCraftType;
 
         List<RecipeSO> curChoiceRecipeList = _workbench.SelectCategory(_currentChoiceCategory);
@@ -117,7 +118,7 @@ public class WorkbenchUI : BaseMono, ICraftUI, IEscClosable
     public void ShowUI()
     {
         USound.PlaySfx(Id.Sfx_Ui_ChestOpen_2);
-        CategoryBtnClick(ECraftableItemType.Axe);
+        CategoryBtnClick(ECraftableItemType.Shovel);
         RecipeBtnClick(_currentChoiceCategory, 0);
         gameObject.SetActive(true);
         EscManager.Ins.Enter(this);

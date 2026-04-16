@@ -170,11 +170,9 @@ public class FoodboxInteractObject : BaseMono, IInteractable
                 break;
             }
             yield return null;
-            
-            _storageIdx = _inventoryManager.RequestNewInventory(K.FOODBOX_INVENTORY_SIZE, EInventoryType.FoodBox);
-
-            transform.Find("BreedingArea").GetComponent<BreedingArea>().SetInfo(_storageIdx, this.transform);
         }
+        _storageIdx = _inventoryManager.RequestNewInventory(K.FOODBOX_INVENTORY_SIZE, EInventoryType.FoodBox);
+        transform.Find("BreedingArea").GetComponent<BreedingArea>().SetInfo(_storageIdx, this.transform);
     }
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────

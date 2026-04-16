@@ -21,6 +21,7 @@ public class ItemUseSpawnAnimal : ItemUseContextSO
             return false;
         }
         BreedingArea.Ins.SpawnAnimal(_spawnAnimalId);
+        
         return true;
     }
     #endregion

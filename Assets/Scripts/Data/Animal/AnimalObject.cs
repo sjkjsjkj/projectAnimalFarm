@@ -111,10 +111,13 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
     {
         _isProductFinish = false;
 
-
+        
 
         ItemCollectionCoordinator.Ins.TryCollectItem(_productItemId, 1);
-        OnFeedbackMessageRequested.Publish($"생산품 획득.", EFeedbackMessageType.Success, 1.5f);
+
+        string productName = DatabaseManager.Ins.Product(_productItemId).Name;
+
+        OnFeedbackMessageRequested.Publish($"생산품  [{productName}]  획득.", EFeedbackMessageType.Success, 1.5f);
 
 
         _productFinishIcon.SetActive(false);
