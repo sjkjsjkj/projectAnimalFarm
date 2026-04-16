@@ -239,8 +239,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b28f46598ec31324a908a1a14da566eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: f65571c3-d5f5-4439-b5a1-0de3469bc84a
-  _instanceId: 89282
+  _uniqueId: 6ee9a209-d5f1-4c64-adfc-9d24e9478115
+  _instanceId: 83158
   _testTileID: 0
   _animalID: 
   _breedingArea: {fileID: 0}
@@ -4061,7 +4061,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 388190169474545357, guid: f4d36761fd373d6408d631c2eb745959, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3656006803351916197, guid: f4d36761fd373d6408d631c2eb745959, type: 3}
       propertyPath: m_LocalPosition.x
