@@ -3,8 +3,10 @@
 [System.Serializable]
 public class PlayerRunState : IPlayerState
 {
-    [Header("걸음 설정")]
+    [Header("달리기 설정")]
     [SerializeField] private float _stepSoundInterval = 0.2f;
+    [SerializeField] private float _frameConsumeThirst = 0.005f;
+    [SerializeField] private float _animSpeedMultiply = 1f;
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     private const string ACTION_SPEED_PARAM = "fActionSpeed";
@@ -28,12 +30,16 @@ public class PlayerRunState : IPlayerState
         context.anim.SetFloat(_hashActionSpeed, 1f);
         context.anim.SetFloat(_hashSpeed, 1f); // Run
         context.anim.Play(_hashLocomotion);
+        context.anim.speed = _animSpeedMultiply;
         _prevPos = context.tr.position; // 기록용
         return false;
     }
 
     public bool Frame(in PlayerContext context)
     {
+        // 목마름 소모
+        var player = DataManager.Ins.Player;
+        player.ConsumeThirst(_frameConsumeThirst);
         // 기록용
         Vector2 curPos = context.tr.position;
         float movement = Vector2.Distance(curPos, _prevPos);
@@ -43,7 +49,6 @@ public class PlayerRunState : IPlayerState
         Vector2 pos = context.tr.position;
         Vector2 size = DatabaseManager.Ins.Player(Id.World_Player).Size;
         Vector2 dir = context.inputMove.normalized;
-        var player = DataManager.Ins.Player;
         float speed = player.CurWalkSpeed * player.CurRunMultiplier;
         // 실제 속도 적용
         context.rb.velocity = TileManager.Ins.Tile.GetValidVelocity(pos, size, dir, speed);
@@ -59,6 +64,8 @@ public class PlayerRunState : IPlayerState
         return false;
     }
 
-    public void Exit(in PlayerContext context) { }
+    public void Exit(in PlayerContext context) {
+        context.anim.speed = 1f;
+    }
     #endregion
 }

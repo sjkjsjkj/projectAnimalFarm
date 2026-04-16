@@ -130,8 +130,12 @@ MonoBehaviour:
   _fsm:
     _walk:
       _stepSoundInterval: 0.35
+      _speedRatioThirsty: 0.6
+      _animSpeedMultiply: 0.78
     _run:
-      _stepSoundInterval: 0.2
+      _stepSoundInterval: 0.25
+      _frameConsumeThirst: 0.005
+      _animSpeedMultiply: 1.5
     _fishing:
       _castingWeight: 6
       _waitWeight: 10
@@ -139,6 +143,12 @@ MonoBehaviour:
       _rollWeight: 10
       _capturedYesWeight: 12
       _capturedNoWeight: 12
+    _wakeUp:
+      _cam: {fileID: 0}
+      _zoomInRatio: 0.3
+      _zoomOutRatio: 1
+      _zoomOutDuration: 1.5
+      _animDuration: 2.107
 --- !u!114 &9075371350282008030
 MonoBehaviour:
   m_ObjectHideFlags: 0

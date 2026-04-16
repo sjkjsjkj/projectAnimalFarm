@@ -136,6 +136,14 @@ public static class UPlayer
         Id.Sfx_Environment_StepSand_4,
         Id.Sfx_Environment_StepSand_5,
     };
+    // ? ─ 기타 타일
+    private static string[] _snowStepArr =
+    {
+        Id.Sfx_Environment_StepSnow_1,
+        Id.Sfx_Environment_StepSnow_2,
+        Id.Sfx_Environment_StepSnow_3,
+        Id.Sfx_Environment_StepSnow_4,
+    };
     
     /// <summary>
     /// 카메라에서 발자국 소리를 재생합니다.
@@ -205,6 +213,10 @@ public static class UPlayer
                 USound.PlaySfx(_sandStepArr[index]);
                 return;
             }
+            //
+            int last = Random.Range(0, _snowStepArr.Length);
+            USound.PlaySfx(_snowStepArr[last]);
+            return;
         }
     }
 }

@@ -2,8 +2,8 @@
 
 public class PlayerEatingState : PlayerOneTime
 {
-    private const string EATING_PARAM = "Eating";
-    private const float CLIP_LENGTH = 1f;
+    private const string EATING_PARAM = "Feeding";
+    private const float CLIP_LENGTH = 0.517f;
 
     private readonly int _hashEating = Animator.StringToHash(EATING_PARAM);
 
@@ -22,6 +22,7 @@ public class PlayerEatingState : PlayerOneTime
         USound.PlaySfx(_eatingSound[index]);
         ApplyAnimationSpeed(context.anim, CLIP_LENGTH, context.duration);
         context.anim.Play(_hashEating);
+        context.anim.speed = 0f;
         return true;
     }
 
@@ -32,6 +33,12 @@ public class PlayerEatingState : PlayerOneTime
             return false;
         }
         return true;
+    }
+
+    public override void Exit(in PlayerContext context)
+    {
+        base.Exit(context);
+        context.anim.speed = 1f;
     }
     #endregion
 }
