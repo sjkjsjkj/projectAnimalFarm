@@ -92,7 +92,7 @@ public class Inventory
         {
             //UDebug.Print("인벤UI 최신화!");
             OnChangeSlot?.Invoke(_inventoryType, _inventorySlots[itemInputSlot]);
-
+            //OnFeedbackMessageRequested.Publish($"", EFeedbackMessageType.Success, 1.5f);
             if (_inventoryType == EInventoryType.PlayerInventory)
             {
                 //UDebug.Print($"OnPlayerGetItem 발행 | id = {itemData.Id}, amount = {amount}");

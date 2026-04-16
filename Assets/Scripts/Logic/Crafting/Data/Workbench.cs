@@ -81,7 +81,6 @@ public class Workbench :  ICraftLogical
     //    public void SetRecipe(RecipeSO recipe)
     public void SetRecipe(ECraftableItemType curCategory, int recipeIdx)
     {
-        
         _recipe = GetCurCategoryRecipe(curCategory, recipeIdx);
         _requiredItems = _recipe.RequiedItems;
         _canMake = true;
@@ -118,6 +117,7 @@ public class Workbench :  ICraftLogical
                 //UDebug.Print($"현재 필요한 아이템 : {_requiredItems[i].RequireItem.Name}");
                 _playerInventory.TryRemoveItem(_requiredItems[i].RequireItem.Id, _requiredItems[i].Count);
             }
+            OnFeedbackMessageRequested.Publish($"{tempItemSO.Name}  제작 성공!", EFeedbackMessageType.Success, 1.5f);
         }
         else
         {

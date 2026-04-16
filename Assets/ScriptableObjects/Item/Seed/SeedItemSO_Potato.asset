@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: Item_Seed_Potato
   _type: 3
-  _name: "\uAC10\uC790"
+  _name: "\uAC10\uC790 \uC528\uC557"
   _description: "\uCC99\uBC15\uD55C \uB545\uC5D0\uC11C\uB3C4 \uB048\uC9C8\uAE30\uAC8C
     \uC0B4\uC544\uB0A8\uB294 \uB4E0\uB4E0\uD55C \uAD6C\uD669\uC791\uBB3C\uC785\uB2C8\uB2E4."
   _rarity: 1

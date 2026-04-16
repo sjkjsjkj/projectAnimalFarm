@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: Item_Seed_StrawBerry
   _type: 3
-  _name: "\uB538\uAE30"
+  _name: "\uB538\uAE30 \uC528\uC557"
   _description: "\uBD89\uACE0 \uB2EC\uCF64\uD55C \uACFC\uC721\uC744 \uB9FA\uB294
     \uB9E4\uB825\uC801\uC778 \uC791\uBB3C\uC785\uB2C8\uB2E4."
   _rarity: 4

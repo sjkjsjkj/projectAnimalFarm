@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: Item_Seed_Rice
   _type: 3
-  _name: "\uBCBC"
+  _name: "\uBCBC \uC528\uC557"
   _description: "\uB2E4\uB7C9\uC758 \uBB3C\uC744 \uD544\uC694\uB85C \uD558\uB294
     \uACE1\uBB3C\uC785\uB2C8\uB2E4."
   _rarity: 1

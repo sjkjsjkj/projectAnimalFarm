@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: Item_Seed_GreenOnion
   _type: 3
-  _name: "\uD30C"
+  _name: "\uD30C \uC528\uC557"
   _description: "\uC131\uC7A5 \uC18D\uB3C4\uAC00 \uBE60\uB974\uACE0 \uC5B4\uB514\uC11C\uB4E0
     \uC798 \uC790\uB77C\uB294 \uD5A5\uC2E0 \uCC44\uC18C\uC785\uB2C8\uB2E4."
   _rarity: 1
