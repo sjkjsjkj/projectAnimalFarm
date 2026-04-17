@@ -20,10 +20,10 @@ MonoBehaviour:
   _image: {fileID: 4723107735738678597, guid: 5256893308734c94aa117ffe8c12c92c, type: 3}
   _prefab: {fileID: 0}
   _size: {x: 1, y: 1}
-  _animController: {fileID: 9100000, guid: 53129049357d9aa4a99dfe89c3897e02, type: 2}
+  _animController: {fileID: 9100000, guid: e9c4a583e12965a478098716343c29c4, type: 2}
   _dialog: []
   _initPosition: {x: 0, y: 0}
-  _moveSpeed: 3
+  _moveSpeed: 5
   _eNpcMoveType: 0
   _sfxId_footStepSound: Sfx_Environment_StepTuff_01
   _sfxId_buzzing: Sfx_Creature_Human_Idle_02
