@@ -24,8 +24,8 @@ MonoBehaviour:
   _walkSpeed: 3
   _runMultiplier: 1.85
   _maxStamina: 100
-  _maxHunger: 100
-  _maxThirst: 100
+  _maxHunger: 300
+  _maxThirst: 300
   _maxMoney: 2147483647
   _skillExpTables:
   - skillType: 1

@@ -54,7 +54,7 @@ public class SceneLoadStartPoint : BaseMono
         else // 게임 로드 (시작)
         {
             Vector2 pos = (player.Position == Vector2.zero) ? _defaultSpawnPoints.position : player.Position;
-            UDebug.Print($"씬 로드 : 초기 위치에서 플레이어 등장" +
+            UDebug.Print($"씬 로드 : 플레이어 등장" +
                 $"\n게임 시작 위치: {pos}, 플레이어 : {player.Position}");
             UDebug.Print($"");
             SetPlayerPosition(pos);

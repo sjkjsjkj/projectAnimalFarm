@@ -22,7 +22,8 @@ public class TitleButton : BaseMono
         UDebug.Print($"게임 로드 버튼을 클릭했습니다.");
         if (HasSaveData())
         {
-            GameManager.Ins.LoadSceneAsyncWithFade((int)EScene.Main);
+            EScene targetScene = DataManager.Ins.Player.CurPlayerScene();
+            GameManager.Ins.LoadSceneAsyncWithFade((int)targetScene);
         }
         else
         {
