@@ -276,11 +276,6 @@ public class CFishingController2D : BaseMono
             return HandleFishingStartFail(collector, result);
         }
 
-        if (!TryConsumeFishingHunger())
-        {
-            return HandleFishingStartFail(collector, EFishingStartResult.NotEnoughHunger);
-        }
-
         StartFishingRoutine(collector, areaType, checkPos);
         return true;
     }
@@ -305,11 +300,6 @@ public class CFishingController2D : BaseMono
         if (result != EFishingStartResult.Success)
         {
             return HandleFishingStartFail(collector, result);
-        }
-
-        if (!TryConsumeFishingHunger())
-        {
-            return HandleFishingStartFail(collector, EFishingStartResult.NotEnoughHunger);
         }
 
         StartFishingRoutine(collector, areaType, checkPos);
@@ -551,6 +541,12 @@ public class CFishingController2D : BaseMono
         if (!CanInventoryAcceptItem(playerInventory, rewardItemSo, _amount))
         {
             FailFishingWithResult(EFishingStartResult.InventoryFull, "인벤토리가 가득 찼습니다.", true);
+            yield break;
+        }
+
+        if (!TryConsumeFishingHunger())
+        {
+            FailFishingWithResult(EFishingStartResult.NotEnoughHunger, _notEnoughHungerMessage, false);
             yield break;
         }
 

@@ -227,6 +227,10 @@ MonoBehaviour:
   _cooldownAfterFishing: 0.2
   _amount: 1
   _fishingSkillExp: 0
+  _useHungerCost: 1
+  _requiredHunger: 10
+  _notEnoughHungerMessage: "\uBC30\uACE0\uD514\uC774 \uBD80\uC871\uD574 \uB09A\uC2DC\uD560
+    \uC218 \uC5C6\uC2B5\uB2C8\uB2E4."
   _requireFishingRodInQuickSlot: 1
   _limitCatchByQuickSlotRodRarity: 1
   _requireBait: 1
@@ -236,8 +240,13 @@ MonoBehaviour:
   _bypassRequiredFishingItemsForTest: 1
   _freshWaterAllowedRodIds: []
   _seaWaterAllowedRodIds: []
-  _freshWaterAllowedBaitIds: []
-  _seaWaterAllowedBaitIds: []
+  _freshWaterAllowedBaitIds:
+  - All_Fish_103
+  - All_Fish_111
+  _seaWaterAllowedBaitIds:
+  - All_Fish_119
+  - All_Fish_121
+  - All_Fish_125
   _manualSpotSearchRadius: 0.6
   _feedbackRelay: {fileID: 0}
   _motionStartIsSuccessValue: 1
@@ -431,15 +440,11 @@ MonoBehaviour:
   - Sfx_Ui_Click_1
   _miningFailSoundIds:
   - Sfx_Ui_No_1
-  - Sfx_Ui_No_2
   _miningWarningSoundIds:
-  - Sfx_Ui_No_1
   - Sfx_Ui_No_2
   _warningSoundIds:
-  - Sfx_Ui_No_1
   - Sfx_Ui_No_2
   _failureSoundIds:
-  - Sfx_Ui_No_1
   - Sfx_Ui_No_2
   _logEnabled: 0
 --- !u!1 &7311281874584277647
