@@ -37,6 +37,7 @@ public class PlayerWakeUpState : IPlayerState
             // 씬 로딩중
             if (GameManager.Ins.IsSceneLoading || UFade.IsFading)
             {
+                ZoomIn();
                 return true;
             }
             // 씬 로딩 완료
