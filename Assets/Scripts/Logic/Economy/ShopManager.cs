@@ -94,14 +94,12 @@ public class ShopManager : GlobalSingleton<ShopManager>
             UDebug.Print("Global Prefab : PlayerInvenUI 찾을 수 없음. 확인", LogType.Assert);
             return;
         }
-
         //인벤토리 UI 활성화
         _shopUI = Instantiate(_shopUIPrefab);
+        RectTransform rectTr = _shopUI.GetComponent<RectTransform>();
         _shopUI.transform.SetParent(_shopCanvasTr);
-        _shopUI .transform.localPosition = new Vector3(900, 0);
-        _shopUI .gameObject.SetActive(false);
-
-        
+        UObject.ResetRect(rectTr);
+        _shopUI.gameObject.SetActive(false);
     }
     #endregion
 }

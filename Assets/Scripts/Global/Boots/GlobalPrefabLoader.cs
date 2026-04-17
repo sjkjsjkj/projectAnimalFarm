@@ -56,7 +56,8 @@ public class GlobalPrefabLoader : BaseMono
         if (rectTr != null)
         {
             rectTr.localScale = Vector3.one;
-            rectTr.anchoredPosition = Vector2.zero;
+            rectTr.offsetMin = Vector2.zero;
+            rectTr.offsetMax = Vector2.zero;
         }
         UDebug.Print($"글로벌 프리펩({instance.name})을 생성했습니다.");
     }

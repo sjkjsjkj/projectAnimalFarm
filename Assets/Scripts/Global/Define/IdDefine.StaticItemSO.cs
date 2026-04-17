@@ -2,6 +2,14 @@
 
 public static partial class Id
 {
+    public const string Baby_Cow_Black_0 = "Baby Cow Black_0";
+    public const string Baby_Duck_Green_0 = "Baby Duck Green_0";
+    public const string Chicken_White_0 = "Chicken White_0";
+    public const string Goat_Male_Black_0 = "Goat Male Black_0";
+    public const string Horse_Blonde_0 = "Horse Blonde_0";
+    public const string Ostrich_Black_0 = "Ostrich Black_0";
+    public const string Pig_Pink_0 = "Pig Pink_0";
+    public const string Sheep_Male_0 = "Sheep Male_0";
     public const string Baby_Chicken_Black_0 = "Baby Chicken Black_0";
     public const string Baby_Chicken_Blonde_0 = "Baby Chicken Blonde_0";
     public const string Baby_Chicken_Brown_0 = "Baby Chicken Brown_0";
@@ -12,13 +20,11 @@ public static partial class Id
     public const string Baby_Chicken_Universe_0 = "Baby Chicken Universe_0";
     public const string Baby_Chicken_White_0 = "Baby Chicken White_0";
     public const string Baby_Chicken_Yellow_0 = "Baby Chicken Yellow_0";
-    public const string Baby_Cow_Black_0 = "Baby Cow Black_0";
     public const string Baby_Cow_Blonde_0 = "Baby Cow Blonde_0";
     public const string Baby_Cow_Brown_0 = "Baby Cow Brown_0";
     public const string Baby_Cow_Pink_0 = "Baby Cow Pink_0";
     public const string Baby_Duck_Black_0 = "Baby Duck Black_0";
     public const string Baby_Duck_Brown_0 = "Baby Duck Brown_0";
-    public const string Baby_Duck_Green_0 = "Baby Duck Green_0";
     public const string Baby_Duck_Pink_0 = "Baby Duck Pink_0";
     public const string Baby_Duck_White_0 = "Baby Duck White_0";
     public const string Baby_Duck_Yellow_0 = "Baby Duck Yellow_0";
@@ -38,7 +44,6 @@ public static partial class Id
     public const string Chicken_Pink_1 = "Chicken Pink_1";
     public const string Chicken_Red_1 = "Chicken Red_1";
     public const string Chicken_Universe_1 = "Chicken Universe_1";
-    public const string Chicken_White_0 = "Chicken White_0";
     public const string deer_Idle_0 = "deer Idle_0";
     public const string Duck_Mallad_0 = "Duck Mallad_0";
     public const string Duck_White_2_0 = "Duck White 2_0";
@@ -46,21 +51,17 @@ public static partial class Id
     public const string Goat_Baby_Blonde_0 = "Goat Baby Blonde_0";
     public const string Goat_Baby_Brown_0 = "Goat Baby Brown_0";
     public const string Goat_Baby_Pink_0 = "Goat Baby Pink_0";
-    public const string Goat_Male_Black_0 = "Goat Male Black_0";
     public const string Goat_Male_Blonde_0 = "Goat Male Blonde_0";
     public const string Goat_Male_Brown_0 = "Goat Male Brown_0";
     public const string Goat_Male_Pink_0 = "Goat Male Pink_0";
     public const string Golden_Capybara_0 = "Golden Capybara_0";
     public const string Hippo_0 = "Hippo_0";
     public const string Horse_Black_0 = "Horse Black_0";
-    public const string Horse_Blonde_0 = "Horse Blonde_0";
     public const string Horse_Brown_0 = "Horse Brown_0";
-    public const string Ostrich_Black_0 = "Ostrich Black_0";
     public const string Ostrich_Blue_0 = "Ostrich Blue_0";
     public const string Ostrich_Brown_0 = "Ostrich Brown_0";
     public const string Penguin_0 = "Penguin_0";
     public const string Pig_Mud_Pink_0 = "Pig Mud Pink_0";
-    public const string Pig_Pink_0 = "Pig Pink_0";
     public const string Pink_Capybara_0 = "Pink Capybara_0";
     public const string Rabbit_Blonde_0 = "Rabbit Blonde_0";
     public const string Rabbit_Brown_0 = "Rabbit Brown_0";
@@ -70,7 +71,6 @@ public static partial class Id
     public const string Rabbit_Pink_0 = "Rabbit Pink_0";
     public const string Red_Fox_0 = "Red Fox_0";
     public const string Sheep_Female_0 = "Sheep Female_0";
-    public const string Sheep_Male_0 = "Sheep Male_0";
     public const string Turttle_Idle_0 = "Turttle Idle_0";
     public const string White_Fox_0 = "White Fox_0";
     public const string White_Idel_0 = "White Idel_0";
@@ -180,7 +180,7 @@ public static partial class Id
     public const string Fantasy_Mushroom_12 = "Fantasy Mushroom_12";
     public const string Fantasy_Mushroom_15 = "Fantasy Mushroom_15";
     public const string Grape_0 = "Grape_0";
-    public const string ㅊ = "ㅊ";
+    public const string LargeGgreenOnion_0 = "LargeGgreenOnion_0";
     public const string Mango_0 = "Mango_0";
     public const string Mulberry_0 = "Mulberry_0";
     public const string Onion_0 = "Onion_0";
@@ -195,18 +195,18 @@ public static partial class Id
     public const string Potato_0 = "Potato_0";
     public const string Pumpkin_0 = "Pumpkin_0";
     public const string Rice_0 = "Rice_0";
-    public const string stone_with_minerals_22 = "stone with minerals_22";
-    public const string stone_with_minerals_24 = "stone with minerals_24";
-    public const string stone_with_minerals_25 = "stone with minerals_25";
-    public const string stone_with_minerals_26 = "stone with minerals_26";
-    public const string stone_with_minerals_27 = "stone with minerals_27";
-    public const string stone_with_minerals_28 = "stone with minerals_28";
-    public const string stone_with_minerals_29 = "stone with minerals_29";
-    public const string stone_with_minerals_30 = "stone with minerals_30";
-    public const string stone_with_minerals_31 = "stone with minerals_31";
-    public const string stone_with_minerals_45 = "stone with minerals_45";
     public const string Strawberry_0 = "Strawberry_0";
     public const string Sunflower_0 = "Sunflower_0";
     public const string Tomato_0 = "Tomato_0";
     public const string Watermelon_0 = "Watermelon_0";
+    public const string stone_with_minerals_24 = "stone with minerals_24";
+    public const string stone_with_minerals_26 = "stone with minerals_26";
+    public const string stone_with_minerals_31 = "stone with minerals_31";
+    public const string stone_with_minerals_30 = "stone with minerals_30";
+    public const string stone_with_minerals_28 = "stone with minerals_28";
+    public const string stone_with_minerals_29 = "stone with minerals_29";
+    public const string stone_with_minerals_27 = "stone with minerals_27";
+    public const string stone_with_minerals_25 = "stone with minerals_25";
+    public const string stone_with_minerals_22 = "stone with minerals_22";
+    public const string stone_with_minerals_45 = "stone with minerals_45";
 }
