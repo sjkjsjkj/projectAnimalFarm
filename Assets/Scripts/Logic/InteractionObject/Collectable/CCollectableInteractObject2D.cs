@@ -448,8 +448,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
             if (isManualRequest)
             {
-                ShowToolConditionFailFeedback(requiredToolType, isRarityLow, toolFailMessage);
-                _onCollectFailed?.Invoke();
+                RaiseToolConditionFailFeedback(requiredToolType, isRarityLow, toolFailMessage);
             }
 
             UpdateIndicatorVisibility();
@@ -502,8 +501,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
         if (!received)
         {
-            ShowGeneralCollectFailFeedback();
-            _onCollectFailed?.Invoke();
+            RaiseCollectFailedFeedback();
             UpdateIndicatorVisibility();
             return false;
         }
@@ -579,8 +577,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             }
 
             ReleaseManualCollectState(collector);
-            ShowGeneralCollectFailFeedback();
-            _onCollectFailed?.Invoke();
+            RaiseCollectFailedFeedback();
             yield break;
         }
 
@@ -631,8 +628,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
                 Debug.LogWarning($"[CCollectableInteractObject2D] 수동 채집 실패. itemId={_itemId}, object={name}");
             }
 
-            ShowGeneralCollectFailFeedback();
-            _onCollectFailed?.Invoke();
+            RaiseCollectFailedFeedback();
             yield break;
         }
 
@@ -740,7 +736,6 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         TryResolveFeedbackRelayIfMissing();
 
         string progressMessage = GetProgressFeedbackMessage();
-        bool handledByRelay = false;
 
         if (_feedbackRelay != null)
         {
@@ -749,17 +744,17 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
                 if (!string.IsNullOrWhiteSpace(progressMessage))
                 {
                     _feedbackRelay.ShowWarningFeedback(progressMessage);
-                    handledByRelay = true;
+                    return;
                 }
             }
             else
             {
                 _feedbackRelay.OnCollectStarted();
-                handledByRelay = true;
+                return;
             }
         }
 
-        if (!handledByRelay && !string.IsNullOrWhiteSpace(progressMessage))
+        if (!string.IsNullOrWhiteSpace(progressMessage))
         {
             if (_onFeedbackMessage != null)
             {
@@ -782,7 +777,6 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         {
             _feedbackRelay.OnCollected();
             _pendingLocalCollectedSuccessMessage = string.Empty;
-            _onCollected?.Invoke();
             return;
         }
 
@@ -790,7 +784,6 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         {
             NotifySuccessFeedback(_pendingLocalCollectedSuccessMessage);
             _pendingLocalCollectedSuccessMessage = string.Empty;
-            _onCollected?.Invoke();
             return;
         }
 
@@ -806,7 +799,6 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         if (_feedbackRelay != null)
         {
             _feedbackRelay.ShowWarningFeedback(resolvedMessage);
-            _onCollectCanceled?.Invoke();
             return;
         }
 
@@ -1812,9 +1804,17 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         _canCollectIndicatorObject.SetActive(isActive);
     }
 
-    private void ShowToolConditionFailFeedback(EType requiredToolType, bool isRarityLow, string fallbackMessage)
+    private void RaiseToolConditionFailFeedback(EType requiredToolType, bool isRarityLow, string fallbackMessage)
     {
         TryResolveFeedbackRelayIfMissing();
+
+        string relayMethodName = ResolveToolConditionFailRelayMethodName(requiredToolType, isRarityLow);
+
+        if (HasRelayListener(_onCollectFailed, relayMethodName))
+        {
+            _onCollectFailed?.Invoke();
+            return;
+        }
 
         if (_feedbackRelay != null)
         {
@@ -1823,58 +1823,54 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
                 if (isRarityLow)
                 {
                     _feedbackRelay.OnMiningToolRarityLow();
-                    _onCollectFailed?.Invoke();
-                    return;
                 }
-
-                if (requiredToolType == EType.PickaxeItem)
+                else if (requiredToolType == EType.PickaxeItem)
                 {
                     _feedbackRelay.OnMiningNoPickaxe();
-                    _onCollectFailed?.Invoke();
-                    return;
                 }
-
-                _feedbackRelay.OnMiningFailed();
-                _onCollectFailed?.Invoke();
-                return;
+                else
+                {
+                    _feedbackRelay.OnMiningFailed();
+                }
             }
-
-            if (isRarityLow)
+            else
             {
-                _feedbackRelay.OnCollectToolRarityLow();
-                _onCollectFailed?.Invoke();
-                return;
+                if (isRarityLow)
+                {
+                    _feedbackRelay.OnCollectToolRarityLow();
+                }
+                else
+                {
+                    switch (requiredToolType)
+                    {
+                        case EType.PickaxeItem:
+                            _feedbackRelay.OnCollectNeedPickaxe();
+                            break;
+
+                        case EType.ShovelItem:
+                            _feedbackRelay.OnCollectNeedShovel();
+                            break;
+
+                        case EType.SickleItem:
+                            _feedbackRelay.OnCollectNeedSickle();
+                            break;
+
+                        case EType.AxeItem:
+                            _feedbackRelay.OnCollectNeedAxe();
+                            break;
+
+                        default:
+                            _feedbackRelay.OnCollectFailed();
+                            break;
+                    }
+                }
             }
-
-            switch (requiredToolType)
-            {
-                case EType.PickaxeItem:
-                    _feedbackRelay.OnCollectNeedPickaxe();
-                    _onCollectFailed?.Invoke();
-                    return;
-
-                case EType.ShovelItem:
-                    _feedbackRelay.OnCollectNeedShovel();
-                    _onCollectFailed?.Invoke();
-                    return;
-
-                case EType.SickleItem:
-                    _feedbackRelay.OnCollectNeedSickle();
-                    _onCollectFailed?.Invoke();
-                    return;
-
-                case EType.AxeItem:
-                    _feedbackRelay.OnCollectNeedAxe();
-                    _onCollectFailed?.Invoke();
-                    return;
-            }
-
-            _feedbackRelay.OnCollectFailed();
-            _onCollectFailed?.Invoke();
-            return;
+        }
+        else
+        {
+            NotifyWarningFeedback(fallbackMessage);
         }
 
-        NotifyWarningFeedback(fallbackMessage);
         _onCollectFailed?.Invoke();
     }
 
@@ -1885,17 +1881,25 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         if (_feedbackRelay != null)
         {
             _feedbackRelay.OnInventoryFull();
-            _onCollectFailed?.Invoke();
             return;
         }
 
         NotifyFailureFeedback("인벤토리가 가득 찼습니다.");
-        _onCollectFailed?.Invoke();
     }
 
-    private void ShowGeneralCollectFailFeedback()
+    private void RaiseCollectFailedFeedback()
     {
         TryResolveFeedbackRelayIfMissing();
+
+        string relayMethodName = IsMiningTarget()
+            ? nameof(InteractionFeedbackRelay.OnMiningFailed)
+            : nameof(InteractionFeedbackRelay.OnCollectFailed);
+
+        if (HasRelayListener(_onCollectFailed, relayMethodName))
+        {
+            _onCollectFailed?.Invoke();
+            return;
+        }
 
         if (_feedbackRelay != null)
         {
@@ -1907,21 +1911,108 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             {
                 _feedbackRelay.OnCollectFailed();
             }
-
-            _onCollectFailed?.Invoke();
-            return;
-        }
-
-        if (IsMiningTarget())
-        {
-            NotifyFailureFeedback("채광에 실패하였습니다.");
         }
         else
         {
-            NotifyFailureFeedback("채집에 실패하였습니다.");
+            if (IsMiningTarget())
+            {
+                NotifyFailureFeedback("채광에 실패하였습니다.");
+            }
+            else
+            {
+                NotifyFailureFeedback("채집에 실패하였습니다.");
+            }
         }
 
         _onCollectFailed?.Invoke();
+    }
+
+    private string ResolveToolConditionFailRelayMethodName(EType requiredToolType, bool isRarityLow)
+    {
+        if (IsMiningTarget())
+        {
+            if (isRarityLow)
+            {
+                return nameof(InteractionFeedbackRelay.OnMiningToolRarityLow);
+            }
+
+            if (requiredToolType == EType.PickaxeItem)
+            {
+                return nameof(InteractionFeedbackRelay.OnMiningNoPickaxe);
+            }
+
+            return nameof(InteractionFeedbackRelay.OnMiningFailed);
+        }
+
+        if (isRarityLow)
+        {
+            return nameof(InteractionFeedbackRelay.OnCollectToolRarityLow);
+        }
+
+        switch (requiredToolType)
+        {
+            case EType.PickaxeItem:
+                return nameof(InteractionFeedbackRelay.OnCollectNeedPickaxe);
+
+            case EType.ShovelItem:
+                return nameof(InteractionFeedbackRelay.OnCollectNeedShovel);
+
+            case EType.SickleItem:
+                return nameof(InteractionFeedbackRelay.OnCollectNeedSickle);
+
+            case EType.AxeItem:
+                return nameof(InteractionFeedbackRelay.OnCollectNeedAxe);
+
+            default:
+                return nameof(InteractionFeedbackRelay.OnCollectFailed);
+        }
+    }
+
+    private bool HasRelayListener(UnityEvent unityEvent, params string[] methodNames)
+    {
+        if (unityEvent == null || _feedbackRelay == null)
+        {
+            return false;
+        }
+
+        int persistentCount = unityEvent.GetPersistentEventCount();
+        if (persistentCount <= 0)
+        {
+            return false;
+        }
+
+        bool hasMethodFilter = methodNames != null && methodNames.Length > 0;
+
+        for (int i = 0; i < persistentCount; i++)
+        {
+            Object target = unityEvent.GetPersistentTarget(i);
+            if (target != _feedbackRelay)
+            {
+                continue;
+            }
+
+            if (!hasMethodFilter)
+            {
+                return true;
+            }
+
+            string methodName = unityEvent.GetPersistentMethodName(i);
+            for (int j = 0; j < methodNames.Length; j++)
+            {
+                string candidate = methodNames[j];
+                if (string.IsNullOrWhiteSpace(candidate))
+                {
+                    continue;
+                }
+
+                if (string.Equals(methodName, candidate, System.StringComparison.Ordinal))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     private void NotifyWarningFeedback(string message)
