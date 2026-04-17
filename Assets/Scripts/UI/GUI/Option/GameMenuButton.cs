@@ -49,6 +49,7 @@ public class GameMenuButton : BaseMono, IEscClosable
 
     public void ExitButton()
     {
+        PersistenceManager.Ins.Save();
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false; // 에디터 플레이 모드 종료
 #else

@@ -75,7 +75,7 @@ public class WorkbenchManager : GlobalSingleton<WorkbenchManager>
 
         _workbench = new Workbench();
 
-        _workbenchUIPrefab = Resources.Load<WorkbenchUI>("Prefab/CraftPanelUI");
+        _workbenchUIPrefab = Resources.Load<WorkbenchUI>("Prefab/CraftArea");
 
         MakeInventoryUIs();//인벤토리 UI들 생성 (인벤 / 창고 / 상점 각각 하나씩)
 

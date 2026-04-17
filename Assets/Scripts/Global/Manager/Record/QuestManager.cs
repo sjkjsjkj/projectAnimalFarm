@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-/// <summary>
+﻿/// <summary>
 /// 싱글톤 클래스의 설계 의도입니다.
 /// </summary>
 public class QuestManager : GlobalSingleton<QuestManager>
@@ -44,13 +42,18 @@ public class QuestManager : GlobalSingleton<QuestManager>
             {
                 var inventory = InventoryManager.Ins.PlayerInventory;
                 ItemSO so = DatabaseManager.Ins.Item(curQuest.RewardItemId);
-                inventory.TryGetItem(so, curQuest.RewardItemAmount);
+                for(int i = 0; i < curQuest.RewardItemAmount; ++i)
+                {
+                    inventory.TryGetItem(so);
+                }
             }
             // 다음 퀘스트로
             UDebug.Print($"퀘스트 클리어: {curQuest.Description}");
             record.goalIndex++;
             string title = record.goalIndex >= length ? null : QuestContainer.list[record.goalIndex].Description;
             OnQuestChanged.Publish(record.goalIndex, title);
+            string msg = string.Format("{0}번째 퀘스트를 클리어했습니다!", record.goalIndex);
+            OnFeedbackMessageRequested.Publish(msg, EFeedbackMessageType.Success);
         }
     }
     #endregion
