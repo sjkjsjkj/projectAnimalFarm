@@ -36,6 +36,7 @@ public class CFishingController2D : BaseMono
         CollectorNull,
         CollectorBusy,
         Cooldown,
+        NotEnoughHunger,
         DatabaseMissing,
         InventoryMissing,
         NoFishingArea,
@@ -65,6 +66,16 @@ public class CFishingController2D : BaseMono
     [Header("지급 설정")]
     [SerializeField] private int _amount = 1;
     [SerializeField] private int _fishingSkillExp = 0;
+
+    [Header("배고픔 요구 조건")]
+    [Tooltip("체크하면 낚시 시작 시 배고픔을 검사하고 소모합니다.")]
+    [SerializeField] private bool _useHungerCost = true;
+
+    [Tooltip("1회 낚시에 필요한 배고픔 수치")]
+    [SerializeField, Min(0f)] private float _requiredHunger = 10f;
+
+    [Tooltip("배고픔이 부족할 때 출력할 문구")]
+    [SerializeField] private string _notEnoughHungerMessage = "배고픔이 부족해 낚시할 수 없습니다.";
 
     [Header("낚시 도구 / 미끼 요구 조건")]
     [Tooltip("체크하면 인벤토리의 대표 낚싯대가 있어야 낚시 가능")]
@@ -213,6 +224,41 @@ public class CFishingController2D : BaseMono
         }
     }
 
+    private bool HasEnoughFishingHunger()
+    {
+        if (!_useHungerCost || _requiredHunger <= 0f)
+        {
+            return true;
+        }
+
+        if (DataManager.Ins == null || DataManager.Ins.Player == null)
+        {
+            return false;
+        }
+
+        return DataManager.Ins.Player.CurHunger >= _requiredHunger;
+    }
+
+    private bool TryConsumeFishingHunger()
+    {
+        if (!_useHungerCost || _requiredHunger <= 0f)
+        {
+            return true;
+        }
+
+        if (DataManager.Ins == null || DataManager.Ins.Player == null)
+        {
+            return false;
+        }
+
+        if (DataManager.Ins.Player.CurHunger < _requiredHunger)
+        {
+            return false;
+        }
+
+        return DataManager.Ins.Player.ConsumeHunger(_requiredHunger);
+    }
+
     public bool TryFish(CPlayerCollector2D collector)
     {
         EFishingStartResult result = ValidateFishingStart(
@@ -228,6 +274,11 @@ public class CFishingController2D : BaseMono
         if (result != EFishingStartResult.Success)
         {
             return HandleFishingStartFail(collector, result);
+        }
+
+        if (!TryConsumeFishingHunger())
+        {
+            return HandleFishingStartFail(collector, EFishingStartResult.NotEnoughHunger);
         }
 
         StartFishingRoutine(collector, areaType, checkPos);
@@ -254,6 +305,11 @@ public class CFishingController2D : BaseMono
         if (result != EFishingStartResult.Success)
         {
             return HandleFishingStartFail(collector, result);
+        }
+
+        if (!TryConsumeFishingHunger())
+        {
+            return HandleFishingStartFail(collector, EFishingStartResult.NotEnoughHunger);
         }
 
         StartFishingRoutine(collector, areaType, checkPos);
@@ -298,6 +354,11 @@ public class CFishingController2D : BaseMono
         if (Time.time < _cooldownEndTime)
         {
             return EFishingStartResult.Cooldown;
+        }
+
+        if (!HasEnoughFishingHunger())
+        {
+            return EFishingStartResult.NotEnoughHunger;
         }
 
         if (_database == null || DatabaseManager.Ins == null)
@@ -1814,6 +1875,9 @@ public class CFishingController2D : BaseMono
             case EFishingStartResult.Cooldown:
                 return "잠시 후 다시 시도해주세요.";
 
+            case EFishingStartResult.NotEnoughHunger:
+                return _notEnoughHungerMessage;
+
             case EFishingStartResult.DatabaseMissing:
                 return "낚시 데이터가 연결되지 않았습니다.";
 
@@ -1863,6 +1927,7 @@ public class CFishingController2D : BaseMono
                 case EFishingStartResult.CollectorBusy:
                 case EFishingStartResult.Cooldown:
                 case EFishingStartResult.NoFishingArea:
+                case EFishingStartResult.NotEnoughHunger:
                     _feedbackRelay.ShowWarningFeedback(fallbackMessage);
                     return;
 

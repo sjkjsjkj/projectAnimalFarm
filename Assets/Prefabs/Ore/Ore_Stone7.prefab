@@ -300,6 +300,9 @@ MonoBehaviour:
   _autoCollectDelay: 0.15
   _manualCollectMaxDistance: 1
   _autoCollectMaxDistance: 0.8
+  _useHungerCost: 1
+  _requiredHunger: 10
+  _notEnoughHungerMessage: 
   _canCollectIndicatorObject: {fileID: 7369497218927168702}
   _hideIndicatorWhileCollecting: 1
   _requireEquippedTool: 1
@@ -514,12 +517,15 @@ MonoBehaviour:
   _autoCollectDelay: 0.15
   _manualCollectMaxDistance: 1
   _autoCollectMaxDistance: 0.8
+  _useHungerCost: 1
+  _requiredHunger: 8
+  _notEnoughHungerMessage: 
   _canCollectIndicatorObject: {fileID: 7369497218927168702}
   _hideIndicatorWhileCollecting: 1
   _requireEquippedTool: 1
   _requiredToolType: 0
   _useRewardItemRarityAsRequiredToolRarity: 1
-  _requiredToolMinRarity: 1
+  _requiredToolMinRarity: 4
   _useInteractionMotion: 1
   _manualCollectDelay: 1
   _useToolRarityBasedDuration: 1
