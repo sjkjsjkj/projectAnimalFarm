@@ -16,7 +16,7 @@ MonoBehaviour:
   _type: 17
   _icon: {fileID: 21300000, guid: 4bfa4db918004994fab4fafc4f46aadc, type: 2}
   _makeTargetItemId: Item_Tool_SuperWateringCan
-  _makeTargetItemName: "\uACE0\uAE09 \uB3C4\uB07C"
+  _makeTargetItemName: "\uACE0\uAE09 \uBB3C\uBFCC\uB9AC\uAC1C"
   _targetItemType: 20
   _requireItems:
   - {fileID: 11400000, guid: 1cf25e40eaaa41a4bb487eb0a38b36c4, type: 2}

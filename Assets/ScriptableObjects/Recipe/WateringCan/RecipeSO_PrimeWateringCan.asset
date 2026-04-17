@@ -16,7 +16,7 @@ MonoBehaviour:
   _type: 17
   _icon: {fileID: 21300000, guid: 36348deeeff8b91478b57285f5c79d7e, type: 2}
   _makeTargetItemId: Item_Tool_PrimeWateringCan
-  _makeTargetItemName: "\uCD5C\uACE0\uAE09 \uB3C4\uB07C"
+  _makeTargetItemName: "\uCD5C\uC0C1\uAE09 \uBB3C\uBFCC\uB9AC\uAC1C"
   _targetItemType: 20
   _requireItems:
   - {fileID: 11400000, guid: 4a486cd34e73c304888602dd20eab5e3, type: 2}
