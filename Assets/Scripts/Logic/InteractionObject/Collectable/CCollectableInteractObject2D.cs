@@ -1953,7 +1953,18 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
     private void ShowInventoryFullFeedback()
     {
-        NotifyFailureFeedback("인벤토리가 가득 찼습니다.");
+        const string message = "인벤토리가 가득 찼습니다.";
+
+        if (_logEnabled)
+        {
+            Debug.Log("[Collectable][Failure] " + message);
+        }
+
+        // 인벤토리 가득 참은 일부 씬/프리팹에서 _onFeedbackMessage가
+        // 사운드 전용으로만 연결된 경우가 있어 UI가 누락될 수 있다.
+        // 따라서 여기서는 피드백 UI를 직접 발행하고 사운드도 여기서 함께 재생한다.
+        PublishDirectFeedback(message, EFeedbackMessageType.Failure, DEFAULT_FEEDBACK_DURATION);
+        PlayRandomFeedbackSound(_failureFeedbackSoundIds);
     }
 
     private void RaiseCollectFailedFeedback()
