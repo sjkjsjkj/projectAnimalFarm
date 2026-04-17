@@ -56,6 +56,16 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     [Tooltip("자동 채집 가능 최대 거리. 이 거리보다 멀면 자동 채집 불가")]
     [SerializeField] private float _autoCollectMaxDistance = 0.8f;
 
+    [Header("배고픔 요구 조건")]
+    [Tooltip("체크하면 채집 / 채광 시작 시 배고픔을 검사하고 소모합니다.")]
+    [SerializeField] private bool _useHungerCost = true;
+
+    [Tooltip("1회 채집 / 채광에 필요한 배고픔 수치")]
+    [SerializeField, Min(0f)] private float _requiredHunger = 10f;
+
+    [Tooltip("배고픔이 부족할 때 출력할 메시지. 비워두면 기본 문구 사용")]
+    [SerializeField] private string _notEnoughHungerMessage = "";
+
     [Header("채집 가능 아이콘")]
     [Tooltip("플레이어가 가까이 왔을 때만 켜둘 표시용 오브젝트")]
     [SerializeField] private GameObject _canCollectIndicatorObject;
@@ -466,6 +476,17 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             return false;
         }
 
+        if (!HasEnoughInteractionHunger())
+        {
+            if (isManualRequest)
+            {
+                NotifyWarningFeedback(GetNotEnoughHungerMessage());
+            }
+
+            UpdateIndicatorVisibility();
+            return false;
+        }
+
         if (isManualRequest && _useInteractionMotion)
         {
             if (!collector.CanStartInteraction())
@@ -486,6 +507,12 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
                 return false;
             }
 
+            if (!TryConsumeInteractionHunger(true))
+            {
+                UpdateIndicatorVisibility();
+                return false;
+            }
+
             StartManualCollectRoutine(collector);
             return true;
         }
@@ -493,6 +520,12 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         if (!CanInventoryAcceptReward(collector))
         {
             ShowInventoryFullFeedback();
+            UpdateIndicatorVisibility();
+            return false;
+        }
+
+        if (!TryConsumeInteractionHunger(isManualRequest))
+        {
             UpdateIndicatorVisibility();
             return false;
         }
@@ -513,6 +546,63 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
         CompleteCollect();
         return true;
+    }
+
+    private bool HasEnoughInteractionHunger()
+    {
+        if (!_useHungerCost || _requiredHunger <= 0f)
+        {
+            return true;
+        }
+
+        if (DataManager.Ins == null || DataManager.Ins.Player == null)
+        {
+            return false;
+        }
+
+        return DataManager.Ins.Player.CurHunger >= _requiredHunger;
+    }
+
+    private bool TryConsumeInteractionHunger(bool showFeedback)
+    {
+        if (!_useHungerCost || _requiredHunger <= 0f)
+        {
+            return true;
+        }
+
+        if (DataManager.Ins == null || DataManager.Ins.Player == null)
+        {
+            if (showFeedback)
+            {
+                NotifyFailureFeedback("플레이어 배고픔 데이터를 찾지 못했습니다.");
+            }
+
+            return false;
+        }
+
+        if (DataManager.Ins.Player.CurHunger < _requiredHunger)
+        {
+            if (showFeedback)
+            {
+                NotifyWarningFeedback(GetNotEnoughHungerMessage());
+            }
+
+            return false;
+        }
+
+        return DataManager.Ins.Player.ConsumeHunger(_requiredHunger);
+    }
+
+    private string GetNotEnoughHungerMessage()
+    {
+        if (!string.IsNullOrWhiteSpace(_notEnoughHungerMessage))
+        {
+            return _notEnoughHungerMessage.Trim();
+        }
+
+        return IsMiningTarget()
+            ? "배고픔이 부족해 채광할 수 없습니다."
+            : "배고픔이 부족해 채집할 수 없습니다.";
     }
 
     private void StartManualCollectRoutine(CPlayerCollector2D collector)
@@ -1911,17 +2001,18 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             {
                 _feedbackRelay.OnCollectFailed();
             }
+
+            _onCollectFailed?.Invoke();
+            return;
+        }
+
+        if (IsMiningTarget())
+        {
+            NotifyFailureFeedback("채광에 실패하였습니다.");
         }
         else
         {
-            if (IsMiningTarget())
-            {
-                NotifyFailureFeedback("채광에 실패하였습니다.");
-            }
-            else
-            {
-                NotifyFailureFeedback("채집에 실패하였습니다.");
-            }
+            NotifyFailureFeedback("채집에 실패하였습니다.");
         }
 
         _onCollectFailed?.Invoke();

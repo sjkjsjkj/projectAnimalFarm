@@ -342,7 +342,7 @@ public class AnimalObject : InfoObject, ISaveable , IAutoInteractable
         var tile = TileManager.Ins.Tile;
         if (tile != null)
         {
-            transform.position = tile.GetValidPos(transform.position, _data.Size, dir, Time.deltaTime);
+            transform.position = tile.GetValidPos(transform.position, _data.Size, dir, Time.deltaTime, true);
         }
         if(!(_state == EAnimalState.MoveToEat))
         {

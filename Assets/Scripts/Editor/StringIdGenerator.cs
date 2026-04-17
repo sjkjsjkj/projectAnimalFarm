@@ -124,6 +124,9 @@ public class StringIdGenerator : EditorWindow
     {
         Type soType = null;
         GUILayout.Label("▷ 아이템 SO ◁", EditorStyles.boldLabel);
+        if (GUILayout.Button("동물 ID")) soType = typeof(AnimalItemSO);
+        if (GUILayout.Button("음식 ID")) soType = typeof(ConsumeItemSO);
+        if (GUILayout.Button("생산 ID")) soType = typeof(ProductSO);
         if (GUILayout.Button("미끼 ID")) soType = typeof(BaitItemSO);
         if (GUILayout.Button("먹이 ID")) soType = typeof(FeedItemSO);
         if (GUILayout.Button("정적 ID")) soType = typeof(StaticItemSO);

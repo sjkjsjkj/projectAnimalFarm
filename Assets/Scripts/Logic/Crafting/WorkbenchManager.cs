@@ -88,7 +88,7 @@ public class WorkbenchManager : GlobalSingleton<WorkbenchManager>
     {
         if (_workbenchUIPrefab == null)
         {
-            UDebug.Print("Global Prefab : PlayerInvenUI 찾을 수 없음. 확인", LogType.Assert);
+            UDebug.Print("Global Prefab : CraftPanelUI 찾을 수 없음. 확인", LogType.Assert);
             return;
         }
 
@@ -102,7 +102,8 @@ public class WorkbenchManager : GlobalSingleton<WorkbenchManager>
 
         _workbenchUI.SetInfo(_workbench);
         _workbenchUI.transform.SetParent(_workbenchCanvasTr);
-        _workbenchUI.transform.localPosition = new Vector3(450, 0);
+        RectTransform rectTr = _workbenchUI.GetComponent<RectTransform>();
+        UObject.ResetRect(rectTr);
         _workbenchUI.gameObject.SetActive(false);
 
 
