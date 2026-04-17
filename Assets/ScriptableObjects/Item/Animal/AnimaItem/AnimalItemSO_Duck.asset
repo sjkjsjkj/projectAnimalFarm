@@ -22,6 +22,6 @@ MonoBehaviour:
   _prefab: {fileID: 0}
   _sellPrice: 300
   _buyPrice: 240
-  _maxStack: 1
+  _maxStack: 99
   _itemUseContexts:
   - {fileID: 11400000, guid: 8db1a7a9704550840ab8127a8c7857ad, type: 2}
