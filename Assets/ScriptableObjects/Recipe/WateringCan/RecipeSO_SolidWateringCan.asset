@@ -16,7 +16,7 @@ MonoBehaviour:
   _type: 17
   _icon: {fileID: 21300000, guid: 23c331adf4c626d488234262d5da5aa1, type: 2}
   _makeTargetItemId: Item_Tool_SolidWateringCan
-  _makeTargetItemName: "\uC911\uAE09 \uB3C4\uB07C"
+  _makeTargetItemName: "\uC911\uAE09 \uBB3C\uBFCC\uB9AC\uAC1C"
   _targetItemType: 20
   _requireItems:
   - {fileID: 11400000, guid: def4edcd1db9c0f428701aaadf6ba23b, type: 2}

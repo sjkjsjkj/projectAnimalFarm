@@ -214,9 +214,13 @@ public class UISlot : BaseMono, IBeginDragHandler, IDragHandler, IEndDragHandler
     public void OnDrop(PointerEventData eventData)
     {
         UISlot fromSlot = eventData.pointerDrag.GetComponent<UISlot>();
-
+        if(fromSlot == null)
+        {
+            return;
+        }
         if(fromSlot != this)
         {
+            UDebug.Print(fromSlot.name);
             int fromIndex = fromSlot.Index;
             InventoryManager.Ins.ChangeItemInvenNStorage(fromSlot._owner.InventoryIdx, fromIndex, this._owner.InventoryIdx, this.Index);
         }
