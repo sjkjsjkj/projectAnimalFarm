@@ -162,8 +162,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b28f46598ec31324a908a1a14da566eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: f7dba0dd-f187-46e6-ba1f-5cd7ace6f00c
-  _instanceId: 100042
+  _uniqueId: 7516790c-8f63-47b9-886f-6106da9e9000
+  _instanceId: 120654
   _testTileID: 0
   _animalID: 
   _breedingArea: {fileID: 0}
@@ -3234,11 +3234,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7797453658371809061, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
       propertyPath: _uniqueId
-      value: 922be2e2-30f9-4984-a99d-30c5358cbe8a
+      value: a35559d1-7581-448e-a624-100da1f014e1
       objectReference: {fileID: 0}
     - target: {fileID: 7797453658371809061, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
       propertyPath: _instanceId
-      value: -597810
+      value: 120650
+      objectReference: {fileID: 0}
+    - target: {fileID: 7797453658371809061, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
+      propertyPath: _miningFailSoundIds.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7797453658371809061, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
+      propertyPath: _miningWarningSoundIds.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7797453658371809061, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
+      propertyPath: _miningWarningSoundIds.Array.data[0]
+      value: Sfx_Ui_No_2
       objectReference: {fileID: 0}
     - target: {fileID: 8255518558608426736, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
       propertyPath: _uniqueId
