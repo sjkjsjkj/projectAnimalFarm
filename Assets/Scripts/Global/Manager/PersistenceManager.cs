@@ -38,7 +38,7 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         UDebug.Print($"씬 {curScene}에서 저장을 시작합니다.");
         Stopwatch sw = new();
         sw.Start();
-        SaveDataManager();
+        SaveDataManager(curScene);
         SaveDynamicData(curScene);
         CollectObjectsAndSaveJson(curScene);
         sw.Stop();
@@ -69,10 +69,9 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         Stopwatch sw = new();
         sw.Start();
         // 씬 로드 시작
-        EScene nextScene = dm.Player.CurScene;
         LoadDataManager(); // 글로벌 데이터
+        EScene nextScene = dm.Player.CurPlayerScene();
         LoadDynamicData(nextScene);
-        //gm.LoadScene((int)nextScene); // 동기 전환 + 동일 씬이어도 무조건 전환
         gm.LoadSceneAsyncWithFade((int)nextScene);
         // 씬 로드 종료
         sw.Stop();
@@ -107,13 +106,13 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         }
         if (_isLoading)
         {
-            UDebug.Print($"저장 작업 도중 로드가 실행되었으므로 무시합니다.", LogType.Warning);
+            UDebug.Print($"저장 작업 도중 로드가 실행되었으므로 무시합니다.", LogType.Error);
             return;
         }
         _isSaving = true;
         CollectObjectsAndSaveJson(ctx.prevScene);
-        SaveDataManager();
         SaveDynamicData(ctx.prevScene);
+        SaveDataManager(ctx.prevScene);
         _isSaving = false;
     }
     private void SceneChangeEndHandle(OnSceneLoadEnd ctx)
@@ -259,11 +258,17 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
 
     #region ─────────────────────────▶ 내부 메서드 (데이터 매니저) ◀─────────────────────────
     // DataManager의 데이터 일괄 저장
-    private void SaveDataManager()
+    private void SaveDataManager(EScene saveScene)
     {
+        if(saveScene != EScene.Main && saveScene != EScene.Forest && saveScene != EScene.Cave)
+        {
+            UDebug.Print($"게임 씬이 아니므로 저장하지 않습니다. ({saveScene})");
+            return;
+        }
         DataManager m = DataManager.Ins;
         var option = m.Option;
         SaveData(ref option);
+        m.Player.SaveSceneId(saveScene);
         var player = m.Player;
         SaveData(ref player);
         var record = m.Record;

@@ -11,7 +11,8 @@ public class PlayerProvider
     // 위치 정보
     [SerializeField] private Vector2 _position;
     [SerializeField] private Vector2 _direction;
-    [SerializeField] private EScene _curScene;
+    [SerializeField] private EScene _curPlayerScene;
+    [SerializeField] private EScene _curSpaceScene;
     // 상태 / 장비 / 재화
     [SerializeField] private EPlayerState _state;
     [SerializeField] private string _heldItemId;
@@ -49,7 +50,7 @@ public class PlayerProvider
 
     // 나중에 데이터 로드용으로 만들어둔 생성자
     public PlayerProvider(
-        Vector2 position, Vector2 direction,
+        Vector2 position, Vector2 direction, EScene curPlayerScene, EScene curSpaceScene,
         EPlayerState state, string heldItemId, int curSlotIndex, int money,
         float maxWalkSpeed, float maxRunMultiplier, float maxStamina, float maxHunger, float maxThirst,
         float curWalkSpeed, float curRunMultiplier, float curStamina, float curHunger, float curThirst,
@@ -57,6 +58,8 @@ public class PlayerProvider
     {
         this._position = position;
         this._direction = direction;
+        this._curPlayerScene = curPlayerScene;
+        this._curSpaceScene = curSpaceScene;
         this._state = state;
         this._heldItemId = heldItemId;
         this._curSlotIndex = curSlotIndex;
@@ -130,7 +133,20 @@ public class PlayerProvider
     #region ─────────────────────────▶ 읽기 전용 멤버 ◀─────────────────────────
     public Vector2 Position => _position;
     public Vector2 Direction => _direction;
-    public EScene CurScene => _curScene;
+    public EScene CurPlayerScene()
+    {
+        if (_curPlayerScene == EScene.Main || _curPlayerScene == EScene.Forest || _curPlayerScene == EScene.Cave)
+        {
+            UDebug.Print($"게임 씬 발견 : {_curPlayerScene} 씬을 로드합니다.");
+            return _curPlayerScene;
+        }
+        else
+        {
+            UDebug.Print($"게임 씬 발견 못함 : 메인 씬을 로드합니다.");
+            return EScene.Main;
+        }
+    }
+    public EScene CurSpaceScene() => _curSpaceScene;
     public EPlayerState State => _state;
     public string HeldItemId => _heldItemId;
     public int CurSlot => _curSlotIndex;
@@ -167,7 +183,14 @@ public class PlayerProvider
     /// 로드 시 저장했던 씬에서 시작하기 위해 사용됩니다.
     /// </summary>
     /// <param name="scene">현재 씬</param>
-    public void SaveSceneId(EScene scene) => _curScene = scene;
+    public void SaveSceneId(EScene scene)
+    {
+        _curSpaceScene = scene;
+        if (scene == EScene.Main || scene == EScene.Forest || scene == EScene.Cave)
+        {
+            _curPlayerScene = scene;
+        }
+    }
 
     /// <summary>
     /// 플레이어의 상태를 변경합니다.
@@ -222,7 +245,7 @@ public class PlayerProvider
     /// <param name="amount">지급량</param>
     public int AddMoney(int amount)
     {
-        if(amount <= 0)
+        if (amount <= 0)
         {
             return 0;
         }
@@ -258,12 +281,12 @@ public class PlayerProvider
     /// <param name="amount">차감량</param>
     public int TakeMoney(int amount)
     {
-        if(_money <= 0 || amount <= 0)
+        if (_money <= 0 || amount <= 0)
         {
             return 0;
         }
         _money -= amount;
-        if(_money < 0) // 돈이 음수가 되었을 경우
+        if (_money < 0) // 돈이 음수가 되었을 경우
         {
             int remain = -_money;
             _money = 0;
