@@ -248,7 +248,7 @@ public class NPCObject : Frameable
         {
             _actionTimer += Time.deltaTime;
         }
-        if (_dialog.Length > 0)
+        if (_dialog.Length > 0 && _moveType != ENpcMoveType.DontMove)
         {
             _dialogTimer += Time.deltaTime;
         }
