@@ -818,13 +818,11 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     {
         string progressMessage = GetProgressFeedbackMessage();
 
+        // 진행 시작 피드백은 여기서 직접 한 번만 발행한다.
+        // _onCollectStarted 에 relay/UI 메시지 리스너가 연결되어 있으면
+        // 같은 문구가 한 번 더 표시될 수 있으므로 메시지 중복을 막기 위해 호출하지 않는다.
         PublishDirectFeedback(progressMessage, EFeedbackMessageType.Warning, START_FEEDBACK_DURATION);
         PlayRandomFeedbackSound(_warningFeedbackSoundIds);
-
-        if (HasPersistentListener(_onCollectStarted) && !HasRelayListener(_onCollectStarted, nameof(InteractionFeedbackRelay.ShowWarningFeedback), nameof(InteractionFeedbackRelay.OnCollectStarted)))
-        {
-            _onCollectStarted?.Invoke();
-        }
     }
 
     private void RaiseCollectedSuccessFeedback()
