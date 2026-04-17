@@ -101,15 +101,26 @@ MonoBehaviour:
   _autoCollectDelay: 0.15
   _manualCollectMaxDistance: 1
   _autoCollectMaxDistance: 0.8
+  _useHungerCost: 1
+  _requiredHunger: 2
+  _notEnoughHungerMessage: 
   _canCollectIndicatorObject: {fileID: 1929907072896054694}
   _hideIndicatorWhileCollecting: 1
+  _requireEquippedTool: 1
+  _requiredToolType: 0
+  _useRewardItemRarityAsRequiredToolRarity: 1
+  _requiredToolMinRarity: 1
   _useInteractionMotion: 1
   _manualCollectDelay: 1
+  _useToolRarityBasedDuration: 1
+  _manualCollectDurationReducePerRarityStep: 0.15
+  _manualCollectMinDuration: 0.35
   _setPlayerBusyDuringManualCollect: 1
   _gatherSkillExp: 2
   _moveCancelInputThreshold: 0.0001
   _moveCancelPositionThreshold: 0.0001
   _manualCollectCancelMessage: "\uC774\uB3D9\uD558\uC5EC \uCC44\uC9D1\uC774 \uCDE8\uC18C\uB418\uC5C8\uC2B5\uB2C8\uB2E4."
+  _feedbackRelay: {fileID: 0}
   _destroyOnCollected: 0
   _disableTargetAfterCollected: {fileID: 5440529166343652699}
   _useRespawn: 1
@@ -192,6 +203,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  _feedbackSoundTarget: {fileID: 0}
+  _warningFeedbackSoundIds:
+  - Sfx_Ui_No_1
+  - Sfx_Ui_No_2
+  _failureFeedbackSoundIds:
+  - Sfx_Ui_No_1
+  - Sfx_Ui_No_2
+  _successFeedbackSoundIds:
+  - Sfx_Other_Success_1
+  - Sfx_Other_Success_2
+  _cancelFeedbackSoundIds:
+  - Sfx_Ui_Click_1
   _logEnabled: 1
 --- !u!114 &-5827008621649587180
 MonoBehaviour:
@@ -212,14 +235,28 @@ MonoBehaviour:
   _startDuration: 1
   _successDuration: 1.5
   _failDuration: 1.5
+  _inventoryFullMessage: "\uC778\uBCA4\uD1A0\uB9AC\uAC00 \uAC00\uB4DD \uCC3C\uC2B5\uB2C8\uB2E4."
   _fishingStartMessage: "\uB09A\uC2DC \uC911..."
   _fishingSuccessMessage: "\uBB3C\uACE0\uAE30\uB97C \uD68D\uB4DD\uD588\uC2B5\uB2C8\uB2E4."
   _fishingFailMessage: "\uB09A\uC2DC\uC5D0 \uC2E4\uD328\uD588\uC2B5\uB2C8\uB2E4."
   _fishingCancelMessage: "\uB09A\uC2DC\uB97C \uCDE8\uC18C\uD588\uC2B5\uB2C8\uB2E4."
+  _fishingNoBaitMessage: "\uBBF8\uB07C\uAC00 \uC5C6\uC2B5\uB2C8\uB2E4."
+  _fishingNoRodMessage: "\uB09A\uC2EF\uB300\uAC00 \uC5C6\uC2B5\uB2C8\uB2E4."
+  _fishingBaitInsufficientMessage: "\uBBF8\uB07C\uAC00 \uBD80\uC871\uD569\uB2C8\uB2E4."
+  _fishingToolRarityLowMessage: "\uC544\uC774\uD15C \uB4F1\uAE09\uC774 \uB0AE\uC2B5\uB2C8\uB2E4."
+  _fishingBaitRarityLowMessage: "\uBBF8\uB07C\uC758 \uB4F1\uAE09\uC774 \uB0AE\uC2B5\uB2C8\uB2E4."
   _collectStartMessage: "\uCC44\uC9D1 \uC911..."
   _collectSuccessMessage: "\uC544\uC774\uD15C\uC744 \uD68D\uB4DD\uD588\uC2B5\uB2C8\uB2E4."
   _collectFailMessage: "\uCC44\uC9D1\uC5D0 \uC2E4\uD328\uD588\uC2B5\uB2C8\uB2E4."
   _collectCancelMessage: "\uCC44\uC9D1\uC744 \uCDE8\uC18C\uD588\uC2B5\uB2C8\uB2E4."
+  _collectNeedPickaxeMessage: "\uACE1\uAD2D\uC774\uAC00 \uD544\uC694\uD569\uB2C8\uB2E4."
+  _collectNeedShovelMessage: "\uC0BD\uC774 \uC5C6\uC2B5\uB2C8\uB2E4."
+  _collectNeedSickleMessage: "\uB0AB\uC774 \uD544\uC694\uD569\uB2C8\uB2E4."
+  _collectNeedAxeMessage: "\uB3C4\uB07C\uAC00 \uD544\uC694\uD569\uB2C8\uB2E4."
+  _collectToolRarityLowMessage: "\uB3C4\uAD6C \uB4F1\uAE09\uC774 \uB0AE\uC2B5\uB2C8\uB2E4."
+  _miningNoPickaxeMessage: "\uACE1\uAD2D\uC774\uAC00 \uC5C6\uC2B5\uB2C8\uB2E4."
+  _miningFailMessage: "\uCC44\uAD11\uC5D0 \uC2E4\uD328\uD558\uC600\uC2B5\uB2C8\uB2E4."
+  _miningToolRarityLowMessage: "\uB3C4\uAD6C \uB4F1\uAE09\uC774 \uB0AE\uC2B5\uB2C8\uB2E4."
   _fishingStartSoundIds:
   - Sfx_Player_FishingWater_1
   - Sfx_Player_FishingWater_2
@@ -246,6 +283,18 @@ MonoBehaviour:
   - Sfx_Ui_No_2
   _collectCancelSoundIds:
   - Sfx_Ui_Click_1
+  _miningFailSoundIds:
+  - Sfx_Ui_No_1
+  - Sfx_Ui_No_2
+  _miningWarningSoundIds:
+  - Sfx_Ui_No_1
+  - Sfx_Ui_No_2
+  _warningSoundIds:
+  - Sfx_Ui_No_1
+  - Sfx_Ui_No_2
+  _failureSoundIds:
+  - Sfx_Ui_No_1
+  - Sfx_Ui_No_2
   _logEnabled: 0
 --- !u!1 &1929907072896054694
 GameObject:
