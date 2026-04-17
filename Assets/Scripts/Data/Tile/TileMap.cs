@@ -721,5 +721,46 @@ public class TileMap
         );
         return finalVelocity * speed;
     }
+
+    /// <summary>
+    /// 유닛이 이번 프레임이 밟게 될 최종 좌표를 반환합니다.
+    /// </summary>
+    /// <param name="curPos">현재 좌표</param>
+    /// <param name="size">유닛 크기</param>
+    /// <param name="dir">이동 방향</param>
+    /// <param name="speed">초당 이동 속도</param>
+    /// <returns></returns>
+    public Vector2 GetValidPos(Vector2 curPos, Vector2 size, Vector2 dir, float speed, bool isAnimal)
+    {
+        // 이동 불가 타일일 경우 중심에서 밀어내기
+        if (TryCalcEscapeVector(curPos, size, out Vector2 escapePos))
+        {
+            return curPos + escapePos;
+        }
+        // 방향 또는 이동 속도에 의해 위치 변화 없음
+        if (dir == Vector2.zero || speed <= 0f)
+        {
+            return curPos;
+        }
+        // 목표 위치가 안전하다면 반환
+        float movement = speed * Time.deltaTime;
+        Vector2 desiredPos = curPos + (dir * speed); // 목표 위치
+        desiredPos.y = Mathf.Max(0f, desiredPos.y);
+        if (!CheckCollision(desiredPos, size))
+        {
+            return desiredPos;
+        }
+        // AABB 충돌 로직
+        Vector2 desiredX = new Vector2(desiredPos.x, curPos.y); // X축 이동 검사
+        bool canMoveX = !CheckCollision(desiredX, size);
+        Vector2 desiredY = new Vector2(curPos.x, desiredPos.y); // Y축 이동 검사
+        bool canMoveY = !CheckCollision(desiredY, size);
+        // 최종 좌표 계산
+        Vector2 finalPos = new Vector2(
+            canMoveX ? desiredPos.x : curPos.x,
+            canMoveY ? desiredPos.y : curPos.y
+        );
+        return finalPos;
+    }
     #endregion
 }

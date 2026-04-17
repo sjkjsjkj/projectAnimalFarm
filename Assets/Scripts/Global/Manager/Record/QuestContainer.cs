@@ -111,14 +111,15 @@ public static class QuestContainer
             rewardItemAmount: 1,
             new QuestCondition(
                 subtopic: "채집 횟수",
-                condition: (data) => data.totalGatheringCount >= 5,
-                progress: (data) => (data.totalGatheringCount, 5f)
+                condition: (data) => data.totalGatheringCount >= 10,
+                progress: (data) => (data.totalGatheringCount, 10f)
             )
         ),
-        /*
+        
         new QuestInfo(
-            description: "첫 광산",
-            rewardGold: 400,
+            description: string.Format("숲 안쪽의 광산에서 광물 캐기 (채광 : F)" +
+                "{0}{1}{2}{3}기본 낚싯대</size></color>", Environment.NewLine, REWARD_COLOR, REWARD_SIZE, REWARD_TEXT),
+            rewardGold: 0,
             rewardItemId: Id.Item_Tool_BasicFishingRod,
             rewardItemAmount: 1,
             new QuestCondition(
@@ -128,14 +129,38 @@ public static class QuestContainer
             )
         ),
         new QuestInfo(
-            description: "목장 준비",
-            rewardGold: 500,
+            description: string.Format("마을의 위쪽에서 동물 아이템 구매하기" +
+                "{0}{1}{2}{3}1000 골드</size></color>", Environment.NewLine, REWARD_COLOR, REWARD_SIZE, REWARD_TEXT),
+            rewardGold: 1000,
+            rewardItemId: Id.World_Animal_Chicken,
+            rewardItemAmount: 0,
+            new QuestCondition(
+                subtopic: "들여온 동물 수",
+                condition: (data) => data.GetTypeRecord(EType.AnimalWorld) >= 1,
+                progress: (data) => (data.GetTypeRecord(EType.AnimalWorld), 1f)
+            )
+        ),
+        new QuestInfo(
+            description: string.Format("목장에 동물 들여오기" +
+                "{0}{1}{2}{3}1000 골드</size></color>", Environment.NewLine, REWARD_COLOR, REWARD_SIZE, REWARD_TEXT),
+            rewardGold: 1000,
             rewardItemId: null,
             rewardItemAmount: 0,
             new QuestCondition(
-                subtopic: "구매한 동물 수",
+                subtopic: "들여온 동물 수",
                 condition: (data) => data.GetTypeRecord(EType.AnimalWorld) >= 1,
                 progress: (data) => (data.GetTypeRecord(EType.AnimalWorld), 1f)
+            )
+        ),
+        new QuestInfo(
+            description: "마을이나 숲의 낚시 포인트에서 물고기 낚기",
+            rewardGold: 200,
+            rewardItemId: null,
+            rewardItemAmount: 0,
+            new QuestCondition(
+                subtopic: "낚시 횟수",
+                condition: (data) => data.totalFishCaughtCount >= 5,
+                progress: (data) => (data.totalFishCaughtCount, 5f)
             )
         ),
         new QuestInfo(
@@ -149,17 +174,5 @@ public static class QuestContainer
                 progress: (data) => (data.GetTypeRecord(EType.ProductItem), 3f)
             )
         ),
-        new QuestInfo(
-            description: "낚시꾼",
-            rewardGold: 400,
-            rewardItemId: null,
-            rewardItemAmount: 0,
-            new QuestCondition(
-                subtopic: "낚시 횟수",
-                condition: (data) => data.totalFishCaughtCount >= 5,
-                progress: (data) => (data.totalFishCaughtCount, 5f)
-            )
-        )
-        */
     };
 }
