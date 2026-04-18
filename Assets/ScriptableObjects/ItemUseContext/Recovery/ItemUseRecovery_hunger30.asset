@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _hungerRecoveryAmount: 30
   _thirstRecoveryAmount: 0
+  _isDrink: 0

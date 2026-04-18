@@ -31,6 +31,7 @@ public class CameraAspectUpdater : Frameable
             screen.Height = Screen.height;
             UCamera.SetCameraAspect(_cam, screen.Width, screen.Height);
             OnResolutionChanged.Publish(screen.Width, screen.Height);
+            UDebug.Print("프로그램 창 크기 변경이 감지되었습니다.");
         }
     }
     #endregion

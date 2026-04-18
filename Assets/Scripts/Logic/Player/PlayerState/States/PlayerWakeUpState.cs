@@ -27,6 +27,7 @@ public class PlayerWakeUpState : IPlayerState
         // 애니메이션
         context.anim.Play(_hashWakeUp, 0, 0f);
         context.anim.speed = 0f;
+        UDebug.Print("웨이크 업 상태에 진입했습니다.");
         return true;
     }
 

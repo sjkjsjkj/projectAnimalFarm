@@ -101,7 +101,10 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
             }
         }
         MakeInventoryUIs();//인벤토리 UI들 생성 (인벤 / 창고 / 상점 각각 하나씩)
-        MakeNewInventory(_inventorySize, EInventoryType.PlayerInventory); // 가장 먼저 플레이어의 인벤토리 생성.
+        MakeNewInventory(K.PLAYER_INVENTORY_SIZE, EInventoryType.PlayerInventory); 
+        MakeNewInventory(K.STORAGE_INVENTORY_SIZE, EInventoryType.Storage);
+        MakeNewInventory(K.STORAGE_INVENTORY_SIZE, EInventoryType.Storage);
+        MakeNewInventory(K.FOODBOX_INVENTORY_SIZE, EInventoryType.FoodBox);
 
         _isSettingFinish = true;
     }
@@ -328,6 +331,11 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
     /// </summary>
     public void InventoryUIToggle(int id, EInventoryType invenType) 
     {
+        if (id == 0 && invenType != EInventoryType.PlayerInventory)
+        {
+            UDebug.Print($"{invenType} 타입의 객체가 인덱스 0번(플레이어 인벤토리)을 호출했습니다.", LogType.Assert);
+            return;
+        }
         _reUseTimer = 0;
         if (_inventoriesCanvasTr == null)
         {
@@ -403,4 +411,115 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
         UIKeyInputHandle();
         _reUseTimer += Time.deltaTime;
     }
+
+    #region ─────────────────────────▶ 세이브 / 로드 ◀─────────────────────────
+    /// <summary>
+    /// 현재 인벤토리 정보를 저장 데이터로 변환
+    /// </summary>
+    public SavedInventoryList GetSaveData()
+    {
+        // 작성할 컨테이너
+        SavedInventoryList container = new();
+        // 런타임 인벤토리 순회
+        for (int i = 0; i < _inventoryList.Count; i++)
+        {
+            Inventory inv = _inventoryList[i];
+            // 저장할 클래스 생성
+            SavedInventoryData invData = new();
+            invData.type = inv.InvenType;
+            invData.slots = new SavedSlotData[inv.InventorySlots.Length];
+            // 슬롯 저장
+            for (int j = 0; j < inv.InventorySlots.Length; j++)
+            {
+                var slot = inv.InventorySlots[j];
+                invData.slots[j] = new SavedSlotData()
+                {
+                    itemId = slot.IsEmpty ? string.Empty : slot.ItemSO.Id,
+                    amount = slot.IsEmpty ? 0 : slot.CurStack
+                };
+            }
+            // 작성 완료
+            container.inventorys.Add(invData);
+        }
+        return container;
+    }
+
+    /// <summary>
+    /// 저장 데이터를 받아서 런타임 인벤토리에 덮어씌우기
+    /// </summary>
+    public void RestoreSaveDataEntry(SavedInventoryList container)
+    {
+        // 가져올 것이 없을 경우
+        if (container == null || container.inventorys.Count == 0)
+        {
+            ClearAllInventories();
+            return;
+        }
+        // 인벤토리 생성까지 대기
+        StartCoroutine(CoRestoreSaveData(container));
+    }
+
+    // 인벤토리 청소
+    private void ClearAllInventories()
+    {
+        if (_inventoryList == null)
+        {
+            return;
+        }
+        // 인벤토리 순회
+        for (int i = 0; i < _inventoryList.Count; ++i)
+        {
+            var inv = _inventoryList[i];
+            // 슬롯 순회
+            for (int j = 0; j < inv.InventorySlots.Length; ++j)
+            {
+                inv.ItemSlotClear(j);
+            }
+            NotiftyRequestRefreshUI(inv.InvenType, inv);
+        }
+    }
+
+    private IEnumerator CoRestoreSaveData(SavedInventoryList container)
+    {
+        while(IsSettingFinish == false)
+        {
+            yield return null;
+        }
+        RestoreSaveData(container);
+    }
+
+    private void RestoreSaveData(SavedInventoryList container)
+    {
+        // 저장한 인벤토리 데이터 순회
+        for (int i = 0; i < container.inventorys.Count; i++)
+        {
+            SavedInventoryData savedInv = container.inventorys[i];
+            // 부족하다면 생성
+            if (i >= _inventoryList.Count)
+            {
+                MakeNewInventory(savedInv.slots.Length, savedInv.type);
+            }
+            Inventory inv = _inventoryList[i];
+            // 해당 인벤토리의 슬롯 순회
+            for (int j = 0; j < savedInv.slots.Length; j++)
+            {
+                inv.ItemSlotClear(j); // 기존 슬롯 초기화
+                string itemId = savedInv.slots[j].itemId;
+                // 슬롯이 존재
+                if (!string.IsNullOrEmpty(itemId))
+                {
+                    // 복구!
+                    ItemSO itemSo = DatabaseManager.Ins.Item(itemId);
+                    if (itemSo != null)
+                    {
+                        inv.InventorySlots[j].SetItem(itemSo, savedInv.slots[j].amount);
+                    }
+                }
+            }
+            // UI 갱신
+            NotiftyRequestRefreshUI(inv.InvenType, inv);
+        }
+        UDebug.Print($"인벤토리 데이터 로드를 완료했습니다.");
+    }
+    #endregion
 }

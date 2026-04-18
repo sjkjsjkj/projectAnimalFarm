@@ -572,9 +572,9 @@ public class InteractionFeedbackRelay : BaseMono
 
         // 기존 OnFeedbackMessageRequested는 30자 초과 메시지를 무시하므로
         // 릴레이 쪽에서 방어적으로 잘라줍니다.
-        if (safeMessage.Length > 30)
+        if (safeMessage.Length > 40)
         {
-            safeMessage = safeMessage.Substring(0, 30);
+            safeMessage = safeMessage.Substring(0, 40);
         }
 
         float safeDuration = Mathf.Max(0f, duration);

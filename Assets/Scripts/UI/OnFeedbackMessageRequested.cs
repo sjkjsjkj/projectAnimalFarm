@@ -4,7 +4,7 @@
 public readonly struct OnFeedbackMessageRequested
 {
     #region ─────────────────────────▶ 상수 ◀─────────────────────────
-    private const int MAX_MESSAGE_LENGTH = 30;
+    private const int MAX_MESSAGE_LENGTH = 40;
     #endregion
 
     #region ─────────────────────────▶ 읽기 전용 멤버 ◀─────────────────────────

@@ -61,6 +61,26 @@ public class CFishingController2D : BaseMono
 
     [Header("낚시 연출")]
     [SerializeField] private float _fishingDelay = 1.5f;
+
+    [Header("등급별 낚시 시간")]
+    [Tooltip("Basic 등급 물고기가 걸릴 때까지 걸리는 시간")]
+    [SerializeField, Min(0f)] private float _basicFishingDelay = 1.5f;
+
+    [Tooltip("Solid 등급 물고기가 걸릴 때까지 걸리는 시간")]
+    [SerializeField, Min(0f)] private float _solidFishingDelay = 2.0f;
+
+    [Tooltip("Superior 등급 물고기가 걸릴 때까지 걸리는 시간")]
+    [SerializeField, Min(0f)] private float _superiorFishingDelay = 2.5f;
+
+    [Tooltip("Prime 등급 물고기가 걸릴 때까지 걸리는 시간")]
+    [SerializeField, Min(0f)] private float _primeFishingDelay = 3.0f;
+
+    [Tooltip("Masterwork 등급 물고기가 걸릴 때까지 걸리는 시간")]
+    [SerializeField, Min(0f)] private float _masterworkFishingDelay = 3.5f;
+
+    [Tooltip("희귀도 파싱 실패 시 사용할 기본 낚시 시간")]
+    [SerializeField, Min(0f)] private float _unknownFishingDelay = 1.5f;
+
     [SerializeField] private float _cooldownAfterFishing = 0.2f;
 
     [Header("지급 설정")]
@@ -455,10 +475,75 @@ public class CFishingController2D : BaseMono
         return EFishingStartResult.InventoryFull;
     }
 
+    private EFishingStartResult TryPrepareFishingReward(
+        EFishingAreaType areaType,
+        out Inventory playerInventory,
+        out SheetItemRow fishRow,
+        out ItemSO rewardItemSo,
+        out BaitItemSO selectedBait,
+        out float fishingDelay)
+    {
+        playerInventory = null;
+        fishRow = null;
+        rewardItemSo = null;
+        selectedBait = null;
+        fishingDelay = Mathf.Max(0f, _fishingDelay);
+
+        if (!TryGetPlayerInventory(out playerInventory))
+        {
+            return EFishingStartResult.InventoryMissing;
+        }
+
+        ToolItemSO activeFishingRod = null;
+        if (!IsFishingItemRequirementBypassed())
+        {
+            TryResolveActiveFishingRod(playerInventory, areaType, out activeFishingRod);
+        }
+
+        fishRow = GetRandomFishRow(areaType, playerInventory, activeFishingRod, out selectedBait);
+        if (fishRow == null)
+        {
+            return EFishingStartResult.NoCandidateFish;
+        }
+
+        if (DatabaseManager.Ins == null)
+        {
+            return EFishingStartResult.DatabaseMissing;
+        }
+
+        rewardItemSo = DatabaseManager.Ins.Item(fishRow.id);
+        if (rewardItemSo == null)
+        {
+            return EFishingStartResult.RewardItemDataMissing;
+        }
+
+        if (!CanInventoryAcceptItem(playerInventory, rewardItemSo, _amount))
+        {
+            return EFishingStartResult.InventoryFull;
+        }
+
+        fishingDelay = GetFishingDelayByRarity(fishRow.rarity);
+        return EFishingStartResult.Success;
+    }
+
     private void StartFishingRoutine(CPlayerCollector2D collector, EFishingAreaType areaType, Vector2 checkPos)
     {
         if (collector == null)
         {
+            return;
+        }
+
+        EFishingStartResult prepareResult = TryPrepareFishingReward(
+            areaType,
+            out Inventory playerInventory,
+            out SheetItemRow fishRow,
+            out ItemSO rewardItemSo,
+            out BaitItemSO selectedBait,
+            out float fishingDelay);
+
+        if (prepareResult != EFishingStartResult.Success)
+        {
+            HandleFishingStartFail(collector, prepareResult);
             return;
         }
 
@@ -476,14 +561,18 @@ public class CFishingController2D : BaseMono
         SubscribeMoveCancel();
 
         Vector2 motionTargetPos = GetFishingMotionTargetPosition(collector, checkPos, fishingDirection);
-        float motionDuration = Mathf.Max(0f, _fishingMotionDuration);
+        float motionDuration = fishingDelay > 0f
+            ? fishingDelay
+            : Mathf.Max(0f, _fishingMotionDuration);
 
         if (_logEnabled)
         {
             Debug.Log("[FishingController] OnPlayerFishing.Publish / pos = " + motionTargetPos +
                       " / duration = " + motionDuration +
                       " / isSuccess = " + _motionStartIsSuccessValue +
-                      " / fishingDirection = " + fishingDirection);
+                      " / fishingDirection = " + fishingDirection +
+                      " / fish = " + (fishRow != null ? fishRow.name : "null") +
+                      " / rarity = " + (fishRow != null ? fishRow.rarity : "Unknown"));
         }
 
         OnPlayerFishing.Publish(motionTargetPos, motionDuration, _motionStartIsSuccessValue);
@@ -491,17 +580,31 @@ public class CFishingController2D : BaseMono
 
         if (_logEnabled)
         {
-            Debug.Log("[FishingController] 낚시 시작 / areaType = " + areaType + " / checkPos = " + checkPos);
+            Debug.Log("[FishingController] 낚시 시작 / areaType = " + areaType +
+                      " / checkPos = " + checkPos +
+                      " / delay = " + fishingDelay);
         }
 
-        _fishingRoutine = StartCoroutine(CoFishing(collector, areaType));
+        _fishingRoutine = StartCoroutine(CoFishing(
+            collector,
+            playerInventory,
+            fishRow,
+            rewardItemSo,
+            selectedBait,
+            fishingDelay));
     }
 
-    private IEnumerator CoFishing(CPlayerCollector2D collector, EFishingAreaType areaType)
+    private IEnumerator CoFishing(
+        CPlayerCollector2D collector,
+        Inventory playerInventory,
+        SheetItemRow fishRow,
+        ItemSO rewardItemSo,
+        BaitItemSO selectedBait,
+        float fishingDelay)
     {
-        if (_fishingDelay > 0f)
+        if (fishingDelay > 0f)
         {
-            yield return new WaitForSeconds(_fishingDelay);
+            yield return new WaitForSeconds(fishingDelay);
         }
 
         if (HasCollectorMovedSinceStart(collector))
@@ -510,20 +613,11 @@ public class CFishingController2D : BaseMono
             yield break;
         }
 
-        if (!TryGetPlayerInventory(out Inventory playerInventory))
+        if (playerInventory == null)
         {
             HandleFishingRuntimeFail("플레이어 인벤토리를 찾지 못했습니다.");
             yield break;
         }
-
-        ToolItemSO activeFishingRod = null;
-        if (!IsFishingItemRequirementBypassed())
-        {
-            TryResolveActiveFishingRod(playerInventory, areaType, out activeFishingRod);
-        }
-
-        BaitItemSO selectedBait = null;
-        SheetItemRow fishRow = GetRandomFishRow(areaType, playerInventory, activeFishingRod, out selectedBait);
 
         if (fishRow == null)
         {
@@ -531,7 +625,6 @@ public class CFishingController2D : BaseMono
             yield break;
         }
 
-        ItemSO rewardItemSo = DatabaseManager.Ins != null ? DatabaseManager.Ins.Item(fishRow.id) : null;
         if (rewardItemSo == null)
         {
             HandleFishingRuntimeFail("물고기 데이터를 찾지 못했습니다.");
@@ -1708,6 +1801,37 @@ public class CFishingController2D : BaseMono
         }
 
         return false;
+    }
+
+    private float GetFishingDelayByRarity(string rarity)
+    {
+        ERarity parsed = ParseFishRarity(rarity);
+
+        switch (parsed)
+        {
+            case ERarity.Basic:
+                return Mathf.Max(0f, _basicFishingDelay);
+
+            case ERarity.Solid:
+                return Mathf.Max(0f, _solidFishingDelay);
+
+            case ERarity.Superior:
+                return Mathf.Max(0f, _superiorFishingDelay);
+
+            case ERarity.Prime:
+                return Mathf.Max(0f, _primeFishingDelay);
+
+            case ERarity.Masterwork:
+                return Mathf.Max(0f, _masterworkFishingDelay);
+
+            default:
+                if (_unknownFishingDelay > 0f)
+                {
+                    return _unknownFishingDelay;
+                }
+
+                return Mathf.Max(0f, _fishingDelay);
+        }
     }
 
     private float GetWeightByRarity(string rarity)

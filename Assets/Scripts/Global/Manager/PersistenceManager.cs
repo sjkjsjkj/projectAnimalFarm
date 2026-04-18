@@ -266,16 +266,20 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
             return;
         }
         DataManager m = DataManager.Ins;
+        //
         var option = m.Option;
         SaveData(ref option);
+        //
         m.Player.SaveSceneId(saveScene);
         var player = m.Player;
         SaveData(ref player);
+        //
         var record = m.Record;
         record.SaveBeforeSerialize();
         SaveData(ref record);
-        var im = InventoryManager.Ins.Inventories;
-        SaveData(ref im);
+        //
+        SavedInventoryList invList = InventoryManager.Ins.GetSaveData();
+        SaveData(ref invList);
     }
 
     // DataManager의 글로벌 데이터 일괄 로드
@@ -284,16 +288,21 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         DataManager m = DataManager.Ins;
         var option = m.Option;
         LoadData(ref option);
+        //
         var player = m.Player;
         LoadData(ref player);
         player.IsLoaded = true;
+        //
         var farmland = m.Farmlands;
         LoadData(ref farmland);
+        // 
         var record = m.Record;
         LoadData(ref record);
         record.LoadAfterDeserialize();
-        var im = InventoryManager.Ins.Inventories;
-        LoadData(ref im);
+        //
+        SavedInventoryList invList = new();
+        LoadData(ref invList);
+        InventoryManager.Ins.RestoreSaveDataEntry(invList);
     }
 
     // DataManager의 씬 데이터 일괄 저장

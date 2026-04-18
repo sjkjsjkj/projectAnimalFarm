@@ -27,7 +27,7 @@ public static class UCamera
                 UObject.AddComponent<CameraAspectUpdater>(_mainCamera.gameObject);
                 _mainCamera.orthographic = true; // 직교 카메라
                 _mainCamera.depth = K.CAMERA_MAIN_DEPTH;
-                SetCameraAspect(_mainCamera, Screen.width, Screen.height); // 카메라를 새로 찾을 때마다 조절
+                UDebug.Print("메인 카메라를 탐색하고 크기를 설정했습니다.");
             }
             return _mainCamera;
         }
@@ -120,7 +120,7 @@ public static class UCamera
                 return canvas;
             }
         }
-        UDebug.Print($"UI 캔버스를 찾지 못했습니다.", LogType.Assert);
+        UDebug.Print($"UI 캔버스를 찾지 못했습니다.", LogType.Warning);
         return null;
     }
 
@@ -128,7 +128,10 @@ public static class UCamera
     private static void ClearCache(OnSceneLoadEnd ctx)
     {
         _mainCamera = null;
+        _mainCamera = MainCamera;
+        SetCameraAspect(_mainCamera, Screen.width, Screen.height); // 카메라를 새로 찾을 때마다 조절
         _uiCamera = null;
+        _uiCamera = UICamera;
     }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]

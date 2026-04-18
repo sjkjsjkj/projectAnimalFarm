@@ -107,6 +107,9 @@ public class BgmManager : GlobalSingleton<BgmManager>
                 }
                 UDebug.Print($"동굴 BGM을 재생합니다.");
                 break;
+            case EScene.Boot:
+                UDebug.Print($"부트 씬이므로 BGM을 재생하지 않습니다.");
+                break;
             default:
                 if (UMath.IsProbability(50f))
                 {

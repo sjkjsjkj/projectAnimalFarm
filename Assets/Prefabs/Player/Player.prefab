@@ -140,7 +140,7 @@ MonoBehaviour:
       _castingWeight: 6
       _waitWeight: 10
       _hookedWeight: 0
-      _rollWeight: 10
+      _rollWeight: 6
       _capturedYesWeight: 12
       _capturedNoWeight: 12
     _wakeUp:
@@ -149,6 +149,7 @@ MonoBehaviour:
       _zoomOutRatio: 1
       _zoomOutDuration: 1.5
       _animDuration: 2.107
+  _colOffset: {x: 0, y: -0.4, z: 0}
 --- !u!114 &9075371350282008030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -228,7 +229,7 @@ MonoBehaviour:
   _amount: 1
   _fishingSkillExp: 0
   _useHungerCost: 1
-  _requiredHunger: 10
+  _requiredHunger: 5
   _notEnoughHungerMessage: "\uBC30\uACE0\uD514\uC774 \uBD80\uC871\uD574 \uB09A\uC2DC\uD560
     \uC218 \uC5C6\uC2B5\uB2C8\uB2E4."
   _requireFishingRodInQuickSlot: 1
@@ -237,18 +238,18 @@ MonoBehaviour:
   _requiredBaitCount: 1
   _consumeBaitOnSuccess: 1
   _limitCatchByBaitRarity: 1
-  _bypassRequiredFishingItemsForTest: 1
+  _bypassRequiredFishingItemsForTest: 0
   _freshWaterAllowedRodIds: []
   _seaWaterAllowedRodIds: []
   _freshWaterAllowedBaitIds:
-  - All_Fish_103
-  - All_Fish_111
+  - All Fish_103
+  - All Fish_111
   _seaWaterAllowedBaitIds:
-  - All_Fish_119
-  - All_Fish_121
-  - All_Fish_125
+  - All Fish_119
+  - All Fish_121
+  - All Fish_125
   _manualSpotSearchRadius: 0.6
-  _feedbackRelay: {fileID: 0}
+  _feedbackRelay: {fileID: 7797453658371809061}
   _motionStartIsSuccessValue: 1
   _fishingMotionDuration: 3
   _useFacingDirectionMotionTarget: 1
@@ -271,7 +272,7 @@ MonoBehaviour:
       - m_Target: {fileID: 7797453658371809061}
         m_TargetAssemblyTypeName: InteractionFeedbackRelay, Assembly-CSharp
         m_MethodName: ShowWarningFeedback
-        m_Mode: 0
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -318,7 +319,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7797453658371809061}
         m_TargetAssemblyTypeName: InteractionFeedbackRelay, Assembly-CSharp
-        m_MethodName: OnCollectFailed
+        m_MethodName: OnFishingFailed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -333,7 +334,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7797453658371809061}
         m_TargetAssemblyTypeName: InteractionFeedbackRelay, Assembly-CSharp
-        m_MethodName: OnCollectCanceled
+        m_MethodName: OnFishingCanceled
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

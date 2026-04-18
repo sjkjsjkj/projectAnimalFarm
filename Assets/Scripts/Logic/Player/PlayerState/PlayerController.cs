@@ -8,6 +8,7 @@ public class PlayerController : BaseMono
 {
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     [SerializeField] private PlayerStateMachine _fsm = new();
+    [SerializeField] private Vector3 _colOffset = new Vector3(0f, -0.4f ,0f);
     private Rigidbody2D _rb;
     private SpriteRenderer _sprite;
     private Animator _anim;
@@ -122,7 +123,10 @@ public class PlayerController : BaseMono
     {
         bool wakeUp = GameManager.Ins.IsPlayerWakeUp;
         GameManager.Ins.IsPlayerWakeUp = false;
-        PlayerContext context = new(_rb, transform, _sprite, _anim,
+
+        Vector3 playerPos = transform.position + _colOffset;
+
+        PlayerContext context = new(_rb, transform, _sprite, _anim, playerPos,
             _inputMove, _inputRun, _inputFishing, _inputMining, _inputLogging,
             _inputShovel, _inputSickle, _inputDrinking, _inputEating, _inputWatering,
             _inputCrouching, wakeUp, _targetPos, _duration, _isSuccess, _isCanceled);

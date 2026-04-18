@@ -75,7 +75,7 @@ public class Inventory
         _inventorySlots[invenSlotIdx].ItemSO.Use();
         _inventorySlots[invenSlotIdx].RemoveAmount(1);
 
-        OnChangeSlot?.Invoke(EInventoryType.PlayerInventory, _inventorySlots[invenSlotIdx]);
+        OnChangeSlot?.Invoke(_inventoryType, _inventorySlots[invenSlotIdx]);
 
         return false;
     }
