@@ -325,6 +325,7 @@ RectTransform:
   - {fileID: 159197293}
   - {fileID: 1967619925}
   - {fileID: 1758424966}
+  - {fileID: 1216680695}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -460,6 +461,41 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1216680694
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1216680695}
+  m_Layer: 5
+  m_Name: ButtonRoot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1216680695
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216680694}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 409245069}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: -660, y: 140}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!1 &1758424965
 GameObject:
   m_ObjectHideFlags: 0
@@ -511,8 +547,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 183b18dd3234184488cf236f235d7f02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: 2482e850-9538-4ab4-9c4b-85315dfd6635
-  _instanceId: 119518
+  _uniqueId: 821baaba-d41b-4770-89f1-ca952b27dbd4
+  _instanceId: 117570
 --- !u!114 &1758424968
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -796,8 +832,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 183b18dd3234184488cf236f235d7f02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: 8747495d-8b2c-4c96-8f33-1a1b8640d8cd
-  _instanceId: 119540
+  _uniqueId: 2ff0b07a-6a91-44b9-b2c4-87bf92306e69
+  _instanceId: 117592
 --- !u!114 &1967619927
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -617,8 +617,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b538d01bfde5aa84e94a1e9729d274d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: 7e7c40c4-d89e-490e-a92f-31d9581dca2c
-  _instanceId: 147266
+  _uniqueId: 9f92611e-d33f-44f1-97ac-ce25ae69f731
+  _instanceId: 64782
   _enableTestInput: 1
   _defaultDuration: 1.5
 --- !u!224 &772511037 stripped
@@ -1227,8 +1227,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db74da50ecbacae4486c4d73f8cd4d5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: fc583179-491e-4c75-8c97-cbc6d6331632
-  _instanceId: 147318
+  _uniqueId: 3a48ebcb-0490-477b-9055-28a5958b7ed2
+  _instanceId: 64826
   _stackRoot: {fileID: 1149108898}
   _messageItemPrefab: {fileID: -96139530381892133, guid: ad0c47d21183670448e566eb3b3d17b1, type: 3}
   _fadeInDuration: 0.15
@@ -1441,8 +1441,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ca10447ac5039b4694a9218d517d399, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: ab0c6504-5fb8-4f87-99e3-64de08676702
-  _instanceId: 147348
+  _uniqueId: 9eed59ed-22e0-4e7f-bd89-2849e8272fa7
+  _instanceId: 64844
   _interactRadius: 1
   _interactableLayer:
     serializedVersion: 2
@@ -1465,8 +1465,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1b85dd98aa7d9a48893fef5cac5da96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: a883dde7-f0f9-41f4-84f2-ab48ce92b7a3
-  _instanceId: 147350
+  _uniqueId: 778c457c-cfbb-452b-badd-4bacf6ab8896
+  _instanceId: 64846
   _type: 5
   _workbenchUI: {fileID: 3218475684257177220}
 --- !u!114 &84322918601996659
@@ -1481,8 +1481,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ca10447ac5039b4694a9218d517d399, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: 77ae7a90-85ba-4937-a63b-1729d47a7ca4
-  _instanceId: 147352
+  _uniqueId: 5b95f7cb-469d-4bf5-862a-b3a3dff5129e
+  _instanceId: 64848
   _interactRadius: 3
   _interactableLayer:
     serializedVersion: 2
@@ -1828,8 +1828,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7190ea4b9d29bcb41a229c5c7fce2e68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: 8c010f2c-e569-4dfb-bb37-931a9598c29d
-  _instanceId: 147368
+  _uniqueId: e03fbcb4-852e-4729-9948-69f81edb7de9
+  _instanceId: 64864
 --- !u!1 &402527967859403603
 GameObject:
   m_ObjectHideFlags: 0
@@ -1917,8 +1917,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1b85dd98aa7d9a48893fef5cac5da96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: 33acf972-f077-40ff-b431-7945dc9e24d5
-  _instanceId: 147380
+  _uniqueId: 58296f93-49c4-4b69-8fea-dea42548a421
+  _instanceId: 64876
   _type: 1
   _workbenchUI: {fileID: 3218475684257177220}
 --- !u!1 &576314925643515696
@@ -2182,8 +2182,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1b85dd98aa7d9a48893fef5cac5da96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: fa305005-23aa-4c73-892e-5eb451998d1d
-  _instanceId: 147400
+  _uniqueId: 1175061a-4f5d-4781-ba75-588fffbb4a3a
+  _instanceId: 64896
   _type: 4
   _workbenchUI: {fileID: 3218475684257177220}
 --- !u!1 &820321076079158097
@@ -2397,8 +2397,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1b85dd98aa7d9a48893fef5cac5da96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: e2e4ce24-42b2-479d-9c30-bd122e89308c
-  _instanceId: 147426
+  _uniqueId: a89d6209-e3a7-4662-bd6a-ca723ea8dc6c
+  _instanceId: 64922
   _type: 3
   _workbenchUI: {fileID: 3218475684257177220}
 --- !u!224 &1228233724853278060
@@ -2576,8 +2576,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db88e23f7f1e1cb44a6c0e663804720e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: ddf2c37b-dafd-4f46-b473-0fd413c666de
-  _instanceId: 147440
+  _uniqueId: 1adeefa6-4bab-4a0e-a5e4-c5164f7bf3f0
+  _instanceId: 64936
   _shopId: Shop_Npc_01
   _defaultIcon: {fileID: -8866029178175984406, guid: bf2369831b848f14cac72a576ea07b91, type: 3}
   _slotCount: 10
@@ -3520,8 +3520,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b276f0afab88d0747b43b1f2d6563916, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: fdc79e80-1703-4c10-ad73-d3d4cb8a4af5
-  _instanceId: 147516
+  _uniqueId: 2cc116b3-cce6-4219-bf5e-9489210544e5
+  _instanceId: 65012
   _craftRecipeBtnPrefab: {fileID: 2633544011016150345, guid: 4dded1b7e07fa334ca9051fdb4cbb34c, type: 3}
   _recipeBtnPage: {fileID: 5657904910236303584}
   _craftRequireItemListPrefab: {fileID: 5706732405190235702, guid: de8336ff73de6804cae6aab4db8355e1, type: 3}
@@ -3589,8 +3589,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5f50ffd51274e14fb820f8e308a10ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: e2e1e85c-cdcb-4698-8bb9-44afb26c9b11
-  _instanceId: 147524
+  _uniqueId: 1e55df8c-9eb6-415d-8ad1-a8c6595f9bad
+  _instanceId: 65020
   _consumeHungerInterval: 0.5
   _consumeHungerAmount: 0.12
   _consumeThirstInterval: 0.5
@@ -3811,8 +3811,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1b85dd98aa7d9a48893fef5cac5da96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: 3f62d1bd-9880-43a4-b63c-073f1dc41c7a
-  _instanceId: 147544
+  _uniqueId: be95e822-8152-4552-8004-5d74008f5642
+  _instanceId: 65040
   _type: 2
   _workbenchUI: {fileID: 3218475684257177220}
 --- !u!114 &3624956566324435757
@@ -4488,8 +4488,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9b897537fc15504895cc20094c68c11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: 50522196-d0b0-41ca-91a4-4f59c82d8ede
-  _instanceId: 147612
+  _uniqueId: 1dbd95ba-bf75-41e4-92c9-c1967cc19d14
+  _instanceId: 65108
   _viewRoot: {fileID: 7711369731517823942}
   _windowRoot: {fileID: 7711369731517823942}
   _closeButton: {fileID: 1821322055791164683}
@@ -5168,7 +5168,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.004058838, y: -0.002319336}
+  m_AnchoredPosition: {x: 0.004058838, y: -0.004119873}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &6561589054785043913
@@ -5565,8 +5565,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3e5c6c79e7eda343b2840e9c0c0342a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: 62d29ddf-21df-476b-9b52-f64c2505ac73
-  _instanceId: 147710
+  _uniqueId: df044bac-a414-4f43-9943-138c85d16b26
+  _instanceId: 65206
   _view: {fileID: 7320070340226046844}
 --- !u!114 &7320070340226046844
 MonoBehaviour:
@@ -5580,8 +5580,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 269ebb1e608501547b5f4d7a832b1264, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: 1386258f-5d45-44ca-bb22-6ebbee279463
-  _instanceId: 147712
+  _uniqueId: 99014c3a-068b-466b-93ee-369554ae6623
+  _instanceId: 65208
   _hungerFill: {fileID: 6561589054785043913}
   _thirstFill: {fileID: 6621238115675477840}
   _goldText: {fileID: 688512088200846306}
@@ -6374,8 +6374,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a9cc7bda43b98245ab28059ad5bacd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: 02c02f7a-33a7-422a-a3c0-96e9246084fb
-  _instanceId: 147788
+  _uniqueId: 3a98770d-568f-45be-9489-03422ff08d04
+  _instanceId: 65284
 --- !u!224 &8809564878331603381
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6491,8 +6491,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1b85dd98aa7d9a48893fef5cac5da96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: 121633ee-5cfd-4fe5-a19f-f1028bd04ce6
-  _instanceId: 147798
+  _uniqueId: b67f6ef0-a345-4a83-a143-7c8549a74429
+  _instanceId: 65294
   _type: 6
   _workbenchUI: {fileID: 3218475684257177220}
 --- !u!114 &8955243901409951202
