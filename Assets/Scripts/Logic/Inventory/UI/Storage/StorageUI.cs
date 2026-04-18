@@ -9,7 +9,16 @@ public class StorageUI : InventoryUI, IEscClosable
 
     public override void RefreshInventoryUI(int slotIdx, InventorySlot invenSlot)
     {
-        _inventorySlotUIs[slotIdx].SetInfo(invenSlot.ItemSO.Image, invenSlot.CurStack);
+        if (!IsValidSlotIndex(slotIdx)) return;
+        //
+        if (invenSlot.IsEmpty || invenSlot.ItemSO == null)
+        {
+            _slotList[slotIdx].ClearView();
+        }
+        else
+        {
+            _slotList[slotIdx].SetView(invenSlot);
+        }
     }
     public override void RefreshInventoryUI(Inventory inventory)
     {

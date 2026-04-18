@@ -13,10 +13,12 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
     private bool _isLoading = false;
     private bool _isSaving = false;
     private bool _isFirst = true;
+    private SavedPictorialBookData _pictorialBookData = new();
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     public bool IsFirst { get => _isFirst; set => _isFirst = value; }
+    public SavedPictorialBookData PictorialBookData => _pictorialBookData;
 
     /// <summary>
     /// 글로벌 데이터와 현재 씬 정보를 저장합니다.
@@ -280,6 +282,13 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         //
         SavedInventoryList invList = InventoryManager.Ins.GetSaveData();
         SaveData(ref invList);
+        //
+        PictorialBookSystem pictorialSystem = FindAnyObjectByType<PictorialBookSystem>();
+        if (pictorialSystem != null)
+        {
+            _pictorialBookData = pictorialSystem.GetSaveData();
+        }
+        SaveData(ref _pictorialBookData);
     }
 
     // DataManager의 글로벌 데이터 일괄 로드
@@ -303,6 +312,13 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         SavedInventoryList invList = new();
         LoadData(ref invList);
         InventoryManager.Ins.RestoreSaveDataEntry(invList);
+        //
+        LoadData(ref _pictorialBookData);
+        PictorialBookSystem pictorialSystem = FindAnyObjectByType<PictorialBookSystem>();
+        if (pictorialSystem != null)
+        {
+            pictorialSystem.RestoreSaveData(_pictorialBookData);
+        }
     }
 
     // DataManager의 씬 데이터 일괄 저장

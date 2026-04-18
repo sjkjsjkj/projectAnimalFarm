@@ -37,7 +37,7 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
 
     private int _inventoryCount = 0;
 
-    private int _currentOtherInventoryeId=-1;
+    private int _currentOtherInventoryeId = -1;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -58,7 +58,8 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
-    public override void Initialize() {
+    public override void Initialize()
+    {
         if (_isInitialized)
         {
             return;
@@ -101,7 +102,7 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
             }
         }
         MakeInventoryUIs();//인벤토리 UI들 생성 (인벤 / 창고 / 상점 각각 하나씩)
-        MakeNewInventory(K.PLAYER_INVENTORY_SIZE, EInventoryType.PlayerInventory); 
+        MakeNewInventory(K.PLAYER_INVENTORY_SIZE, EInventoryType.PlayerInventory);
         MakeNewInventory(K.STORAGE_INVENTORY_SIZE, EInventoryType.Storage);
         MakeNewInventory(K.STORAGE_INVENTORY_SIZE, EInventoryType.Storage);
         MakeNewInventory(K.FOODBOX_INVENTORY_SIZE, EInventoryType.FoodBox);
@@ -123,7 +124,7 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
             UDebug.Print("Global Prefab : StorageUI 찾을 수 없음. 확인", LogType.Assert);
             return;
         }
-        if (_foodBoxPrefab == null) 
+        if (_foodBoxPrefab == null)
         {
             UDebug.Print("Global Prefab : FoodBoxUI 찾을 수 없음. 확인", LogType.Assert);
             return;
@@ -171,7 +172,7 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
     {
         MakeNewInventory(newInventorySize, newInventoryType);
         //UDebug.Print($"current InventoryManager's Size : {_inventoryList.Count}");
-        return _inventoryList.Count-1;
+        return _inventoryList.Count - 1;
     }
 
     /// <summary>
@@ -233,7 +234,7 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
                 if (_isPlayerInvenInit) return;
                 _isPlayerInvenInit = true;
                 //데이터 인벤토리를 생성
-                
+
                 Inventory playerInventory = new Inventory(newInventorySize, EInventoryType.PlayerInventory, 0);
                 //리스트 0번에 플레이어 인벤토리 넣기.
                 _inventoryList.Add(playerInventory);
@@ -278,7 +279,7 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
     /// <param name="inventoryIdx"></param>
     public void NotifyRequestRefreshUISlot(EInventoryType inventoryType, InventorySlot invenSlot)
     {
-        switch(inventoryType)
+        switch (inventoryType)
         {
             case EInventoryType.PlayerInventory:
                 _playerInventoryUI.RefreshInventoryUI(invenSlot.SlotIdx, invenSlot);
@@ -303,7 +304,7 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
                 break;
             case EInventoryType.FoodBox:
                 _foodBoxUI.RefreshInventoryUI(inventory);
-                break;  
+                break;
         }
     }
 
@@ -329,7 +330,7 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
     /// 외부에서 인벤토리를 UI를 On할때 불러와질 메서드.
     /// 이곳에서 인벤토리 타입에 따라 열리는 형식과 목록이 달라질 예정.
     /// </summary>
-    public void InventoryUIToggle(int id, EInventoryType invenType) 
+    public void InventoryUIToggle(int id, EInventoryType invenType)
     {
         if (id == 0 && invenType != EInventoryType.PlayerInventory)
         {
@@ -341,7 +342,7 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
         {
             _inventoriesCanvasTr = UObject.Find(K.NAME_GLOBAL_CANVAS_ROOT).transform;
         }
-        switch(invenType)
+        switch (invenType)
         {
             case EInventoryType.PlayerInventory:
                 //PlayerInvenUI.SetToggleUI();
@@ -364,46 +365,51 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
                 break;
         }
     }
+
     public void ChangeItemInvenNStorage(int fromInvenIdx, int fromSlotIdx, int toInvenIdx, int toSlotIdx)
     {
-        if(fromInvenIdx == fromSlotIdx && toInvenIdx == toSlotIdx)
+        if (fromInvenIdx == toInvenIdx && fromSlotIdx == toSlotIdx)
         {
             return;
         }
-        //UDebug.Print($"현재 옮기려고 하는 인벤토리의 타입은 : {_inventoryList[toInvenIdx].InvenType}");
+        // 캐싱
+        Inventory fromInv = _inventoryList[fromInvenIdx];
+        Inventory toInv = _inventoryList[toInvenIdx];
+        // 먹이통으로 이동
         if (_inventoryList[toInvenIdx] is FoodBox foodBoxInven)
         {
-            //UDebug.Print("지금 먹이통으로 아이템을 이동하려 합니다.");
-            if (!foodBoxInven.CheckItemType(_inventoryList[fromInvenIdx].InventorySlots[fromSlotIdx].ItemSO))
+            if (!foodBoxInven.CheckItemType(fromInv.InventorySlots[fromSlotIdx].ItemSO))
             {
                 return;
             }
         }
-        //Inventory Slot이 구조체라 받는 대상은 항상 호출해야하기 때문에 의미 없을 것 같아서 캐싱은 하지 않겠음.
-        if (_inventoryList[toInvenIdx].InventorySlots[toSlotIdx].IsEmpty)
+        // 구조체 추출
+        InventorySlot fromSlot = fromInv.InventorySlots[fromSlotIdx];
+        InventorySlot toSlot = toInv.InventorySlots[toSlotIdx];
+        // 원본 데이터 제거
+        fromInv.ItemSlotClear(fromSlotIdx);
+        toInv.ItemSlotClear(toSlotIdx);
+        // 데이터 삽입
+        if(toSlot.ItemSO != null)
         {
-            //UDebug.Print("빈 곳으로 이동");
-            _inventoryList[toInvenIdx].SetItemSlot(_inventoryList[fromInvenIdx].InventorySlots[fromSlotIdx], toSlotIdx);
-            _inventoryList[fromInvenIdx].ItemSlotClear(fromSlotIdx);
-
-            return;
+            fromInv.SetItemData(toSlot.ItemSO, toSlot.CurStack, fromSlotIdx);
         }
-        //UDebug.Print("서로 교환");
-        InventorySlot tempInvenslot = _inventoryList[fromInvenIdx].InventorySlots[fromSlotIdx];
-
-        _inventoryList[fromInvenIdx].SetItemSlot(_inventoryList[toInvenIdx].InventorySlots[toSlotIdx], fromSlotIdx);
-        _inventoryList[toInvenIdx].SetItemSlot(tempInvenslot,toSlotIdx);
+        if(fromSlot.ItemSO != null)
+        {
+            toInv.SetItemData(fromSlot.ItemSO, fromSlot.CurStack, toSlotIdx);
+        }
     }
+
     //테스트 용 메서드
     //UI On 키를 입력했는지 확인하는 메서드
     private void UIKeyInputHandle()
     {
-        if(Input.GetKeyDown(_inventoryKeycode))
+        if (Input.GetKeyDown(_inventoryKeycode))
         {
             InventoryUIToggle(0, EInventoryType.PlayerInventory);
         }
     }
-    
+
     #endregion
 
     private void Update()
@@ -481,7 +487,7 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
 
     private IEnumerator CoRestoreSaveData(SavedInventoryList container)
     {
-        while(IsSettingFinish == false)
+        while (IsSettingFinish == false)
         {
             yield return null;
         }

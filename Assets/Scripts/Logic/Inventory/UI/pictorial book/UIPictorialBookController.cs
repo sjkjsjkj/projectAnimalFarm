@@ -151,6 +151,7 @@ public class UIPictorialBookController : BaseMono, IEscClosable
         if (!wasOpen)
         {
             OnPictorialOpen.Publish();
+            USound.PlaySfx(Id.Sfx_Ui_Paper_1);
         }
 
         if (_logEnabled)
@@ -161,10 +162,14 @@ public class UIPictorialBookController : BaseMono, IEscClosable
 
     public void CloseBook()
     {
+        if (!IsOpen)
+        {
+            return;
+        }
         Initialize();
         SetBookVisible(false);
         UnregisterEscClose();
-
+        USound.PlaySfx(Id.Sfx_Ui_Paper_4);
         if (_logEnabled)
         {
             Debug.Log("[UIPictorialBookController] 도감 닫기");
@@ -214,6 +219,7 @@ public class UIPictorialBookController : BaseMono, IEscClosable
         _bookPage.ForceFullRefresh();
         RefreshTabVisual(_currentCategory);
 
+        USound.PlaySfx(Id.Sfx_Ui_Paper_2);
         if (_logEnabled)
         {
             Debug.Log($"[UIPictorialBookController] 도감 카테고리 변경: {_currentCategory}");

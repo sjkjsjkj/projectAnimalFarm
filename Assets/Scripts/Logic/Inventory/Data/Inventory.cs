@@ -162,7 +162,8 @@ public class Inventory
                         continue;
                     }
                     //같은 아이템이고, 슬롯이 꽉차지도 않았다면 아이템 획득 후, 성공 반환.
-                    _inventorySlots[i].SetItem(itemData);
+                    int newAmount = Math.Min(_inventorySlots[i].CurStack + itemStack, itemData.MaxStack);
+                    _inventorySlots[i].SetItem(itemData, newAmount);
                     //OnPlayerGetItem.Publish(itemData.Id, itemStack);
                     return i;//성공시 해당 슬롯의 번호를 반환.
                 }
@@ -298,6 +299,20 @@ public class Inventory
 
         return tempItemSO;
     }
+    public void SetItemData(ItemSO item, int amount, int slotIdx)
+    {
+        if(item == null)
+        {
+            return;
+        }
+        ItemSlotClear(slotIdx); // 비우기
+        // 내부 값 변경
+        _inventorySlots[slotIdx].SetItem(item, amount);
+        // 이벤트
+        OnChangeSlot?.Invoke(_inventoryType, _inventorySlots[slotIdx]);
+        OnChangeSlots?.Invoke(_inventoryType, this);
+    }
+
     public void SetItemSlot(InventorySlot invenSlot, int slotIdx)
     {
         if(invenSlot.IsEmpty)

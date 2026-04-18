@@ -22,7 +22,6 @@ public abstract class InventoryUI : BaseMono
     protected int _curInvenIdx;
 
     protected int _inventorySize;
-    protected InventoryUISlot[] _inventorySlotUIs;
     protected bool _isOpen = false;
 
     protected int _curDragIndex;

@@ -29,14 +29,6 @@ public class PictorialBookSystem : BaseMono
 
     public int DiscoveredCount => _discoveredItemIds.Count;
 
-    private void Start()
-    {
-        if (_syncInventoryOnStart)
-        {
-            StartCoroutine(CoSyncFromPlayerInventoryWhenReady());
-        }
-    }
-
     public bool TryDiscover(string itemId)
     {
         string normalizedItemId = NormalizeText(itemId);
@@ -195,5 +187,45 @@ public class PictorialBookSystem : BaseMono
         }
 
         return value.Trim();
+    }
+
+    private void Start()
+    {
+        // 불러오기
+        if (PersistenceManager.Ins != null && PersistenceManager.Ins.PictorialBookData != null)
+        {
+            RestoreSaveData(PersistenceManager.Ins.PictorialBookData);
+        }
+        //
+        if (_syncInventoryOnStart)
+        {
+            StartCoroutine(CoSyncFromPlayerInventoryWhenReady());
+        }
+    }
+
+    // 저장 시 호출
+    public SavedPictorialBookData GetSaveData()
+    {
+        SavedPictorialBookData data = new();
+        data.discoveredItemIds = new List<string>(_discoveredItemIds);
+        return data;
+    }
+
+    // 로드 시 호출
+    public void RestoreSaveData(SavedPictorialBookData data)
+    {
+        // 방어 코드
+        if(data == null || data.discoveredItemIds == null)
+        {
+            return;
+        }
+        // 데이터 복구
+        _discoveredItemIds.Clear();
+        int count = data.discoveredItemIds.Count;
+        for (int i = 0; i < count; ++i)
+        {
+            _discoveredItemIds.Add(data.discoveredItemIds[i]);
+        }
+        UDebug.Print($"도감 데이터 로드 완료");
     }
 }
