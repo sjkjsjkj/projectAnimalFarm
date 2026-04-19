@@ -6,9 +6,9 @@ public static partial class K
     public static readonly int FARMLAND_MAX_GROWNPROGRESS = 5; // 경작지 최대 성장 단계.
     public static readonly int FARMLAND_GROWNTIME = 30;         // 경작지 성장 시간
     public static readonly float BASICTOOL_ANIM_TIME = 0.4f;
-    public static readonly float SOLIDTOOL_ANIM_TIME = 0.3f;
-    public static readonly float SUPERTOOL_ANIM_TIME = 0.22f;
-    public static readonly float PRIMETOOL_ANIM_TIME = 0.16f;
-    public static readonly float MASTERTOOL_ANIM_TIME = 0.12f;
+    public static readonly float SOLIDTOOL_ANIM_TIME = 0.28f;
+    public static readonly float SUPERTOOL_ANIM_TIME = 0.2f;
+    public static readonly float PRIMETOOL_ANIM_TIME = 0.14f;
+    public static readonly float MASTERTOOL_ANIM_TIME = 0.1f;
     public static readonly float SEEDED_ANIM_TIME = 0.2f;
 }

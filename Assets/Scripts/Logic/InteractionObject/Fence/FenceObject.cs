@@ -97,8 +97,4 @@ public class FenceObject : BaseMono, IInteractable
         _playerTr = UObject.Find(K.NAME_PLAYER)?.transform;
     }
     #endregion
-
-    #region ─────────────────────────▶ 중첩 타입 ◀─────────────────────────
-
-    #endregion
 }

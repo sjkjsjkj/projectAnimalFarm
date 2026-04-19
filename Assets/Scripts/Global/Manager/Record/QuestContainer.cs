@@ -53,7 +53,7 @@ public static class QuestContainer
             )
         ),
         new QuestInfo(
-            description: string.Format("인벤토리 열어보기 (인벤토리 : I)" +
+            description: string.Format("인벤토리 열어보기 (인벤토리 : E)" +
                 "{0}{1}{2}{3}감자 씨앗 5개</size></color>", Environment.NewLine, REWARD_COLOR, REWARD_SIZE, REWARD_TEXT),
             rewardGold: 0,
             rewardItemId: Id.Item_Seed_Potato,

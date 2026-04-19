@@ -31,6 +31,8 @@ public class Farmland
     [SerializeField] private string _sfxId_Seeded;
     [SerializeField] private string _sfxId_Moist;
     [SerializeField] private string _sfxId_GrownUp;
+
+    private PlayerInteractor _playerInteractor;
     #endregion
 
     #region ─────────────────────────▶  외부 공개  ◀─────────────────────────
@@ -66,6 +68,22 @@ public class Farmland
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
+    private bool GetPlayerInteractor(out PlayerInteractor playerInteractor)
+    {
+        if(_playerInteractor != null)
+        {
+            playerInteractor = _playerInteractor;
+            return true;
+        }
+        GameObject player = UObject.Find(K.NAME_PLAYER);
+        playerInteractor = UObject.GetComponent<PlayerInteractor>(player);
+        if(playerInteractor != null)
+        {
+            return true;
+        }
+        return false;
+    }
+
     //사운드 ID를 미리 캐싱해두는 메서드
     private void SetSfxIdSetting()
     {
@@ -80,7 +98,9 @@ public class Farmland
     private void SetState(EFarmlandState nextState)
     {
         EFarmlandState beforeState = _state;
+        PlayerInteractor playerInteractor;
         Transform tr;
+        float timer;
 
         _state = nextState;
         switch (_state)
@@ -92,7 +112,12 @@ public class Farmland
                 tr = _farmlandObjectProvider.GetFarmlandObject(_pos).transform;
                 USound.PlaySfx(_sfxId_Soiled, tr);
                 OnPlayerCanceled.Publish();
-                OnPlayerShovel.Publish(tr.position, ReturnAnimTimeByToolsRarityModerator(EType.ShovelItem));
+                timer = ReturnAnimTimeByToolsRarityModerator(EType.ShovelItem);
+                OnPlayerShovel.Publish(tr.position, timer);
+                if(GetPlayerInteractor(out playerInteractor))
+                {
+                    //playerInteractor.LockAutoInteract(timer);
+                }
                 break;
             case EFarmlandState.SeededLand:
                 OnPlayerPlantingSeeds.Publish(_seededId);
@@ -105,7 +130,12 @@ public class Farmland
                 tr = _farmlandObjectProvider.GetFarmlandObject(_pos).transform;
                 USound.PlaySfx(_sfxId_Moist, tr);
                 OnPlayerCanceled.Publish();
-                OnPlayerWatering.Publish(tr.position, ReturnAnimTimeByToolsRarityModerator(EType.WateringCan));
+                timer = ReturnAnimTimeByToolsRarityModerator(EType.WateringCan);
+                OnPlayerWatering.Publish(tr.position, timer);
+                if (GetPlayerInteractor(out playerInteractor))
+                {
+                    //playerInteractor.LockAutoInteract(timer);
+                }
                 break;
             case EFarmlandState.GrownUp:
                 tr = _farmlandObjectProvider.GetFarmlandObject(_pos).transform;
@@ -200,7 +230,7 @@ public class Farmland
             case EFarmlandState.SeededLand:
                 if (InventoryManager.Ins.PlayerInventory.FindItemType(EType.WateringCan) == -1)
                 {
-                    OnFeedbackMessageRequested.Publish("물을 주기 위해선 물뿌리개가 필요합니다.", EFeedbackMessageType.Failure, 1.5f);
+                    //OnFeedbackMessageRequested.Publish("물을 주기 위해선 물뿌리개가 필요합니다.", EFeedbackMessageType.Failure, 1.5f);
                     return false;
                 }
                 //Todo:플레이어의 물뿌리개 레벨이..
@@ -218,7 +248,7 @@ public class Farmland
             case EFarmlandState.GrownUp:
                 if (InventoryManager.Ins.PlayerInventory.FindItemType(EType.SickleItem) == -1)
                 {
-                    OnFeedbackMessageRequested.Publish("농작물을 수확하기 위해선 낫이 필요합니다.", EFeedbackMessageType.Failure, 1.5f);
+                    //OnFeedbackMessageRequested.Publish("농작물을 수확하기 위해선 낫이 필요합니다.", EFeedbackMessageType.Failure, 1.5f);
                     return false;
                 }
                 return true;
