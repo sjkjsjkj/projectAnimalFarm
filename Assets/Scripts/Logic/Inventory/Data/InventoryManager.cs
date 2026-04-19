@@ -307,11 +307,6 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
                 break;
         }
     }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="invenSlotIdx"></param>
     public void NotifyItemUseHandler(int invenSlotIdx)
     {
         UDebug.Print($"Connect Inventorymanager | inven idx : {invenSlotIdx}");

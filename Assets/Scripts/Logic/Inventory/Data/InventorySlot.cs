@@ -1,4 +1,6 @@
-﻿/// <summary>
+﻿using System;
+
+/// <summary>
 /// 인벤토리의 각각의 슬롯의 속성들을 가진 구조체 입니다.
 /// </summary>
 public struct InventorySlot
@@ -15,6 +17,7 @@ public struct InventorySlot
     public string SlotItemId => _itemData.Id;
     public int CurStack => _stack;
     public ItemSO ItemSO => _itemData;
+
     #endregion
 
     #region ─────────────────────────▶ 생성자 ◀─────────────────────────
@@ -46,6 +49,19 @@ public struct InventorySlot
                 UDebug.Print("슬롯에 들어있던 아이디와 획득한 아이템의 아이디가 다름.", UnityEngine.LogType.Warning);
             }
             _stack+= itemStack;
+        }
+
+        switch(itemData.Type)
+        {
+            case EType.PickaxeItem:
+            case EType.SickleItem:
+            case EType.ShovelItem:
+            case EType.WateringCan:
+            case EType.Fishingrod:
+                
+                break;
+            default:
+                break;
         }
         //UDebug.Print($"아이템 습득 성공 : {_slotIdx}번째 슬롯 | 획득 아이템 : {itemData.Name}");
         if (playSound)

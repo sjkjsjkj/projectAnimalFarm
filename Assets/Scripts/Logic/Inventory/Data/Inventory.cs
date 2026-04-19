@@ -1,6 +1,5 @@
 ﻿using System;
 
-
 /// <summary>
 /// 인벤토리 입니다. 플레이어의 인벤토리 및 창고, 상점들을 이것으로 관리합니다.
 /// </summary>
@@ -10,13 +9,13 @@ public class Inventory
     protected int _inventoryIdx;
     protected int _inventorySize;
     protected InventorySlot[] _inventorySlots;
-    protected EInventoryType _inventoryType;    
+    protected EInventoryType _inventoryType;
+    //protected BestTools _bestTools;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     //public int InventorySize => _inventorySize;
     public InventorySlot[] InventorySlots => _inventorySlots;
-
     public event Action<EInventoryType, InventorySlot> OnChangeSlot;
     public event Action<EInventoryType, Inventory> OnChangeSlots;
     public EInventoryType InvenType => _inventoryType;
@@ -30,13 +29,12 @@ public class Inventory
         _inventorySlots = new InventorySlot[inventorySize];
         _inventoryType = inventoryType;
         _inventoryIdx = inventoryIdx;
-
-        for(int i=0; i<_inventorySlots.Length;  i++)
+        //_bestTools = new BestTools();
+        for (int i=0; i<_inventorySlots.Length;  i++)
         {
             //UDebug.Print($"인벤토리 생성자 체크 : {i}");
             _inventorySlots[i] = new InventorySlot(i);
         }
-        
     }
     #endregion
 
@@ -49,7 +47,6 @@ public class Inventory
     #endregion
 
     #region ─────────────────────────▶ 외부 공개 ◀─────────────────────────
-
     public void NotifyUseItem(int invenSlotIdx)
     {
         TryUseItem(invenSlotIdx);
@@ -63,12 +60,10 @@ public class Inventory
     {
         if (_inventorySlots[invenSlotIdx].IsEmpty)
         {
-            UDebug.Print("설마");
             return false;
         }
         if (_inventorySlots[invenSlotIdx].ItemSO.ItemUseContext.Length==0)
         {
-            UDebug.Print("여기라고?");
             return false;
         }
 
@@ -102,6 +97,28 @@ public class Inventory
             return true;
         }
         return false;
+    }
+    public ItemSO FindBestTool(EType eType)
+    {
+        ERarity tempRarity=ERarity.None;
+        ItemSO tempItemSo=null;
+
+        for(int i=0; i< _inventorySlots.Length; i++)
+        {
+            if (_inventorySlots[i].IsEmpty)
+            {
+                continue;
+            }
+            if (_inventorySlots[i].ItemSO.Type != eType)
+            {
+                continue;
+            }
+            if ((int)_inventorySlots[i].ItemSO.Rarity > (int)tempRarity)
+            {
+                tempItemSo = _inventorySlots[i].ItemSO;
+            }
+        }
+        return tempItemSo;
     }
     public bool CheckSlots()
     {
@@ -373,7 +390,6 @@ public class Inventory
                 if (amount <= 0) break;
             }
         }
-        
         OnChangeSlots?.Invoke(_inventoryType, this);
     }
 
