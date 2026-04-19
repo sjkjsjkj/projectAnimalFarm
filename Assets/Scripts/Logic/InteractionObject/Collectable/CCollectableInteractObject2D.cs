@@ -153,6 +153,9 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     [Header("로컬 폴백 사운드")]
     [SerializeField] private Transform _feedbackSoundTarget;
 
+    [Tooltip("체크하면 피드백 사운드를 UI처럼 2D로 재생합니다. 해제하면 오브젝트 위치 기준 3D로 재생합니다.")]
+    [SerializeField] private bool _playFeedbackSoundAsUi = true;
+
     [SerializeField]
     private string[] _warningFeedbackSoundIds =
     {
@@ -189,6 +192,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
     private bool _isCollected = false;
     private bool _isProcessing = false;
+    private bool _isManualCollectStarting = false;
 
     private Coroutine _autoCollectRoutine = null;
     private Coroutine _respawnRoutine = null;
@@ -321,7 +325,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             return false;
         }
 
-        if (_isProcessing)
+        if (_isProcessing || _isManualCollectStarting)
         {
             return false;
         }
@@ -381,7 +385,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             return false;
         }
 
-        if (_manualCollectRoutine == null)
+        if (_manualCollectRoutine == null && !_isManualCollectStarting)
         {
             return false;
         }
@@ -594,7 +598,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
     private void StartManualCollectRoutine(CPlayerCollector2D collector)
     {
-        if (_manualCollectRoutine != null)
+        if (_manualCollectRoutine != null || _isManualCollectStarting || _isProcessing)
         {
             return;
         }
@@ -612,6 +616,8 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
         float manualCollectDuration = GetManualCollectDuration();
 
+        _isManualCollectStarting = true;
+        _isProcessing = true;
         _manualCollectCollector = collector;
         _manualCollectStartPosition = collector.transform.position;
 
@@ -634,7 +640,9 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
     private IEnumerator CoManualCollect(CPlayerCollector2D collector, float manualCollectDuration)
     {
-        if (_isProcessing)
+        _isManualCollectStarting = false;
+
+        if (!_isProcessing)
         {
             yield break;
         }
@@ -658,7 +666,6 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             yield break;
         }
 
-        _isProcessing = true;
         manualCollectDuration = Mathf.Max(0f, manualCollectDuration);
 
         PublishManualCollectAction(rewardItemSo, manualCollectDuration);
@@ -752,6 +759,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     private void ReleaseManualCollectState(CPlayerCollector2D collector)
     {
         _isProcessing = false;
+        _isManualCollectStarting = false;
 
         if (_setPlayerBusyDuringManualCollect && collector != null)
         {
@@ -793,6 +801,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         }
 
         _isProcessing = false;
+        _isManualCollectStarting = false;
         _manualCollectCollector = null;
         _manualCollectStartPosition = Vector2.zero;
 
@@ -1583,6 +1592,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             return;
         }
 
+        _isManualCollectStarting = false;
         _isCollected = true;
 
         _nearCollectors.Clear();
@@ -2027,7 +2037,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
     private bool HasRelayListener(UnityEvent unityEvent, params string[] methodNames)
     {
-        if (unityEvent == null || _feedbackRelay == null)
+        if (unityEvent == null)
         {
             return false;
         }
@@ -2043,7 +2053,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         for (int i = 0; i < persistentCount; i++)
         {
             Object target = unityEvent.GetPersistentTarget(i);
-            if (target != _feedbackRelay)
+            if (!(target is InteractionFeedbackRelay))
             {
                 continue;
             }
@@ -2176,20 +2186,34 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
             if (currentIndex == targetIndex)
             {
-                if (_feedbackSoundTarget != null)
-                {
-                    USound.PlaySfx(soundId, _feedbackSoundTarget);
-                }
-                else
-                {
-                    USound.PlaySfx(soundId);
-                }
-
+                PlayFeedbackSound(soundId);
                 return;
             }
 
             currentIndex++;
         }
+    }
+
+    private void PlayFeedbackSound(string soundId)
+    {
+        if (string.IsNullOrWhiteSpace(soundId))
+        {
+            return;
+        }
+
+        if (_playFeedbackSoundAsUi)
+        {
+            USound.PlaySfx(soundId);
+            return;
+        }
+
+        if (_feedbackSoundTarget != null)
+        {
+            USound.PlaySfx(soundId, _feedbackSoundTarget);
+            return;
+        }
+
+        USound.PlaySfx(soundId);
     }
 
     private void TryResolveFeedbackRelayIfMissing()
