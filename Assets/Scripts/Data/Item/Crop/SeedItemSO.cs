@@ -13,12 +13,14 @@ public class SeedItemSO : ItemSO
     [Tooltip("심기 위해 필요한 농사 레벨")]
     [SerializeField] protected int _needFarmingLevel = 1;
     [SerializeField] protected string _harvestItemId;
+    [SerializeField] protected int _progressTickTime = 10;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     public string PlaceCropId => _placeCropId;
     public int NeedFarmingLevel => _needFarmingLevel;
     public string HarvestItemId => _harvestItemId;
+    public int ProgressTickTime => _progressTickTime;
 
     // 정상 값을 가지는지 검사
     public override bool IsValid()

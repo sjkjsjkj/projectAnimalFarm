@@ -86,27 +86,26 @@ public class Farmland
         switch (_state)
         {
             case EFarmlandState.IdleLand:
-
                 break;
             case EFarmlandState.SoiledLand:
                 OnPlayerPlow.Publish();
                 tr = _farmlandObjectProvider.GetFarmlandObject(_pos).transform;
                 USound.PlaySfx(_sfxId_Soiled, tr);
                 OnPlayerCanceled.Publish();
-                OnPlayerShovel.Publish(tr.position, 0.15f);
+                OnPlayerShovel.Publish(tr.position, ReturnAnimTimeByToolsRarityModerator(EType.ShovelItem));
                 break;
             case EFarmlandState.SeededLand:
                 OnPlayerPlantingSeeds.Publish(_seededId);
                 tr = _farmlandObjectProvider.GetFarmlandObject(_pos).transform;
                 USound.PlaySfx(_sfxId_Seeded, tr);
                 OnPlayerCanceled.Publish();
-                OnPlayerCrouching.Publish(tr.position, 0.22f);
+                OnPlayerCrouching.Publish(tr.position, K.SEEDED_ANIM_TIME);
                 break;
             case EFarmlandState.MoistLand:
                 tr = _farmlandObjectProvider.GetFarmlandObject(_pos).transform;
                 USound.PlaySfx(_sfxId_Moist, tr);
                 OnPlayerCanceled.Publish();
-                OnPlayerWatering.Publish(tr.position, 0.15f);
+                OnPlayerWatering.Publish(tr.position, ReturnAnimTimeByToolsRarityModerator(EType.WateringCan));
                 break;
             case EFarmlandState.GrownUp:
                 tr = _farmlandObjectProvider.GetFarmlandObject(_pos).transform;
@@ -119,6 +118,59 @@ public class Farmland
         //경작지 전체를 관리하는 FarmArea에게 나의 좌표(배열 좌표)와 상태를 전달한다.
         OnFarmStateChange?.Invoke(new FarmStateChangeStruct(_state, _pos, _seededId, _currentTick));
     }
+    //플레이어가 가진 최고 등급의 도구에 따라 애니메이션 시간이 달라짐.
+    private float ReturnAnimTimeByToolsRarityModerator(EType eType)
+    {
+        Inventory playerInven = InventoryManager.Ins.PlayerInventory;
+
+        ItemSO bestItem;
+
+        bestItem = playerInven.FindBestTool(eType);
+
+        if (bestItem == null)
+        {
+            UDebug.Print("도구가 없다면 인터랙트가 불가능하기에 이 메시지가 노출되선 안됨.");
+            return -1;
+        }
+        return ReturnAnimTimeByToolsRarity(bestItem.Rarity);
+
+        //switch (eType)
+        //{
+        //    case EType.PickaxeItem:
+        //        //InventoryManager.Ins.PlayerInventory.BestPickAxe
+        //        return ReturnAnimTimeByToolsRarity(playerInven.BestPickAxe.Rarity);
+        //    case EType.SickleItem:
+        //        return ReturnAnimTimeByToolsRarity(playerInven.BestSicker.Rarity);
+        //    case EType.ShovelItem:
+        //        return ReturnAnimTimeByToolsRarity(playerInven.BestShovel.Rarity);
+        //    case EType.WateringCan:
+        //        return ReturnAnimTimeByToolsRarity(playerInven.BestWateringCan.Rarity);
+        //    case EType.Fishingrod:
+        //        return ReturnAnimTimeByToolsRarity(playerInven.BestFishingRod.Rarity);
+        //    default:
+        //        return -1;
+        //}
+    }
+
+    private float ReturnAnimTimeByToolsRarity(ERarity rarity)
+    {
+        switch(rarity)
+        {
+            case ERarity.Basic:
+                return K.BASICTOOL_ANIM_TIME;
+            case ERarity.Solid:
+                return K.SOLIDTOOL_ANIM_TIME;
+            case ERarity.Superior:
+                return K.SUPERTOOL_ANIM_TIME;
+            case ERarity.Prime:
+                return K.PRIMETOOL_ANIM_TIME;
+            case ERarity.Masterwork:
+                return K.MASTERTOOL_ANIM_TIME;
+            default:
+                return -1;
+        }
+    }
+
     //최초의 경작지의 상태로
     private void SetClear()
     {
@@ -141,7 +193,7 @@ public class Farmland
             case EFarmlandState.IdleLand:
                 if(InventoryManager.Ins.PlayerInventory.FindItemType(EType.ShovelItem) == -1)
                 {
-                    OnFeedbackMessageRequested.Publish("밭을 갈기 위해선 삽이 필요합니다.", EFeedbackMessageType.Failure, 1.5f);
+                    //OnFeedbackMessageRequested.Publish("밭을 갈기 위해선 삽이 필요합니다.", EFeedbackMessageType.Failure, 1.5f);
                     return false;
                 }
                 return true;
@@ -246,17 +298,10 @@ public class Farmland
             }
             else
             {
-                //ToDo
-                //씨앗의 _needFarmingLevel 과 플레이어의 농사 스탯 비교하여 같은지 확인.
-                //if (DataManager.Ins.Player.농사레벨 > tempSeedItemSO.NeedFarmingLevel)
-                //{
-                //    _area.Farmlands[_idx].Interact(tempItemSO.Id);
-                //    return;
-                //}
-
+                
                 SeedItemSO tempSeedItemSO = (SeedItemSO)tempItemSO;
                 _harvestItemId = tempSeedItemSO.HarvestItemId;
-
+                _grownUpTick = tempSeedItemSO.ProgressTickTime;
                 _seededId = tempSeedItemSO.Id;
 
                 SetState(EFarmlandState.SeededLand);
@@ -287,7 +332,7 @@ public class Farmland
             OnPlayerHarvesting.Publish(_harvestItemId);
             Vector3 pos = _farmlandObjectProvider.GetFarmlandObject(_pos).transform.position;
             OnPlayerCanceled.Publish();
-            OnPlayerSickle.Publish(pos, 0.15f);
+            OnPlayerSickle.Publish(pos, ReturnAnimTimeByToolsRarityModerator(EType.SickleItem));
             OnFeedbackMessageRequested.Publish($"농작물 수확.", EFeedbackMessageType.Success, 1.5f);
         }
         SetClear();
