@@ -522,7 +522,7 @@ public class CFishingController2D : BaseMono
             return EFishingStartResult.InventoryFull;
         }
 
-        fishingDelay = GetFishingDelayByRarity(fishRow.rarity);
+        fishingDelay = GetFishingDelayByRarity(fishRow.rarity, activeFishingRod, selectedBait);
         return EFishingStartResult.Success;
     }
 
@@ -1803,35 +1803,49 @@ public class CFishingController2D : BaseMono
         return false;
     }
 
-    private float GetFishingDelayByRarity(string rarity)
+    private float GetFishingDelayByRarity(string rarity, ToolItemSO rod, BaitItemSO bait)
     {
-        ERarity parsed = ParseFishRarity(rarity);
-
-        switch (parsed)
+        // 기본 낚시 시간 결정
+        ERarity targetRarity = ParseFishRarity(rarity);
+        float baseDelay = 1.5f;
+        switch (targetRarity)
         {
             case ERarity.Basic:
-                return Mathf.Max(0f, _basicFishingDelay);
-
+                baseDelay = _basicFishingDelay;
+                break;
             case ERarity.Solid:
-                return Mathf.Max(0f, _solidFishingDelay);
-
+                baseDelay = _solidFishingDelay;
+                break;
             case ERarity.Superior:
-                return Mathf.Max(0f, _superiorFishingDelay);
-
+                baseDelay = _superiorFishingDelay;
+                break;
             case ERarity.Prime:
-                return Mathf.Max(0f, _primeFishingDelay);
-
+                baseDelay = _primeFishingDelay;
+                break;
             case ERarity.Masterwork:
-                return Mathf.Max(0f, _masterworkFishingDelay);
-
+                baseDelay = _masterworkFishingDelay;
+                break;
             default:
-                if (_unknownFishingDelay > 0f)
-                {
-                    return _unknownFishingDelay;
-                }
-
-                return Mathf.Max(0f, _fishingDelay);
+                baseDelay = _unknownFishingDelay > 1f ? _unknownFishingDelay : _fishingDelay;
+                break;
         }
+        // 도구 보정
+        float rodBonus = 0f;
+        if(rod != null && rod.Rarity > targetRarity)
+        {
+            int rarityDiff = (int)rod.Rarity - (int)targetRarity;
+            rodBonus = rarityDiff * 0.75f; // 등급 차당 0.75초 단축
+        }
+        // 미끼 보정
+        float baitBonus = 0f;
+        if (bait != null && bait.Rarity > targetRarity)
+        {
+            int rarityDiff = (int)bait.Rarity - (int)targetRarity;
+            rodBonus = rarityDiff * 0.5f; // 등급 차당 0.5초 단축
+        }
+        // 최종 시간
+        float finalDelay = baseDelay - rodBonus - baitBonus;
+        return Mathf.Max(finalDelay, 1f);
     }
 
     private float GetWeightByRarity(string rarity)

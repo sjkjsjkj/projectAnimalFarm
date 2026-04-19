@@ -2,7 +2,7 @@
 using UnityEngine;
 
 /// <summary>
-/// 클래스의 설계 의도입니다.
+/// 타이틀 씬 스크립트
 /// </summary>
 public class TitleButton : BaseMono
 {
@@ -12,9 +12,11 @@ public class TitleButton : BaseMono
         UDebug.Print($"게임 스타트 버튼을 클릭했습니다.");
         ClearAllSaveData();
         DataManager.Ins.ResetGameData();
+        InventoryManager.Ins.ClearAllInventories();
         var game = GameManager.Ins;
-        game.LoadSceneAsyncWithFade((int)EScene.Main);
+        game.LoadSceneAsyncWithFade((int)EScene.Main, 0f , 3f, 3f);
         game.IsPlayerWakeUp = true;
+        USound.PlaySfx(Id.Sfx_Ui_Select_04);
     }
 
     public void GameLoad()
@@ -24,6 +26,7 @@ public class TitleButton : BaseMono
         {
             EScene targetScene = DataManager.Ins.Player.CurPlayerScene();
             GameManager.Ins.LoadSceneAsyncWithFade((int)targetScene);
+            USound.PlaySfx(Id.Sfx_Ui_Join);
         }
         else
         {
@@ -33,6 +36,7 @@ public class TitleButton : BaseMono
 
     public void GameEnd()
     {
+        USound.PlaySfx(Id.Sfx_Ui_Select_08);
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false; // 에디터 플레이 모드 종료
 #else

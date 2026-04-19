@@ -37,6 +37,22 @@ public class TimeAndLight : Frameable
         FlowTime();
         UpdateLight();
     }
+
+    public SavedTimeData GetSaveData()
+    {
+        return new SavedTimeData { savedTime = _time };
+    }
+
+    public void RestoreSaveData(SavedTimeData data)
+    {
+        if (data != null)
+        {
+            _time = data.savedTime;
+            // 로드 직후 시간과 빛 상태를 즉시 동기화
+            TimeProgress();
+            UpdateLight();
+        }
+    }
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────

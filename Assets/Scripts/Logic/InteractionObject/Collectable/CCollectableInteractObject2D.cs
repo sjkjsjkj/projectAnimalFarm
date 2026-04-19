@@ -831,7 +831,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         // _onCollectStarted 에 relay/UI 메시지 리스너가 연결되어 있으면
         // 같은 문구가 한 번 더 표시될 수 있으므로 메시지 중복을 막기 위해 호출하지 않는다.
         PublishDirectFeedback(progressMessage, EFeedbackMessageType.Warning, START_FEEDBACK_DURATION);
-        PlayRandomFeedbackSound(_warningFeedbackSoundIds);
+        //PlayRandomFeedbackSound(_warningFeedbackSoundIds);
     }
 
     private void RaiseCollectedSuccessFeedback()
@@ -1599,6 +1599,12 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         StopAutoCollect();
         ApplyIndicatorActive(false);
         ApplyManagedColliderVisibility(false);
+        // 자신의 콜라이더
+        Collider2D col = UObject.GetComponent<Collider2D>(this.gameObject);
+        if(col != null)
+        {
+            col.enabled = false;
+        }
 
         if (_logEnabled)
         {
@@ -1654,6 +1660,12 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         _isProcessing = false;
 
         ApplyManagedColliderVisibility(true);
+        // 자신의 콜라이더
+        Collider2D col = UObject.GetComponent<Collider2D>(this.gameObject);
+        if (col != null)
+        {
+            col.enabled = true;
+        }
 
         SetCollectedVisual(true);
         RebuildCollectorListInRange();
@@ -2209,7 +2221,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
         if (_feedbackSoundTarget != null)
         {
-            USound.PlaySfx(soundId, _feedbackSoundTarget);
+            USound.PlaySfx(soundId);
             return;
         }
 

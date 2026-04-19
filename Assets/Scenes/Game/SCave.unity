@@ -162,8 +162,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b28f46598ec31324a908a1a14da566eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: 3d6aafa3-399c-456d-866a-c50837d62bc6
-  _instanceId: 104716
+  _uniqueId: 331739d5-e159-424e-aae6-5927c964ab80
+  _instanceId: 223128
   _testTileID: 0
   _animalID: 
   _breedingArea: {fileID: 0}
@@ -2259,7 +2259,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1119130486}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Ores
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

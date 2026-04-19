@@ -14361,8 +14361,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b28f46598ec31324a908a1a14da566eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: 3b9ce548-c1cf-4545-ab1c-d5c230158d35
-  _instanceId: 106126
+  _uniqueId: 4d1333f5-281f-4336-9971-761d2712e25e
+  _instanceId: 122864
   _testTileID: 0
   _animalID: 
   _breedingArea: {fileID: 0}
@@ -28690,11 +28690,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4884490174820747038, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
       propertyPath: _uniqueId
-      value: 2b0376e1-1a2d-4027-b90f-c0d8e94ca4a6
+      value: d260daee-59b1-43e8-82f7-8cf84a143bd0
       objectReference: {fileID: 0}
     - target: {fileID: 4884490174820747038, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
       propertyPath: _instanceId
-      value: -1740
+      value: -289110
       objectReference: {fileID: 0}
     - target: {fileID: 4884490174820747038, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
       propertyPath: _feedbackRelay
@@ -28707,6 +28707,30 @@ PrefabInstance:
     - target: {fileID: 4884490174820747038, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
       propertyPath: _requiredHunger
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4884490174820747038, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
+      propertyPath: _basicFishingDelay
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4884490174820747038, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
+      propertyPath: _primeFishingDelay
+      value: 5.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4884490174820747038, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
+      propertyPath: _solidFishingDelay
+      value: 4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4884490174820747038, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
+      propertyPath: _unknownFishingDelay
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4884490174820747038, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
+      propertyPath: _superiorFishingDelay
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4884490174820747038, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
+      propertyPath: _masterworkFishingDelay
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4884490174820747038, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
       propertyPath: _bypassRequiredFishingItemsForTest
@@ -28814,11 +28838,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8255518558608426736, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
       propertyPath: _uniqueId
-      value: 3216cff1-a172-4b3e-a70b-48ce0e11328a
+      value: c80ecede-ac36-45ff-9278-ffe15b3fc2fb
       objectReference: {fileID: 0}
     - target: {fileID: 8255518558608426736, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
       propertyPath: _instanceId
-      value: -3552
+      value: -289102
       objectReference: {fileID: 0}
     - target: {fileID: 8255518558608426736, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
       propertyPath: _fsm._fishing._rollWeight
@@ -28827,6 +28851,14 @@ PrefabInstance:
     - target: {fileID: 8255518558608426736, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
       propertyPath: _fsm._fishing._hookedWeight
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8255518558608426736, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
+      propertyPath: _fsm._fishing._capturedNoWeight
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8255518558608426736, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
+      propertyPath: _fsm._fishing._capturedYesWeight
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8637693700152055993, guid: 55e1d0f443aab2b46a03e821a792dff5, type: 3}
       propertyPath: m_LocalPosition.x

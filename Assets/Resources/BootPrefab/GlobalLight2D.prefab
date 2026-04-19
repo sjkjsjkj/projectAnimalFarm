@@ -171,5 +171,5 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _startTime: 1
-  _dayDurationSeconds: 600
+  _dayDurationSeconds: 300
   _dayCondition: 0.42

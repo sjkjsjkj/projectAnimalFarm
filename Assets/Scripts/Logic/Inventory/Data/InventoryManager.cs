@@ -466,7 +466,7 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
     }
 
     // 인벤토리 청소
-    private void ClearAllInventories()
+    public void ClearAllInventories()
     {
         if (_inventoryList == null)
         {

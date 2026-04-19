@@ -14,11 +14,13 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
     private bool _isSaving = false;
     private bool _isFirst = true;
     private SavedPictorialBookData _pictorialBookData = new();
+    private SavedTimeData _timeData = new();
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     public bool IsFirst { get => _isFirst; set => _isFirst = value; }
     public SavedPictorialBookData PictorialBookData => _pictorialBookData;
+    public SavedTimeData TimeData => _timeData;
 
     /// <summary>
     /// 글로벌 데이터와 현재 씬 정보를 저장합니다.
@@ -289,6 +291,13 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
             _pictorialBookData = pictorialSystem.GetSaveData();
         }
         SaveData(ref _pictorialBookData);
+        //
+        TimeAndLight timeSys = FindAnyObjectByType<TimeAndLight>();
+        if (timeSys != null)
+        {
+            _timeData = timeSys.GetSaveData();
+        }
+        SaveData(ref _timeData);
     }
 
     // DataManager의 글로벌 데이터 일괄 로드
@@ -318,6 +327,13 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         if (pictorialSystem != null)
         {
             pictorialSystem.RestoreSaveData(_pictorialBookData);
+        }
+        //
+        LoadData(ref _timeData);
+        TimeAndLight timeSys = FindAnyObjectByType<TimeAndLight>();
+        if (timeSys != null)
+        {
+            timeSys.RestoreSaveData(_timeData);
         }
     }
 
