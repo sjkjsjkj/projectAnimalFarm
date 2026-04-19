@@ -182,7 +182,7 @@ public class NPCObject : Frameable
         }
 
         float tempRandNum = Random.Range(0.0f, 1.0f) * 10;
-        if ((int)(tempRandNum) % 2 == 0)
+        if ((int)(tempRandNum) <= 2)
         {
             USound.PlaySfx(_stxId_buzzingSound, transform);
         }

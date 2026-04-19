@@ -518,7 +518,7 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
                     ItemSO itemSo = DatabaseManager.Ins.Item(itemId);
                     if (itemSo != null)
                     {
-                        inv.InventorySlots[j].SetItem(itemSo, savedInv.slots[j].amount);
+                        inv.InventorySlots[j].AddItem(itemSo, savedInv.slots[j].amount, false);
                     }
                 }
             }

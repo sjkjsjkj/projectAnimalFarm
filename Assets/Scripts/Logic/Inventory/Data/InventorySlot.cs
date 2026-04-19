@@ -30,7 +30,7 @@ public struct InventorySlot
     /// <summary>
     /// 슬롯에 아이템 세팅
     /// </summary>
-    public void SetItem(ItemSO itemData, int itemStack = 1)
+    public void AddItem(ItemSO itemData, int itemStack = 1, bool playSound = true)
     {
         if(itemData == null) return;
 
@@ -48,7 +48,10 @@ public struct InventorySlot
             _stack+= itemStack;
         }
         //UDebug.Print($"아이템 습득 성공 : {_slotIdx}번째 슬롯 | 획득 아이템 : {itemData.Name}");
-        USound.PlaySfx(Id.Sfx_Ui_ItemMovement_3);
+        if (playSound)
+        {
+            USound.PlaySfx(Id.Sfx_Ui_ItemMovement_3);
+        }
     }
     /// <summary>
     /// 해당 슬롯 초기화.
