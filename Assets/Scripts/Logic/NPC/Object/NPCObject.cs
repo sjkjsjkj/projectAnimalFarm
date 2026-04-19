@@ -209,9 +209,9 @@ public class NPCObject : Frameable
     private IEnumerator CoDialog(string dialog)
     {
         _isTalked = true;
-        _dialogBack.localScale = new Vector3(0.6f , 0.7f, 1);
-        _dialogCanvas.SetActive(true);
+        _dialogBack.localScale = new Vector3(1, 1, 1);
         _dialogText.text = dialog;
+        _dialogCanvas.SetActive(true);
         yield return new WaitForSeconds(_dialogMessageTime);
         _dialogCanvas.SetActive(false);
         _isTalked = false;
