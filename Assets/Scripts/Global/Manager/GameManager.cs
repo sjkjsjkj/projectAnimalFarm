@@ -134,7 +134,7 @@ public class GameManager : GlobalSingleton<GameManager>
     /// <param name="delay">씬 로드 시작 전에 대기할 시간(초)</param>
     /// <param name="loadSceneMode">씬 로드 모드</param>
     public void LoadSceneAsyncWithFade(
-        int index, float delay = 0f, float fadeOutTime = 0.2f, float fadeInTime = 0.2f,
+        int index, float delay = 0f, float fadeOutTime = 0.9f, float fadeInTime = 0.9f,
         Action callback = null, Action<float> onProgress = null, 
         LoadSceneMode loadSceneMode = LoadSceneMode.Single)
     {

@@ -26,7 +26,6 @@ public class StorageInteractObject : BaseMono, IInteractable
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     public bool CanInteract(GameObject player)
     {
-        //throw new System.NotImplementedException();
         UDebug.Print($"current Reuse state : {_inventoryManager.CanReUse}");
         return _inventoryManager.CanReUse;
     }
@@ -38,18 +37,16 @@ public class StorageInteractObject : BaseMono, IInteractable
 
     public void Interact(GameObject player)
     {
-        UDebug.Print("창고야 열려라");
-
+        if(_storageIdx <= 0)
+        {
+            UDebug.Print($"잘못된 창고 번호 : {_storageIdx}", LogType.Error);
+            return;
+        }
         StorageUI storageUI = _inventoryManager.StorageUI;
 
-        UDebug.Print($"{_storageIdx}번째 인벤토리(창고) 오픈!");
-
-
         _inventoryManager.InventoryUIToggle(_storageIdx, EInventoryType.Storage);
-
         _currentPlayer = player;
         _isStorageOpen = !_isStorageOpen;
-
         //storageUI.SetToggleUI();
     }
     #endregion
@@ -65,8 +62,7 @@ public class StorageInteractObject : BaseMono, IInteractable
                 break;
             }
             yield return null;
-
-            _storageIdx = _inventoryManager.RequestNewInventory(K.STORAGE_INVENTORY_SIZE, EInventoryType.Storage);
+            // _storageIdx = _inventoryManager.RequestNewInventory(K.STORAGE_INVENTORY_SIZE, EInventoryType.Storage);
         }
     }
 
@@ -114,9 +110,5 @@ public class StorageInteractObject : BaseMono, IInteractable
     {
         CheckAutoClose();
     }
-    #endregion
-
-    #region ─────────────────────────▶ 중첩 타입 ◀─────────────────────────
-
     #endregion
 }

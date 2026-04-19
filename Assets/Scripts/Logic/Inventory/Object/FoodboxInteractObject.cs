@@ -21,9 +21,7 @@ public class FoodboxInteractObject : BaseMono, IInteractable
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
-
     private InventoryManager _inventoryManager;
-
     private GameObject _currentPlayer;
     private bool _isStorageOpen;
     #endregion
@@ -214,8 +212,16 @@ public class FoodboxInteractObject : BaseMono, IInteractable
             }
             yield return null;
         }
-        _storageIdx = _inventoryManager.RequestNewInventory(K.FOODBOX_INVENTORY_SIZE, EInventoryType.FoodBox);
-        transform.Find("BreedingArea").GetComponent<BreedingArea>().SetInfo(_storageIdx, this.transform);
+        // 브리딩 에리어 탐색
+        Transform breedingArea = UObject.Find("BreedingArea").transform;
+        if(breedingArea == null)
+        {
+            UDebug.Print($"브리딩 에리어 탐색 실패", LogType.Error);
+            yield break;
+        }
+        //
+        //_storageIdx = _inventoryManager.RequestNewInventory(K.FOODBOX_INVENTORY_SIZE, EInventoryType.FoodBox);
+        breedingArea.GetComponent<BreedingArea>().SetInfo(_storageIdx, this.transform);
     }
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────

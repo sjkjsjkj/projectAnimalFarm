@@ -13,10 +13,14 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
     private bool _isLoading = false;
     private bool _isSaving = false;
     private bool _isFirst = true;
+    private SavedPictorialBookData _pictorialBookData = new();
+    private SavedTimeData _timeData = new();
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
     public bool IsFirst { get => _isFirst; set => _isFirst = value; }
+    public SavedPictorialBookData PictorialBookData => _pictorialBookData;
+    public SavedTimeData TimeData => _timeData;
 
     /// <summary>
     /// 글로벌 데이터와 현재 씬 정보를 저장합니다.
@@ -266,16 +270,34 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
             return;
         }
         DataManager m = DataManager.Ins;
+        //
         var option = m.Option;
         SaveData(ref option);
+        //
         m.Player.SaveSceneId(saveScene);
         var player = m.Player;
         SaveData(ref player);
+        //
         var record = m.Record;
         record.SaveBeforeSerialize();
         SaveData(ref record);
-        var im = InventoryManager.Ins.Inventories;
-        SaveData(ref im);
+        //
+        SavedInventoryList invList = InventoryManager.Ins.GetSaveData();
+        SaveData(ref invList);
+        //
+        PictorialBookSystem pictorialSystem = FindAnyObjectByType<PictorialBookSystem>();
+        if (pictorialSystem != null)
+        {
+            _pictorialBookData = pictorialSystem.GetSaveData();
+        }
+        SaveData(ref _pictorialBookData);
+        //
+        TimeAndLight timeSys = FindAnyObjectByType<TimeAndLight>();
+        if (timeSys != null)
+        {
+            _timeData = timeSys.GetSaveData();
+        }
+        SaveData(ref _timeData);
     }
 
     // DataManager의 글로벌 데이터 일괄 로드
@@ -284,16 +306,35 @@ public class PersistenceManager : GlobalSingleton<PersistenceManager>
         DataManager m = DataManager.Ins;
         var option = m.Option;
         LoadData(ref option);
+        //
         var player = m.Player;
         LoadData(ref player);
         player.IsLoaded = true;
+        //
         var farmland = m.Farmlands;
         LoadData(ref farmland);
+        // 
         var record = m.Record;
         LoadData(ref record);
         record.LoadAfterDeserialize();
-        var im = InventoryManager.Ins.Inventories;
-        LoadData(ref im);
+        //
+        SavedInventoryList invList = new();
+        LoadData(ref invList);
+        InventoryManager.Ins.RestoreSaveDataEntry(invList);
+        //
+        LoadData(ref _pictorialBookData);
+        PictorialBookSystem pictorialSystem = FindAnyObjectByType<PictorialBookSystem>();
+        if (pictorialSystem != null)
+        {
+            pictorialSystem.RestoreSaveData(_pictorialBookData);
+        }
+        //
+        LoadData(ref _timeData);
+        TimeAndLight timeSys = FindAnyObjectByType<TimeAndLight>();
+        if (timeSys != null)
+        {
+            timeSys.RestoreSaveData(_timeData);
+        }
     }
 
     // DataManager의 씬 데이터 일괄 저장

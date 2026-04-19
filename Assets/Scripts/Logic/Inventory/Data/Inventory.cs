@@ -70,7 +70,7 @@ public class Inventory
         _inventorySlots[invenSlotIdx].ItemSO.Use();
         _inventorySlots[invenSlotIdx].RemoveAmount(1);
 
-        OnChangeSlot?.Invoke(EInventoryType.PlayerInventory, _inventorySlots[invenSlotIdx]);
+        OnChangeSlot?.Invoke(_inventoryType, _inventorySlots[invenSlotIdx]);
 
         return false;
     }
@@ -141,7 +141,7 @@ public class Inventory
                 //빈자리를 찾는 즉시 아이템 넣고 성공 반환
                 if (_inventorySlots[i].IsEmpty)
                 {
-                    _inventorySlots[i].SetItem(itemData, itemStack);
+                    _inventorySlots[i].AddItem(itemData, itemStack);
                     return i;//성공시 해당 슬롯의 번호를 반환.
                 }
             }
@@ -179,7 +179,8 @@ public class Inventory
                         continue;
                     }
                     //같은 아이템이고, 슬롯이 꽉차지도 않았다면 아이템 획득 후, 성공 반환.
-                    _inventorySlots[i].SetItem(itemData);
+                    int addAmount = Math.Min(itemStack, itemData.MaxStack - _inventorySlots[i].CurStack);
+                    _inventorySlots[i].AddItem(itemData, addAmount);
                     //OnPlayerGetItem.Publish(itemData.Id, itemStack);
                     return i;//성공시 해당 슬롯의 번호를 반환.
                 }
@@ -188,8 +189,8 @@ public class Inventory
             if (emptySlotIndex != -1)
             {
                 //그냥 빈 자리에 넣음.
-                _inventorySlots[emptySlotIndex].SetItem(itemData);
                 //OnPlayerGetItem.Publish(itemData.Id, itemStack);
+                _inventorySlots[emptySlotIndex].AddItem(itemData, itemStack);
                 return emptySlotIndex;
             }
             //인벤토리에 겹치는 아이템도 없고, 빈자리도 없다면.
@@ -209,7 +210,7 @@ public class Inventory
         if (InventorySlots[slotIdx2].IsEmpty)
         {
             UDebug.Print("빈 슬롯으로 드래그");
-            InventorySlots[slotIdx2].SetItem(InventorySlots[slotIdx1].ItemSO, InventorySlots[slotIdx1].CurStack);
+            InventorySlots[slotIdx2].AddItem(InventorySlots[slotIdx1].ItemSO, InventorySlots[slotIdx1].CurStack);
             InventorySlots[slotIdx1].SlotClear();
 
             OnChangeSlot?.Invoke(_inventoryType, _inventorySlots[slotIdx1]);
@@ -223,9 +224,9 @@ public class Inventory
         int tempStackCount = _inventorySlots[slotIdx1].CurStack;
 
         _inventorySlots[slotIdx1].SlotClear();
-        _inventorySlots[slotIdx1].SetItem(_inventorySlots[slotIdx2].ItemSO, _inventorySlots[slotIdx2].CurStack);
+        _inventorySlots[slotIdx1].AddItem(_inventorySlots[slotIdx2].ItemSO, _inventorySlots[slotIdx2].CurStack);
         _inventorySlots[slotIdx2].SlotClear();
-        _inventorySlots[slotIdx2].SetItem(tempSo, tempStackCount);
+        _inventorySlots[slotIdx2].AddItem(tempSo, tempStackCount);
 
 
         OnChangeSlot?.Invoke(_inventoryType, _inventorySlots[slotIdx1]);
@@ -315,6 +316,20 @@ public class Inventory
 
         return tempItemSO;
     }
+    public void SetItemData(ItemSO item, int amount, int slotIdx)
+    {
+        if(item == null)
+        {
+            return;
+        }
+        ItemSlotClear(slotIdx); // 비우기
+        // 내부 값 변경
+        _inventorySlots[slotIdx].AddItem(item, amount);
+        // 이벤트
+        OnChangeSlot?.Invoke(_inventoryType, _inventorySlots[slotIdx]);
+        OnChangeSlots?.Invoke(_inventoryType, this);
+    }
+
     public void SetItemSlot(InventorySlot invenSlot, int slotIdx)
     {
         if(invenSlot.IsEmpty)

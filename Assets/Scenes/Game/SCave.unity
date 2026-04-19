@@ -162,8 +162,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b28f46598ec31324a908a1a14da566eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueId: 7516790c-8f63-47b9-886f-6106da9e9000
-  _instanceId: 120654
+  _uniqueId: 331739d5-e159-424e-aae6-5927c964ab80
+  _instanceId: 223128
   _testTileID: 0
   _animalID: 
   _breedingArea: {fileID: 0}
@@ -2155,12 +2155,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3976355750848996427, guid: f4d36761fd373d6408d631c2eb745959, type: 3}
+      propertyPath: _playerTr
+      value: 
+      objectReference: {fileID: 1543160797}
+    - target: {fileID: 3976355750848996427, guid: f4d36761fd373d6408d631c2eb745959, type: 3}
       propertyPath: _uniqueId
-      value: 6971203c-6acc-4fee-b49d-e43556526575
+      value: 44aa0e01-1f6b-4900-89ff-641427a97f3e
       objectReference: {fileID: 0}
     - target: {fileID: 3976355750848996427, guid: f4d36761fd373d6408d631c2eb745959, type: 3}
       propertyPath: _instanceId
-      value: -211504
+      value: -8956
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2255,7 +2259,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1119130486}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Ores
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

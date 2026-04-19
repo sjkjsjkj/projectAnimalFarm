@@ -46,7 +46,7 @@ public class PlayerRunState : IPlayerState
         OnPlayerRunning.Publish(movement);
         _prevPos = curPos;
         // 변수 작성
-        Vector2 pos = context.tr.position;
+        Vector2 pos = context.playerPos;
         Vector2 size = DatabaseManager.Ins.Player(Id.World_Player).Size;
         Vector2 dir = context.inputMove.normalized;
         float speed = player.CurWalkSpeed * player.CurRunMultiplier;

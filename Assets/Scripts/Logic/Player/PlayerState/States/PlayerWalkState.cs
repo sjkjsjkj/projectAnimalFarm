@@ -56,7 +56,7 @@ public class PlayerWalkState : IPlayerState
         OnPlayerWalking.Publish(movement);
         _prevPos = curPos;
         // 변수 작성
-        Vector2 pos = context.tr.position;
+        Vector2 pos = context.playerPos;
         Vector2 size = DatabaseManager.Ins.Player(Id.World_Player).Size;
         Vector2 dir = context.inputMove.normalized;
         float speed = DataManager.Ins.Player.CurWalkSpeed;
@@ -77,7 +77,7 @@ public class PlayerWalkState : IPlayerState
         float interval = _stepSoundInterval;
         if (_isSlow)
         {
-            interval *= _speedRatioThirsty;
+            interval /= _speedRatioThirsty;
         }
         UPlayer.TryPlayStepSound(ref _nextStepTime, interval, pos);
         return false;

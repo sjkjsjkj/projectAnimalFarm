@@ -111,8 +111,8 @@ public static class QuestContainer
             rewardItemAmount: 1,
             new QuestCondition(
                 subtopic: "채집 횟수",
-                condition: (data) => data.totalGatheringCount >= 10,
-                progress: (data) => (data.totalGatheringCount, 10f)
+                condition: (data) => data.totalGatheringCount >= 5,
+                progress: (data) => (data.totalGatheringCount, 5f)
             )
         ),
         
@@ -124,8 +124,8 @@ public static class QuestContainer
             rewardItemAmount: 1,
             new QuestCondition(
                 subtopic: "채광 횟수",
-                condition: (data) => data.totalOreMinedCount >= 10,
-                progress: (data) => (data.totalOreMinedCount, 10f)
+                condition: (data) => data.totalOreMinedCount >= 5,
+                progress: (data) => (data.totalOreMinedCount, 5f)
             )
         ),
         new QuestInfo(
@@ -160,8 +160,8 @@ public static class QuestContainer
             rewardItemAmount: 5,
             new QuestCondition(
                 subtopic: "낚은 물고기 수",
-                condition: (data) => data.totalFishCaughtCount >= 10,
-                progress: (data) => (data.totalFishCaughtCount, 10f)
+                condition: (data) => data.totalFishCaughtCount >= 5,
+                progress: (data) => (data.totalFishCaughtCount, 5f)
             )
         ),
         new QuestInfo(

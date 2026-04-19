@@ -11,6 +11,14 @@ public class TestPlayerGetTool : Frameable
     // 프레임 매니저가 실행할 메서드
     public override void ExecuteFrame()
     {
+        if(DatabaseManager.Ins == null || InventoryManager.Ins == null)
+        {
+            return;
+        }
+        if (!InventoryManager.Ins.IsSettingFinish)
+        {
+            return;
+        }
         var data = DatabaseManager.Ins;
         var inventory = InventoryManager.Ins.PlayerInventory;
         if (Input.GetKeyDown(KeyCode.Alpha1))

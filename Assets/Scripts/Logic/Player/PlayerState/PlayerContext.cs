@@ -10,6 +10,7 @@ public readonly struct PlayerContext
     public readonly SpriteRenderer sprite;
     public readonly Animator anim;
     // 입력 데이터
+    public readonly Vector2 playerPos;
     public readonly Vector2 inputMove;
     public readonly bool inputRun;
     public readonly bool inputFishing;
@@ -29,7 +30,7 @@ public readonly struct PlayerContext
     public readonly bool isCanceled; // 애니메이션 취소 요청
 
     // 생성자
-    public PlayerContext( Rigidbody2D rb, Transform tr, SpriteRenderer sprite, Animator anim,
+    public PlayerContext( Rigidbody2D rb, Transform tr, SpriteRenderer sprite, Animator anim, Vector2 playerPos,
         Vector2 inputMove, bool inputRun, bool inputFishing, bool inputMining, bool inputLogging,
         bool inputShovel, bool inputSickle, bool inputDrinking, bool inputEating, bool inputWatering,
         bool inputCrouching, bool inputWakeUp, Vector2 targetPos, float duration, bool isSuccess, bool isCanceled)
@@ -38,6 +39,7 @@ public readonly struct PlayerContext
         this.tr = tr;
         this.sprite = sprite;
         this.anim = anim;
+        this.playerPos = playerPos;
         this.inputMove = inputMove;
         this.inputRun = inputRun;
         this.inputFishing = inputFishing;

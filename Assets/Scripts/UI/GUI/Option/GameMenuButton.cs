@@ -27,6 +27,7 @@ public class GameMenuButton : BaseMono, IEscClosable
         }
 
         _gameMenu.OpenResolutionWindow();
+        USound.PlaySfx(Id.Sfx_Ui_Select_01);
     }
  
     public void AudioButton()
@@ -39,23 +40,26 @@ public class GameMenuButton : BaseMono, IEscClosable
         }
 
         _gameMenu.OpenAudioWindow();
+        USound.PlaySfx(Id.Sfx_Ui_Select_01);
     }
 
     public void TitleButton()
     {
         UDebug.Print($"타이틀 버튼 클릭");
-        GameManager.Ins.LoadSceneAsyncWithFade((int)EScene.Title);
+        GameManager.Ins.LoadSceneAsyncWithFade((int)EScene.Title, 0f, 1.5f, 1f);
+        USound.PlaySfx(Id.Sfx_Ui_Select_02);
     }
 
     public void ExitButton()
     {
+        UDebug.Print($"게임 종료 버튼 클릭");
+        USound.PlaySfx(Id.Sfx_Ui_Select_08);
         PersistenceManager.Ins.Save();
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false; // 에디터 플레이 모드 종료
 #else
         Application.Quit(); // 게임 종료
 #endif
-        UDebug.Print($"게임 종료 버튼 클릭");
     }
 
     public void CloseUi()
@@ -71,6 +75,7 @@ public class GameMenuButton : BaseMono, IEscClosable
         //UObject.SetActive(gameObject, false);
         //EscManager.Ins.Exit(this);
         _gameMenu.CloseAllWindows();
+        USound.PlaySfx(Id.Sfx_Ui_Select_01);
     }
 
     public void CloseButton()
