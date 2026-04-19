@@ -27,3 +27,4 @@ MonoBehaviour:
   _placeCropId: 
   _needFarmingLevel: 1
   _harvestItemId: Blueberry_0
+  _progressTickTime: 30
