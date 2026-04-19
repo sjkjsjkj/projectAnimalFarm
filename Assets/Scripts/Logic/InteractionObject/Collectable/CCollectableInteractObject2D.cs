@@ -153,6 +153,9 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     [Header("로컬 폴백 사운드")]
     [SerializeField] private Transform _feedbackSoundTarget;
 
+    [Tooltip("체크하면 피드백 사운드를 UI처럼 2D로 재생합니다. 해제하면 오브젝트 위치 기준 3D로 재생합니다.")]
+    [SerializeField] private bool _playFeedbackSoundAsUi = true;
+
     [SerializeField]
     private string[] _warningFeedbackSoundIds =
     {
@@ -189,6 +192,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
     private bool _isCollected = false;
     private bool _isProcessing = false;
+    private bool _isManualCollectStarting = false;
 
     private Coroutine _autoCollectRoutine = null;
     private Coroutine _respawnRoutine = null;
@@ -321,7 +325,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             return false;
         }
 
-        if (_isProcessing)
+        if (_isProcessing || _isManualCollectStarting)
         {
             return false;
         }
@@ -381,7 +385,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             return false;
         }
 
-        if (_manualCollectRoutine == null)
+        if (_manualCollectRoutine == null && !_isManualCollectStarting)
         {
             return false;
         }
@@ -594,7 +598,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
     private void StartManualCollectRoutine(CPlayerCollector2D collector)
     {
-        if (_manualCollectRoutine != null)
+        if (_manualCollectRoutine != null || _isManualCollectStarting || _isProcessing)
         {
             return;
         }
@@ -612,6 +616,8 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
         float manualCollectDuration = GetManualCollectDuration();
 
+        _isManualCollectStarting = true;
+        _isProcessing = true;
         _manualCollectCollector = collector;
         _manualCollectStartPosition = collector.transform.position;
 
@@ -634,7 +640,9 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
     private IEnumerator CoManualCollect(CPlayerCollector2D collector, float manualCollectDuration)
     {
-        if (_isProcessing)
+        _isManualCollectStarting = false;
+
+        if (!_isProcessing)
         {
             yield break;
         }
@@ -658,7 +666,6 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             yield break;
         }
 
-        _isProcessing = true;
         manualCollectDuration = Mathf.Max(0f, manualCollectDuration);
 
         PublishManualCollectAction(rewardItemSo, manualCollectDuration);
@@ -752,6 +759,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     private void ReleaseManualCollectState(CPlayerCollector2D collector)
     {
         _isProcessing = false;
+        _isManualCollectStarting = false;
 
         if (_setPlayerBusyDuringManualCollect && collector != null)
         {
@@ -793,6 +801,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         }
 
         _isProcessing = false;
+        _isManualCollectStarting = false;
         _manualCollectCollector = null;
         _manualCollectStartPosition = Vector2.zero;
 
@@ -818,13 +827,11 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
     {
         string progressMessage = GetProgressFeedbackMessage();
 
+        // 진행 시작 피드백은 여기서 직접 한 번만 발행한다.
+        // _onCollectStarted 에 relay/UI 메시지 리스너가 연결되어 있으면
+        // 같은 문구가 한 번 더 표시될 수 있으므로 메시지 중복을 막기 위해 호출하지 않는다.
         PublishDirectFeedback(progressMessage, EFeedbackMessageType.Warning, START_FEEDBACK_DURATION);
         PlayRandomFeedbackSound(_warningFeedbackSoundIds);
-
-        if (HasPersistentListener(_onCollectStarted) && !HasRelayListener(_onCollectStarted, nameof(InteractionFeedbackRelay.ShowWarningFeedback), nameof(InteractionFeedbackRelay.OnCollectStarted)))
-        {
-            _onCollectStarted?.Invoke();
-        }
     }
 
     private void RaiseCollectedSuccessFeedback()
@@ -1585,6 +1592,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
             return;
         }
 
+        _isManualCollectStarting = false;
         _isCollected = true;
 
         _nearCollectors.Clear();
@@ -1955,7 +1963,18 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
     private void ShowInventoryFullFeedback()
     {
-        NotifyFailureFeedback("인벤토리가 가득 찼습니다.");
+        const string message = "인벤토리가 가득 찼습니다.";
+
+        if (_logEnabled)
+        {
+            Debug.Log("[Collectable][Failure] " + message);
+        }
+
+        // 인벤토리 가득 참은 일부 씬/프리팹에서 _onFeedbackMessage가
+        // 사운드 전용으로만 연결된 경우가 있어 UI가 누락될 수 있다.
+        // 따라서 여기서는 피드백 UI를 직접 발행하고 사운드도 여기서 함께 재생한다.
+        PublishDirectFeedback(message, EFeedbackMessageType.Failure, DEFAULT_FEEDBACK_DURATION);
+        PlayRandomFeedbackSound(_failureFeedbackSoundIds);
     }
 
     private void RaiseCollectFailedFeedback()
@@ -2018,7 +2037,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
     private bool HasRelayListener(UnityEvent unityEvent, params string[] methodNames)
     {
-        if (unityEvent == null || _feedbackRelay == null)
+        if (unityEvent == null)
         {
             return false;
         }
@@ -2034,7 +2053,7 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
         for (int i = 0; i < persistentCount; i++)
         {
             Object target = unityEvent.GetPersistentTarget(i);
-            if (target != _feedbackRelay)
+            if (!(target is InteractionFeedbackRelay))
             {
                 continue;
             }
@@ -2167,20 +2186,34 @@ public class CCollectableInteractObject2D : BaseMono, IInteractable
 
             if (currentIndex == targetIndex)
             {
-                if (_feedbackSoundTarget != null)
-                {
-                    USound.PlaySfx(soundId, _feedbackSoundTarget);
-                }
-                else
-                {
-                    USound.PlaySfx(soundId);
-                }
-
+                PlayFeedbackSound(soundId);
                 return;
             }
 
             currentIndex++;
         }
+    }
+
+    private void PlayFeedbackSound(string soundId)
+    {
+        if (string.IsNullOrWhiteSpace(soundId))
+        {
+            return;
+        }
+
+        if (_playFeedbackSoundAsUi)
+        {
+            USound.PlaySfx(soundId);
+            return;
+        }
+
+        if (_feedbackSoundTarget != null)
+        {
+            USound.PlaySfx(soundId, _feedbackSoundTarget);
+            return;
+        }
+
+        USound.PlaySfx(soundId);
     }
 
     private void TryResolveFeedbackRelayIfMissing()
