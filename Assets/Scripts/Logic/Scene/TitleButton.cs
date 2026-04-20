@@ -13,6 +13,13 @@ public class TitleButton : BaseMono
         ClearAllSaveData();
         DataManager.Ins.ResetGameData();
         InventoryManager.Ins.ClearAllInventories();
+        // 도감
+        PictorialBookSystem pictorialSystem = FindAnyObjectByType<PictorialBookSystem>();
+        if (pictorialSystem != null)
+        {
+            
+        }
+        // 씬 로드
         var game = GameManager.Ins;
         game.LoadSceneAsyncWithFade((int)EScene.Main, 0f , 3f, 3f);
         game.IsPlayerWakeUp = true;
