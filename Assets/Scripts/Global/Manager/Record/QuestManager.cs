@@ -40,12 +40,7 @@ public class QuestManager : GlobalSingleton<QuestManager>
             player.AddMoney(curQuest.RewardGold);
             if (!string.IsNullOrEmpty(curQuest.RewardItemId))
             {
-                var inventory = InventoryManager.Ins.PlayerInventory;
-                ItemSO so = DatabaseManager.Ins.Item(curQuest.RewardItemId);
-                for(int i = 0; i < curQuest.RewardItemAmount; ++i)
-                {
-                    inventory.TryGetItem(so);
-                }
+                ItemCollectionCoordinator.Ins.TryCollectItem(curQuest.RewardItemId, curQuest.RewardItemAmount);
             }
             // 다음 퀘스트로
             UDebug.Print($"퀘스트 클리어: {curQuest.Description}");

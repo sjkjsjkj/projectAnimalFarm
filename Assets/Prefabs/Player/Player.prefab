@@ -141,8 +141,8 @@ MonoBehaviour:
       _waitWeight: 10
       _hookedWeight: 0
       _rollWeight: 6
-      _capturedYesWeight: 12
-      _capturedNoWeight: 12
+      _capturedYesWeight: 8
+      _capturedNoWeight: 8
     _wakeUp:
       _cam: {fileID: 0}
       _zoomInRatio: 0.3
@@ -225,6 +225,12 @@ MonoBehaviour:
   _checkOffset: {x: 0, y: 0}
   _allowSeaFishing: 0
   _fishingDelay: 3
+  _basicFishingDelay: 4
+  _solidFishingDelay: 4.5
+  _superiorFishingDelay: 5
+  _primeFishingDelay: 5.5
+  _masterworkFishingDelay: 6
+  _unknownFishingDelay: 2
   _cooldownAfterFishing: 0.2
   _amount: 1
   _fishingSkillExp: 0
