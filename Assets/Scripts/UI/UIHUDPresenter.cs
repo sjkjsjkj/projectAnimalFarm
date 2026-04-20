@@ -126,6 +126,11 @@ public class UIHUDPresenter : BaseMono
 
         return true;
     }
+
+    private void SceneLoadEndHandle(OnSceneLoadEnd ctx)
+    {
+        RefreshFromPlayerProvider();
+    }
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
@@ -144,15 +149,16 @@ public class UIHUDPresenter : BaseMono
         EventBus<OnPlayerHungerChanged>.Subscribe(HandlePlayerHungerChanged);
         EventBus<OnPlayerThirstChanged>.Subscribe(HandlePlayerThirstChanged);
         EventBus<OnPlayerMoneyChanged>.Subscribe(HandlePlayerMoneyChanged);
+        EventBus<OnSceneLoadEnd>.Subscribe(SceneLoadEndHandle);
 
         RefreshFromPlayerProvider();
     }
-
     private void OnDisable()
     {
         EventBus<OnPlayerHungerChanged>.Unsubscribe(HandlePlayerHungerChanged);
         EventBus<OnPlayerThirstChanged>.Unsubscribe(HandlePlayerThirstChanged);
         EventBus<OnPlayerMoneyChanged>.Unsubscribe(HandlePlayerMoneyChanged);
+        EventBus<OnSceneLoadEnd>.Subscribe(SceneLoadEndHandle);
     }
 
     protected void Reset()

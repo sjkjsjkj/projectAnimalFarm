@@ -53,7 +53,7 @@ public static class QuestContainer
             )
         ),
         new QuestInfo(
-            description: string.Format("인벤토리 열어보기 (인벤토리 : I)" +
+            description: string.Format("인벤토리 열어보기 (인벤토리 : E)" +
                 "{0}{1}{2}{3}감자 씨앗 5개</size></color>", Environment.NewLine, REWARD_COLOR, REWARD_SIZE, REWARD_TEXT),
             rewardGold: 0,
             rewardItemId: Id.Item_Seed_Potato,
@@ -99,7 +99,7 @@ public static class QuestContainer
             rewardItemAmount: 0,
             new QuestCondition(
                 subtopic: "도감을 연 횟수",
-                condition: (data) => data.totalPictorialOpenCount >= 1,
+                condition: (data) => data.totalPictorialOpenCount >= 1f,
                 progress: (data) => (data.totalPictorialOpenCount, 1f)
             )
         ),
@@ -111,7 +111,7 @@ public static class QuestContainer
             rewardItemAmount: 1,
             new QuestCondition(
                 subtopic: "채집 횟수",
-                condition: (data) => data.totalGatheringCount >= 5,
+                condition: (data) => data.totalGatheringCount >= 5f,
                 progress: (data) => (data.totalGatheringCount, 5f)
             )
         ),
@@ -124,20 +124,20 @@ public static class QuestContainer
             rewardItemAmount: 1,
             new QuestCondition(
                 subtopic: "채광 횟수",
-                condition: (data) => data.totalOreMinedCount >= 5,
+                condition: (data) => data.totalOreMinedCount >= 5f,
                 progress: (data) => (data.totalOreMinedCount, 5f)
             )
         ),
         new QuestInfo(
             description: string.Format("마을의 위쪽에서 동물 아이템 구매하기" +
-                "{0}{1}{2}{3}닭 2마리</size></color>", Environment.NewLine, REWARD_COLOR, REWARD_SIZE, REWARD_TEXT),
-            rewardGold: 0,
-            rewardItemId: Id.Item_Animal_Chicken,
-            rewardItemAmount: 2,
+                "{0}{1}{2}{3}300 골드</size></color>", Environment.NewLine, REWARD_COLOR, REWARD_SIZE, REWARD_TEXT),
+            rewardGold: 300,
+            rewardItemId: null,
+            rewardItemAmount: 0,
             new QuestCondition(
                 subtopic: "구매한 동물 수",
-                condition: (data) => data.GetTypeRecord(EType.AnimalItem) >= 1,
-                progress: (data) => (data.GetTypeRecord(EType.AnimalItem), 1f)
+                condition: (data) => data.GetTypeRecord(EType.AnimalItem) >= 3f,
+                progress: (data) => (data.GetTypeRecord(EType.AnimalItem), 3f)
             )
         ),
         new QuestInfo(
@@ -148,7 +148,7 @@ public static class QuestContainer
             rewardItemAmount: 0,
             new QuestCondition(
                 subtopic: "들여온 동물 수",
-                condition: (data) => data.GetTypeRecord(EType.AnimalWorld) >= 3,
+                condition: (data) => data.GetTypeRecord(EType.AnimalWorld) >= 3f,
                 progress: (data) => (data.GetTypeRecord(EType.AnimalWorld), 3f)
             )
         ),
@@ -160,7 +160,7 @@ public static class QuestContainer
             rewardItemAmount: 5,
             new QuestCondition(
                 subtopic: "낚은 물고기 수",
-                condition: (data) => data.totalFishCaughtCount >= 5,
+                condition: (data) => data.totalFishCaughtCount >= 5f,
                 progress: (data) => (data.totalFishCaughtCount, 5f)
             )
         ),
@@ -172,8 +172,8 @@ public static class QuestContainer
             rewardItemAmount: 0,
             new QuestCondition(
                 subtopic: "획득한 생산품 수",
-                condition: (data) => data.GetTypeRecord(EType.ProductItem) >= 5,
-                progress: (data) => (data.GetTypeRecord(EType.ProductItem), 5f)
+                condition: (data) => data.GetTypeRecord(EType.ProductItem) >= 3f,
+                progress: (data) => (data.GetTypeRecord(EType.ProductItem), 3f)
             )
         ),
         new QuestInfo(
@@ -184,7 +184,7 @@ public static class QuestContainer
             rewardItemAmount: 0,
             new QuestCondition(
                 subtopic: "먹이통을 연 횟수",
-                condition: (data) => data.totalFeedBoxOpenCount >= 1,
+                condition: (data) => data.totalFeedBoxOpenCount >= 1f,
                 progress: (data) => (data.totalFeedBoxOpenCount, 1f)
             )
         ),
@@ -196,7 +196,7 @@ public static class QuestContainer
             rewardItemAmount: 0,
             new QuestCondition(
                 subtopic: "창고를 연 횟수",
-                condition: (data) => data.totalChestOpenCount >= 1,
+                condition: (data) => data.totalChestOpenCount >= 1f,
                 progress: (data) => (data.totalChestOpenCount, 1f)
             )
         ),
@@ -208,7 +208,7 @@ public static class QuestContainer
             rewardItemAmount: 0,
             new QuestCondition(
                 subtopic: "제작대를 연 횟수",
-                condition: (data) => data.totalCraftingOpenCount >= 1,
+                condition: (data) => data.totalCraftingOpenCount >= 1f,
                 progress: (data) => (data.totalCraftingOpenCount, 1f)
             )
         ),

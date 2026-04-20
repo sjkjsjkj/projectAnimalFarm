@@ -76,6 +76,11 @@ public class QuestUiUpdator : Frameable
         var curQuest = QuestContainer.list[record.goalIndex];
         _title.text = $"({record.goalIndex + 1}/{count + 1})  {curQuest.Description}";
     }
+
+    private void SceneLoadEndHandle(OnSceneLoadEnd ctx)
+    {
+        QuestChangedHandle(new OnQuestChanged(DataManager.Ins.Record.goalIndex, null));
+    }
     #endregion
 
     #region ─────────────────────────▶ 메시지 함수 ◀─────────────────────────
@@ -83,11 +88,13 @@ public class QuestUiUpdator : Frameable
     {
         base.OnEnable();
         EventBus<OnQuestChanged>.Subscribe(QuestChangedHandle);
+        EventBus<OnSceneLoadEnd>.Subscribe(SceneLoadEndHandle);
     }
     protected override void OnDisable()
     {
         base.OnDisable();
         EventBus<OnQuestChanged>.Unsubscribe(QuestChangedHandle);
+        EventBus<OnSceneLoadEnd>.Unsubscribe(SceneLoadEndHandle);
     }
     private void Start()
     {

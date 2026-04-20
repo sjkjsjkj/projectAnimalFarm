@@ -24,6 +24,7 @@ public class PlayerInteractor : Frameable
     private List<IAutoInteractable> _autoInteractableList = new(); // 매 프레임 갱신
     private Collider2D[] _overlapBuffer;
     private float _nextAutoInteractTime;
+    private float _nextLockAutoInteractTime;
     #endregion
 
     #region ─────────────────────────▶ 공개 멤버 ◀─────────────────────────
@@ -34,10 +35,20 @@ public class PlayerInteractor : Frameable
     public IInteractable InteractTarget => _interactTarget;
     public IReadOnlyList<IAutoInteractable> AutoInteractables => _autoInteractableList;
 
+    public void LockAutoInteract(float timer)
+    {
+        timer = Mathf.Max(0, timer);
+        _nextLockAutoInteractTime = Time.time + timer;
+    }
+
     // 프레임 매니저가 실행할 메서드
     public override void ExecuteFrame()
     {
         SearchInteractableObjects();
+        if(Time.time < _nextLockAutoInteractTime)
+        {
+            return;
+        }
         if (UMath.TryCooldownEnd(Time.time, ref _nextAutoInteractTime, _autoInteractInterval))
         {
             AutoInteractObject();

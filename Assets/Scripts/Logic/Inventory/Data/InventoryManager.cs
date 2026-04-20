@@ -19,7 +19,7 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
 
     [Header("테스트")]
     [SerializeField] private int _inventorySize;
-    [SerializeField] private KeyCode _inventoryKeycode = KeyCode.I;
+    [SerializeField] private KeyCode _inventoryKeycode = KeyCode.E;
     #endregion
 
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
@@ -399,7 +399,7 @@ public class InventoryManager : GlobalSingleton<InventoryManager>
     //UI On 키를 입력했는지 확인하는 메서드
     private void UIKeyInputHandle()
     {
-        if (Input.GetKeyDown(_inventoryKeycode))
+        if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.I))
         {
             InventoryUIToggle(0, EInventoryType.PlayerInventory);
         }
